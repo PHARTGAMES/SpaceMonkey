@@ -28,83 +28,49 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.initializeButton = new System.Windows.Forms.Button();
-            this.vehicleSelector = new System.Windows.Forms.ComboBox();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
-            this.matrixBox = new System.Windows.Forms.RichTextBox();
-            this.statusLabel = new System.Windows.Forms.TextBox();
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+            this.Dirt5Button = new System.Windows.Forms.Button();
+            this.Filters = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // initializeButton
+            // Dirt5Button
             // 
-            this.initializeButton.Location = new System.Drawing.Point(227, 40);
-            this.initializeButton.Name = "initializeButton";
-            this.initializeButton.Size = new System.Drawing.Size(245, 46);
-            this.initializeButton.TabIndex = 0;
-            this.initializeButton.Text = "Initialize";
-            this.initializeButton.UseVisualStyleBackColor = true;
-            this.initializeButton.Click += new System.EventHandler(this.initializeButton_Click);
+            this.Dirt5Button.Location = new System.Drawing.Point(12, 12);
+            this.Dirt5Button.Name = "Dirt5Button";
+            this.Dirt5Button.Size = new System.Drawing.Size(149, 44);
+            this.Dirt5Button.TabIndex = 0;
+            this.Dirt5Button.Text = "DIRT5";
+            this.Dirt5Button.UseVisualStyleBackColor = true;
+            this.Dirt5Button.Click += new System.EventHandler(this.Dirt5Button_Click);
             // 
-            // vehicleSelector
+            // Filters
             // 
-            this.vehicleSelector.FormattingEnabled = true;
-            this.vehicleSelector.Location = new System.Drawing.Point(13, 13);
-            this.vehicleSelector.Name = "vehicleSelector";
-            this.vehicleSelector.Size = new System.Drawing.Size(208, 21);
-            this.vehicleSelector.TabIndex = 1;
-            this.vehicleSelector.SelectedIndexChanged += new System.EventHandler(this.vehicleSelector_SelectedIndexChanged);
-            // 
-            // progressBar1
-            // 
-            this.progressBar1.Location = new System.Drawing.Point(227, 92);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(245, 23);
-            this.progressBar1.TabIndex = 2;
-            this.progressBar1.Click += new System.EventHandler(this.progressBar1_Click);
-            // 
-            // matrixBox
-            // 
-            this.matrixBox.Location = new System.Drawing.Point(227, 121);
-            this.matrixBox.Name = "matrixBox";
-            this.matrixBox.Size = new System.Drawing.Size(245, 617);
-            this.matrixBox.TabIndex = 3;
-            this.matrixBox.Text = "";
-            // 
-            // statusLabel
-            // 
-            this.statusLabel.BackColor = System.Drawing.SystemColors.Control;
-            this.statusLabel.Location = new System.Drawing.Point(227, 14);
-            this.statusLabel.Name = "statusLabel";
-            this.statusLabel.Size = new System.Drawing.Size(245, 20);
-            this.statusLabel.TabIndex = 4;
-            this.statusLabel.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.statusLabel.TextChanged += new System.EventHandler(this.StatusBox_TextChanged);
+            this.Filters.Location = new System.Drawing.Point(249, 12);
+            this.Filters.Name = "Filters";
+            this.Filters.Size = new System.Drawing.Size(159, 44);
+            this.Filters.TabIndex = 1;
+            this.Filters.Text = "Filters";
+            this.Filters.UseVisualStyleBackColor = true;
+            this.Filters.Click += new System.EventHandler(this.Filters_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(484, 750);
-            this.Controls.Add(this.statusLabel);
-            this.Controls.Add(this.matrixBox);
-            this.Controls.Add(this.progressBar1);
-            this.Controls.Add(this.vehicleSelector);
-            this.Controls.Add(this.initializeButton);
+            this.ClientSize = new System.Drawing.Size(420, 156);
+            this.Controls.Add(this.Filters);
+            this.Controls.Add(this.Dirt5Button);
             this.Name = "MainForm";
             this.Text = "GenericTelemetryProvider";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Button initializeButton;
-        private System.Windows.Forms.ComboBox vehicleSelector;
-        private System.Windows.Forms.ProgressBar progressBar1;
-        private System.Windows.Forms.RichTextBox matrixBox;
-        private System.Windows.Forms.TextBox statusLabel;
+        private System.Windows.Forms.Button Dirt5Button;
+        private System.Windows.Forms.Button Filters;
     }
 }
 

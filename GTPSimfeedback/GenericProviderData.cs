@@ -10,7 +10,7 @@ namespace GenericTelemetryProvider
 {
     [System.Serializable]
     [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode)]
-   public class GenericProviderData
+    public class GenericProviderData
     {
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 8)]
         public char[] version; // version id, always 8 characters
@@ -37,26 +37,34 @@ namespace GenericTelemetryProvider
             Max
         }
 
-        public GenericProviderData(char[] _version = null)
+        public GenericProviderData()
+        {
+            version = null;
+            data = new float[(int)DataKey.Max];
+            Reset();
+        }
+
+
+        public GenericProviderData(char[] _version)
         {
             version = _version;
             data = new float[(int)DataKey.Max];
             Reset();
         }
 
-        public float yaw //degrees
+        public float yaw //radians
         {
             get { return data[(int)DataKey.Yaw]; }
             set { data[(int)DataKey.Yaw] = value; }
         }
 
-        public float pitch //degrees
+        public float pitch //radians
         {
             get { return data[(int)DataKey.Pitch]; }
             set { data[(int)DataKey.Pitch] = value; }
         }
 
-        public float roll //degrees
+        public float roll //radians
         {
             get { return data[(int)DataKey.Roll]; }
             set { data[(int)DataKey.Roll] = value; }
@@ -128,7 +136,6 @@ namespace GenericTelemetryProvider
             return Marshal.SizeOf<GenericProviderData>(packet);
         }
 
-
         public byte[] ToByteArray()
         {
             GenericProviderData packet = this;
@@ -141,6 +148,16 @@ namespace GenericTelemetryProvider
             return array;
         }
 
+        public static GenericProviderData FromByteArray(byte[] bytes)
+        {
+            GCHandle pinnedPacket = GCHandle.Alloc(bytes, GCHandleType.Pinned);
+            GenericProviderData data = (GenericProviderData)Marshal.PtrToStructure(
+                pinnedPacket.AddrOfPinnedObject(),
+                typeof(GenericProviderData));
+            pinnedPacket.Free();
+
+            return data;
+        }
 
         public void Copy(GenericProviderData other)
         {
@@ -168,7 +185,7 @@ namespace GenericTelemetryProvider
 
         public void Reset()
         {
-            if (version == null)
+            if(version == null)
                 version = new char[] { 'V', 'E', 'R', 'S', 'I', 'O', 'N', '0' };
 
             yaw = 0;
@@ -189,18 +206,6 @@ namespace GenericTelemetryProvider
 
             engine_rpm = 0;
 
-        }
-
-        public static int GetKeyMask(params DataKey[] list)
-        {
-            int rval = 0;
-
-            foreach(DataKey key in list)
-            {
-                rval |= (1 << (int)key);
-            }
-
-            return rval;
         }
 
 

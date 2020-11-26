@@ -18,44 +18,30 @@ namespace GenericTelemetryProvider
     public class Dirt5TelemetryProvider : GenericProviderBase
     {
 
-
-
         Int64 memoryAddress;
         Thread t;
         Process mainProcess = null;
 
         public string vehicleString;
-        GenericProviderData lastTelemetryData;
+        GenericProviderData filteredData;
+        GenericProviderData rawData;
         Matrix4x4 lastTransform = Matrix4x4.Identity;
         bool lastFrameValid = false;
         Vector3 lastVelocity = Vector3.Zero;
+        public Dirt5UI ui;
+        public float lastWorldVelMag = 0.0f;
 
-        NestedSmooth accXSmooth = new NestedSmooth(3, 6, 0.5f);
-        NestedSmooth accYSmooth = new NestedSmooth(3, 6, 0.5f);
-        NestedSmooth accZSmooth = new NestedSmooth(3, 6, 0.5f);
+        NestedSmooth dtFilter = new NestedSmooth(0, 60, 1000000.0f);
 
-        KalmanFilter velXFilter = new KalmanFilter(1, 1, 0.02f, 1, 0.02f, 0.0f);
-        KalmanFilter velYFilter = new KalmanFilter(1, 1, 0.02f, 1, 0.02f, 0.0f);
-        KalmanFilter velZFilter = new KalmanFilter(1, 1, 0.02f, 1, 0.02f, 0.0f);
+        //NestedSmooth velXFilter = new NestedSmooth(2, 100, 1000.0f);
+        //NestedSmooth velYFilter = new NestedSmooth(2, 100, 1000.0f);
+        //NestedSmooth velZFilter = new NestedSmooth(2, 100, 1000.0f);
 
-        NoiseFilter velXSmooth = new NoiseFilter(6, 0.5f);
-        NoiseFilter velYSmooth = new NoiseFilter(6, 0.5f);
-        NoiseFilter velZSmooth = new NoiseFilter(6, 0.5f);
+        int posKeyMask = GenericProviderData.GetKeyMask(GenericProviderData.DataKey.PositionX, GenericProviderData.DataKey.PositionY, GenericProviderData.DataKey.PositionZ);
+        int velKeyMask = GenericProviderData.GetKeyMask(GenericProviderData.DataKey.LocalVelX, GenericProviderData.DataKey.LocalVelY, GenericProviderData.DataKey.LocalVelZ);
 
-        NoiseFilter pitchFilter = new NoiseFilter(3);
-        NoiseFilter rollFilter = new NoiseFilter(3);
-        NoiseFilter yawFilter = new NoiseFilter(3);
-
-        KalmanFilter posXFilter = new KalmanFilter(1, 1, 0.02f, 1, 0.1f, 0.0f);
-        KalmanFilter posYFilter = new KalmanFilter(1, 1, 0.02f, 1, 0.1f, 0.0f);
-        KalmanFilter posZFilter = new KalmanFilter(1, 1, 0.02f, 1, 0.1f, 0.0f);
-
-        NoiseFilter posXSmooth = new NoiseFilter(6, 0.5f);
-        NoiseFilter posYSmooth = new NoiseFilter(6, 0.5f);
-        NoiseFilter posZSmooth = new NoiseFilter(6, 0.5f);
 
         char[] versionString = new char[] { 'D', 'I', 'R', 'T', '5', '0', '0', '1' };
-
 
         public override void Run()
         {
@@ -72,7 +58,8 @@ namespace GenericTelemetryProvider
 
             if (mainProcess == null) //no processes, better stop
             {
-                statusChangedCallback?.Invoke("DIRT5 exe not running!");
+
+                ui.StatusTextChanged("DIRT5 exe not running!");
                 return;
             }
 
@@ -87,8 +74,6 @@ namespace GenericTelemetryProvider
             string scanString = "(\0\0\0\0" + vehicleString;
             scan.StartScanForString(scanString);
 
-
-
         }
 
         void ScanComplete()
@@ -101,67 +86,68 @@ namespace GenericTelemetryProvider
             byte[] readBuffer = new byte[readSize];
             reader.OpenProcess();
 
-            Mutex mutex = new Mutex(false, "Dirt5MatrixProviderMutex");
-
 
             Stopwatch sw = new Stopwatch();
             sw.Start();
 
 
-            lastTelemetryData = new GenericProviderData();
-            lastTelemetryData.Reset();
             lastTransform = Matrix4x4.Identity;
             lastFrameValid = false;
             lastVelocity = Vector3.Zero;
 
+            filteredData = new GenericProviderData(versionString);
+            rawData = new GenericProviderData(versionString);
+
+            filteredData.version = versionString;
+            rawData.version = versionString;
 
             float dt = 0.0f;
  
-            using (MemoryMappedFile mmf = MemoryMappedFile.CreateNew("Dirt5MatrixProvider", 10000))
+            while (!isStopped)
             {
-
-                while (!isStopped)
+                try
                 {
-                    try
+
+                    Int64 byteReadSize;
+                    reader.ReadProcessMemory((IntPtr)memoryAddress, readSize, out byteReadSize, readBuffer);
+
+                    if (byteReadSize == 0)
                     {
+                        continue;
+                    }
 
-                        Int64 byteReadSize;
-                        reader.ReadProcessMemory((IntPtr)memoryAddress, readSize, out byteReadSize, readBuffer);
+                    float[] floats = new float[4 * 4];
 
-                        if (byteReadSize == 0)
-                        {
-                            continue;
-                        }
-
-                        float[] floats = new float[4 * 4];
-
-                        Buffer.BlockCopy(readBuffer, 0, floats, 0, readBuffer.Length);
+                    Buffer.BlockCopy(readBuffer, 0, floats, 0, readBuffer.Length);
 
 //                        debugChangedCallback?.Invoke("" + floats[0] + " " + floats[1] + " " + floats[2] + " " + floats[3] + "\n" + floats[4] + " " + floats[5] + " " + floats[6] + " " + floats[7] + "\n" + floats[8] + " " + floats[9] + " " + floats[10] + " " + floats[11] + "\n" + floats[12] + " " + floats[13] + " " + floats[14] + " " + floats[15]);
-                        //                        SetRichTextBoxThreadSafe(matrixBox, "" + floats[0] + " " + floats[1] + " " + floats[2] + " " + floats[3] + "\n" + floats[4] + " " + floats[5] + " " + floats[6] + " " + floats[7] + "\n" + floats[8] + " " + floats[9] + " " + floats[10] + " " + floats[11] + "\n" + floats[12] + " " + floats[13] + " " + floats[14] + " " + floats[15]);
+                    //                        SetRichTextBoxThreadSafe(matrixBox, "" + floats[0] + " " + floats[1] + " " + floats[2] + " " + floats[3] + "\n" + floats[4] + " " + floats[5] + " " + floats[6] + " " + floats[7] + "\n" + floats[8] + " " + floats[9] + " " + floats[10] + " " + floats[11] + "\n" + floats[12] + " " + floats[13] + " " + floats[14] + " " + floats[15]);
 
-                        Matrix4x4 transform = new Matrix4x4(floats[0], floats[1], floats[2], floats[3]
-                                    , floats[4], floats[5], floats[6], floats[7]
-                                    , floats[8], floats[9], floats[10], floats[11]
-                                    , floats[12], floats[13], floats[14], floats[15]);
+                    Matrix4x4 transform = new Matrix4x4(floats[0], floats[1], floats[2], floats[3]
+                                , floats[4], floats[5], floats[6], floats[7]
+                                , floats[8], floats[9], floats[10], floats[11]
+                                , floats[12], floats[13], floats[14], floats[15]);
 
-                        dt = (float)sw.ElapsedMilliseconds / 1000.0f;
+                    dt = (float)sw.ElapsedMilliseconds / 1000.0f;
+                    sw.Restart();
+                    ProcessTransform(transform, dt);
 
-                        ProcessTransform(transform, dt);
+  //                  if (ProcessTransform(transform, dt))
+  //                      sw.Restart();
 
-                        sw.Restart();
 
-                        Thread.Sleep(1000 / 100);
-                    }
-                    catch (Exception e)
-                    {
-                        Thread.Sleep(1000);
-                    }
-
+                    Thread.Sleep(1000 / 100);
                 }
+                catch (Exception e)
+                {
+                    Thread.Sleep(1000);
+                }
+
             }
 
         }
+
+//        int worldPosFailCounter = 0;
 
         bool ProcessTransform(Matrix4x4 transform, float dt)
         {
@@ -170,9 +156,25 @@ namespace GenericTelemetryProvider
             Vector3 up = new Vector3(transform.M21, transform.M22, transform.M23);
             Vector3 fwd = new Vector3(transform.M31, transform.M32, transform.M33);
 
+//            rht = Vector3.Normalize(rht);
+//            up = Vector3.Normalize(up);
+//            fwd = Vector3.Normalize(fwd);
+
             float rhtMag = rht.Length();
             float upMag = up.Length();
             float fwdMag = fwd.Length();
+
+            //transform.M11 = rht.X;
+            //transform.M12 = rht.Y;
+            //transform.M13 = rht.Z;
+
+            //transform.M21 = up.X;
+            //transform.M22 = up.Y;
+            //transform.M23 = up.Z;
+
+            //transform.M31 = fwd.X;
+            //transform.M32 = fwd.Y;
+            //transform.M33 = fwd.Z;
 
             //reading garbage
             if (rhtMag < 0.9f || upMag < 0.9f || fwdMag < 0.9f)
@@ -185,17 +187,44 @@ namespace GenericTelemetryProvider
                 lastTransform = transform;
                 lastFrameValid = true;
                 lastVelocity = Vector3.Zero;
+                lastWorldVelMag = 0.0f;
                 return true;
             }
 
-            GenericProviderData telemetryData = new GenericProviderData();
-            telemetryData.version = versionString;
+            dt = dtFilter.Filter(dt);
 
             if (dt <= 0)
-                dt = 1.0f;
+                dt = 0.015f;
+            /*
+                        Vector3 currPos = Vector3.Lerp(lastTransform.Translation, transform.Translation, Math.Min(1.0f, dt * 5.0f));
+            //            Vector3 currPos = Vector3.Lerp(lastTransform.Translation, transform.Translation, 0.333f);
+
+                        //           Vector3 currPos = new Vector3(posXFilter.Filter(transPos.X), posYFilter.Filter(transPos.Y), posZFilter.Filter(transPos.Z));
+
+                        Vector3 worldVelocity = (currPos - lastTransform.Translation)  / dt;
+            //            Vector3 worldVelocity = (transform.Translation - lastTransform.Translation) / dt;
+            */
+
+            //                     Vector3 currPos = transform.Translation;
+
+            rawData.position_x = transform.M41;
+            rawData.position_y = transform.M42;
+            rawData.position_z = transform.M43;
+
+            //filter position
+            FilterModule.Instance.Filter(rawData, ref filteredData, posKeyMask, true);
 
 
-            Vector3 worldVelocity = (transform.Translation - lastTransform.Translation) / dt;
+            
+
+            //            Vector3 currPos = Vector3.Lerp(lastTransform.Translation, transform.Translation, Math.Min(1.0f, dt * 4.0f));
+
+            //assign
+            Vector3 worldPosition = new Vector3(filteredData.position_x, filteredData.position_y, filteredData.position_z);
+
+            Vector3 worldVelocity = (worldPosition - lastTransform.Translation) / dt;
+            
+            transform.Translation = worldPosition;
             lastTransform = transform;
 
             Matrix4x4 rotation = new Matrix4x4();
@@ -208,12 +237,24 @@ namespace GenericTelemetryProvider
             Matrix4x4 rotInv = new Matrix4x4();
             Matrix4x4.Invert(rotation, out rotInv);
 
+            //transform world velocity to local space
             Vector3 localVelocity = Vector3.Transform(worldVelocity, rotInv);
 
+            rawData.local_velocity_x = localVelocity.X;
+            rawData.local_velocity_y = localVelocity.Y;
+            rawData.local_velocity_z = localVelocity.Z;
+
+            //filter local velocity
+            FilterModule.Instance.Filter(rawData, ref filteredData, velKeyMask, false);
+
+            //assign filtered local velocity
+            localVelocity = new Vector3(filteredData.local_velocity_x, filteredData.local_velocity_y, filteredData.local_velocity_z);
+
+            //calculate local acceleration
             Vector3 localAcceleration = ((localVelocity - lastVelocity) / dt) * 0.10197162129779283f; //convert to g accel
             lastVelocity = localVelocity;
 
-
+            //calculate pitch yaw roll
             float pitch = (float)Math.Asin(-fwd.Y);
             float yaw = (float)Math.Atan2(fwd.X, fwd.Z);
 
@@ -233,62 +274,39 @@ namespace GenericTelemetryProvider
             }
             //                  Debug.WriteLine( "" );
 
-            telemetryData.pitch_raw = pitch;
-            telemetryData.yaw_raw = yaw;
-            telemetryData.roll_raw = roll;
+            rawData.pitch = pitch * (180.0f / (float)Math.PI);
+            rawData.yaw = yaw * (180.0f / (float)Math.PI);
+            rawData.roll = roll * (180.0f / (float)Math.PI);
 
-            telemetryData.position_x_raw = transform.M41;
-            telemetryData.position_y_raw = transform.M42;
-            telemetryData.position_z_raw = transform.M43;
+            rawData.gforce_lateral = localAcceleration.X;
+            rawData.gforce_vertical = localAcceleration.Y;
+            rawData.gforce_longitudinal = localAcceleration.Z;
 
-            telemetryData.local_velocity_x_raw = localVelocity.X;
-            telemetryData.local_velocity_y_raw = localVelocity.Y;
-            telemetryData.local_velocity_z_raw = localVelocity.Z;
-
-            telemetryData.gforce_lateral_raw = localAcceleration.X;
-            telemetryData.gforce_vertical_raw = localAcceleration.Y;
-            telemetryData.gforce_longitudinal_raw = localAcceleration.Z;
-
-            GenericProviderData telemetryToSend = new GenericProviderData();
-            telemetryToSend.Reset();
-
-            telemetryToSend.Copy(telemetryData);
-
-            telemetryToSend.pitch = pitchFilter.Filter(telemetryData.pitch_raw);
-            telemetryToSend.roll = rollFilter.Filter(telemetryData.roll_raw);
-            telemetryToSend.yaw = yawFilter.Filter(telemetryData.yaw_raw);
-
-            telemetryToSend.position_x = posXSmooth.Filter(posXFilter.Filter(telemetryData.position_x_raw));
-            telemetryToSend.position_y = posYSmooth.Filter(posYFilter.Filter(telemetryData.position_y_raw));
-            telemetryToSend.position_z = posZSmooth.Filter(posZFilter.Filter(telemetryData.position_z_raw));
-
-            telemetryToSend.gforce_lateral = accXSmooth.Filter(telemetryData.gforce_lateral_raw);
-            telemetryToSend.gforce_vertical = accYSmooth.Filter(telemetryData.gforce_vertical_raw);
-            telemetryToSend.gforce_longitudinal = accZSmooth.Filter(telemetryData.gforce_longitudinal_raw);
-
-            telemetryToSend.local_velocity_x = velXSmooth.Filter(velXFilter.Filter(telemetryData.local_velocity_x_raw));
-            telemetryToSend.local_velocity_y = velYSmooth.Filter(velYFilter.Filter(telemetryData.local_velocity_y_raw));
-            telemetryToSend.local_velocity_z = velZSmooth.Filter(velZFilter.Filter(telemetryData.local_velocity_z_raw));
-
-            lastTelemetryData = telemetryToSend;
-
+            //finally filter everything else
+            FilterModule.Instance.Filter(rawData, ref filteredData, int.MaxValue & ~(posKeyMask | velKeyMask), false);
 
 //            string debugString = "";
 //            debugString += "yaw: " + telemetryToSend.yaw + "\n";
 
-            debugChangedCallback?.Invoke(JsonConvert.SerializeObject(telemetryToSend, Formatting.Indented));
+            ui.DebugTextChanged(JsonConvert.SerializeObject(filteredData, Formatting.Indented) + "\n" + dt + "\n" + rhtMag + "\n" + upMag + "\n" + fwdMag);
 
-
-            byte[] writeBuffer = telemetryToSend.ToByteArray();
+            byte[] writeBuffer = filteredData.ToByteArray();
 
             mutex.WaitOne();
 
-            using (MemoryMappedViewStream stream = mmf.CreateViewStream())
+            using (MemoryMappedViewStream stream = filteredMMF.CreateViewStream())
             {
                 BinaryWriter writer = new BinaryWriter(stream);
                 writer.Write(writeBuffer);
-
             }
+
+            writeBuffer = rawData.ToByteArray();
+            using (MemoryMappedViewStream stream = rawMMF.CreateViewStream())
+            {
+                BinaryWriter writer = new BinaryWriter(stream);
+                writer.Write(writeBuffer);
+            }
+
 
             /*
              //debug
@@ -308,28 +326,28 @@ namespace GenericTelemetryProvider
 
         void scan_ScanProgressChanged(object sender, ScanProgressChangedEventArgs e)
         {
-            progressBarChangedCallback?.Invoke(e.Progress);
+            ui.ProgressBarChanged(e.Progress);
         }
 
         void scan_ScanCanceled(object sender, ScanCanceledEventArgs e)
         {
-            initBtnStatusChangedCallback?.Invoke(true);
+            ui.InitButtonStatusChanged(true);
         }
 
         void scan_ScanCompleted(object sender, ScanCompletedEventArgs e)
         {
-            initBtnStatusChangedCallback?.Invoke(true);
+            ui.InitButtonStatusChanged(true);
 
             if (e.MemoryAddresses == null || e.MemoryAddresses.Length == 0)
             {
-                statusChangedCallback?.Invoke("Failed!");
+                ui.StatusTextChanged("Failed!");
 
                 return;
             }
 
             memoryAddress = e.MemoryAddresses[0] + 541; //offset from found address to start of matrix
 
-            statusChangedCallback?.Invoke("Success");
+            ui.StatusTextChanged("Success");
 
             t = new Thread(ScanComplete);
             t.Start();

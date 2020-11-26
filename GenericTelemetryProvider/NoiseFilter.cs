@@ -56,18 +56,27 @@ namespace NoiseFilters
 
             float prediction = 0.0f;
             int sampleCounter = 0;
-            for(int i = currSample; sampleCounter < liveSampleCount; i--)
+            /*
+                        for(int i = currSample; sampleCounter < liveSampleCount; i--)
+                        {
+                            int prevSample = currSample - 1 < 0 ? liveSampleCount - 1 : currSample - 1;
+                            prediction += samples[ currSample ] - samples[ prevSample ];
+                            sampleCounter++;
+                        }
+            */
+            for (int i = currSample; sampleCounter < liveSampleCount; i--)
             {
-                int nextSample = currSample - 1 < 0 ? liveSampleCount - 1 : currSample - 1;
-                prediction += samples[ currSample ] - samples[ nextSample ];
+                if (i < 0)
+                    i = liveSampleCount - 1;
+                int prevSample = i - 1 < 0 ? liveSampleCount - 1 : i - 1;
+                prediction += samples[currSample] - samples[prevSample];
                 sampleCounter++;
-
             }
 
-            currPrediction = prediction = ((currPrediction + (prediction / sampleCounter)) * 0.5f) * 0.5f;
+            currPrediction = prediction = ((currPrediction + (prediction / sampleCounter)) * 0.5f);// * 0.75f;
             float smoothedValue = total / liveSampleCount;
 
-            return smoothedValue + prediction;
+            return smoothedValue;// + prediction;
         }
 
         public void Reset( )
@@ -79,7 +88,9 @@ namespace NoiseFilters
 
     public class KalmanFilter
     {
-        private float A, H, Q, R, P, x;
+        public float A, H, Q, R, P, x;
+        public float initial_P;
+        public float initial_x;
 
         public KalmanFilter( float A, float H, float Q, float R, float initial_P, float initial_x )
         {
@@ -87,8 +98,8 @@ namespace NoiseFilters
             this.H = H;
             this.Q = Q;
             this.R = R;
-            this.P = initial_P;
-            this.x = initial_x;
+            this.initial_P = this.P = initial_P;
+            this.initial_x = this.x = initial_x;
         }
 
         public float Filter( float input )
@@ -110,8 +121,17 @@ namespace NoiseFilters
     {
         NoiseFilter filter;
         NestedSmooth nest;
-        public NestedSmooth(int nestCount, int _maxSampleCount, float _maxInputDelta = float.MaxValue )
+        public int nestCount;
+        public int maxSampleCount;
+        public float maxInputDelta;
+        public float Value = 0.0f;
+        public NestedSmooth(int _nestCount, int _maxSampleCount, float _maxInputDelta = float.MaxValue )
         {
+            nestCount = _nestCount;
+            maxSampleCount = _maxSampleCount;
+            maxInputDelta = _maxInputDelta;
+            Value = 0.0f;
+
             if(nestCount != 0)
                 nest = new NestedSmooth(nestCount-1, _maxSampleCount, _maxInputDelta);
 
@@ -120,11 +140,90 @@ namespace NoiseFilters
 
         public float Filter(float value)
         {
-            if ( nest != null )
-                return nest.Filter( filter.Filter( value ) );
+            if (nest != null)
+            {
+                Value = nest.Filter(filter.Filter(value));
+                return Value;
+            }
 
-            return filter.Filter( value );
+            Value = filter.Filter(value);
+            return Value;
         }
+
+    }
+
+    public class SpikeFilter
+    {
+
+        private float[] samples;
+        private int maxSampleCount;
+        private int liveSampleCount;
+        private int currSample = 0;
+        private float maxInputDelta;
+
+        public SpikeFilter(int _maxSampleCount, float _maxInputDelta = float.MaxValue)
+        {
+            maxSampleCount = Math.Max(1, _maxSampleCount);
+            samples = new float[maxSampleCount];
+            maxInputDelta = _maxInputDelta;
+        }
+
+        public float Filter(float sample)
+        {
+            //early out
+            if (maxSampleCount == 1)
+                return sample;
+
+            currSample = (currSample + 1) >= maxSampleCount ? 0 : currSample + 1;
+            samples[currSample] = sample;
+
+            liveSampleCount = (liveSampleCount + 1) >= maxSampleCount ? maxSampleCount : liveSampleCount + 1;
+
+
+            float average = CalcAverage();
+
+            float filteredTotal = 0.0f;
+            int filteredTotalCount = 0;
+            for (int i = 0; i < liveSampleCount; ++i)
+            {
+                float currVal = samples[i];
+                if ((currVal < (average / maxInputDelta) || currVal > (average * (1 + maxInputDelta))))
+                    continue;
+
+                filteredTotal += currVal;
+                filteredTotalCount++;
+            }
+
+            if (filteredTotalCount != 0)
+                return filteredTotal / filteredTotalCount;
+
+            return average;
+        }
+
+        float CalcAverage()
+        {
+            float total = 0.0f;
+            for (int i = 0; i < liveSampleCount; ++i)
+            {
+                total += samples[i];
+            }
+
+            return total / liveSampleCount;
+        }
+
+
+        /*
+        function RangedAverage(arr, r)
+        {
+            x = Average(arr);
+            //now eliminate items r% out of range
+            for(var i=0; i<arr.length; i++)
+                if(arr[i] < (x/r) || arr[i]>(x*(1+r)))
+                    arr.splice(i,1);
+            x = Average(arr); //compute new average
+            return x;
+        }
+         * */
 
     }
 }

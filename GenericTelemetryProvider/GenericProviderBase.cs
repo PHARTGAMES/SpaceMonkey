@@ -12,26 +12,27 @@ namespace GenericTelemetryProvider
     public class GenericProviderBase
     {
         protected Mutex mutex;
-        protected MemoryMappedFile mmf;
-
-        public Action<string> statusChangedCallback;
-        public Action<bool> initBtnStatusChangedCallback;
-        public Action<int> progressBarChangedCallback;
-        public Action<string> debugChangedCallback;
+        protected MemoryMappedFile filteredMMF;
+        protected MemoryMappedFile rawMMF;
 
         public virtual void Run()
         {
             mutex = new Mutex(false, "GenericTelemetryProviderMutex");
 
-            mmf = MemoryMappedFile.CreateNew("GenericTelemetryProvider", 10000);
+            filteredMMF = MemoryMappedFile.CreateNew("GenericTelemetryProviderFiltered", 10000);
+            rawMMF = MemoryMappedFile.CreateNew("GenericTelemetryProviderRaw", 10000);
 
         }
 
         public virtual void Stop()
         {
-            if (mmf != null)
-                mmf.Dispose();
-            mmf = null;
+            if (rawMMF != null)
+                rawMMF.Dispose();
+            rawMMF = null;
+
+            if (filteredMMF != null)
+                filteredMMF.Dispose();
+            filteredMMF = null;
         }
 
     }

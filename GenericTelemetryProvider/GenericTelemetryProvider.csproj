@@ -37,6 +37,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -49,6 +50,26 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dirt5TelemetryProvider.cs" />
+    <Compile Include="Dirt5UI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dirt5UI.Designer.cs">
+      <DependentUpon>Dirt5UI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FilterBase.cs" />
+    <Compile Include="FilterModule.cs" />
+    <Compile Include="FilterPicker.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FilterPicker.Designer.cs">
+      <DependentUpon>FilterPicker.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FilterUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FilterUI.Designer.cs">
+      <DependentUpon>FilterUI.cs</DependentUpon>
+    </Compile>
     <Compile Include="GenericProviderBase.cs" />
     <Compile Include="GenericProviderData.cs" />
     <Compile Include="MainForm.cs">
@@ -58,9 +79,33 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="MemoryScanner.cs" />
+    <Compile Include="KalmanNoiseFilter.cs" />
+    <Compile Include="NestedSmoothFilter.cs" />
     <Compile Include="NoiseFilter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="KalmanFilterControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="KalmanFilterControl.Designer.cs">
+      <DependentUpon>KalmanFilterControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SmoothFilterControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SmoothFilterControl.Designer.cs">
+      <DependentUpon>SmoothFilterControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utils.cs" />
+    <EmbeddedResource Include="Dirt5UI.resx">
+      <DependentUpon>Dirt5UI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FilterPicker.resx">
+      <DependentUpon>FilterPicker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FilterUI.resx">
+      <DependentUpon>FilterUI.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -74,6 +119,12 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="KalmanFilterControl.resx">
+      <DependentUpon>KalmanFilterControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SmoothFilterControl.resx">
+      <DependentUpon>SmoothFilterControl.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

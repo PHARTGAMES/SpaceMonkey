@@ -1,0 +1,218 @@
+{
+  "$type": "GenericTelemetryProvider.FilterConfigData, GenericTelemetryProvider",
+  "keys": {
+    "$type": "GenericTelemetryProvider.FilterDataKey[], GenericTelemetryProvider",
+    "$values": [
+      {
+        "$type": "GenericTelemetryProvider.FilterDataKey, GenericTelemetryProvider",
+        "key": 0,
+        "filters": {
+          "$type": "System.Collections.Generic.List`1[[GenericTelemetryProvider.FilterData, GenericTelemetryProvider]], mscorlib",
+          "$values": []
+        }
+      },
+      {
+        "$type": "GenericTelemetryProvider.FilterDataKey, GenericTelemetryProvider",
+        "key": 1,
+        "filters": {
+          "$type": "System.Collections.Generic.List`1[[GenericTelemetryProvider.FilterData, GenericTelemetryProvider]], mscorlib",
+          "$values": []
+        }
+      },
+      null,
+      {
+        "$type": "GenericTelemetryProvider.FilterDataKey, GenericTelemetryProvider",
+        "key": 3,
+        "filters": {
+          "$type": "System.Collections.Generic.List`1[[GenericTelemetryProvider.FilterData, GenericTelemetryProvider]], mscorlib",
+          "$values": [
+            {
+              "$type": "GenericTelemetryProvider.SmoothFilterData, GenericTelemetryProvider",
+              "nestCount": 0,
+              "sampleCount": 10,
+              "maxDelta": 0.5,
+              "type": null
+            },
+            {
+              "$type": "GenericTelemetryProvider.KalmanFilterData, GenericTelemetryProvider",
+              "a": 1.0,
+              "h": 1.0,
+              "q": 0.02,
+              "r": 1.0,
+              "p": 0.02,
+              "x": 0.0,
+              "type": null
+            }
+          ]
+        }
+      },
+      {
+        "$type": "GenericTelemetryProvider.FilterDataKey, GenericTelemetryProvider",
+        "key": 4,
+        "filters": {
+          "$type": "System.Collections.Generic.List`1[[GenericTelemetryProvider.FilterData, GenericTelemetryProvider]], mscorlib",
+          "$values": [
+            {
+              "$type": "GenericTelemetryProvider.SmoothFilterData, GenericTelemetryProvider",
+              "nestCount": 0,
+              "sampleCount": 10,
+              "maxDelta": 0.5,
+              "type": null
+            },
+            {
+              "$type": "GenericTelemetryProvider.KalmanFilterData, GenericTelemetryProvider",
+              "a": 1.0,
+              "h": 1.0,
+              "q": 0.02,
+              "r": 1.0,
+              "p": 0.02,
+              "x": 0.0,
+              "type": null
+            }
+          ]
+        }
+      },
+      {
+        "$type": "GenericTelemetryProvider.FilterDataKey, GenericTelemetryProvider",
+        "key": 5,
+        "filters": {
+          "$type": "System.Collections.Generic.List`1[[GenericTelemetryProvider.FilterData, GenericTelemetryProvider]], mscorlib",
+          "$values": [
+            {
+              "$type": "GenericTelemetryProvider.SmoothFilterData, GenericTelemetryProvider",
+              "nestCount": 0,
+              "sampleCount": 10,
+              "maxDelta": 0.5,
+              "type": null
+            },
+            {
+              "$type": "GenericTelemetryProvider.KalmanFilterData, GenericTelemetryProvider",
+              "a": 1.0,
+              "h": 1.0,
+              "q": 0.02,
+              "r": 1.0,
+              "p": 0.02,
+              "x": 0.0,
+              "type": null
+            }
+          ]
+        }
+      },
+      {
+        "$type": "GenericTelemetryProvider.FilterDataKey, GenericTelemetryProvider",
+        "key": 6,
+        "filters": {
+          "$type": "System.Collections.Generic.List`1[[GenericTelemetryProvider.FilterData, GenericTelemetryProvider]], mscorlib",
+          "$values": [
+            {
+              "$type": "GenericTelemetryProvider.KalmanFilterData, GenericTelemetryProvider",
+              "a": 1.0,
+              "h": 1.0,
+              "q": 0.02,
+              "r": 1.0,
+              "p": 0.02,
+              "x": 0.0,
+              "type": null
+            }
+          ]
+        }
+      },
+      {
+        "$type": "GenericTelemetryProvider.FilterDataKey, GenericTelemetryProvider",
+        "key": 7,
+        "filters": {
+          "$type": "System.Collections.Generic.List`1[[GenericTelemetryProvider.FilterData, GenericTelemetryProvider]], mscorlib",
+          "$values": [
+            {
+              "$type": "GenericTelemetryProvider.KalmanFilterData, GenericTelemetryProvider",
+              "a": 1.0,
+              "h": 1.0,
+              "q": 0.02,
+              "r": 1.0,
+              "p": 0.02,
+              "x": 0.0,
+              "type": null
+            }
+          ]
+        }
+      },
+      {
+        "$type": "GenericTelemetryProvider.FilterDataKey, GenericTelemetryProvider",
+        "key": 8,
+        "filters": {
+          "$type": "System.Collections.Generic.List`1[[GenericTelemetryProvider.FilterData, GenericTelemetryProvider]], mscorlib",
+          "$values": [
+            {
+              "$type": "GenericTelemetryProvider.KalmanFilterData, GenericTelemetryProvider",
+              "a": 1.0,
+              "h": 1.0,
+              "q": 0.02,
+              "r": 1.0,
+              "p": 0.02,
+              "x": 0.0,
+              "type": null
+            }
+          ]
+        }
+      },
+      {
+        "$type": "GenericTelemetryProvider.FilterDataKey, GenericTelemetryProvider",
+        "key": 9,
+        "filters": {
+          "$type": "System.Collections.Generic.List`1[[GenericTelemetryProvider.FilterData, GenericTelemetryProvider]], mscorlib",
+          "$values": [
+            {
+              "$type": "GenericTelemetryProvider.KalmanFilterData, GenericTelemetryProvider",
+              "a": 1.0,
+              "h": 1.0,
+              "q": 0.02,
+              "r": 1.0,
+              "p": 0.02,
+              "x": 0.0,
+              "type": null
+            }
+          ]
+        }
+      },
+      {
+        "$type": "GenericTelemetryProvider.FilterDataKey, GenericTelemetryProvider",
+        "key": 10,
+        "filters": {
+          "$type": "System.Collections.Generic.List`1[[GenericTelemetryProvider.FilterData, GenericTelemetryProvider]], mscorlib",
+          "$values": [
+            {
+              "$type": "GenericTelemetryProvider.KalmanFilterData, GenericTelemetryProvider",
+              "a": 1.0,
+              "h": 1.0,
+              "q": 0.02,
+              "r": 1.0,
+              "p": 0.02,
+              "x": 0.0,
+              "type": null
+            }
+          ]
+        }
+      },
+      {
+        "$type": "GenericTelemetryProvider.FilterDataKey, GenericTelemetryProvider",
+        "key": 11,
+        "filters": {
+          "$type": "System.Collections.Generic.List`1[[GenericTelemetryProvider.FilterData, GenericTelemetryProvider]], mscorlib",
+          "$values": [
+            {
+              "$type": "GenericTelemetryProvider.KalmanFilterData, GenericTelemetryProvider",
+              "a": 1.0,
+              "h": 1.0,
+              "q": 0.02,
+              "r": 1.0,
+              "p": 0.02,
+              "x": 0.0,
+              "type": null
+            }
+          ]
+        }
+      },
+      null
+    ]
+  }
+}
