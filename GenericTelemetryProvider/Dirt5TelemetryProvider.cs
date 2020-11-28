@@ -30,6 +30,8 @@ namespace GenericTelemetryProvider
         Vector3 lastVelocity = Vector3.Zero;
         public Dirt5UI ui;
         public float lastWorldVelMag = 0.0f;
+        private TelemetrySender telemetrySender = new TelemetrySender();
+
 
         NestedSmooth dtFilter = new NestedSmooth(0, 60, 1000000.0f);
 
@@ -101,6 +103,8 @@ namespace GenericTelemetryProvider
             filteredData.version = versionString;
             rawData.version = versionString;
 
+            telemetrySender.StartSending("127.0.0.1", 20777);
+
             float dt = 0.0f;
  
             while (!isStopped)
@@ -145,9 +149,11 @@ namespace GenericTelemetryProvider
 
             }
 
+            telemetrySender.StopSending();
+
         }
 
-//        int worldPosFailCounter = 0;
+        //        int worldPosFailCounter = 0;
 
         bool ProcessTransform(Matrix4x4 transform, float dt)
         {
@@ -240,6 +246,8 @@ namespace GenericTelemetryProvider
             //transform world velocity to local space
             Vector3 localVelocity = Vector3.Transform(worldVelocity, rotInv);
 
+            localVelocity.X = -localVelocity.X;
+
             rawData.local_velocity_x = localVelocity.X;
             rawData.local_velocity_y = localVelocity.Y;
             rawData.local_velocity_z = localVelocity.Z;
@@ -252,6 +260,8 @@ namespace GenericTelemetryProvider
 
             //calculate local acceleration
             Vector3 localAcceleration = ((localVelocity - lastVelocity) / dt) * 0.10197162129779283f; //convert to g accel
+            //            Vector3 localAcceleration = (localVelocity - lastVelocity) * 0.10197162129779283f; //convert to g accel
+            //Vector3 localAcceleration = ((localVelocity - lastVelocity) / dt);
             lastVelocity = localVelocity;
 
             //calculate pitch yaw roll
@@ -264,12 +274,12 @@ namespace GenericTelemetryProvider
             rhtPlane = Vector3.Normalize(rhtPlane);
             if (rhtPlane.Length() <= float.Epsilon)
             {
-                roll = -(float)(Math.Sign(rht.Y) * Math.PI * 0.5f);
+                roll = (float)(Math.Sign(rht.Y) * Math.PI * 0.5f);
                 //                        Debug.WriteLine( "---Roll = " + roll + " " + Math.Sign( rht.Y ) );
             }
             else
             {
-                roll = -(float)Math.Asin(Vector3.Dot(up, rhtPlane));
+                roll = (float)Math.Asin(Vector3.Dot(up, rhtPlane));
                 //                        Debug.WriteLine( "Roll = " + roll + " " + Math.Sign(rht.Y) );
             }
             //                  Debug.WriteLine( "" );
@@ -321,6 +331,33 @@ namespace GenericTelemetryProvider
             */
             mutex.ReleaseMutex();
 
+/*
+            DirtRally2UDPTelemetry udpData = new DirtRally2UDPTelemetry();
+
+            udpData.position_x = filteredData.position_x;
+            udpData.position_y = filteredData.position_y;
+            udpData.position_z = filteredData.position_z;
+
+            udpData.velocity_x = filteredData.local_velocity_x;
+            udpData.velocity_y = filteredData.local_velocity_y;
+            udpData.velocity_z = filteredData.local_velocity_z;
+
+            udpData.left_dir_x = -rht.X;
+            udpData.left_dir_y = -rht.Y;
+            udpData.left_dir_z = -rht.Z;
+
+            udpData.forward_dir_x = fwd.X;
+            udpData.forward_dir_y = fwd.Y;
+            udpData.forward_dir_z = fwd.Z;
+
+            udpData.gforce_lateral = filteredData.gforce_lateral;
+            udpData.gforce_longitudinal = filteredData.gforce_longitudinal;
+
+            udpData.engine_rate = filteredData.engine_rpm;
+
+            byte[] bytes = udpData.ToByteArray();
+            telemetrySender.SendAsync(bytes);
+*/
             return true;
         }
 

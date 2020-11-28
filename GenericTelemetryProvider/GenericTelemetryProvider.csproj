@@ -56,6 +56,14 @@
     <Compile Include="Dirt5UI.Designer.cs">
       <DependentUpon>Dirt5UI.cs</DependentUpon>
     </Compile>
+    <Compile Include="DirtRally2TelemetryProvider.cs" />
+    <Compile Include="DirtRally2UDPTelemetry.cs" />
+    <Compile Include="DirtRally2UI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DirtRally2UI.Designer.cs">
+      <DependentUpon>DirtRally2UI.cs</DependentUpon>
+    </Compile>
     <Compile Include="FilterBase.cs" />
     <Compile Include="FilterModule.cs" />
     <Compile Include="FilterPicker.cs">
@@ -96,9 +104,13 @@
     <Compile Include="SmoothFilterControl.Designer.cs">
       <DependentUpon>SmoothFilterControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="TelemetrySender.cs" />
     <Compile Include="Utils.cs" />
     <EmbeddedResource Include="Dirt5UI.resx">
       <DependentUpon>Dirt5UI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DirtRally2UI.resx">
+      <DependentUpon>DirtRally2UI.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FilterPicker.resx">
       <DependentUpon>FilterPicker.cs</DependentUpon>

@@ -24,6 +24,7 @@ namespace GenericTelemetryProvider
 
         Dirt5UI dirt5UI;
         FilterUI filterUI;
+        DirtRally2UI dirtRally2UI;
 
         public MainForm()
         {
@@ -52,6 +53,10 @@ namespace GenericTelemetryProvider
                 Thread x = new Thread(new ParameterizedThreadStart((form) => ((Dirt5UI)form).ShowDialog()));
                 x.Start(dirt5UI);
             }
+            else
+            {
+                dirt5UI.Close();
+            }
 
         }
 
@@ -67,6 +72,28 @@ namespace GenericTelemetryProvider
                 }));
                 x.Start(filterUI);
             }
+            else
+            {
+                filterUI.Close();
+            }
+        }
+
+        private void dirtRally2Button_Click(object sender, EventArgs e)
+        {
+
+            if (dirtRally2UI == null)
+            {
+                dirtRally2UI = new DirtRally2UI();
+
+                Thread x = new Thread(new ParameterizedThreadStart((form) => ((DirtRally2UI)form).ShowDialog()));
+                x.Start(dirtRally2UI);
+            }
+            else
+            {
+                dirtRally2UI.Close();
+            }
+
+
         }
     }
 }

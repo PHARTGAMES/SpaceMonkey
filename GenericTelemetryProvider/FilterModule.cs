@@ -61,6 +61,9 @@ namespace GenericTelemetryProvider
         {
             configFilename = filename;
 
+            if (!File.Exists(configFilename))
+                return;
+
             configData = JsonConvert.DeserializeObject<FilterConfigData>(File.ReadAllText(configFilename), new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.Auto
