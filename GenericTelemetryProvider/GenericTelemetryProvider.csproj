@@ -47,6 +47,9 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="XInputDotNetPure">
+      <HintPath>.\XInputDotNetPure.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dirt5TelemetryProvider.cs" />
@@ -57,6 +60,8 @@
       <DependentUpon>Dirt5UI.cs</DependentUpon>
     </Compile>
     <Compile Include="DirtRally2TelemetryProvider.cs" />
+    <Compile Include="InputModule.cs" />
+    <Compile Include="SC4DR2CustomTelemetry.cs" />
     <Compile Include="DirtRally2UDPTelemetry.cs" />
     <Compile Include="DirtRally2UI.cs">
       <SubType>Form</SubType>
@@ -106,6 +111,7 @@
     </Compile>
     <Compile Include="TelemetrySender.cs" />
     <Compile Include="Utils.cs" />
+    <Compile Include="XInputController.cs" />
     <EmbeddedResource Include="Dirt5UI.resx">
       <DependentUpon>Dirt5UI.cs</DependentUpon>
     </EmbeddedResource>

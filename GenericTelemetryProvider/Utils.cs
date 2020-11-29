@@ -81,6 +81,16 @@ namespace GenericTelemetryProvider
             return safeValue;
         }
 
+        public static float CalculateAngularChange(float sourceA, float targetA)
+        {
+            sourceA *= (180.0f / (float)Math.PI);
+            targetA *= (180.0f / (float)Math.PI);
+
+            float a = targetA - sourceA;
+            a = (a + 180) % 360 - 180;
+
+            return a * ((float)Math.PI / 180.0f);
+        }
 
 
 

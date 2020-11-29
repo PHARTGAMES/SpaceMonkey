@@ -237,7 +237,7 @@
     <FeedbackEffect Type="SimFeedback.motion.PitchMotionFeedbackEffect">
       <linearInterpolation>true</linearInterpolation>
       <name>Pitch</name>
-      <telemetryName>pitch</telemetryName>
+      <telemetryName>pitchDeg</telemetryName>
       <intervalValueY1>5</intervalValueY1>
       <minValueY1>-25</minValueY1>
       <maxValueY1>25</maxValueY1>
@@ -315,7 +315,7 @@
     <FeedbackEffect Type="SimFeedback.motion.RollMotionFeedbackEffect">
       <linearInterpolation>true</linearInterpolation>
       <name>Roll</name>
-      <telemetryName>roll</telemetryName>
+      <telemetryName>rollDeg</telemetryName>
       <intervalValueY1>5</intervalValueY1>
       <minValueY1>-25</minValueY1>
       <maxValueY1>25</maxValueY1>

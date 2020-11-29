@@ -70,6 +70,27 @@ namespace GenericTelemetryProvider
             set { data[(int)DataKey.Roll] = value; }
         }
 
+        public float yawDeg
+        {
+            get { return data[(int)DataKey.Yaw] * (180.0f / (float)Math.PI); }
+            set { data[(int)DataKey.Yaw] = value * ((float)Math.PI / 180.0f); }
+        }
+
+        public float pitchDeg
+        {
+            get { return data[(int)DataKey.Pitch] * (180.0f / (float)Math.PI); }
+            set { data[(int)DataKey.Pitch] = value * ((float)Math.PI / 180.0f); }
+        }
+
+
+        public float rollDeg
+        {
+            get { return data[(int)DataKey.Roll] * (180.0f / (float)Math.PI); }
+            set { data[(int)DataKey.Roll] = value * ((float)Math.PI / 180.0f); }
+        }
+
+
+
         public float position_x //worldspace
         {
             get { return data[(int)DataKey.PositionX]; }
