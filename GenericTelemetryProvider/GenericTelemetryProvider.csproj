@@ -52,6 +52,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CMCustomUDPData.cs" />
     <Compile Include="Dirt5TelemetryProvider.cs" />
     <Compile Include="Dirt5UI.cs">
       <SubType>Form</SubType>
