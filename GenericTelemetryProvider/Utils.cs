@@ -87,12 +87,12 @@ namespace GenericTelemetryProvider
             targetA *= (180.0f / (float)Math.PI);
 
             float a = targetA - sourceA;
-            a = (a + 180) % 360 - 180;
+            float sign = Math.Sign(a);
 
+            a = ((Math.Abs(a) + 180) % 360 - 180) * sign;
+            
             return a * ((float)Math.PI / 180.0f);
         }
-
-
 
     }
 }
