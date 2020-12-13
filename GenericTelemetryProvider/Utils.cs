@@ -18,12 +18,26 @@ namespace GenericTelemetryProvider
         {
             if (textBox.InvokeRequired)
             {
-                SafeCallStringDelegate d = new SafeCallStringDelegate((x) => { textBox.Text = x; });
-                textBox.Invoke(d, new object[] { text });
+
+                textBox.BeginInvoke(new Action<string>((s) => { textBox.Text = s; }), text);
             }
             else
+            {
+                textBox.Text = text;
                 textBox.Enabled = true;
+            }
         }
+
+        public static void AddComboBoxEntryThreadSafe(ComboBox comboBox, object entry)
+        {
+            if (comboBox.InvokeRequired)
+            {
+                comboBox.BeginInvoke(new Action<object>((s) => { comboBox.Items.Add(s); }), entry);
+            }
+            else
+                comboBox.Items.Add(entry);
+        }
+
         public static void SetRichTextBoxThreadSafe(RichTextBox textBox, string text)
         {
             if (textBox.InvokeRequired)
@@ -32,7 +46,7 @@ namespace GenericTelemetryProvider
                 textBox.Invoke(d, new object[] { text });
             }
             else
-                textBox.Enabled = true;
+                textBox.Text = text;
         }
 
         public static void EnableButtonThreadSafe(Button button, bool value)
@@ -43,7 +57,7 @@ namespace GenericTelemetryProvider
                 button.Invoke(d, new object[] { value });
             }
             else
-                button.Enabled = true;
+                button.Enabled = value;
 
         }
 

@@ -1,0 +1,4 @@
+{
+	"udpPort":6969,
+	"receiveUDP":false
+}

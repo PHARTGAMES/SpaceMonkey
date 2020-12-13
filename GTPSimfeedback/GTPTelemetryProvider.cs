@@ -34,7 +34,8 @@ using System.Runtime.InteropServices;
 using System.Numerics;
 using System.IO;
 using System.IO.MemoryMappedFiles;
-using GenericTelemetryProvider;
+using CMCustomUDP;
+using Newtonsoft.Json;
 
 namespace GTPSimfeedback
 {
@@ -45,6 +46,10 @@ namespace GTPSimfeedback
     {
         private bool isStopped = true;                                  // flag to control the polling thread
         private Thread t;
+
+        private IPEndPoint senderIP;                   // IP address of the sender for the udp connection used by the worker thread
+
+        GTPConfig config;
 
         /// <summary>
         /// Default constructor.
@@ -58,6 +63,7 @@ namespace GTPSimfeedback
             BannerImage = @"img\banner_DIRT5.png"; // Image shown on top of the profiles tab
             IconImage = @"img\DIRT5.jpg";  // Icon used in the tree view for the profile
             TelemetryUpdateFrequency = 100;     // the update frequency in samples per second
+            LoadConfig("CMCustomUDP/GTPConfig.txt");
         }
 
         /// <summary>
@@ -78,7 +84,7 @@ namespace GTPSimfeedback
         /// <returns>List of all telemetry names</returns>
         public override string[] GetValueList()
         {
-            return GetValueListByReflection(typeof(GenericProviderData));
+            return GetValueListByReflection(typeof(CMCustomUDPData));
         }
 
         /// <summary>
@@ -108,6 +114,17 @@ namespace GTPSimfeedback
             if (t != null) t.Join();
         }
 
+        void LoadConfig(string filename)
+        {
+            config = new GTPConfig();
+
+            if (!File.Exists(filename))
+                return;
+
+            config = JsonConvert.DeserializeObject<GTPConfig>(File.ReadAllText(filename));
+            
+        }
+
 
         /// <summary>
         /// The thread funktion to poll the telemetry data and send TelemetryUpdated events.
@@ -117,12 +134,23 @@ namespace GTPSimfeedback
             
             isStopped = false;
 
-            GenericProviderData telemetryData = new GenericProviderData();
+            CMCustomUDPData telemetryData = new CMCustomUDPData();
+            CMCustomUDPData.formatFilename = "CMCustomUDP/CMCustomUDPFormat.xml";
+            telemetryData.Init();
             Stopwatch sw = new Stopwatch();
             sw.Start();
 
             int readSize = telemetryData.GetSize();
             byte[] readBuffer;
+
+            UdpClient socket = null;
+            if (config.receiveUDP)
+            {
+                socket = new UdpClient();
+                socket.ExclusiveAddressUse = false;
+                socket.Client.Bind(new IPEndPoint(IPAddress.Any, config.udpPort));
+            }
+
 
             MemoryMappedFile mmf = null;
 
@@ -132,36 +160,60 @@ namespace GTPSimfeedback
                 {
                     float dt = (float)sw.ElapsedMilliseconds / 1000.0f;
 
-                    while (true)
+                    if (config.receiveUDP)
                     {
-                        try
+                        while (true)
                         {
-                            mmf = MemoryMappedFile.OpenExisting("GenericTelemetryProviderFiltered");
-
-                            if (mmf != null)
-                                break;
-                            else
+                            if (socket.Available == 0)
+                            {
                                 Thread.Sleep(1000);
-                        }
-                        catch (FileNotFoundException)
-                        {
-                            Thread.Sleep(1000);
+                            }
+                            else
+                                break;
                         }
                     }
-
-                    Mutex mutex = Mutex.OpenExisting("GenericTelemetryProviderMutex");
-                    mutex.WaitOne();
-                    using (MemoryMappedViewStream stream = mmf.CreateViewStream())
+                    else
                     {
-                        BinaryReader reader = new BinaryReader(stream);
+                        while (true)
+                        {
+                            try
+                            {
+                                mmf = MemoryMappedFile.OpenExisting("GenericTelemetryProviderFiltered");
 
-                        readBuffer = reader.ReadBytes(readSize);
+                                if (mmf != null)
+                                    break;
+                                else
+                                    Thread.Sleep(1000);
+                            }
+                            catch (FileNotFoundException)
+                            {
+                                Thread.Sleep(1000);
+                            }
+                        }
                     }
-                    mutex.ReleaseMutex();
 
-                    GenericProviderData telemetryToSend = GenericProviderData.FromByteArray(readBuffer);
+                    if (config.receiveUDP)
+                    {
+                        readBuffer = socket.Receive(ref senderIP);
+                    }
+                    else
+                    {
+                        Mutex mutex = Mutex.OpenExisting("GenericTelemetryProviderMutex");
+                        mutex.WaitOne();
+                        using (MemoryMappedViewStream stream = mmf.CreateViewStream())
+                        {
+                            BinaryReader reader = new BinaryReader(stream);
 
-                    // otherwise we are connected
+                            readBuffer = reader.ReadBytes(readSize);
+                        }
+                        mutex.ReleaseMutex();
+                    }
+
+                    telemetryData.FromBytes(readBuffer);
+
+                    CMCustomUDPData telemetryToSend = new CMCustomUDPData();
+                    telemetryToSend.Copy(telemetryData);
+
                     IsConnected = true;
 
                     if(IsConnected)
@@ -192,16 +244,19 @@ namespace GTPSimfeedback
 
             }
 
+            socket.Close();
             mmf.Dispose();
             IsConnected = false;
             IsRunning = false;
 
         }
 
-
-      
-
     }
 
+    public class GTPConfig
+    {
+        public int udpPort = 6969;
+        public bool receiveUDP = false;
+    }
 
 }

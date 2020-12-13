@@ -24,7 +24,7 @@ using SimFeedback.telemetry;
 using System;
 using System.Reflection;
 using System.Linq;
-using GenericTelemetryProvider;
+using CMCustomUDP;
 
 namespace GTPSimfeedback
 {
@@ -34,9 +34,9 @@ namespace GTPSimfeedback
     /// </summary>
     public sealed class GTPTelemetryInfo : EventArgs, TelemetryInfo
     {
-        private readonly GenericProviderData _telemetryData;
+        private readonly CMCustomUDPData _telemetryData;
 
-        public GTPTelemetryInfo(GenericProviderData telemetryData)
+        public GTPTelemetryInfo(CMCustomUDPData telemetryData)
         {
             _telemetryData = telemetryData;
         }
@@ -68,7 +68,7 @@ namespace GTPSimfeedback
                         int.TryParse(name.Substring(squareBracketPos+1, 1), out arrayIndexPos);
                         name = name.Substring(0, squareBracketPos);
                     }
-                    Type eleDataType = typeof(GenericProviderData);
+                    Type eleDataType = typeof(CMCustomUDPData);
                     PropertyInfo propertyInfo;
                     FieldInfo fieldInfo = eleDataType.GetField(name);
                     if (fieldInfo != null)

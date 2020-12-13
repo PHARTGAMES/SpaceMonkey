@@ -32,7 +32,7 @@ namespace GenericTelemetryProvider
         {
             int index = filterComboBox.SelectedIndex;
 
-            FilterModule.Instance.AddFilter((FilterModule.FilterType)index, FilterUI.Instance.filterKey, true);
+            FilterModuleCustom.Instance.AddFilter((FilterModuleCustom.FilterType)index, FilterUI.Instance.filterKey, true);
 
             this.Close();
         }

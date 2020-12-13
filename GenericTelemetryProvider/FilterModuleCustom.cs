@@ -7,20 +7,21 @@ using Newtonsoft.Json;
 using System.IO;
 using System.Threading;
 using System.Runtime.InteropServices;
+using CMCustomUDP;
 
 
 namespace GenericTelemetryProvider
 {
-    public class FilterModule
+    public class FilterModuleCustom
     {
 
-        public static FilterModule Instance
+        public static FilterModuleCustom Instance
         {
             get
             {
                 if(instance == null)
                 {
-                    instance = new FilterModule();
+                    instance = new FilterModuleCustom();
                 }
 
                 return instance;
@@ -30,7 +31,7 @@ namespace GenericTelemetryProvider
                 instance = value;
             }
         }
-        static FilterModule instance;
+        static FilterModuleCustom instance;
 
         public enum FilterType
         {
@@ -44,14 +45,14 @@ namespace GenericTelemetryProvider
         }
 
 
-        public List<FilterBase>[] filters = new List<FilterBase>[(int)GenericProviderData.DataKey.Max];
+        public List<FilterBase>[] filters;
 
         string configFilename;
 
         FilterConfigData configData;
 
-        List<GenericProviderData> filteredData = new List<GenericProviderData>();
-        List<GenericProviderData> rawData = new List<GenericProviderData>();
+        List<CMCustomUDPData> filteredData = new List<CMCustomUDPData>();
+        List<CMCustomUDPData> rawData = new List<CMCustomUDPData>();
         Mutex mutex = new Mutex(false);
 
         public int maxHistorySamples = 200;
@@ -68,6 +69,9 @@ namespace GenericTelemetryProvider
             {
                 TypeNameHandling = TypeNameHandling.Auto
             });
+
+            if (filters == null)
+                filters = new List<FilterBase>[(int)CMCustomUDPData.DataKey.Max];
 
             foreach(List<FilterBase> filterList in filters)
             {
@@ -117,7 +121,7 @@ namespace GenericTelemetryProvider
 
             configData = new FilterConfigData();
 
-            for (int i = 0; i < (int)GenericProviderData.DataKey.Max; ++i)
+            for (int i = 0; i < (int)CMCustomUDPData.DataKey.Max; ++i)
             {
 
                 List<FilterBase> filterList = filters[i];
@@ -172,25 +176,29 @@ namespace GenericTelemetryProvider
 
         }
 
-        public void Filter(GenericProviderData dataIn, ref GenericProviderData dataOut, int keyMask = int.MaxValue, bool newHistory = true)
+        public void Filter(CMCustomUDPData dataIn, ref CMCustomUDPData dataOut, int keyMask = int.MaxValue, bool newHistory = true)
         {
+            if (filters == null)
+                return;
+
             mutex.WaitOne();
 
-            GenericProviderData newRawData;
-            GenericProviderData newFiltered;
+            CMCustomUDPData newRawData;
+            CMCustomUDPData newFiltered;
             if (newHistory == true)
             {
                 dataOut.Copy(dataIn);
 
                 //copy to raw history
-                newRawData = new GenericProviderData(dataIn.version);
+                newRawData = new CMCustomUDPData();
                 newRawData.Copy(dataIn);
                 rawData.Add(newRawData);
                 if (rawData.Count > maxHistorySamples)
                     rawData.RemoveAt(0);
 
                 //add new filtered history
-                newFiltered = new GenericProviderData(dataIn.version);
+                newFiltered = new CMCustomUDPData();
+                newFiltered.Copy(dataIn);
                 filteredData.Add(newFiltered);
                 if (filteredData.Count > maxHistorySamples)
                     filteredData.RemoveAt(0);
@@ -205,13 +213,18 @@ namespace GenericTelemetryProvider
             //do filter lists for each key if it exists
             for (int i = 0; i < filters.Length; ++i)
             {
+                CMCustomUDPData.DataKey key = (CMCustomUDPData.DataKey)i;
                 List<FilterBase> filterList = filters[i];
 
-                float value = dataIn.data[i];
-                if (filterList == null || filterList.Count == 0)
+                if (!dataIn.IsValid(key))
+                    continue;
+
+                object value = dataIn.GetValue(key);
+
+                if (filterList == null || filterList.Count == 0 || !dataIn.IsFloat(key))
                 {
-                    newFiltered.data[i] = value;
-                    newRawData.data[i] = value;
+                    newFiltered.SetValue(key, value);
+                    newRawData.SetValue(key, value);
                     continue;
                 }
 
@@ -219,47 +232,49 @@ namespace GenericTelemetryProvider
                 if (((1 << i) & keyMask) == 0)
                     continue;
 
+                //get float val
+                float floatVal = (float)value;
+
                 //do filters for key
-                foreach(FilterBase filter in filterList)
+                foreach (FilterBase filter in filterList)
                 {
-                    value = filter.Filter(value);
+                    floatVal = filter.Filter(floatVal);
                 }
 
                 //filtered
-                newFiltered.data[i] = dataOut.data[i] = value;
+                newFiltered.SetValue(key, floatVal);
+                dataOut.SetValue(key, floatVal);
             }
 
             mutex.ReleaseMutex();
         }
 
-        public void GetFilteredHistory(out List<GenericProviderData> data)
+        public void GetFilteredHistory(out List<CMCustomUDPData> data)
         {
-
             mutex.WaitOne();
 
-            data = new List<GenericProviderData>();
+            data = new List<CMCustomUDPData>();
             data.AddRange(filteredData);
 
             mutex.ReleaseMutex();
         }
 
-        public void GetRawHistory(out List<GenericProviderData> data)
+        public void GetRawHistory(out List<CMCustomUDPData> data)
         {
-
             mutex.WaitOne();
 
-            data = new List<GenericProviderData>();
+            data = new List<CMCustomUDPData>();
             data.AddRange(rawData);
 
             mutex.ReleaseMutex();
         }
 
-        public void DeleteFilter(FilterBase filter, GenericProviderData.DataKey key)
+        public void DeleteFilter(FilterBase filter, CMCustomUDPData.DataKey key)
         {
             filters[(int)key].Remove(filter);
         }
 
-        public void MoveFilter(FilterBase filter, GenericProviderData.DataKey key, int direction)
+        public void MoveFilter(FilterBase filter, CMCustomUDPData.DataKey key, int direction)
         {
             int index = filters[(int)key].IndexOf(filter);
 
@@ -270,7 +285,7 @@ namespace GenericTelemetryProvider
         }
 
 
-        public FilterBase AddFilter(FilterType filterType, GenericProviderData.DataKey key, bool updateUI = false)
+        public FilterBase AddFilter(FilterType filterType, CMCustomUDPData.DataKey key, bool updateUI = false)
         {
             List<FilterBase> filterList = filters[(int)key];
             
@@ -314,7 +329,7 @@ namespace GenericTelemetryProvider
 
             if (updateUI && FilterUI.Instance != null)
             {
-//                FilterUI.Instance.InitChartForKey(key);
+                FilterUI.Instance.InitChartForKey(key);
                     
             }
 
@@ -326,51 +341,6 @@ namespace GenericTelemetryProvider
 
     }
 
-
-
-    [System.Serializable]
-    public class FilterConfigData
-    {
-        public List<FilterDataKey> keys = new List<FilterDataKey>();
-    }
-
-    public class FilterDataKey
-    {
-        public FilterDataKey(int _key)
-        {
-            key = _key;
-        }
-        public int key;
-        public List<FilterData> filters = new List<FilterData>();
-
-    }
-
-
-    [System.Serializable]
-    public abstract class FilterData
-    {
-        public string type;
-       
-    }
-
-    [System.Serializable]
-    public class SmoothFilterData : FilterData
-    {
-        public int nestCount;
-        public int sampleCount;
-        public float maxDelta;
-    }
-
-    [System.Serializable]
-    public class KalmanFilterData : FilterData
-    {
-        public float a;
-        public float h;
-        public float q;
-        public float r;
-        public float p;
-        public float x;
-    }
 
 
 }

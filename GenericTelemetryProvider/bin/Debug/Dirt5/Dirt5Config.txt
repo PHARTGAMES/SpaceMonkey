@@ -1,0 +1,3 @@
+{
+  "selectedVehicle": "aston_gt4"
+}

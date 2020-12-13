@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using Newtonsoft.Json;
+using CMCustomUDP;
 
 
 namespace GenericTelemetryProvider
@@ -17,7 +19,7 @@ namespace GenericTelemetryProvider
 
         Dirt5TelemetryProvider provider;
 
-        string saveFilename = "Dirt5Config.txt";
+        string saveFilename = "Dirt5\\Dirt5Config.txt";
 
         public Dirt5UI()
         {
@@ -30,13 +32,13 @@ namespace GenericTelemetryProvider
             provider = new Dirt5TelemetryProvider();
             provider.ui = this;
 
-            FilterModule.Instance.InitFromConfig("Dirt5Filters.txt"); //FIXME
-//            FilterModule.Instance.SaveConfig();
+            FilterModuleCustom.Instance.InitFromConfig(MainConfig.Instance.configData.filterConfig); 
 
         }
 
         public void ScanButtonClicked(object sender, EventArgs e)
         {
+            MainConfig.Instance.configData.CopyFileToDestinations(MainConfig.Instance.configData.packetFormat);
 
             initializeButton.Enabled = false;
             statusLabel.Text = "Please Wait";
@@ -51,33 +53,39 @@ namespace GenericTelemetryProvider
 
         void LoadConfig()
         {
-            string[] vehicles = System.IO.File.ReadAllLines("Dirt5Vehicles.txt");
+            string[] vehicles = System.IO.File.ReadAllLines("Dirt5\\Dirt5Vehicles.txt");
 
             vehicleSelector.Items.AddRange(vehicles);
 
+
             if (File.Exists(saveFilename))
             {
-                string[] saveData = System.IO.File.ReadAllLines(saveFilename);
 
-                if (saveData != null && saveData.Length != 0)
+                string text = File.ReadAllText(saveFilename);
+
+                Dirt5Config config = JsonConvert.DeserializeObject<Dirt5Config>(text);
+
+                for (int i = 0; i < vehicles.Length; ++i)
                 {
-                    for (int i = 0; i < vehicles.Length; ++i)
+                    if (vehicles[i] == config.selectedVehicle)
                     {
-                        if (vehicles[i] == saveData[0])
-                        {
-                            vehicleSelector.SelectedIndex = i;
-                            break;
-                        }
+                        vehicleSelector.SelectedIndex = i;
+                        break;
                     }
                 }
             }
+
         }
 
         void SaveConfig()
         {
-            string[] saveData = { (string)vehicleSelector.SelectedItem };
+            Dirt5Config save = new Dirt5Config();
 
-            File.WriteAllLines(saveFilename, saveData);
+            save.selectedVehicle = (string)vehicleSelector.SelectedItem;
+
+            string output = JsonConvert.SerializeObject(save, Formatting.Indented);
+
+            File.WriteAllText(saveFilename, output);
         }
 
         public void ProgressBarChanged(int progress)
@@ -86,7 +94,7 @@ namespace GenericTelemetryProvider
         }
 
 
-       public void StatusTextChanged(string text)
+        public void StatusTextChanged(string text)
         {
             Utils.SetTextBoxThreadSafe(statusLabel, text);
         }
@@ -126,5 +134,13 @@ namespace GenericTelemetryProvider
         {
 
         }
+
     }
+
+    public class Dirt5Config
+    {
+        public string selectedVehicle;        
+    }
+
+
 }

@@ -9,6 +9,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
+using CMCustomUDP;
+
 
 namespace GenericTelemetryProvider
 {
@@ -17,10 +19,9 @@ namespace GenericTelemetryProvider
 
         public static FilterUI Instance;
 
-        public GenericProviderData.DataKey filterKey = GenericProviderData.DataKey.Max;
+        public CMCustomUDPData.DataKey filterKey = CMCustomUDPData.DataKey.Max;
         Series filteredSeries;
         Series rawSeries;
-
 
         public FilterUI()
         {
@@ -54,14 +55,14 @@ namespace GenericTelemetryProvider
 
             rawSeries.Points.Clear();
 
-            for(int key = 0; key < (int)GenericProviderData.DataKey.Max; ++key)
+            for(int key = 0; key < (int)CMCustomUDPData.DataKey.Max; ++key)
             {
-                keyComboBox.Items.Add(((GenericProviderData.DataKey)key).ToString());
+                keyComboBox.Items.Add(((CMCustomUDPData.DataKey)key).ToString());
             }
 
-            keyComboBox.SelectedIndex = 0;
+            FilterModuleCustom.Instance.InitFromConfig(MainConfig.Instance.configData.filterConfig);
 
-            InitChartForKey((GenericProviderData.DataKey)keyComboBox.SelectedIndex);
+            keyComboBox.SelectedIndex = 0;
 
             System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
             timer.Interval = 1000 / 100;
@@ -74,7 +75,7 @@ namespace GenericTelemetryProvider
 
         }
 
-        public void InitChartForKey(GenericProviderData.DataKey dataKey)
+        public void InitChartForKey(CMCustomUDPData.DataKey dataKey)
         {
             filterKey = dataKey;
             
@@ -95,7 +96,7 @@ namespace GenericTelemetryProvider
 
                 flowLayoutFilters.Controls.Clear();
 
-                List<FilterBase> filters = FilterModule.Instance.filters[(int)filterKey];
+                List<FilterBase> filters = FilterModuleCustom.Instance.filters[(int)filterKey];
 
                 if (filters != null)
                 {
@@ -142,7 +143,7 @@ namespace GenericTelemetryProvider
 
         public void RefreshChart(object sender, EventArgs e)
         {
-            if (filterKey == GenericProviderData.DataKey.Max)
+            if (filterKey == CMCustomUDPData.DataKey.Max)
                 return;
 
             filterChart.Invoke((Action)delegate
@@ -151,25 +152,25 @@ namespace GenericTelemetryProvider
                 filteredSeries.Points.Clear();
                 rawSeries.Points.Clear();
 
-                List<GenericProviderData> filteredData;
-                FilterModule.Instance.GetFilteredHistory(out filteredData);
-                List<GenericProviderData> rawData;
-                FilterModule.Instance.GetRawHistory(out rawData);
+                List<CMCustomUDPData> filteredData;
+                FilterModuleCustom.Instance.GetFilteredHistory(out filteredData);
+                List<CMCustomUDPData> rawData;
+                FilterModuleCustom.Instance.GetRawHistory(out rawData);
 
                 chart.AxisX.Maximum = filteredData.Count();
 
                 for (int i = 0; i < filteredData.Count; ++i)
                 {
-                    GenericProviderData data = filteredData[i];
+                    CMCustomUDPData data = filteredData[i];
 
-                    filteredSeries.Points.AddXY(i, data.data[(int)filterKey]);
+                    filteredSeries.Points.AddXY(i, data.GetValue(filterKey));
                 }
 
                 for (int i = 0; i < rawData.Count; ++i)
                 {
-                    GenericProviderData data = rawData[i];
+                    CMCustomUDPData data = rawData[i];
 
-                    rawSeries.Points.AddXY(i, data.data[(int)filterKey]);
+                    rawSeries.Points.AddXY(i, data.GetValue(filterKey));
                 }
 
             });
@@ -178,7 +179,7 @@ namespace GenericTelemetryProvider
 
         private void keyComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            InitChartForKey((GenericProviderData.DataKey)keyComboBox.SelectedIndex);
+            InitChartForKey((CMCustomUDPData.DataKey)keyComboBox.SelectedIndex);
         }
 
         public void DeleteControl(UserControl control)
@@ -187,12 +188,12 @@ namespace GenericTelemetryProvider
 
             if (control is SmoothFilterControl)
             {
-                FilterModule.Instance.DeleteFilter(((SmoothFilterControl)control).filter, filterKey);
+                FilterModuleCustom.Instance.DeleteFilter(((SmoothFilterControl)control).filter, filterKey);
             }
             else
             if (control is KalmanFilterControl)
             {
-                FilterModule.Instance.DeleteFilter(((KalmanFilterControl)control).filter, filterKey);
+                FilterModuleCustom.Instance.DeleteFilter(((KalmanFilterControl)control).filter, filterKey);
             }
 
             flowLayoutFilters.Controls.Remove(control);
@@ -208,18 +209,18 @@ namespace GenericTelemetryProvider
 
             if (control is SmoothFilterControl)
             {
-                FilterModule.Instance.MoveFilter(((SmoothFilterControl)control).filter, filterKey, direction);
+                FilterModuleCustom.Instance.MoveFilter(((SmoothFilterControl)control).filter, filterKey, direction);
             }
             else
             if (control is KalmanFilterControl)
             {
-                FilterModule.Instance.MoveFilter(((KalmanFilterControl)control).filter, filterKey, direction);
+                FilterModuleCustom.Instance.MoveFilter(((KalmanFilterControl)control).filter, filterKey, direction);
             }
         }
 
         private void saveButton_Click(object sender, EventArgs e)
         {
-            FilterModule.Instance.SaveConfig();
+            FilterModuleCustom.Instance.SaveConfig();
         }
     }
 }
