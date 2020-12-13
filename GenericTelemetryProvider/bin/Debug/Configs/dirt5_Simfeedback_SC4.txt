@@ -3,7 +3,9 @@
   "udpIP": "127.0.0.1",
   "udpPort": 10001,
   "fillMMF": true,
-  "copyFormatDestinations": [],
+  "copyFormatDestinations": [
+    "G:\\Simfeedback\\CMCustomUDP\\CMCustomUDPFormat.xml"
+  ],
   "packetFormat": "PacketFormats\\defaultPacketFormat.xml",
-  "filterConfig": "Filters\\defaultFilters.txt"
+  "filterConfig": "Filters\\Dirt5Filters.txt"
 }
