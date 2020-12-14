@@ -4,7 +4,7 @@ using System.Net.Sockets;
 
 namespace GenericTelemetryProvider
 {
-    sealed class TelemetrySender : IDisposable
+    public class TelemetrySender : IDisposable
     {
         private IPEndPoint senderIP = new IPEndPoint(IPAddress.Any, 0);
         private UdpClient udpClient;

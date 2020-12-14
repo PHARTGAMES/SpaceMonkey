@@ -47,6 +47,13 @@
             this.packetFormatLabel = new System.Windows.Forms.Label();
             this.filtersComboBox = new System.Windows.Forms.ComboBox();
             this.filterConfigLabel = new System.Windows.Forms.Label();
+            this.hkComboBox = new System.Windows.Forms.ComboBox();
+            this.hotkeyLabel = new System.Windows.Forms.Label();
+            this.hkWindowsCheckbox = new System.Windows.Forms.CheckBox();
+            this.hkAltCheckbox = new System.Windows.Forms.CheckBox();
+            this.hkShiftCheckBox = new System.Windows.Forms.CheckBox();
+            this.hkCtrlCheckbox = new System.Windows.Forms.CheckBox();
+            this.hkEnabledCheckbox = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // Dirt5Button
@@ -214,7 +221,7 @@
             // filtersComboBox
             // 
             this.filtersComboBox.FormattingEnabled = true;
-            this.filtersComboBox.Location = new System.Drawing.Point(469, 273);
+            this.filtersComboBox.Location = new System.Drawing.Point(469, 270);
             this.filtersComboBox.Name = "filtersComboBox";
             this.filtersComboBox.Size = new System.Drawing.Size(188, 21);
             this.filtersComboBox.TabIndex = 19;
@@ -229,11 +236,91 @@
             this.filterConfigLabel.TabIndex = 20;
             this.filterConfigLabel.Text = "Filter Config";
             // 
+            // hkComboBox
+            // 
+            this.hkComboBox.FormattingEnabled = true;
+            this.hkComboBox.Location = new System.Drawing.Point(469, 317);
+            this.hkComboBox.Name = "hkComboBox";
+            this.hkComboBox.Size = new System.Drawing.Size(113, 21);
+            this.hkComboBox.TabIndex = 21;
+            this.hkComboBox.SelectedIndexChanged += new System.EventHandler(this.hkComboBox_SelectedIndexChanged);
+            // 
+            // hotkeyLabel
+            // 
+            this.hotkeyLabel.AutoSize = true;
+            this.hotkeyLabel.Location = new System.Drawing.Point(466, 301);
+            this.hotkeyLabel.Name = "hotkeyLabel";
+            this.hotkeyLabel.Size = new System.Drawing.Size(81, 13);
+            this.hotkeyLabel.TabIndex = 22;
+            this.hotkeyLabel.Text = "Toggle Hot Key";
+            // 
+            // hkWindowsCheckbox
+            // 
+            this.hkWindowsCheckbox.AutoSize = true;
+            this.hkWindowsCheckbox.Location = new System.Drawing.Point(469, 345);
+            this.hkWindowsCheckbox.Name = "hkWindowsCheckbox";
+            this.hkWindowsCheckbox.Size = new System.Drawing.Size(79, 17);
+            this.hkWindowsCheckbox.TabIndex = 23;
+            this.hkWindowsCheckbox.Text = "+ Windows";
+            this.hkWindowsCheckbox.UseVisualStyleBackColor = true;
+            this.hkWindowsCheckbox.CheckedChanged += new System.EventHandler(this.hkWindowsCheckbox_CheckedChanged);
+            // 
+            // hkAltCheckbox
+            // 
+            this.hkAltCheckbox.AutoSize = true;
+            this.hkAltCheckbox.Location = new System.Drawing.Point(469, 369);
+            this.hkAltCheckbox.Name = "hkAltCheckbox";
+            this.hkAltCheckbox.Size = new System.Drawing.Size(47, 17);
+            this.hkAltCheckbox.TabIndex = 24;
+            this.hkAltCheckbox.Text = "+ Alt";
+            this.hkAltCheckbox.UseVisualStyleBackColor = true;
+            this.hkAltCheckbox.CheckedChanged += new System.EventHandler(this.hkAltCheckbox_CheckedChanged);
+            // 
+            // hkShiftCheckBox
+            // 
+            this.hkShiftCheckBox.AutoSize = true;
+            this.hkShiftCheckBox.Location = new System.Drawing.Point(556, 345);
+            this.hkShiftCheckBox.Name = "hkShiftCheckBox";
+            this.hkShiftCheckBox.Size = new System.Drawing.Size(56, 17);
+            this.hkShiftCheckBox.TabIndex = 25;
+            this.hkShiftCheckBox.Text = "+ Shift";
+            this.hkShiftCheckBox.UseVisualStyleBackColor = true;
+            this.hkShiftCheckBox.CheckedChanged += new System.EventHandler(this.hkShiftCheckBox_CheckedChanged);
+            // 
+            // hkCtrlCheckbox
+            // 
+            this.hkCtrlCheckbox.AutoSize = true;
+            this.hkCtrlCheckbox.Location = new System.Drawing.Point(556, 369);
+            this.hkCtrlCheckbox.Name = "hkCtrlCheckbox";
+            this.hkCtrlCheckbox.Size = new System.Drawing.Size(50, 17);
+            this.hkCtrlCheckbox.TabIndex = 26;
+            this.hkCtrlCheckbox.Text = "+ Ctrl";
+            this.hkCtrlCheckbox.UseVisualStyleBackColor = true;
+            this.hkCtrlCheckbox.CheckedChanged += new System.EventHandler(this.hkCtrlCheckbox_CheckedChanged);
+            // 
+            // hkEnabledCheckbox
+            // 
+            this.hkEnabledCheckbox.AutoSize = true;
+            this.hkEnabledCheckbox.Location = new System.Drawing.Point(592, 319);
+            this.hkEnabledCheckbox.Name = "hkEnabledCheckbox";
+            this.hkEnabledCheckbox.Size = new System.Drawing.Size(65, 17);
+            this.hkEnabledCheckbox.TabIndex = 27;
+            this.hkEnabledCheckbox.Text = "Enabled";
+            this.hkEnabledCheckbox.UseVisualStyleBackColor = true;
+            this.hkEnabledCheckbox.CheckedChanged += new System.EventHandler(this.hkEnabledCheckbox_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(665, 417);
+            this.Controls.Add(this.hkEnabledCheckbox);
+            this.Controls.Add(this.hkCtrlCheckbox);
+            this.Controls.Add(this.hkShiftCheckBox);
+            this.Controls.Add(this.hkAltCheckbox);
+            this.Controls.Add(this.hkWindowsCheckbox);
+            this.Controls.Add(this.hotkeyLabel);
+            this.Controls.Add(this.hkComboBox);
             this.Controls.Add(this.filterConfigLabel);
             this.Controls.Add(this.filtersComboBox);
             this.Controls.Add(this.packetFormatLabel);
@@ -283,6 +370,13 @@
         private System.Windows.Forms.Label packetFormatLabel;
         private System.Windows.Forms.ComboBox filtersComboBox;
         private System.Windows.Forms.Label filterConfigLabel;
+        private System.Windows.Forms.ComboBox hkComboBox;
+        private System.Windows.Forms.Label hotkeyLabel;
+        private System.Windows.Forms.CheckBox hkWindowsCheckbox;
+        private System.Windows.Forms.CheckBox hkAltCheckbox;
+        private System.Windows.Forms.CheckBox hkShiftCheckBox;
+        private System.Windows.Forms.CheckBox hkCtrlCheckbox;
+        private System.Windows.Forms.CheckBox hkEnabledCheckbox;
     }
 }
 

@@ -23,7 +23,7 @@ namespace GenericTelemetryProvider
 
         Dirt5UI dirt5UI;
         FilterUI filterUI;
-        DirtRally2UI dirtRally2UI;
+        public static MainForm Instance;
 
         bool ignoreConfigChanges = false;
 
@@ -34,6 +34,7 @@ namespace GenericTelemetryProvider
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            Instance = this;
             CMCustomUDPData.formatFilename = "PacketFormats\\defaultFormat.xml";
             if(Directory.Exists("Configs"))
             {
@@ -100,9 +101,31 @@ namespace GenericTelemetryProvider
                     formatDestinationsBox.Items.Add(entry);
             }
 
-            if (string.IsNullOrEmpty(MainConfig.Instance.configData.packetFormat))
+            if (!string.IsNullOrEmpty(MainConfig.Instance.configData.packetFormat))
                 CMCustomUDPData.formatFilename = MainConfig.Instance.configData.packetFormat;
 
+        }
+
+        void RefreshHotkey()
+        {
+            hkComboBox.Items.Clear();
+
+            var keys = Enum.GetValues(typeof(Keys));
+
+            foreach(Keys key in keys)
+            {
+                hkComboBox.Items.Add(key);
+                if(key == MainConfig.Instance.configData.hotkey.key)
+                {
+                    hkComboBox.SelectedItem = key;
+                }    
+            }
+
+            hkEnabledCheckbox.Checked = MainConfig.Instance.configData.hotkey.enabled;
+            hkShiftCheckBox.Checked = MainConfig.Instance.configData.hotkey.shift;
+            hkCtrlCheckbox.Checked = MainConfig.Instance.configData.hotkey.ctrl;
+            hkAltCheckbox.Checked = MainConfig.Instance.configData.hotkey.alt;
+            hkWindowsCheckbox.Checked = MainConfig.Instance.configData.hotkey.windows;
         }
 
 
@@ -115,6 +138,7 @@ namespace GenericTelemetryProvider
             RefreshConfigs();
             RefreshPacketFormats();
             RefreshFilters();
+            RefreshHotkey();
             RefreshOtherSettings();
             ignoreConfigChanges = false;
 
@@ -161,7 +185,7 @@ namespace GenericTelemetryProvider
 
         private void dirtRally2Button_Click(object sender, EventArgs e)
         {
-
+/*
             if (dirtRally2UI == null)
             {
                 dirtRally2UI = new DirtRally2UI();
@@ -173,7 +197,7 @@ namespace GenericTelemetryProvider
             {
                 dirtRally2UI.Close();
             }
-
+*/
 
         }
 
@@ -348,6 +372,61 @@ namespace GenericTelemetryProvider
                 return;
 
             MainConfig.Instance.configData.filterConfig = MainConfig.Instance.configData.packetFormat = "Filters\\" + (string)filtersComboBox.SelectedItem + ".txt";
+            MainConfig.Instance.Save();
+        }
+
+        private void hkWindowsCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (ignoreConfigChanges)
+                return;
+
+            MainConfig.Instance.configData.hotkey.windows = hkWindowsCheckbox.Checked;
+            MainConfig.Instance.Save();
+        }
+
+        private void hkAltCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (ignoreConfigChanges)
+                return;
+
+            MainConfig.Instance.configData.hotkey.alt = hkAltCheckbox.Checked;
+            MainConfig.Instance.Save();
+        }
+
+        private void hkShiftCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (ignoreConfigChanges)
+                return;
+
+            MainConfig.Instance.configData.hotkey.shift = hkShiftCheckBox.Checked;
+            MainConfig.Instance.Save();
+        }
+
+        private void hkCtrlCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (ignoreConfigChanges)
+                return;
+
+
+            MainConfig.Instance.configData.hotkey.ctrl = hkCtrlCheckbox.Checked;
+            MainConfig.Instance.Save();
+        }
+
+        private void hkComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ignoreConfigChanges)
+                return;
+
+            MainConfig.Instance.configData.hotkey.key = (Keys)hkComboBox.SelectedItem;
+            MainConfig.Instance.Save();
+        }
+
+        private void hkEnabledCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (ignoreConfigChanges)
+                return;
+
+            MainConfig.Instance.configData.hotkey.enabled = hkEnabledCheckbox.Checked;
             MainConfig.Instance.Save();
         }
     }

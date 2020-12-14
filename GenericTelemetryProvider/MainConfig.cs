@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.IO;
+using System.Windows.Forms;
 
 
 namespace GenericTelemetryProvider
@@ -76,6 +77,17 @@ namespace GenericTelemetryProvider
         public List<string> copyFormatDestinations;
         public string packetFormat;
         public string filterConfig;
+
+        public class HotkeyConfig
+        {
+            public Keys key;
+            public bool enabled;
+            public bool windows;
+            public bool alt;
+            public bool ctrl;
+            public bool shift;
+        }
+        public HotkeyConfig hotkey = new HotkeyConfig();
 
         public void AddFormatDestination(string text)
         {

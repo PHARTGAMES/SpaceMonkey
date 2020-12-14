@@ -59,8 +59,8 @@
     <Compile Include="Dirt5UI.Designer.cs">
       <DependentUpon>Dirt5UI.cs</DependentUpon>
     </Compile>
-    <Compile Include="DirtRally2TelemetryProvider.cs" />
     <Compile Include="FilterModuleCustom.cs" />
+    <Compile Include="Hotkey.cs" />
     <Compile Include="InputModule.cs" />
     <Compile Include="MainConfig.cs" />
     <Compile Include="MTAOpenFileDialog.cs" />
@@ -71,13 +71,6 @@
       <DependentUpon>NameChangeForm.cs</DependentUpon>
     </Compile>
     <Compile Include="SC4DR2CustomTelemetry.cs" />
-    <Compile Include="DirtRally2UDPTelemetry.cs" />
-    <Compile Include="DirtRally2UI.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DirtRally2UI.Designer.cs">
-      <DependentUpon>DirtRally2UI.cs</DependentUpon>
-    </Compile>
     <Compile Include="FilterBase.cs" />
     <Compile Include="FilterModule.cs" />
     <Compile Include="FilterPicker.cs">
@@ -123,9 +116,6 @@
     <Compile Include="XInputController.cs" />
     <EmbeddedResource Include="Dirt5UI.resx">
       <DependentUpon>Dirt5UI.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DirtRally2UI.resx">
-      <DependentUpon>DirtRally2UI.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FilterPicker.resx">
       <DependentUpon>FilterPicker.cs</DependentUpon>

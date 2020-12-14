@@ -5,5 +5,13 @@
   "fillMMF": true,
   "copyFormatDestinations": [],
   "packetFormat": "PacketFormats\\defaultPacketFormat.xml",
-  "filterConfig": "Filters\\defaultFilters.txt"
+  "filterConfig": "Filters\\defaultFilters.txt",
+  "hotkey": {
+    "key": 0,
+    "enabled": false,
+    "windows": false,
+    "alt": false,
+    "ctrl": false,
+    "shift": false
+  }
 }
