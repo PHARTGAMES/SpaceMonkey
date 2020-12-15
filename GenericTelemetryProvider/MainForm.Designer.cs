@@ -54,6 +54,7 @@
             this.hkShiftCheckBox = new System.Windows.Forms.CheckBox();
             this.hkCtrlCheckbox = new System.Windows.Forms.CheckBox();
             this.hkEnabledCheckbox = new System.Windows.Forms.CheckBox();
+            this.wreckfestButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // Dirt5Button
@@ -309,11 +310,22 @@
             this.hkEnabledCheckbox.UseVisualStyleBackColor = true;
             this.hkEnabledCheckbox.CheckedChanged += new System.EventHandler(this.hkEnabledCheckbox_CheckedChanged);
             // 
+            // wreckfestButton
+            // 
+            this.wreckfestButton.Location = new System.Drawing.Point(13, 63);
+            this.wreckfestButton.Name = "wreckfestButton";
+            this.wreckfestButton.Size = new System.Drawing.Size(148, 45);
+            this.wreckfestButton.TabIndex = 28;
+            this.wreckfestButton.Text = "Wreckfest";
+            this.wreckfestButton.UseVisualStyleBackColor = true;
+            this.wreckfestButton.Click += new System.EventHandler(this.wreckfestButton_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(665, 417);
+            this.Controls.Add(this.wreckfestButton);
             this.Controls.Add(this.hkEnabledCheckbox);
             this.Controls.Add(this.hkCtrlCheckbox);
             this.Controls.Add(this.hkShiftCheckBox);
@@ -377,6 +389,7 @@
         private System.Windows.Forms.CheckBox hkShiftCheckBox;
         private System.Windows.Forms.CheckBox hkCtrlCheckbox;
         private System.Windows.Forms.CheckBox hkEnabledCheckbox;
+        private System.Windows.Forms.Button wreckfestButton;
     }
 }
 

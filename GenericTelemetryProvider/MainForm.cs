@@ -22,6 +22,7 @@ namespace GenericTelemetryProvider
     {
 
         Dirt5UI dirt5UI;
+        WreckfestUI wreckfestUI;
         FilterUI filterUI;
         public static MainForm Instance;
 
@@ -181,24 +182,6 @@ namespace GenericTelemetryProvider
             {
                 filterUI.Close();
             }
-        }
-
-        private void dirtRally2Button_Click(object sender, EventArgs e)
-        {
-/*
-            if (dirtRally2UI == null)
-            {
-                dirtRally2UI = new DirtRally2UI();
-
-                Thread x = new Thread(new ParameterizedThreadStart((form) => ((DirtRally2UI)form).ShowDialog()));
-                x.Start(dirtRally2UI);
-            }
-            else
-            {
-                dirtRally2UI.Close();
-            }
-*/
-
         }
 
         private void udpIPTextBox_TextChanged(object sender, EventArgs e)
@@ -428,6 +411,20 @@ namespace GenericTelemetryProvider
 
             MainConfig.Instance.configData.hotkey.enabled = hkEnabledCheckbox.Checked;
             MainConfig.Instance.Save();
+        }
+
+        private void wreckfestButton_Click(object sender, EventArgs e)
+        {
+            if(wreckfestUI != null)
+            {
+                wreckfestUI.Close();
+                wreckfestUI = null;
+            }
+
+            wreckfestUI = new WreckfestUI();
+
+            Thread x = new Thread(new ParameterizedThreadStart((form) => ((WreckfestUI)form).ShowDialog()));
+            x.Start(wreckfestUI);
         }
     }
 }

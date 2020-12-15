@@ -53,6 +53,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dirt5TelemetryProvider.cs" />
+    <Compile Include="WreckfestUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WreckfestUI.Designer.cs">
+      <DependentUpon>WreckfestUI.cs</DependentUpon>
+    </Compile>
     <Compile Include="Dirt5UI.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -113,7 +119,11 @@
     </Compile>
     <Compile Include="TelemetrySender.cs" />
     <Compile Include="Utils.cs" />
+    <Compile Include="WreckfestTelemetryProvider.cs" />
     <Compile Include="XInputController.cs" />
+    <EmbeddedResource Include="WreckfestUI.resx">
+      <DependentUpon>WreckfestUI.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Dirt5UI.resx">
       <DependentUpon>Dirt5UI.cs</DependentUpon>
     </EmbeddedResource>

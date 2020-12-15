@@ -101,13 +101,17 @@ namespace Sojaner.MemoryScanner
 
             //and then abort the thread that scanes the memory.
             thread.Abort();
-        } 
+        }
         #endregion
 
         #region Private methods
 
+        [DllImportAttribute("user32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+        public static extern int MessageBox(IntPtr hwnd, String text, String caption, uint type);
+
         private void StringScanner(object stringObject)
         {
+
             //Get the value out of the object to look for it.
             string stringValue = (string)stringObject;
             
@@ -131,186 +135,241 @@ namespace Sojaner.MemoryScanner
             //ScanProgressed event and pass the percentage of scan, during the scan progress.
             ScanProgressChangedEventArgs scanProgressEventArgs;
 
-            //Calculate the size of memory to scan.
-            Int64 memorySize = (Int64)((Int64)lastAddress - (Int64)baseAddress);
-            bool found = false;
-
-            //If more that one block of memory is requered to be read,
-            if (memorySize >= ReadStackSize)
+            Int64 MaxAddress = (Int64)lastAddress;
+            Int64 address = 0;
+            Int64 totalScanned = 0;
+            do
             {
-                //Count of loops to read the memory blocks.
-                Int64 loopsCount = memorySize / ReadStackSize;
+                uint infoSize = (uint)Marshal.SizeOf(typeof(ProcessMemoryReader.ProcessMemoryReaderApi.MEMORY_BASIC_INFORMATION64));
+                ProcessMemoryReader.ProcessMemoryReaderApi.MEMORY_BASIC_INFORMATION64 m = new ProcessMemoryReader.ProcessMemoryReaderApi.MEMORY_BASIC_INFORMATION64();
+                int result = ProcessMemoryReader.ProcessMemoryReaderApi.VirtualQueryEx(reader.ReadProcess.Handle, (IntPtr)address, out m, infoSize);
 
-                //Look to see if there is any other bytes let after the loops.
-                Int64 outOfBounds = memorySize % ReadStackSize;
-
-                //Set the currentAddress to first address.
-                Int64 currentAddress = (Int64)baseAddress;
-
-                //This will be used to check if any bytes have been read from the memory.
-                Int64 bytesReadSize;
-
-                //Set the size of the bytes blocks.
-                Int64 bytesToRead = ReadStackSize;
-
-                //An array to hold the bytes read from the memory.
-                byte[] array;
-
-                //Progress percentage.
-                int progress;
-
-                for (Int64 i = 0; i < loopsCount; i++)
+                if (result != infoSize)
                 {
-                    if (found)
-                        break;
-
-                    //Calculte and set the progress percentage.
-                    progress = (int)(((double)(currentAddress - (Int64)baseAddress) / (double)memorySize) * 100d);
-
-                    //Prepare and set the ScanProgressed event and raise the event.
-                    scanProgressEventArgs = new ScanProgressChangedEventArgs(progress);
-                    ScanProgressChanged(this, scanProgressEventArgs);
-
-                    //Read the bytes from the memory.
-                    reader.ReadProcessMemory((IntPtr)currentAddress,(UInt64)bytesToRead, out bytesReadSize, buffer);
-                    array = buffer;
+                    int lastError = Marshal.GetLastWin32Error();
+                    break;
+                }
 
 
-                    //If any byte is read from the memory (there has been any bytes in the memory block),
-                    if (bytesReadSize > 0)
+               // Console.WriteLine("{0}-{1} : {2} bytes {3}", m.BaseAddress.ToString("X"), ((uint)m.BaseAddress + (uint)m.RegionSize - 1).ToString("X"), m.RegionSize, m.State == (int)ProcessMemoryReader.ProcessMemoryReaderApi.InfoState.MEM_COMMIT ? "COMMIT" : "FREE");
+
+                baseAddress = (IntPtr)(Int64)address;// m.BaseAddress;
+                lastAddress = (IntPtr)((Int64)address + (Int64)m.RegionSize);
+
+                address = (Int64)m.BaseAddress + (Int64)m.RegionSize;
+                /*
+                if (!(m.State == (int)ProcessMemoryReader.ProcessMemoryReaderApi.InfoState.MEM_COMMIT &&
+                    (m.Type == (int)ProcessMemoryReader.ProcessMemoryReaderApi.InfoType.MEM_MAPPED || m.Type == (int)ProcessMemoryReader.ProcessMemoryReaderApi.InfoType.MEM_PRIVATE)))
+                    continue;
+
+                */
+
+                if (m.State != (int)ProcessMemoryReader.ProcessMemoryReaderApi.InfoState.MEM_COMMIT)
+                    continue;
+
+                totalScanned += (Int64)m.RegionSize;
+
+                //Calculate the size of memory to scan.
+                Int64 memorySize = (Int64)((Int64)lastAddress - (Int64)baseAddress);
+                bool found = false;
+
+                //If more that one block of memory is requered to be read,
+                if (memorySize >= ReadStackSize)
+                {
+                    //Count of loops to read the memory blocks.
+                    Int64 loopsCount = memorySize / ReadStackSize;
+
+                    //Look to see if there is any other bytes let after the loops.
+                    Int64 outOfBounds = memorySize % ReadStackSize;
+
+                    //Set the currentAddress to first address.
+                    Int64 currentAddress = (Int64)baseAddress;
+
+                    //This will be used to check if any bytes have been read from the memory.
+                    Int64 bytesReadSize;
+
+                    //Set the size of the bytes blocks.
+                    Int64 bytesToRead = ReadStackSize;
+
+                    //An array to hold the bytes read from the memory.
+                    byte[] array;
+
+                    //Progress percentage.
+                    int progress;
+
+                    for (Int64 i = 0; i < loopsCount; i++)
                     {
-                        //Loop through the bytes one by one to look for the values.
-                        for (Int64 j = 0; j < array.Length - arraysDifference; j++)
+                        if (found)
+                            break;
+
+                        //Calculte and set the progress percentage.
+                        progress = (int)(((double)(currentAddress - (Int64)baseAddress) / (double)memorySize) * 100d);
+
+                        //Prepare and set the ScanProgressed event and raise the event.
+                        scanProgressEventArgs = new ScanProgressChangedEventArgs(progress);
+                        ScanProgressChanged(this, scanProgressEventArgs);
+
+                        //Read the bytes from the memory.
+                        reader.ReadProcessMemory((IntPtr)currentAddress, (UInt64)bytesToRead, out bytesReadSize, buffer);
+                        array = buffer;
+
+
+                        //If any byte is read from the memory (there has been any bytes in the memory block),
+                        if (bytesReadSize > 0)
                         {
-                            if (found)
-                                break;
-                            int matches = 0;
-                            for (Int64 b = 0; b < bytes.Length && (j+b) < array.Length - arraysDifference; b++)
+                            //Loop through the bytes one by one to look for the values.
+                            for (Int64 j = 0; j < array.Length - arraysDifference; j++)
                             {
-                                if (bytes[b] != array[j + b])
+                                if (found)
+                                    break;
+                                int matches = 0;
+                                for (Int64 b = 0; b < bytes.Length && (j + b) < array.Length - arraysDifference; b++)
                                 {
-                                    found = false;
+                                    if (bytes[b] != array[j + b])
+                                    {
+                                        found = false;
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        matches++;
+                                    }
+                                }
+
+                                if(matches > 2)
+                                {
+                                    int bla = 0;
+                                    bla = 1;
+
+                                }
+
+                                if (matches == bytes.Length)
+                                {
+
+
+                                    Debug.WriteLine("Found string: " + System.Text.Encoding.ASCII.GetString(array, (int)j, bytes.Length).Replace(Convert.ToChar(0x0).ToString(), " "));
+                                    finalList.Add(j + (Int64)currentAddress);
+                                    Debug.Flush();
+                                    found = true;
                                     break;
                                 }
-                                else
-                                {
-                                    matches++;
-                                }
+
                             }
-                            if (matches == bytes.Length)
-                            {
-
-
-                                Debug.WriteLine("Found string: " + System.Text.Encoding.ASCII.GetString(array, (int)j, bytes.Length).Replace(Convert.ToChar(0x0).ToString(), " "));
-                                finalList.Add(j + (Int64)currentAddress);
-                                Debug.Flush();
-                                found = true;
-                                break;
-                            }
-
                         }
+                        //Move currentAddress after the block already scaned, but
+                        //move it back some steps backward (as much as arraysDifference)
+                        //to avoid loosing any values at the end of the array.
+                        currentAddress += array.Length - arraysDifference;
+
+                        //Set the size of the read block, bigger, to  the steps backward.
+                        //Set the size of the read block, to fit the back steps.
+                        bytesToRead = ReadStackSize + arraysDifference;
                     }
-                    //Move currentAddress after the block already scaned, but
-                    //move it back some steps backward (as much as arraysDifference)
-                    //to avoid loosing any values at the end of the array.
-                    currentAddress += array.Length - arraysDifference;
-
-                    //Set the size of the read block, bigger, to  the steps backward.
-                    //Set the size of the read block, to fit the back steps.
-                    bytesToRead = ReadStackSize + arraysDifference;
-                }
-                //If there is any more bytes than the loops read,
-                if (!found && outOfBounds > 0)
-                {
-                    //Read the additional bytes.
-                    reader.ReadProcessMemory((IntPtr)currentAddress, (UInt64)((Int64)lastAddress - currentAddress), out bytesReadSize, buffer);
-                    byte[] outOfBoundsBytes = buffer;
-
-                    //If any byte is read from the memory (there has been any bytes in the memory block),
-                    if (bytesReadSize > 0)
+                    //If there is any more bytes than the loops read,
+                    if (!found && outOfBounds > 0)
                     {
-                        //Loop through the bytes one by one to look for the values.
-                        for (Int64 j = 0; j < outOfBoundsBytes.Length - arraysDifference; j++)
+                        //Read the additional bytes.
+                        reader.ReadProcessMemory((IntPtr)currentAddress, (UInt64)((Int64)lastAddress - currentAddress), out bytesReadSize, buffer);
+                        byte[] outOfBoundsBytes = buffer;
+
+                        //If any byte is read from the memory (there has been any bytes in the memory block),
+                        if (bytesReadSize > 0)
                         {
-                            if (found)
-                                break;
-                            int matches = 0;
-                            for (Int64 b = 0; b < bytes.Length && (j + b) < outOfBoundsBytes.Length - arraysDifference; b++)
+                            //Loop through the bytes one by one to look for the values.
+                            for (Int64 j = 0; j < outOfBoundsBytes.Length - arraysDifference; j++)
                             {
-                                if (bytes[b] != outOfBoundsBytes[j + b])
+                                if (found)
+                                    break;
+                                int matches = 0;
+                                for (Int64 b = 0; b < bytes.Length && (j + b) < outOfBoundsBytes.Length - arraysDifference; b++)
                                 {
-                                    found = false;
+                                    if (bytes[b] != outOfBoundsBytes[j + b])
+                                    {
+                                        found = false;
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        matches++;
+                                    }
+                                }
+
+                                if (matches > 2)
+                                {
+                                    int bla = 0;
+                                    bla = 1;
+
+                                }
+
+                                if (matches == bytes.Length)
+                                {
+                                    finalList.Add(j + currentAddress);
+                                    found = true;
                                     break;
                                 }
-                                else
-                                {
-                                    matches++;
-                                }
-                            }
-                            if (matches == bytes.Length)
-                            {
-                                finalList.Add(j + currentAddress);
-                                found = true;
-                                break;
-                            }
 
+                            }
                         }
                     }
                 }
-            }
-            //If the block could be read in just one read,
-            else
-            {
-                //Calculate the memory block's size.
-                Int64 blockSize = memorySize % ReadStackSize;
-
-                //Set the currentAddress to first address.
-                Int64 currentAddress = (Int64)baseAddress;
-
-                //Holds the count of bytes read from the memory.
-                Int64 bytesReadSize;
-
-                //If the memory block can contain at least one 64 bit variable.
-                if (blockSize > bytesCount)
+                //If the block could be read in just one read,
+                else
                 {
-                    //Read the bytes to the array.
-                    reader.ReadProcessMemory((IntPtr)currentAddress, (UInt64)blockSize, out bytesReadSize, buffer);
-                    byte[] array = buffer;
-                    
-                    //If any byte is read,
-                    if (bytesReadSize > 0)
-                    {
-                        //Loop through the array to find the values.
-                        for (int j = 0; j < array.Length - arraysDifference; j++)
-                        {
+                    //Calculate the memory block's size.
+                    Int64 blockSize = memorySize % ReadStackSize;
 
-                            if (found)
-                                break;
-                            int matches = 0;
-                            for (int b = 0; b < bytes.Length && (j + b) < array.Length - arraysDifference; b++)
+                    //Set the currentAddress to first address.
+                    Int64 currentAddress = (Int64)baseAddress;
+
+                    //Holds the count of bytes read from the memory.
+                    Int64 bytesReadSize;
+
+                    //If the memory block can contain at least one 64 bit variable.
+                    if (blockSize > bytesCount)
+                    {
+                        //Read the bytes to the array.
+                        reader.ReadProcessMemory((IntPtr)currentAddress, (UInt64)blockSize, out bytesReadSize, buffer);
+                        byte[] array = buffer;
+
+                        //If any byte is read,
+                        if (bytesReadSize > 0)
+                        {
+                            //Loop through the array to find the values.
+                            for (int j = 0; j < array.Length - arraysDifference; j++)
                             {
-                                if (bytes[b] != array[j + b])
+
+                                if (found)
+                                    break;
+                                int matches = 0;
+                                for (int b = 0; b < bytes.Length && (j + b) < array.Length - arraysDifference; b++)
                                 {
-                                    found = false;
+                                    if (bytes[b] != array[j + b])
+                                    {
+                                        found = false;
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        matches++;
+                                    }
+                                }
+                                if (matches == bytes.Length)
+                                {
+                                    Debug.WriteLine("Found string: " + System.Text.Encoding.ASCII.GetString(array, j, bytes.Length));
+                                    finalList.Add(j + currentAddress);
+                                    Debug.Flush();
+                                    found = true;
                                     break;
                                 }
-                                else
-                                {
-                                    matches++;
-                                }
-                            }
-                            if (matches == bytes.Length)
-                            {
-                                Debug.WriteLine("Found string: " + System.Text.Encoding.ASCII.GetString(array, j, bytes.Length));
-                                finalList.Add(j + currentAddress);
-                                Debug.Flush();
-                                found = true;
-                                break;
                             }
                         }
                     }
                 }
-            }
+
+            } while (address <= MaxAddress);
+
+            Console.WriteLine("Total Bytes Scanned = " + totalScanned);
+
             //Close the handle to the process to avoid process errors.
             reader.CloseHandle();
 
@@ -409,7 +468,8 @@ namespace Sojaner.MemoryScanner
         public void OpenProcess()
         {
             ProcessMemoryReaderApi.ProcessAccessType access;
-            access = ProcessMemoryReaderApi.ProcessAccessType.PROCESS_VM_READ;
+            access = ProcessMemoryReaderApi.ProcessAccessType.PROCESS_VM_READ
+                  | ProcessMemoryReaderApi.ProcessAccessType.PROCESS_QUERY_INFORMATION;
 //                | ProcessMemoryReaderApi.ProcessAccessType.PROCESS_VM_WRITE
   //              | ProcessMemoryReaderApi.ProcessAccessType.PROCESS_VM_OPERATION;
             m_hProcess = ProcessMemoryReaderApi.OpenProcess((uint)access, 1, (uint)m_ReadProcess.Id);
@@ -456,7 +516,7 @@ namespace Sojaner.MemoryScanner
         /// <summary>
         /// ProcessMemoryReader is a class that enables direct reading a process memory
         /// </summary>
-        class ProcessMemoryReaderApi
+        public class ProcessMemoryReaderApi
         {
             // constants information can be found in <winnt.h>
             [Flags]
@@ -512,6 +572,52 @@ namespace Sojaner.MemoryScanner
             [DllImport("kernel32.dll")]
             public static extern Int32 WriteProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, [In, Out] byte[] buffer, UInt32 size, out IntPtr lpNumberOfBytesWritten);
 
+            [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+            public static extern int VirtualQueryEx(IntPtr hProcess, IntPtr lpAddress, out MEMORY_BASIC_INFORMATION64 lpBuffer, uint dwLength);
+
+            [StructLayout(LayoutKind.Sequential)]
+            public struct MEMORY_BASIC_INFORMATION64
+            {
+                public ulong BaseAddress;
+                public ulong AllocationBase;
+                public UInt32 AllocationProtect;
+                public int __alignment1;
+                public ulong RegionSize;
+                public UInt32 State;
+                public UInt32 Protect;
+                public UInt32 Type;
+                public int __alignment2;
+            }
+
+
+            public enum AllocationProtect : uint
+            {
+                PAGE_EXECUTE = 0x00000010,
+                PAGE_EXECUTE_READ = 0x00000020,
+                PAGE_EXECUTE_READWRITE = 0x00000040,
+                PAGE_EXECUTE_WRITECOPY = 0x00000080,
+                PAGE_NOACCESS = 0x00000001,
+                PAGE_READONLY = 0x00000002,
+                PAGE_READWRITE = 0x00000004,
+                PAGE_WRITECOPY = 0x00000008,
+                PAGE_GUARD = 0x00000100,
+                PAGE_NOCACHE = 0x00000200,
+                PAGE_WRITECOMBINE = 0x00000400
+            }
+
+            public enum InfoState : int
+            {
+                MEM_COMMIT = 0x1000,
+                MEM_FREE = 0x10000,
+                MEM_RESERVE = 0x2000
+            }
+
+            public enum InfoType : int
+            {
+                MEM_IMAGE = 0x1000000,
+                MEM_MAPPED = 0x40000,
+                MEM_PRIVATE = 0x20000
+            }
 
         }
     } 

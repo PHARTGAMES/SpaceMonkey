@@ -137,6 +137,8 @@ namespace GenericTelemetryProvider
 
             CalcVelocity();
 
+            FilterVelocity();
+
             CalcAcceleration();
 
             CalcAngles();
@@ -268,6 +270,11 @@ namespace GenericTelemetryProvider
             rawData.local_velocity_x = localVelocity.X;
             rawData.local_velocity_y = localVelocity.Y;
             rawData.local_velocity_z = localVelocity.Z;
+
+        }
+
+        public virtual void FilterVelocity()
+        { 
 
             //filter local velocity
             FilterModuleCustom.Instance.Filter(rawData, ref filteredData, velKeyMask, false);
