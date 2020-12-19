@@ -431,6 +431,57 @@ namespace CMCustomUDP
             }
         }
 
+
+        public void LerpAllFromZero(float lerp)
+        {
+
+            yaw = Lerp(0.0f, (float)yaw, lerp);
+            pitch = Lerp(0.0f, (float)pitch, lerp);
+            roll = Lerp(0.0f, (float)roll, lerp);
+            yaw_velocity = Lerp(0.0f, (float)yaw_velocity, lerp);
+            pitch_velocity = Lerp(0.0f, (float)pitch_velocity, lerp);
+            roll_velocity = Lerp(0.0f, (float)roll_velocity, lerp);
+            yaw_acceleration = Lerp(0.0f, (float)yaw_acceleration, lerp);
+            pitch_acceleration = Lerp(0.0f, (float)pitch_acceleration, lerp);
+            roll_acceleration = Lerp(0.0f, (float)roll_acceleration, lerp);
+            local_velocity_x = Lerp(0.0f, (float)local_velocity_x, lerp);
+            local_velocity_y = Lerp(0.0f, (float)local_velocity_y, lerp);
+            local_velocity_z = Lerp(0.0f, (float)local_velocity_z, lerp);
+            gforce_lateral = Lerp(0.0f, (float)gforce_lateral, lerp);
+            gforce_longitudinal = Lerp(0.0f, (float)gforce_longitudinal, lerp);
+            gforce_vertical = Lerp(0.0f, (float)gforce_vertical, lerp);
+            suspension_position_bl = Lerp(0.0f, (float)suspension_position_bl, lerp);
+            suspension_position_br = Lerp(0.0f, (float)suspension_position_br, lerp);
+            suspension_position_fl = Lerp(0.0f, (float)suspension_position_fl, lerp);
+            suspension_position_fr = Lerp(0.0f, (float)suspension_position_fr, lerp);
+            suspension_velocity_bl = Lerp(0.0f, (float)suspension_velocity_bl, lerp);
+            suspension_velocity_br = Lerp(0.0f, (float)suspension_velocity_br, lerp);
+            suspension_velocity_fl = Lerp(0.0f, (float)suspension_velocity_fl, lerp);
+            suspension_velocity_fr = Lerp(0.0f, (float)suspension_velocity_fr, lerp);
+            suspension_acceleration_bl = Lerp(0.0f, (float)suspension_acceleration_bl, lerp);
+            suspension_acceleration_br = Lerp(0.0f, (float)suspension_acceleration_br, lerp);
+            suspension_acceleration_fl = Lerp(0.0f, (float)suspension_acceleration_fl, lerp);
+            suspension_acceleration_fr = Lerp(0.0f, (float)suspension_acceleration_fr, lerp);
+            wheel_patch_speed_bl = Lerp(0.0f, (float)wheel_patch_speed_bl, lerp);
+            wheel_patch_speed_br = Lerp(0.0f, (float)wheel_patch_speed_br, lerp);
+            wheel_patch_speed_fl = Lerp(0.0f, (float)wheel_patch_speed_fl, lerp);
+            wheel_patch_speed_fr = Lerp(0.0f, (float)wheel_patch_speed_fr, lerp);
+            throttle_input = Lerp(0.0f, (float)throttle_input, lerp);
+            steering_input = Lerp(0.0f, (float)steering_input, lerp);
+            brake_input = Lerp(0.0f, (float)brake_input, lerp);
+            clutch_input = Lerp(0.0f, (float)clutch_input, lerp);
+            tyre_pressure_bl = Lerp(0.0f, (float)tyre_pressure_bl, lerp);
+            tyre_pressure_br = Lerp(0.0f, (float)tyre_pressure_br, lerp);
+            tyre_pressure_fl = Lerp(0.0f, (float)tyre_pressure_fl, lerp);
+            tyre_pressure_fr = Lerp(0.0f, (float)tyre_pressure_fr, lerp);
+
+        }
+
+        float Lerp(float from, float to, float lerp)
+        {
+            return from + ((to-from) * lerp);
+        }
+
     }
 
 
@@ -533,7 +584,6 @@ namespace CMCustomUDP
             return type == typeof(float);
         }
 
-
     }
 
 
@@ -541,4 +591,5 @@ namespace CMCustomUDP
     {
         public char[] data;
     }
-}
+
+ }

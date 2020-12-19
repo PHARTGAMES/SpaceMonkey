@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Numerics;
 
 namespace GenericTelemetryProvider
 {
@@ -106,6 +107,15 @@ namespace GenericTelemetryProvider
             a = ((Math.Abs(a) + 180) % 360 - 180) * sign;
             
             return a * ((float)Math.PI / 180.0f);
+        }
+
+        public static Vector3 GetPYRFromQuaternion(Quaternion r)
+        {
+            float yaw = (float)Math.Atan2(2.0f * (r.Y * r.W + r.X * r.Z), 1.0f - 2.0f * (r.X * r.X + r.Y * r.Y));
+            float pitch = (float)Math.Asin(2.0f * (r.X * r.W - r.Y * r.Z));
+            float roll = (float)Math.Atan2(2.0f * (r.X * r.Y + r.Z * r.W), 1.0f - 2.0f * (r.X * r.X + r.Z * r.Z));
+
+            return new Vector3(pitch, yaw, roll);
         }
 
     }

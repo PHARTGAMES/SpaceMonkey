@@ -23,6 +23,7 @@ namespace GenericTelemetryProvider
 
         Dirt5UI dirt5UI;
         WreckfestUI wreckfestUI;
+        BeamNGUI beamNGUI;
         FilterUI filterUI;
         public static MainForm Instance;
 
@@ -425,6 +426,20 @@ namespace GenericTelemetryProvider
 
             Thread x = new Thread(new ParameterizedThreadStart((form) => ((WreckfestUI)form).ShowDialog()));
             x.Start(wreckfestUI);
+        }
+
+        private void beamNGButton_Click(object sender, EventArgs e)
+        {
+            if (beamNGUI != null)
+            {
+                beamNGUI.Close();
+                beamNGUI = null;
+            }
+
+            beamNGUI = new BeamNGUI();
+
+            Thread x = new Thread(new ParameterizedThreadStart((form) => ((BeamNGUI)form).ShowDialog()));
+            x.Start(beamNGUI);
         }
     }
 }

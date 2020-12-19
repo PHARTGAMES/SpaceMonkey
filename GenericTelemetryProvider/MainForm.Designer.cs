@@ -55,6 +55,7 @@
             this.hkCtrlCheckbox = new System.Windows.Forms.CheckBox();
             this.hkEnabledCheckbox = new System.Windows.Forms.CheckBox();
             this.wreckfestButton = new System.Windows.Forms.Button();
+            this.beamNGButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // Dirt5Button
@@ -320,11 +321,22 @@
             this.wreckfestButton.UseVisualStyleBackColor = true;
             this.wreckfestButton.Click += new System.EventHandler(this.wreckfestButton_Click);
             // 
+            // beamNGButton
+            // 
+            this.beamNGButton.Location = new System.Drawing.Point(13, 114);
+            this.beamNGButton.Name = "beamNGButton";
+            this.beamNGButton.Size = new System.Drawing.Size(148, 45);
+            this.beamNGButton.TabIndex = 29;
+            this.beamNGButton.Text = "BeamNG Drive";
+            this.beamNGButton.UseVisualStyleBackColor = true;
+            this.beamNGButton.Click += new System.EventHandler(this.beamNGButton_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(665, 417);
+            this.Controls.Add(this.beamNGButton);
             this.Controls.Add(this.wreckfestButton);
             this.Controls.Add(this.hkEnabledCheckbox);
             this.Controls.Add(this.hkCtrlCheckbox);
@@ -390,6 +402,7 @@
         private System.Windows.Forms.CheckBox hkCtrlCheckbox;
         private System.Windows.Forms.CheckBox hkEnabledCheckbox;
         private System.Windows.Forms.Button wreckfestButton;
+        private System.Windows.Forms.Button beamNGButton;
     }
 }
 

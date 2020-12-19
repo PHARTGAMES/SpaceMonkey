@@ -52,7 +52,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BNGAPI.cs" />
     <Compile Include="Dirt5TelemetryProvider.cs" />
+    <Compile Include="BeamNGTelemetryProvider.cs" />
+    <Compile Include="BeamNGUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BeamNGUI.Designer.cs">
+      <DependentUpon>BeamNGUI.cs</DependentUpon>
+    </Compile>
     <Compile Include="WreckfestUI.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -121,6 +129,9 @@
     <Compile Include="Utils.cs" />
     <Compile Include="WreckfestTelemetryProvider.cs" />
     <Compile Include="XInputController.cs" />
+    <EmbeddedResource Include="BeamNGUI.resx">
+      <DependentUpon>BeamNGUI.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="WreckfestUI.resx">
       <DependentUpon>WreckfestUI.cs</DependentUpon>
     </EmbeddedResource>

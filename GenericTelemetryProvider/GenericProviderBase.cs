@@ -297,29 +297,16 @@ namespace GenericTelemetryProvider
 
         public virtual void CalcAngles()
         {
-            //calculate pitch yaw roll
-            float pitch = (float)Math.Asin(-fwd.Y);
-            float yaw = (float)Math.Atan2(fwd.X, fwd.Z);
 
-            float roll = 0.0f;
-            Vector3 rhtPlane = rht;
-            rhtPlane.Y = 0;
-            rhtPlane = Vector3.Normalize(rhtPlane);
-            if (rhtPlane.Length() <= float.Epsilon)
-            {
-                roll = (float)(Math.Sign(rht.Y) * Math.PI * 0.5f);
-                //                        Debug.WriteLine( "---Roll = " + roll + " " + Math.Sign( rht.Y ) );
-            }
-            else
-            {
-                roll = (float)Math.Asin(Vector3.Dot(up, rhtPlane));
-                //                        Debug.WriteLine( "Roll = " + roll + " " + Math.Sign(rht.Y) );
-            }
-            //                  Debug.WriteLine( "" );
+            Quaternion quat = Quaternion.CreateFromRotationMatrix(transform);
 
-            rawData.pitch = pitch;
-            rawData.yaw = yaw;
-            rawData.roll = roll;
+            Vector3 pyr = Utils.GetPYRFromQuaternion(quat);
+
+            rawData.pitch = pyr.X;
+            rawData.yaw = pyr.Y;
+            rawData.roll = -pyr.Z;
+
+
         }
 
         public virtual void SimulateSuspension()

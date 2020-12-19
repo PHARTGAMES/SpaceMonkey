@@ -51,6 +51,11 @@ namespace GTPSimfeedback
 
         GTPConfig config;
 
+        float smoothInTime = 3.0f;
+        float smoothInTimer = 3.0f;
+        float startWaitTime = 2.0f;
+        float startWaitTimer = 2.0f;
+
         /// <summary>
         /// Default constructor.
         /// Every TelemetryProvider needs a default constructor for dynamic loading.
@@ -110,7 +115,6 @@ namespace GTPSimfeedback
             LogDebug("Stopping GTPTelemetryProvider");
             isStopped = true;
 
-
             if (t != null) t.Join();
         }
 
@@ -133,6 +137,9 @@ namespace GTPSimfeedback
         {
             
             isStopped = false;
+
+            smoothInTimer = 0.0f;
+            startWaitTimer = startWaitTime;
 
             CMCustomUDPData telemetryData = new CMCustomUDPData();
             CMCustomUDPData.formatFilename = "CMCustomUDP/CMCustomUDPFormat.xml";
@@ -213,7 +220,27 @@ namespace GTPSimfeedback
 
                     CMCustomUDPData telemetryToSend = new CMCustomUDPData();
                     telemetryToSend.Copy(telemetryData);
-
+                    
+                    //wait for start because there is a delay between when telem starts sending and platform is updated
+                    if(startWaitTimer > 0.0f)
+                    {
+                        startWaitTimer -= dt;
+                        telemetryToSend.LerpAllFromZero(0.0f);
+                        //done, so smooth in
+                        if(startWaitTimer <= 0.0f)
+                        {
+                            smoothInTimer = smoothInTime;
+                        }    
+                    }
+                    else
+                    //smooth start transition
+                    if (smoothInTimer > 0.0f)
+                    {
+                        float lerp = 1.0f-(smoothInTimer / smoothInTime);
+                        smoothInTimer -= dt;
+                        telemetryToSend.LerpAllFromZero(lerp);
+                    }    
+                    
                     IsConnected = true;
 
                     if(IsConnected)
@@ -244,8 +271,11 @@ namespace GTPSimfeedback
 
             }
 
-            socket.Close();
-            mmf.Dispose();
+            if(socket != null)
+                socket.Close();
+            if(mmf != null)
+                mmf.Dispose();
+
             IsConnected = false;
             IsRunning = false;
 

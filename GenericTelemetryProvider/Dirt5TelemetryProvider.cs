@@ -54,8 +54,21 @@ namespace GenericTelemetryProvider
             scan.ScanCompleted += new RegularMemoryScan.ScanCompletedEventHandler(scan_ScanCompleted);
             scan.ScanCanceled += new RegularMemoryScan.ScanCanceledEventHandler(scan_ScanCanceled);
 
+            /*
+            string scanString = "";
+            while (scanString.Length < 24)
+                scanString += "\0";
+            scanString += "A";
 
-            string scanString = "(\0\0\0\0" + vehicleString;
+            if (vehicleString.Length < 20)
+                scanString = scanString.Remove(20, 1).Insert(20, "\u0001");
+
+            scanString = scanString.Remove(0, vehicleString.Length).Insert(0, vehicleString);
+            */
+
+            string scanString = "B`U>B`U>";
+
+
             scan.StartScanForString(scanString);
 
         }
@@ -130,6 +143,8 @@ namespace GenericTelemetryProvider
             return true;
         }
 
+
+
         void scan_ScanProgressChanged(object sender, ScanProgressChangedEventArgs e)
         {
             ui.ProgressBarChanged(e.Progress);
@@ -151,7 +166,8 @@ namespace GenericTelemetryProvider
                 return;
             }
 
-            memoryAddress = e.MemoryAddresses[0] + 541; //offset from found address to start of matrix
+            //            memoryAddress = e.MemoryAddresses[0] + 1208; //offset from found address to start of matrix
+            memoryAddress = e.MemoryAddresses[0] - 152; //offset from found address to start of matrix
 
             ui.StatusTextChanged("Success");
 

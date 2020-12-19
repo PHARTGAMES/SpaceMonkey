@@ -163,6 +163,7 @@ namespace GenericTelemetryProvider
             base.CalcAngles();
 
             rawData.roll = -(float)rawData.roll;
+            rawData.yaw = -(float)rawData.yaw;
         }
 
         public override void CalcVelocity()
