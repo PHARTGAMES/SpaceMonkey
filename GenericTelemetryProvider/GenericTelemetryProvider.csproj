@@ -52,6 +52,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FilterModule.cs" />
+    <Compile Include="GTAVTelemetryProvider .cs" />
+    <Compile Include="GTAVUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GTAVUI.Designer.cs">
+      <DependentUpon>GTAVUI.cs</DependentUpon>
+    </Compile>
     <Compile Include="BNGAPI.cs" />
     <Compile Include="Dirt5TelemetryProvider.cs" />
     <Compile Include="BeamNGTelemetryProvider.cs" />
@@ -60,6 +68,13 @@
     </Compile>
     <Compile Include="BeamNGUI.Designer.cs">
       <DependentUpon>BeamNGUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MedianFilter.cs" />
+    <Compile Include="MedianFilterControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MedianFilterControl.Designer.cs">
+      <DependentUpon>MedianFilterControl.cs</DependentUpon>
     </Compile>
     <Compile Include="WreckfestUI.cs">
       <SubType>Form</SubType>
@@ -86,7 +101,6 @@
     </Compile>
     <Compile Include="SC4DR2CustomTelemetry.cs" />
     <Compile Include="FilterBase.cs" />
-    <Compile Include="FilterModule.cs" />
     <Compile Include="FilterPicker.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -129,8 +143,14 @@
     <Compile Include="Utils.cs" />
     <Compile Include="WreckfestTelemetryProvider.cs" />
     <Compile Include="XInputController.cs" />
+    <EmbeddedResource Include="GTAVUI.resx">
+      <DependentUpon>GTAVUI.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="BeamNGUI.resx">
       <DependentUpon>BeamNGUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MedianFilterControl.resx">
+      <DependentUpon>MedianFilterControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="WreckfestUI.resx">
       <DependentUpon>WreckfestUI.cs</DependentUpon>
@@ -183,6 +203,10 @@
     <ProjectReference Include="..\CMCustomUDP\CMCustomUDP.csproj">
       <Project>{5cd4d965-fb7f-41e9-af9a-86ebf9ea15a3}</Project>
       <Name>CMCustomUDP</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GTAVAPI\GTAVAPI.csproj">
+      <Project>{72059f7c-f597-4c05-9c31-c393f9845757}</Project>
+      <Name>GTAVAPI</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

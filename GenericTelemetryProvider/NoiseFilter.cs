@@ -152,78 +152,52 @@ namespace NoiseFilters
 
     }
 
-    public class SpikeFilter
+    public class MedianFilter
     {
 
         private float[] samples;
-        private int maxSampleCount;
+        public int maxSampleCount;
         private int liveSampleCount;
         private int currSample = 0;
-        private float maxInputDelta;
+        private List<float> sorter = new List<float>();
 
-        public SpikeFilter(int _maxSampleCount, float _maxInputDelta = float.MaxValue)
+        public MedianFilter(int _maxSampleCount)
         {
-            maxSampleCount = Math.Max(1, _maxSampleCount);
+            maxSampleCount = Math.Max(3, _maxSampleCount);
+            maxSampleCount = (maxSampleCount / 2.0f) == 0.0f ? maxSampleCount + 1 : maxSampleCount;
             samples = new float[maxSampleCount];
-            maxInputDelta = _maxInputDelta;
         }
 
         public float Filter(float sample)
         {
-            //early out
-            if (maxSampleCount == 1)
-                return sample;
-
             currSample = (currSample + 1) >= maxSampleCount ? 0 : currSample + 1;
             samples[currSample] = sample;
 
             liveSampleCount = (liveSampleCount + 1) >= maxSampleCount ? maxSampleCount : liveSampleCount + 1;
 
+            return FindMedian();
+        }
 
-            float average = CalcAverage();
-
-            float filteredTotal = 0.0f;
-            int filteredTotalCount = 0;
-            for (int i = 0; i < liveSampleCount; ++i)
+        float FindMedian()
+        {
+            if(liveSampleCount < 3)
             {
-                float currVal = samples[i];
-                if ((currVal < (average / maxInputDelta) || currVal > (average * (1 + maxInputDelta))))
-                    continue;
-
-                filteredTotal += currVal;
-                filteredTotalCount++;
+                return samples[0];
             }
 
-            if (filteredTotalCount != 0)
-                return filteredTotal / filteredTotalCount;
-
-            return average;
-        }
-
-        float CalcAverage()
-        {
-            float total = 0.0f;
+            sorter.Clear();
             for (int i = 0; i < liveSampleCount; ++i)
             {
-                total += samples[i];
+                sorter.Add(samples[i]);
             }
 
-            return total / liveSampleCount;
-        }
+            sorter.Sort();
 
+            int medianIndex = (sorter.Count / 2);
 
-        /*
-        function RangedAverage(arr, r)
-        {
-            x = Average(arr);
-            //now eliminate items r% out of range
-            for(var i=0; i<arr.length; i++)
-                if(arr[i] < (x/r) || arr[i]>(x*(1+r)))
-                    arr.splice(i,1);
-            x = Average(arr); //compute new average
-            return x;
+            return sorter[medianIndex];
+
         }
-         * */
 
     }
 }

@@ -3,9 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30621.155
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenericTelemetryProvider", "GenericTelemetryProvider.csproj", "{EDC46C3A-20D4-4EE4-AC8A-C33A053D11DA}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMCustomUDP", "..\CMCustomUDP\CMCustomUDP.csproj", "{5CD4D965-FB7F-41E9-AF9A-86EBF9EA15A3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GTAVTelemetryPlugin", "GTAVTelemetryPlugin.csproj", "{2E214269-988A-430C-A508-F7306A54ABC8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GTAVAPI", "..\GTAVAPI\GTAVAPI.csproj", "{72059F7C-F597-4C05-9C31-C393F9845757}"
 EndProject
@@ -15,14 +13,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{EDC46C3A-20D4-4EE4-AC8A-C33A053D11DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EDC46C3A-20D4-4EE4-AC8A-C33A053D11DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EDC46C3A-20D4-4EE4-AC8A-C33A053D11DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EDC46C3A-20D4-4EE4-AC8A-C33A053D11DA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5CD4D965-FB7F-41E9-AF9A-86EBF9EA15A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5CD4D965-FB7F-41E9-AF9A-86EBF9EA15A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5CD4D965-FB7F-41E9-AF9A-86EBF9EA15A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5CD4D965-FB7F-41E9-AF9A-86EBF9EA15A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E214269-988A-430C-A508-F7306A54ABC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E214269-988A-430C-A508-F7306A54ABC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E214269-988A-430C-A508-F7306A54ABC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E214269-988A-430C-A508-F7306A54ABC8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{72059F7C-F597-4C05-9C31-C393F9845757}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{72059F7C-F597-4C05-9C31-C393F9845757}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72059F7C-F597-4C05-9C31-C393F9845757}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -32,6 +26,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {3BF4E282-AB0F-4D4F-BE2A-CF0C4C8AC517}
+		SolutionGuid = {EFCA86E7-C772-4813-A3F3-7D24B09036B6}
 	EndGlobalSection
 EndGlobal

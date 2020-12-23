@@ -1,0 +1,17 @@
+{
+  "sendUDP": true,
+  "udpIP": "127.0.0.1",
+  "udpPort": 10001,
+  "fillMMF": true,
+  "copyFormatDestinations": [],
+  "packetFormat": "PacketFormats\\defaultPacketFormat.xml",
+  "filterConfig": "Filters\\GTAVFilters.txt",
+  "hotkey": {
+    "key": 0,
+    "enabled": false,
+    "windows": false,
+    "alt": false,
+    "ctrl": false,
+    "shift": false
+  }
+}

@@ -285,7 +285,7 @@ namespace GenericTelemetryProvider
                     {
 
                         NestedSmoothFilter newSmoothFilter = new NestedSmoothFilter();
-                        newSmoothFilter.SetParameters(1, 3, 0.5f);
+                        newSmoothFilter.SetParameters(0, 10, 1000.0f);
 
                         filterList.Add(newSmoothFilter);
                         newFilter = newSmoothFilter;
@@ -372,5 +372,9 @@ namespace GenericTelemetryProvider
         public float x;
     }
 
-
+    [System.Serializable]
+    public class MedianFilterData : FilterData
+    {
+        public int sampleCount;
+    }
 }

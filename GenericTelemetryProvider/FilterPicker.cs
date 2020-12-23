@@ -16,9 +16,9 @@ namespace GenericTelemetryProvider
         {
             InitializeComponent();
 
-            for(int i = 0; i < (int)FilterModule.FilterType.Max; ++i)
+            for(int i = 0; i < (int)FilterModuleCustom.FilterType.Max; ++i)
             {
-                filterComboBox.Items.Add(((FilterModule.FilterType)i).ToString());
+                filterComboBox.Items.Add(((FilterModuleCustom.FilterType)i).ToString());
             }
             filterComboBox.SelectedIndex = 0;
         }

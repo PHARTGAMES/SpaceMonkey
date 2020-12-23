@@ -40,6 +40,7 @@ namespace GenericTelemetryProvider
             SavitzkyGolay,
             Butterworth,
             FIR,
+            Median,
 
             Max
         }
@@ -110,6 +111,15 @@ namespace GenericTelemetryProvider
 
                         filterList.Add(newFilter);
                     }
+                    else
+                    if (filterData is MedianFilterData)
+                    {
+                        MedianFilterData fData = (MedianFilterData)filterData;
+                        MedianFilterWrapper newFilter = new MedianFilterWrapper();
+                        newFilter.SetParameters(fData.sampleCount);
+
+                        filterList.Add(newFilter);
+                    }
                 }
 
             }
@@ -160,8 +170,17 @@ namespace GenericTelemetryProvider
 
                             newConfig.filters.Add(newFilterData);
                         }
+                        else
+                        if (filter is MedianFilterWrapper)
+                        {
+                            MedianFilterData newFilterData = new MedianFilterData();
+                            MedianFilterWrapper filterW = (MedianFilterWrapper)filter;
+                            newFilterData.sampleCount = filterW.GetSampleCount();
 
-                    }    
+                            newConfig.filters.Add(newFilterData);
+                        }
+
+                    }
                 }    
             }    
 
@@ -323,6 +342,17 @@ namespace GenericTelemetryProvider
                     }
                 case FilterType.FIR:
                     {
+                        break;
+                    }
+                case FilterType.Median:
+                    {
+
+                        MedianFilterWrapper newFilterW = new MedianFilterWrapper();
+                        newFilterW.SetParameters(9);
+
+                        filterList.Add(newFilterW);
+                        newFilter = newFilterW;
+
                         break;
                     }
             }

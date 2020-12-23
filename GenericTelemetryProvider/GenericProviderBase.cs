@@ -234,7 +234,7 @@ namespace GenericTelemetryProvider
             rawData.position_y = currRawPos.Y;
             rawData.position_z = currRawPos.Z;
 
-            lastRawPos = new Vector3(transform.M41, transform.M42, transform.M43);
+            lastRawPos = currRawPos;
 
             //filter position
             FilterModuleCustom.Instance.Filter(rawData, ref filteredData, posKeyMask, true);
@@ -313,6 +313,7 @@ namespace GenericTelemetryProvider
         {
             Vector2 accel2D = new Vector2((float)filteredData.gforce_lateral, (float)filteredData.gforce_longitudinal) / 0.10197162129779283f;
             float accel2DMag = accel2D.Length();
+
             Vector2 accel2DNorm = Vector2.Normalize(accel2D);
 
 
@@ -345,6 +346,12 @@ namespace GenericTelemetryProvider
                 float dot = Vector2.Dot(accel2DNorm, suspensionVectors[i]);
                 float travel = travelCenter;
                 float travelMag = 0.0f;
+
+                if(float.IsInfinity(dot) || float.IsNaN(dot))
+                {
+                    dot = 0;
+                }
+                else
                 if (dot > 0.0f)
                 {
                     travelMag = travelMax;
@@ -408,7 +415,7 @@ namespace GenericTelemetryProvider
             filteredData.roll_velocity = Utils.CalculateAngularChange((float) lastFilteredData.roll, (float) filteredData.roll) / dt;
 
             filteredData.yaw_acceleration = ((float) filteredData.yaw_velocity - (float) lastFilteredData.yaw_velocity) / dt;
-            filteredData.pitch_acceleration = ((float) filteredData.pitch_velocity - (float) lastFilteredData.pitch_acceleration) / dt;
+            filteredData.pitch_acceleration = ((float) filteredData.pitch_velocity - (float) lastFilteredData.pitch_velocity) / dt;
             filteredData.roll_acceleration = ((float) filteredData.roll_velocity - (float) lastFilteredData.roll_velocity) / dt;
 
         }
@@ -449,7 +456,6 @@ namespace GenericTelemetryProvider
 
             if (fillMMF)
             {
-
                 using (MemoryMappedViewStream stream = filteredMMF.CreateViewStream())
                 {
                     BinaryWriter writer = new BinaryWriter(stream);

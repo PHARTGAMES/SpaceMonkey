@@ -56,6 +56,7 @@
             this.hkEnabledCheckbox = new System.Windows.Forms.CheckBox();
             this.wreckfestButton = new System.Windows.Forms.Button();
             this.beamNGButton = new System.Windows.Forms.Button();
+            this.gtavButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // Dirt5Button
@@ -331,11 +332,22 @@
             this.beamNGButton.UseVisualStyleBackColor = true;
             this.beamNGButton.Click += new System.EventHandler(this.beamNGButton_Click);
             // 
+            // gtavButton
+            // 
+            this.gtavButton.Location = new System.Drawing.Point(13, 166);
+            this.gtavButton.Name = "gtavButton";
+            this.gtavButton.Size = new System.Drawing.Size(148, 45);
+            this.gtavButton.TabIndex = 30;
+            this.gtavButton.Text = "GTA V";
+            this.gtavButton.UseVisualStyleBackColor = true;
+            this.gtavButton.Click += new System.EventHandler(this.gtavButton_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(665, 417);
+            this.Controls.Add(this.gtavButton);
             this.Controls.Add(this.beamNGButton);
             this.Controls.Add(this.wreckfestButton);
             this.Controls.Add(this.hkEnabledCheckbox);
@@ -403,6 +415,7 @@
         private System.Windows.Forms.CheckBox hkEnabledCheckbox;
         private System.Windows.Forms.Button wreckfestButton;
         private System.Windows.Forms.Button beamNGButton;
+        private System.Windows.Forms.Button gtavButton;
     }
 }
 

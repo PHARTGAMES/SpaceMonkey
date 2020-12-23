@@ -22,6 +22,7 @@ namespace GenericTelemetryProvider
         public CMCustomUDPData.DataKey filterKey = CMCustomUDPData.DataKey.Max;
         Series filteredSeries;
         Series rawSeries;
+        int chartSize = 30;
 
         public FilterUI()
         {
@@ -64,6 +65,9 @@ namespace GenericTelemetryProvider
 
             keyComboBox.SelectedIndex = 0;
 
+            trackBar1.Minimum = 5;
+            trackBar1.Maximum = 150;
+            
             System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
             timer.Interval = 1000 / 100;
             timer.Tick += new EventHandler(RefreshChart);
@@ -85,8 +89,8 @@ namespace GenericTelemetryProvider
 
                 chart.AxisX.Minimum = 0;
                 chart.AxisX.Maximum = 1;
-                chart.AxisY.Minimum = -10;
-                chart.AxisY.Maximum = 10;
+                chart.AxisY.Minimum = -chartSize;
+                chart.AxisY.Maximum = chartSize;
                 chart.AxisX.Interval = 0;
                 chart.AxisY.Interval = 0;
             });
@@ -117,6 +121,15 @@ namespace GenericTelemetryProvider
 
                             flowLayoutFilters.Controls.Add(newControl);
                         }
+                        else
+                        if (filter is MedianFilterWrapper)
+                        {
+                            MedianFilterControl newControl = new MedianFilterControl();
+                            newControl.SetFilter((MedianFilterWrapper)filter);
+
+                            flowLayoutFilters.Controls.Add(newControl);
+                        }
+
                     }
                 }
 
@@ -195,6 +208,11 @@ namespace GenericTelemetryProvider
             {
                 FilterModuleCustom.Instance.DeleteFilter(((KalmanFilterControl)control).filter, filterKey);
             }
+            else
+            if (control is MedianFilterControl)
+            {
+                FilterModuleCustom.Instance.DeleteFilter(((MedianFilterControl)control).filter, filterKey);
+            }
 
             flowLayoutFilters.Controls.Remove(control);
         }
@@ -216,11 +234,27 @@ namespace GenericTelemetryProvider
             {
                 FilterModuleCustom.Instance.MoveFilter(((KalmanFilterControl)control).filter, filterKey, direction);
             }
+            else
+            if (control is MedianFilterControl)
+            {
+                FilterModuleCustom.Instance.MoveFilter(((MedianFilterControl)control).filter, filterKey, direction);
+            }
         }
 
         private void saveButton_Click(object sender, EventArgs e)
         {
             FilterModuleCustom.Instance.SaveConfig();
+        }
+
+        private void trackBar1_Scroll(object sender, EventArgs e)
+        {
+            chartSize = trackBar1.Value;
+
+            var chart = filterChart.ChartAreas[0];
+
+            chart.AxisY.Minimum = -chartSize;
+            chart.AxisY.Maximum = chartSize;
+            
         }
     }
 }
