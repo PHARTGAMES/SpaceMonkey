@@ -30,6 +30,8 @@ namespace GenericTelemetryProvider
         {
             base.Run();
 
+            maxAccel2DMagSusp = 6.0f;
+
             t = new Thread(ReadTelemetry);
             t.Start();
         }
@@ -98,6 +100,7 @@ namespace GenericTelemetryProvider
 
                         var alloc = GCHandle.Alloc(readBuffer, GCHandleType.Pinned);
                         gtaData = (GTAVData)Marshal.PtrToStructure(alloc.AddrOfPinnedObject(), typeof(GTAVData));
+                        alloc.Free();
                     }
                     gtaDataMutex.ReleaseMutex();
 
@@ -248,22 +251,21 @@ namespace GenericTelemetryProvider
 
         public override void SimulateEngine()
         {
-            filteredData.max_rpm = 6000;
-            filteredData.max_gears = gtaData.gears;
-            filteredData.gear = gtaData.gear;
-            filteredData.idle_rpm = 700;
+            rawData.max_rpm = 6000;
+            rawData.max_gears = gtaData.gears;
+            rawData.gear = gtaData.gear;
+            rawData.idle_rpm = 700;
 
             Vector3 localVelocity = new Vector3((float)filteredData.local_velocity_x, (float)filteredData.local_velocity_y, (float)filteredData.local_velocity_z);
 
             filteredData.speed = localVelocity.Length();
-
         }
 
         public override void ProcessInputs()
         {
             base.ProcessInputs();
 
-            filteredData.engine_rate = Math.Max(700, Math.Min(6000, gtaData.engineRPM));
+            filteredData.engine_rate = Math.Max(700, Math.Min(6000, 700 + (gtaData.engineRPM * (6000-700))));
         }
 
 

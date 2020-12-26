@@ -40,9 +40,13 @@ namespace GenericTelemetryProvider
 
         protected Matrix4x4 transform;
         protected float dt;
+        protected float maxAccel2DMagSusp = 3.0f;
 
         protected int posKeyMask = CMCustomUDPData.GetKeyMask(CMCustomUDPData.DataKey.position_x, CMCustomUDPData.DataKey.position_y, CMCustomUDPData.DataKey.position_z);
         protected int velKeyMask = CMCustomUDPData.GetKeyMask(CMCustomUDPData.DataKey.local_velocity_x, CMCustomUDPData.DataKey.local_velocity_y, CMCustomUDPData.DataKey.local_velocity_z);
+        protected int angVelKeyMask = CMCustomUDPData.GetKeyMask(CMCustomUDPData.DataKey.yaw_velocity, CMCustomUDPData.DataKey.roll_velocity, CMCustomUDPData.DataKey.pitch_velocity);
+        protected int suspVelKeyMask = CMCustomUDPData.GetKeyMask(CMCustomUDPData.DataKey.suspension_velocity_bl, CMCustomUDPData.DataKey.suspension_velocity_br, CMCustomUDPData.DataKey.suspension_velocity_fl, CMCustomUDPData.DataKey.suspension_velocity_fr);
+        protected int accelKeyMask = CMCustomUDPData.GetKeyMask(CMCustomUDPData.DataKey.gforce_lateral, CMCustomUDPData.DataKey.gforce_vertical, CMCustomUDPData.DataKey.gforce_longitudinal);
 
         protected Hotkey hotkey;
         protected bool telemetryPaused = false;
@@ -52,7 +56,7 @@ namespace GenericTelemetryProvider
         {
             mutex = new Mutex(false, "GenericTelemetryProviderMutex");
 
-            filteredMMF = MemoryMappedFile.CreateNew("GenericTelemetryProviderFiltered", 10000);
+            filteredMMF = MemoryMappedFile.CreateOrOpen("GenericTelemetryProviderFiltered", 10000);
 
             telemetryPausedMutex = new Mutex(false);
             if (MainConfig.Instance.configData.hotkey.enabled)
@@ -143,10 +147,6 @@ namespace GenericTelemetryProvider
 
             CalcAngles();
 
-            //Filter everything besides position and velocity
-            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, int.MaxValue & ~(posKeyMask | velKeyMask), false);
-
-
 
             /*
              //debug
@@ -157,6 +157,7 @@ namespace GenericTelemetryProvider
 
                 var alloc = GCHandle.Alloc(readBuffer, GCHandleType.Pinned);
                 GenericProviderData readTelemetry = (GenericProviderData)Marshal.PtrToStructure(alloc.AddrOfPinnedObject(), typeof(GenericProviderData));
+                alloc.Free();
             }
             */
 
@@ -167,6 +168,9 @@ namespace GenericTelemetryProvider
             SimulateEngine();
 
             ProcessInputs();
+
+            //Filter everything besides position, velocity, angular velocity, suspension velocity
+            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, int.MaxValue & ~(posKeyMask | velKeyMask | angVelKeyMask | suspVelKeyMask | accelKeyMask), false);
 
             return true;
         }
@@ -293,6 +297,9 @@ namespace GenericTelemetryProvider
             rawData.gforce_lateral = localAcceleration.X;
             rawData.gforce_vertical = localAcceleration.Y;
             rawData.gforce_longitudinal = localAcceleration.Z;
+
+            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, accelKeyMask, false);
+
         }
 
         public virtual void CalcAngles()
@@ -340,7 +347,7 @@ namespace GenericTelemetryProvider
             float travelCenter = -20.0f;
             float travelMax = 8 - travelCenter;
             float travelMin = -80 - travelCenter;
-            float scaledAccelMag = Math.Min(accel2DMag, 3.0f) / 3.0f;
+            float scaledAccelMag = Math.Min(accel2DMag, maxAccel2DMagSusp) / maxAccel2DMagSusp;
             for (int i = 0; i < 4; ++i)
             {
                 float dot = Vector2.Dot(accel2DNorm, suspensionVectors[i]);
@@ -368,68 +375,71 @@ namespace GenericTelemetryProvider
                 {
                     case 0:
                         {
-                            filteredData.suspension_position_bl = travel;
+                            rawData.suspension_position_bl = filteredData.suspension_position_bl = travel;
                             break;
                         }
                     case 1:
                         {
-                            filteredData.suspension_position_br = travel;
+                            rawData.suspension_position_br = filteredData.suspension_position_br = travel;
                             break;
                         }
                     case 2:
                         {
-                            filteredData.suspension_position_fl = travel;
+                            rawData.suspension_position_fl = filteredData.suspension_position_fl = travel;
                             break;
                         }
                     case 3:
                         {
-                            filteredData.suspension_position_fr = travel;
+                            rawData.suspension_position_fr = filteredData.suspension_position_fr = travel;
                             break;
                         }
                 }
             }
 
 
-            filteredData.suspension_velocity_bl = ((float)filteredData.suspension_position_bl - (float)lastFilteredData.suspension_position_bl) / dt;
-            filteredData.suspension_velocity_br = ((float)filteredData.suspension_position_br - (float)lastFilteredData.suspension_position_br) / dt;
-            filteredData.suspension_velocity_fl = ((float)filteredData.suspension_position_fl - (float)lastFilteredData.suspension_position_fl) / dt;
-            filteredData.suspension_velocity_fr = ((float)filteredData.suspension_position_fr - (float)lastFilteredData.suspension_position_fr) / dt;
+            rawData.suspension_velocity_bl = ((float)filteredData.suspension_position_bl - (float)lastFilteredData.suspension_position_bl) / dt;
+            rawData.suspension_velocity_br = ((float)filteredData.suspension_position_br - (float)lastFilteredData.suspension_position_br) / dt;
+            rawData.suspension_velocity_fl = ((float)filteredData.suspension_position_fl - (float)lastFilteredData.suspension_position_fl) / dt;
+            rawData.suspension_velocity_fr = ((float)filteredData.suspension_position_fr - (float)lastFilteredData.suspension_position_fr) / dt;
 
+            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, suspVelKeyMask, false);
 
-            filteredData.suspension_acceleration_bl = ((float)filteredData.suspension_velocity_bl - (float)lastFilteredData.suspension_velocity_bl) / dt;
-            filteredData.suspension_acceleration_br = ((float)filteredData.suspension_velocity_br - (float)lastFilteredData.suspension_velocity_br) / dt;
-            filteredData.suspension_acceleration_fl = ((float)filteredData.suspension_velocity_fl - (float)lastFilteredData.suspension_velocity_fl) / dt;
-            filteredData.suspension_acceleration_fr = ((float)filteredData.suspension_velocity_fr - (float)lastFilteredData.suspension_velocity_fr) / dt;
+            rawData.suspension_acceleration_bl = ((float)filteredData.suspension_velocity_bl - (float)lastFilteredData.suspension_velocity_bl) / dt;
+            rawData.suspension_acceleration_br = ((float)filteredData.suspension_velocity_br - (float)lastFilteredData.suspension_velocity_br) / dt;
+            rawData.suspension_acceleration_fl = ((float)filteredData.suspension_velocity_fl - (float)lastFilteredData.suspension_velocity_fl) / dt;
+            rawData.suspension_acceleration_fr = ((float)filteredData.suspension_velocity_fr - (float)lastFilteredData.suspension_velocity_fr) / dt;
 
             //calc wheel patch speed.
-            filteredData.wheel_patch_speed_bl = filteredData.local_velocity_z;
-            filteredData.wheel_patch_speed_br = filteredData.local_velocity_z;
-            filteredData.wheel_patch_speed_fl = filteredData.local_velocity_z;
-            filteredData.wheel_patch_speed_fr = filteredData.local_velocity_z;
+            rawData.wheel_patch_speed_bl = filteredData.local_velocity_z;
+            rawData.wheel_patch_speed_br = filteredData.local_velocity_z;
+            rawData.wheel_patch_speed_fl = filteredData.local_velocity_z;
+            rawData.wheel_patch_speed_fr = filteredData.local_velocity_z;
         }
 
         public virtual void CalcAngularVelocityAndAccel()
         {
-            filteredData.yaw_velocity = Utils.CalculateAngularChange((float) lastFilteredData.yaw, (float) filteredData.yaw) / dt;
-            filteredData.pitch_velocity = Utils.CalculateAngularChange((float) lastFilteredData.pitch, (float) filteredData.pitch) / dt;
-            filteredData.roll_velocity = Utils.CalculateAngularChange((float) lastFilteredData.roll, (float) filteredData.roll) / dt;
+            rawData.yaw_velocity = Utils.CalculateAngularChange((float) lastFilteredData.yaw, (float) filteredData.yaw) / dt;
+            rawData.pitch_velocity = Utils.CalculateAngularChange((float) lastFilteredData.pitch, (float) filteredData.pitch) / dt;
+            rawData.roll_velocity = Utils.CalculateAngularChange((float) lastFilteredData.roll, (float) filteredData.roll) / dt;
 
-            filteredData.yaw_acceleration = ((float) filteredData.yaw_velocity - (float) lastFilteredData.yaw_velocity) / dt;
-            filteredData.pitch_acceleration = ((float) filteredData.pitch_velocity - (float) lastFilteredData.pitch_velocity) / dt;
-            filteredData.roll_acceleration = ((float) filteredData.roll_velocity - (float) lastFilteredData.roll_velocity) / dt;
+            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, angVelKeyMask, false);
+
+            rawData.yaw_acceleration = ((float) filteredData.yaw_velocity - (float) lastFilteredData.yaw_velocity) / dt;
+            rawData.pitch_acceleration = ((float) filteredData.pitch_velocity - (float) lastFilteredData.pitch_velocity) / dt;
+            rawData.roll_acceleration = ((float) filteredData.roll_velocity - (float) lastFilteredData.roll_velocity) / dt;
 
         }
 
         public virtual void SimulateEngine()
         {
-            filteredData.max_rpm = 6000;
-            filteredData.max_gears = 6;
-            filteredData.gear = 1;
-            filteredData.idle_rpm = 700;
+            rawData.max_rpm = 6000;
+            rawData.max_gears = 6;
+            rawData.gear = 1;
+            rawData.idle_rpm = 700;
 
             Vector3 localVelocity = new Vector3((float)filteredData.local_velocity_x, (float)filteredData.local_velocity_y, (float)filteredData.local_velocity_z);
 
-            filteredData.speed = localVelocity.Length();
+            rawData.speed = localVelocity.Length();
 
         }
 
