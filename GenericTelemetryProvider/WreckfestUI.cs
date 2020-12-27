@@ -30,7 +30,7 @@ namespace GenericTelemetryProvider
             LoadConfig();
 
             provider = new WreckfestTelemetryProvider();
-            provider.ui = this;
+            provider.gameUI = provider.ui = this;
 
             FilterModuleCustom.Instance.InitFromConfig(MainConfig.Instance.configData.filterConfig); 
 

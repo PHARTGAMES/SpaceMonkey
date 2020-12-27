@@ -30,7 +30,7 @@ namespace GenericTelemetryProvider
             LoadConfig();
 
             provider = new Dirt5TelemetryProvider();
-            provider.ui = this;
+            provider.gameUI = provider.ui = this;
 
             FilterModuleCustom.Instance.InitFromConfig(MainConfig.Instance.configData.filterConfig); 
 

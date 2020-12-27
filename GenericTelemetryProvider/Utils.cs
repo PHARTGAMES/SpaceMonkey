@@ -118,5 +118,42 @@ namespace GenericTelemetryProvider
             return new Vector3(pitch, yaw, roll);
         }
 
+        public static float LoopAngleDeg(float angle, float minMag)
+        {
+
+            float absAngle = Math.Abs(angle);
+
+            if (absAngle <= minMag)
+            {
+                return angle;
+            }
+
+            float direction = angle / absAngle;
+
+            //(180.0f * 1) - 135 = 45
+            //(180.0f *-1) - -135 = -45
+            float loopedAngle = (180.0f * direction) - angle;
+
+            return loopedAngle;
+        }
+
+        public static float LoopAngleRad(float angle, float minMag)
+        {
+            float absAngle = Math.Abs(angle);
+
+            if (absAngle <= minMag)
+            {
+                return angle;
+            }
+
+            float direction = angle / absAngle;
+
+            //(180.0f * 1) - 135 = 45
+            //(180.0f *-1) - -135 = -45
+            float loopedAngle = ((float)Math.PI * direction) - angle;
+
+            return loopedAngle;
+        }
+
     }
 }

@@ -31,6 +31,7 @@ namespace GenericTelemetryProvider
             base.Run();
 
             maxAccel2DMagSusp = 6.0f;
+            telemetryPausedTime = 1.5f;
 
             t = new Thread(ReadTelemetry);
             t.Start();
@@ -246,7 +247,7 @@ namespace GenericTelemetryProvider
 
             rawData.pitch = pyr.X;
             rawData.yaw = -pyr.Y;
-            rawData.roll = pyr.Z;
+            rawData.roll = Utils.LoopAngleRad(pyr.Z, (float)Math.PI * 0.5f);
         }
 
         public override void SimulateEngine()

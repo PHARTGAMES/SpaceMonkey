@@ -62,6 +62,7 @@ namespace GenericTelemetryProvider
 
                     var alloc = GCHandle.Alloc(received, GCHandleType.Pinned);
                     telemetryData = (BNGAPI)Marshal.PtrToStructure(alloc.AddrOfPinnedObject(), typeof(BNGAPI));
+                    alloc.Free();
 
                     if (telemetryData.magic[0] == 'B'
                         && telemetryData.magic[1] == 'N'
@@ -162,8 +163,8 @@ namespace GenericTelemetryProvider
             Vector3 pyr = Utils.GetPYRFromQuaternion(quat);
 
             rawData.pitch = -pyr.X;
-            rawData.yaw = -pyr.Y;
-            rawData.roll = -pyr.Z;
+            rawData.yaw = pyr.Y;
+            rawData.roll = Utils.LoopAngleRad(-pyr.Z, (float)Math.PI * 0.5f);
         }
 
     }

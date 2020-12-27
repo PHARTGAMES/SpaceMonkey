@@ -10,6 +10,7 @@ using System.IO.MemoryMappedFiles;
 using CMCustomUDP;
 using NoiseFilters;
 using Newtonsoft.Json;
+using System.Windows.Forms;
 
 namespace GenericTelemetryProvider
 {
@@ -50,7 +51,9 @@ namespace GenericTelemetryProvider
 
         protected Hotkey hotkey;
         protected bool telemetryPaused = false;
-        Mutex telemetryPausedMutex;
+        protected float telemetryPausedTimer = 0.0f;
+        protected float telemetryPausedTime = 3.0f;
+        public Form gameUI;
 
         public virtual void Run()
         {
@@ -58,7 +61,6 @@ namespace GenericTelemetryProvider
 
             filteredMMF = MemoryMappedFile.CreateOrOpen("GenericTelemetryProviderFiltered", 10000);
 
-            telemetryPausedMutex = new Mutex(false);
             if (MainConfig.Instance.configData.hotkey.enabled)
             {
                 hotkey = new Hotkey();
@@ -68,17 +70,14 @@ namespace GenericTelemetryProvider
                 hotkey.Shift = MainConfig.Instance.configData.hotkey.shift;
                 hotkey.Control = MainConfig.Instance.configData.hotkey.ctrl;
                 hotkey.Pressed += delegate {
-                    telemetryPausedMutex.WaitOne();
                     telemetryPaused = !telemetryPaused;
-                    telemetryPausedMutex.ReleaseMutex();
+                    telemetryPausedTimer = telemetryPausedTime - telemetryPausedTimer;
                 };
 
-                MainForm.Instance.BeginInvoke(new Action<Hotkey>((h) => {
-                    if (h.GetCanRegister(MainForm.Instance))
-                    {
-                        h.Register(MainForm.Instance);
-                    }
-                }), hotkey);
+                if (hotkey.Register(gameUI))
+                {
+                    //giggity
+                }
 
             }
 
@@ -171,6 +170,8 @@ namespace GenericTelemetryProvider
 
             //Filter everything besides position, velocity, angular velocity, suspension velocity
             FilterModuleCustom.Instance.Filter(rawData, ref filteredData, int.MaxValue & ~(posKeyMask | velKeyMask | angVelKeyMask | suspVelKeyMask | accelKeyMask), false);
+
+            HandleTelemetryPaused();
 
             return true;
         }
@@ -311,9 +312,7 @@ namespace GenericTelemetryProvider
 
             rawData.pitch = pyr.X;
             rawData.yaw = pyr.Y;
-            rawData.roll = -pyr.Z;
-
-
+            rawData.roll = Utils.LoopAngleRad(-pyr.Z, (float)Math.PI * 0.5f);
         }
 
         public virtual void SimulateSuspension()
@@ -456,10 +455,6 @@ namespace GenericTelemetryProvider
         public virtual void SendFilteredData()
         {
 
-            telemetryPausedMutex.WaitOne();
-            filteredData.paused = rawData.paused = telemetryPaused ? 1 : 0;
-            telemetryPausedMutex.ReleaseMutex();
-
             byte[] bytes = filteredData.GetBytes();
 
             mutex.WaitOne();
@@ -480,6 +475,19 @@ namespace GenericTelemetryProvider
 
             mutex.ReleaseMutex();
 
+        }
+
+        public virtual void HandleTelemetryPaused()
+        {
+            filteredData.paused = rawData.paused = telemetryPaused ? 1 : 0;
+
+            if(telemetryPausedTimer > 0.0f || telemetryPaused)
+            {
+                telemetryPausedTimer = Math.Max(0.0f, telemetryPausedTimer - dt);
+
+                float lerp = telemetryPausedTimer / telemetryPausedTime;
+                filteredData.LerpAllFromZero(telemetryPaused ? lerp : 1.0f - lerp);
+            }
         }
     }
 }
