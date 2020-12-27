@@ -55,6 +55,28 @@ namespace GenericTelemetryProvider
         protected float telemetryPausedTime = 3.0f;
         public Form gameUI;
 
+        bool isStopped = false;
+        Mutex isStoppedMutex = new Mutex(false);
+
+        public bool IsStopped
+        {
+            get
+            {
+                bool rval = false;
+                isStoppedMutex.WaitOne();
+                rval = isStopped;
+                isStoppedMutex.ReleaseMutex();
+                return rval;
+            }
+            set
+            {
+                isStoppedMutex.WaitOne();
+                isStopped = value;
+                isStoppedMutex.ReleaseMutex();
+            }
+        }
+
+
         public virtual void Run()
         {
             mutex = new Mutex(false, "GenericTelemetryProviderMutex");
@@ -81,6 +103,7 @@ namespace GenericTelemetryProvider
 
             }
 
+
         }
 
         public virtual void StartSending()
@@ -103,6 +126,9 @@ namespace GenericTelemetryProvider
             {
                 telemetrySender.StartSending(MainConfig.Instance.configData.udpIP, MainConfig.Instance.configData.udpPort);
             }
+
+            IsStopped = false;
+
         }
 
         public virtual void StopSending()
@@ -311,7 +337,7 @@ namespace GenericTelemetryProvider
             Vector3 pyr = Utils.GetPYRFromQuaternion(quat);
 
             rawData.pitch = pyr.X;
-            rawData.yaw = pyr.Y;
+            rawData.yaw = -pyr.Y;
             rawData.roll = Utils.LoopAngleRad(-pyr.Z, (float)Math.PI * 0.5f);
         }
 
@@ -488,6 +514,12 @@ namespace GenericTelemetryProvider
                 float lerp = telemetryPausedTimer / telemetryPausedTime;
                 filteredData.LerpAllFromZero(telemetryPaused ? lerp : 1.0f - lerp);
             }
+        }
+
+        public virtual void StopAllThreads()
+        {
+            IsStopped = true;
+
         }
     }
 }

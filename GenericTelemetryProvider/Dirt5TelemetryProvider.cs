@@ -75,7 +75,6 @@ namespace GenericTelemetryProvider
 
         void ScanComplete()
         { 
-            bool isStopped = false;
             ProcessMemoryReader reader = new ProcessMemoryReader();
 
             reader.ReadProcess = mainProcess;
@@ -88,10 +87,8 @@ namespace GenericTelemetryProvider
             sw.Start();
 
             StartSending();
-
-            float dt = 0.0f;
  
-            while (!isStopped)
+            while (!IsStopped)
             {
                 try
                 {
@@ -117,7 +114,10 @@ namespace GenericTelemetryProvider
                     sw.Restart();
                     ProcessTransform(transform, dt);
 
-                    Thread.Sleep(1000 / 100);
+                    using (var sleeper = new ManualResetEvent(false))
+                    {
+                        sleeper.WaitOne((int)(1000.0f * 0.01f));
+                    }
                 }
                 catch (Exception e)
                 {
@@ -174,5 +174,15 @@ namespace GenericTelemetryProvider
             t = new Thread(ScanComplete);
             t.Start();
         }
+
+        public override void StopAllThreads()
+        {
+            base.StopAllThreads();
+
+            if (t != null)
+                t.Join();
+
+        }
+
     }
 }

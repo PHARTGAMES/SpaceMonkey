@@ -43,8 +43,7 @@ namespace GenericTelemetryProvider
         {
             if (textBox.InvokeRequired)
             {
-                SafeCallStringDelegate d = new SafeCallStringDelegate((x) => { textBox.Text = x; });
-                textBox.Invoke(d, new object[] { text });
+                textBox.BeginInvoke(new Action<string>((s) => { textBox.Text = s; }), text);
             }
             else
                 textBox.Text = text;
@@ -54,8 +53,7 @@ namespace GenericTelemetryProvider
         {
             if (button.InvokeRequired)
             {
-                SafeCallBoolDelegate d = new SafeCallBoolDelegate((x) => { button.Enabled = x; });
-                button.Invoke(d, new object[] { value });
+                button.BeginInvoke(new Action<bool>((s) => { button.Enabled = s; }), value);
             }
             else
                 button.Enabled = value;

@@ -116,7 +116,7 @@
             this.vehicleLabel.TabIndex = 12;
             this.vehicleLabel.Text = "Vehicle";
             // 
-            // Dirt5UI
+            // WreckfestUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -129,6 +129,7 @@
             this.Controls.Add(this.vehicleSelector);
             this.Name = "WreckfestUI";
             this.Text = "WreckfestUI";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.WreckfestUI_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
 

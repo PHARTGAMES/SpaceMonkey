@@ -130,6 +130,15 @@ namespace GenericTelemetryProvider
 
         }
 
+        private void WreckfestUI_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            provider.StopAllThreads();
+            provider.Stop();
+
+            Application.ExitThread();
+        }
+        
+
     }
 
     public class WreckfestConfig

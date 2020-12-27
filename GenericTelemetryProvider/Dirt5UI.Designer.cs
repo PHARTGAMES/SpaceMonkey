@@ -102,6 +102,7 @@
             this.Controls.Add(this.initializeButton);
             this.Controls.Add(this.statusLabel);
             this.Controls.Add(this.vehicleSelector);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Dirt5UI_FormClosing);
             this.Name = "Dirt5UI";
             this.Text = "Dirt5UI";
             this.ResumeLayout(false);

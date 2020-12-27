@@ -48,7 +48,6 @@ namespace GenericTelemetryProvider
 
         void ReadTelemetry()
         {
-            bool isStopped = false;
 
             StartSending();
 
@@ -89,7 +88,7 @@ namespace GenericTelemetryProvider
             }
 
             //read and process
-            while (!isStopped)
+            while (!IsStopped)
             {
                 try
                 {
@@ -246,7 +245,7 @@ namespace GenericTelemetryProvider
             Vector3 pyr = Utils.GetPYRFromQuaternion(quat);
 
             rawData.pitch = pyr.X;
-            rawData.yaw = -pyr.Y;
+            rawData.yaw = pyr.Y;
             rawData.roll = Utils.LoopAngleRad(pyr.Z, (float)Math.PI * 0.5f);
         }
 

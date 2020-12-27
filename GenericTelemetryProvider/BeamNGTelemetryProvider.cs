@@ -30,7 +30,6 @@ namespace GenericTelemetryProvider
 
         void ReadTelemetry()
         {
-            bool isStopped = false;
 
             UdpClient socket = new UdpClient();
             socket.ExclusiveAddressUse = false;
@@ -41,9 +40,8 @@ namespace GenericTelemetryProvider
 
             StartSending();
 
-            float dt = 0.0f;
 
-            while (!isStopped)
+            while (!IsStopped)
             {
                 try
                 {
@@ -74,7 +72,10 @@ namespace GenericTelemetryProvider
                         ProcessBNGAPI(dt);
                     }
 
-                    Thread.Sleep(1000 / 100);
+                    using (var sleeper = new ManualResetEvent(false))
+                    {
+                        sleeper.WaitOne((int)(1000.0f * 0.01f));
+                    }
                 }
                 catch (Exception e)
                 {

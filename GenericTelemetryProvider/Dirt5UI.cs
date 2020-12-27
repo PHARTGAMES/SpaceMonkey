@@ -135,6 +135,14 @@ namespace GenericTelemetryProvider
 
         }
 
+        private void Dirt5UI_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            provider.StopAllThreads();
+            provider.Stop();
+
+            Application.ExitThread();
+        }
+
     }
 
     public class Dirt5Config

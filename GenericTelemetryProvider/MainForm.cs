@@ -149,6 +149,7 @@ namespace GenericTelemetryProvider
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+ 
             Application.Exit();
         }
 

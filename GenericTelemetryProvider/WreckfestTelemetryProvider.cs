@@ -59,9 +59,9 @@ namespace GenericTelemetryProvider
 
         }
 
+
         void ScanComplete()
         {
-            bool isStopped = false;
             ProcessMemoryReader reader = new ProcessMemoryReader();
 
             reader.ReadProcess = mainProcess;
@@ -75,9 +75,7 @@ namespace GenericTelemetryProvider
 
             StartSending();
 
-            float dt = 0.0f;
-
-            while (!isStopped)
+            while (!IsStopped)
             {
                 try
                 {
@@ -103,7 +101,10 @@ namespace GenericTelemetryProvider
                     sw.Restart();
                     ProcessTransform(transform, dt);
 
-                    Thread.Sleep(1000 / 100);
+                    using (var sleeper = new ManualResetEvent(false))
+                    {
+                        sleeper.WaitOne((int)(1000.0f * 0.01f));
+                    }
                 }
                 catch (Exception e)
                 {
@@ -120,7 +121,6 @@ namespace GenericTelemetryProvider
         {
             if (!base.ProcessTransform(newTransform, inDT))
                 return false;
-
 
             ui.DebugTextChanged(JsonConvert.SerializeObject(filteredData, Formatting.Indented) + "\n dt: " + dt + "\n steer: " + InputModule.Instance.controller.leftThumb.X + "\n accel: " + InputModule.Instance.controller.rightTrigger + "\n brake: " + InputModule.Instance.controller.leftTrigger);
 
@@ -173,6 +173,16 @@ namespace GenericTelemetryProvider
             rawData.local_velocity_x = -(float)rawData.local_velocity_x;
 
         }
+
+        public override void StopAllThreads()
+        {
+            base.StopAllThreads();
+
+            if (t != null)
+                t.Join();
+
+        }
+
 
     }
 
