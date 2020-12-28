@@ -161,43 +161,51 @@ namespace GenericTelemetryProvider
 
             FilterDT();
 
-            if (!CalcPosition())
-                return true;
-
-            CalcVelocity();
-
-            FilterVelocity();
-
-            CalcAcceleration();
-
-            CalcAngles();
-
-
-            /*
-             //debug
-            using (MemoryMappedViewStream stream = mmf.CreateViewStream())
+            if (CalcPosition())
             {
-                BinaryReader reader = new BinaryReader(stream);
-                byte[] readBuffer = reader.ReadBytes((int)stream.Length);
 
-                var alloc = GCHandle.Alloc(readBuffer, GCHandleType.Pinned);
-                GenericProviderData readTelemetry = (GenericProviderData)Marshal.PtrToStructure(alloc.AddrOfPinnedObject(), typeof(GenericProviderData));
-                alloc.Free();
+                CalcVelocity();
+
+                FilterVelocity();
+
+                CalcAcceleration();
+
+                CalcAngles();
+
+
+                /*
+                 //debug
+                using (MemoryMappedViewStream stream = mmf.CreateViewStream())
+                {
+                    BinaryReader reader = new BinaryReader(stream);
+                    byte[] readBuffer = reader.ReadBytes((int)stream.Length);
+
+                    var alloc = GCHandle.Alloc(readBuffer, GCHandleType.Pinned);
+                    GenericProviderData readTelemetry = (GenericProviderData)Marshal.PtrToStructure(alloc.AddrOfPinnedObject(), typeof(GenericProviderData));
+                    alloc.Free();
+                }
+                */
+
+                CalcAngularVelocityAndAccel();
+
+                SimulateSuspension();
+
+                SimulateEngine();
+
+                ProcessInputs();
+
+                //Filter everything besides position, velocity, angular velocity, suspension velocity
+                FilterModuleCustom.Instance.Filter(rawData, ref filteredData, int.MaxValue & ~(posKeyMask | velKeyMask | angVelKeyMask | suspVelKeyMask | accelKeyMask), false);
+
+                HandleTelemetryPaused();
+
             }
-            */
+            else
+            {
+                filteredData.Copy(lastFilteredData);
+            }    
 
-            CalcAngularVelocityAndAccel();
 
-            SimulateSuspension();
-
-            SimulateEngine();
-
-            ProcessInputs();
-
-            //Filter everything besides position, velocity, angular velocity, suspension velocity
-            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, int.MaxValue & ~(posKeyMask | velKeyMask | angVelKeyMask | suspVelKeyMask | accelKeyMask), false);
-
-            HandleTelemetryPaused();
 
             return true;
         }
@@ -251,7 +259,7 @@ namespace GenericTelemetryProvider
         public virtual bool CalcPosition()
         {
             Vector3 currRawPos = new Vector3(transform.M41, transform.M42, transform.M43);
-
+            
             Vector3 rawVel = (currRawPos - lastRawPos) / dt;
             float rawVelMag = rawVel.Length();
             float lastVelMag = lastWorldVelocity.Length();
@@ -260,7 +268,7 @@ namespace GenericTelemetryProvider
             {
                 return false;
             }
-
+            
             rawData.position_x = currRawPos.X;
             rawData.position_y = currRawPos.Y;
             rawData.position_z = currRawPos.Z;
