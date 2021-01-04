@@ -22,7 +22,6 @@ namespace GenericTelemetryProvider
         GTAVData gtaData;
         MemoryMappedFile gtaDataMMF;
         Mutex gtaDataMutex;
-        float fixedDT = 0.01f;
         Vector3 gtaVel = Vector3.Zero;
 
 
@@ -50,6 +49,12 @@ namespace GenericTelemetryProvider
         {
 
             StartSending();
+
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+
+            Stopwatch processSW = new Stopwatch();
+
 
             //wait for telemetry
             while (true)
@@ -92,6 +97,7 @@ namespace GenericTelemetryProvider
             {
                 try
                 {
+                    processSW.Restart();
                     gtaDataMutex.WaitOne();
                     using (MemoryMappedViewStream stream = gtaDataMMF.CreateViewStream())
                     {
@@ -104,14 +110,17 @@ namespace GenericTelemetryProvider
                     }
                     gtaDataMutex.ReleaseMutex();
 
+                    float frameDT = sw.ElapsedMilliseconds / 1000.0f;
+                    sw.Restart();
                     if(!gtaData.paused)
                     {
-                        ProcessGTAData();
+                        ProcessGTAData(frameDT);
                     }
 
                     using (var sleeper = new ManualResetEvent(false))
                     {
-                        sleeper.WaitOne((int)(1000.0f * fixedDT));
+                        int processTime = (int)processSW.ElapsedMilliseconds;
+                        sleeper.WaitOne(Math.Max(0, updateDelay - processTime));
                     }
                 }
                 catch (Exception e)
@@ -126,7 +135,7 @@ namespace GenericTelemetryProvider
 
             
 
-        void ProcessGTAData()
+        void ProcessGTAData(float _dt)
         {
             if (gtaData == null)
                 return;
@@ -151,7 +160,7 @@ namespace GenericTelemetryProvider
 
             gtaVel = new Vector3(gtaData.velX, gtaData.velZ, gtaData.velY);
 
-            ProcessTransform(transform, gtaData.dt);
+            ProcessTransform(transform, _dt);
         }
 
         public override bool ProcessTransform(Matrix4x4 newTransform, float inDT)
@@ -180,7 +189,7 @@ namespace GenericTelemetryProvider
         public override void FilterDT()
         {
             if (dt <= 0)
-                dt = 0.008f;
+                dt = 0.015f;
         }
 
         public override bool CalcPosition()
@@ -202,8 +211,8 @@ namespace GenericTelemetryProvider
 
         public override void CalcVelocity()
         {
-            Vector3 worldVelocity = gtaVel;
-            lastWorldVelocity = gtaVel;
+            Vector3 worldVelocity = (gtaVel * gtaData.dt) / dt;
+            lastWorldVelocity = worldVelocity;
 
             Matrix4x4 rotation = new Matrix4x4();
             rotation = transform;
@@ -245,7 +254,7 @@ namespace GenericTelemetryProvider
             Vector3 pyr = Utils.GetPYRFromQuaternion(quat);
 
             rawData.pitch = pyr.X;
-            rawData.yaw = pyr.Y;
+            rawData.yaw = -pyr.Y;
             rawData.roll = Utils.LoopAngleRad(pyr.Z, (float)Math.PI * 0.5f);
         }
 

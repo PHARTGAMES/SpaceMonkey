@@ -38,6 +38,8 @@ namespace GenericTelemetryProvider
             Stopwatch sw = new Stopwatch();
             sw.Start();
 
+            Stopwatch processSW = new Stopwatch();
+
             StartSending();
 
 
@@ -46,6 +48,7 @@ namespace GenericTelemetryProvider
                 try
                 {
 
+                    processSW.Restart();
                     //wait for telemetry
                     if (socket.Available == 0)
                     {
@@ -74,7 +77,8 @@ namespace GenericTelemetryProvider
 
                     using (var sleeper = new ManualResetEvent(false))
                     {
-                        sleeper.WaitOne((int)(1000.0f * 0.01f));
+                        int processTime = (int)processSW.ElapsedMilliseconds;
+                        sleeper.WaitOne(Math.Max(0, updateDelay - processTime));
                     }
                 }
                 catch (Exception e)
@@ -131,19 +135,59 @@ namespace GenericTelemetryProvider
 
         public override void FilterDT()
         {
-            base.FilterDT();
+            //            base.FilterDT();
+            if (dt <= 0)
+                dt = 0.015f;
+
         }
 
         public override bool CalcPosition()
         {
-            return base.CalcPosition();
+            //            return base.CalcPosition();
+
+            Vector3 currRawPos = new Vector3(transform.M41, transform.M42, transform.M43);
+
+            rawData.position_x = currRawPos.X;
+            rawData.position_y = currRawPos.Y;
+            rawData.position_z = currRawPos.Z;
+
+            lastRawPos = currRawPos;
+
+            //filter position
+            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, posKeyMask, true);
+
+            //assign
+            worldPosition = new Vector3((float)filteredData.position_x, (float)filteredData.position_y, (float)filteredData.position_z);
+
+            return true;
+
         }
 
         public override void CalcVelocity()
         {
-            base.CalcVelocity();
+            //            base.CalcVelocity();
 
-            rawData.local_velocity_x = -(float)rawData.local_velocity_x;
+            Matrix4x4 rotation = new Matrix4x4();
+            rotation = transform;
+            rotation.M41 = 0.0f;
+            rotation.M42 = 0.0f;
+            rotation.M43 = 0.0f;
+            rotation.M44 = 1.0f;
+
+            Matrix4x4 rotInv = new Matrix4x4();
+            Matrix4x4.Invert(rotation, out rotInv);
+
+            Vector3 worldVelocity = new Vector3(telemetryData.velX, telemetryData.velZ, telemetryData.velY);
+
+
+            //transform world velocity to local space
+            Vector3 localVelocity = Vector3.Transform(worldVelocity, rotInv);
+
+            rawData.local_velocity_x = localVelocity.X;
+            rawData.local_velocity_y = localVelocity.Y;
+            rawData.local_velocity_z = localVelocity.Z;
+
+            //            rawData.local_velocity_x = -(float)rawData.local_velocity_x;
         }
 
         public override void FilterVelocity()
@@ -164,7 +208,7 @@ namespace GenericTelemetryProvider
             Vector3 pyr = Utils.GetPYRFromQuaternion(quat);
 
             rawData.pitch = -pyr.X;
-            rawData.yaw = pyr.Y;
+            rawData.yaw = -pyr.Y;
             rawData.roll = Utils.LoopAngleRad(-pyr.Z, (float)Math.PI * 0.5f);
         }
 

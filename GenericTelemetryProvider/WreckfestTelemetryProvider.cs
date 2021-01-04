@@ -73,6 +73,8 @@ namespace GenericTelemetryProvider
             Stopwatch sw = new Stopwatch();
             sw.Start();
 
+            Stopwatch processSW = new Stopwatch();
+
             StartSending();
 
             while (!IsStopped)
@@ -80,6 +82,7 @@ namespace GenericTelemetryProvider
                 try
                 {
 
+                    processSW.Restart();
                     Int64 byteReadSize;
                     reader.ReadProcessMemory((IntPtr)memoryAddress, readSize, out byteReadSize, readBuffer);
 
@@ -103,7 +106,8 @@ namespace GenericTelemetryProvider
 
                     using (var sleeper = new ManualResetEvent(false))
                     {
-                        sleeper.WaitOne((int)(1000.0f * 0.01f));
+                        int processTime = (int)processSW.ElapsedMilliseconds;
+                        sleeper.WaitOne(Math.Max(0, updateDelay - processTime));
                     }
                 }
                 catch (Exception e)

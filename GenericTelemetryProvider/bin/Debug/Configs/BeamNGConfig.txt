@@ -7,11 +7,11 @@
   "packetFormat": "PacketFormats\\defaultPacketFormat.xml",
   "filterConfig": "Filters\\BeamNGFilters.txt",
   "hotkey": {
-    "key": 0,
-    "enabled": false,
+    "key": 56,
+    "enabled": true,
     "windows": false,
-    "alt": false,
-    "ctrl": false,
+    "alt": true,
+    "ctrl": true,
     "shift": false
   }
 }

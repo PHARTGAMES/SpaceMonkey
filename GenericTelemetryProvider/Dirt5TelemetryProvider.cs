@@ -82,9 +82,11 @@ namespace GenericTelemetryProvider
             byte[] readBuffer = new byte[readSize];
             reader.OpenProcess();
 
-
             Stopwatch sw = new Stopwatch();
             sw.Start();
+
+            Stopwatch processSW = new Stopwatch();
+
 
             StartSending();
  
@@ -92,7 +94,7 @@ namespace GenericTelemetryProvider
             {
                 try
                 {
-
+                    processSW.Restart();
                     Int64 byteReadSize;
                     reader.ReadProcessMemory((IntPtr)memoryAddress, readSize, out byteReadSize, readBuffer);
 
@@ -116,7 +118,8 @@ namespace GenericTelemetryProvider
 
                     using (var sleeper = new ManualResetEvent(false))
                     {
-                        sleeper.WaitOne((int)(1000.0f * 0.01f));
+                        int processTime = (int)processSW.ElapsedMilliseconds;
+                        sleeper.WaitOne(Math.Max(0, updateDelay - processTime));
                     }
                 }
                 catch (Exception e)
@@ -183,6 +186,15 @@ namespace GenericTelemetryProvider
                 t.Join();
 
         }
+
+  
+
+        public override void FilterDT()
+        {
+            if (dt <= 0)
+                dt = 0.015f;
+        }
+
 
     }
 }

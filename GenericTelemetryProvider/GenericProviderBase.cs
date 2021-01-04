@@ -54,6 +54,7 @@ namespace GenericTelemetryProvider
         protected float telemetryPausedTimer = 0.0f;
         protected float telemetryPausedTime = 3.0f;
         public Form gameUI;
+        public int updateDelay = 10;
 
         bool isStopped = false;
         Mutex isStoppedMutex = new Mutex(false);
@@ -345,7 +346,7 @@ namespace GenericTelemetryProvider
             Vector3 pyr = Utils.GetPYRFromQuaternion(quat);
 
             rawData.pitch = pyr.X;
-            rawData.yaw = -pyr.Y;
+            rawData.yaw = pyr.Y;
             rawData.roll = Utils.LoopAngleRad(-pyr.Z, (float)Math.PI * 0.5f);
         }
 
