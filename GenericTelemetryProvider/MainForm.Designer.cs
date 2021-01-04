@@ -57,6 +57,7 @@
             this.wreckfestButton = new System.Windows.Forms.Button();
             this.beamNGButton = new System.Windows.Forms.Button();
             this.gtavButton = new System.Windows.Forms.Button();
+            this.dcsButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // Dirt5Button
@@ -342,11 +343,22 @@
             this.gtavButton.UseVisualStyleBackColor = true;
             this.gtavButton.Click += new System.EventHandler(this.gtavButton_Click);
             // 
+            // dcsButton
+            // 
+            this.dcsButton.Location = new System.Drawing.Point(13, 217);
+            this.dcsButton.Name = "dcsButton";
+            this.dcsButton.Size = new System.Drawing.Size(148, 45);
+            this.dcsButton.TabIndex = 31;
+            this.dcsButton.Text = "DCS";
+            this.dcsButton.UseVisualStyleBackColor = true;
+            this.dcsButton.Click += new System.EventHandler(this.dcsButton_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(665, 417);
+            this.Controls.Add(this.dcsButton);
             this.Controls.Add(this.gtavButton);
             this.Controls.Add(this.beamNGButton);
             this.Controls.Add(this.wreckfestButton);
@@ -416,6 +428,7 @@
         private System.Windows.Forms.Button wreckfestButton;
         private System.Windows.Forms.Button beamNGButton;
         private System.Windows.Forms.Button gtavButton;
+        private System.Windows.Forms.Button dcsButton;
     }
 }
 

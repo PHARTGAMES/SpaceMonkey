@@ -52,6 +52,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DCSUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DCSUI.Designer.cs">
+      <DependentUpon>DCSUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DCSTelemetryProvider.cs" />
     <Compile Include="FilterModule.cs" />
     <Compile Include="GTAVTelemetryProvider .cs" />
     <Compile Include="GTAVUI.cs">
@@ -143,6 +150,9 @@
     <Compile Include="Utils.cs" />
     <Compile Include="WreckfestTelemetryProvider.cs" />
     <Compile Include="XInputController.cs" />
+    <EmbeddedResource Include="DCSUI.resx">
+      <DependentUpon>DCSUI.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GTAVUI.resx">
       <DependentUpon>GTAVUI.cs</DependentUpon>
     </EmbeddedResource>

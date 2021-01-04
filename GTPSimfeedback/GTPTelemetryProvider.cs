@@ -147,6 +147,9 @@ namespace GTPSimfeedback
             Stopwatch sw = new Stopwatch();
             sw.Start();
 
+            Stopwatch processSW = new Stopwatch();
+
+
             int readSize = telemetryData.GetSize();
             byte[] readBuffer;
 
@@ -173,7 +176,12 @@ namespace GTPSimfeedback
                         {
                             if (socket.Available == 0)
                             {
-                                Thread.Sleep(1000);
+                                if (sw.ElapsedMilliseconds > 500)
+                                {
+                                    Thread.Sleep(1000);
+                                }
+
+                                continue;
                             }
                             else
                                 break;
@@ -253,7 +261,25 @@ namespace GTPSimfeedback
                             new GTPTelemetryInfo(telemetryToSend));
                         RaiseEvent(OnTelemetryUpdate, args);
 
-                        Thread.Sleep(1000 / 100);
+                        bool sleep = true;
+                        if(config.receiveUDP)
+                        {
+                            if (socket.Available != 0)
+                            {
+                                sleep = false;
+                            }
+
+                        }
+
+                        if (sleep)
+                        {
+                            using (var sleeper = new ManualResetEvent(false))
+                            {
+                                int processTime = (int)processSW.ElapsedMilliseconds;
+                                sleeper.WaitOne(Math.Max(0, 10 - processTime));
+                            }
+                            processSW.Restart();
+                        }
                     }
                     else if (sw.ElapsedMilliseconds > 500)
                     {

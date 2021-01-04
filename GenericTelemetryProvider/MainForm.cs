@@ -25,6 +25,7 @@ namespace GenericTelemetryProvider
         WreckfestUI wreckfestUI;
         BeamNGUI beamNGUI;
         GTAVUI gtavUI;
+        DCSUI dcsUI;
         FilterUI filterUI;
         public static MainForm Instance;
 
@@ -456,6 +457,21 @@ namespace GenericTelemetryProvider
 
             Thread x = new Thread(new ParameterizedThreadStart((form) => ((GTAVUI)form).ShowDialog()));
             x.Start(gtavUI);
+        }
+
+        private void dcsButton_Click(object sender, EventArgs e)
+        {
+            if (dcsUI != null)
+            {
+                dcsUI.Close();
+                dcsUI = null;
+            }
+
+            dcsUI = new DCSUI();
+
+            Thread x = new Thread(new ParameterizedThreadStart((form) => ((DCSUI)form).ShowDialog()));
+            x.Start(dcsUI);
+
         }
     }
 }
