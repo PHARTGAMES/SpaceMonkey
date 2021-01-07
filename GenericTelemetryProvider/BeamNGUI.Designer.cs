@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BeamNGUI));
             this.statusLabel = new System.Windows.Forms.TextBox();
             this.matrixBox = new System.Windows.Forms.RichTextBox();
             this.initializeButton = new System.Windows.Forms.Button();
@@ -93,6 +94,7 @@
             this.Controls.Add(this.initializeButton);
             this.Controls.Add(this.matrixBox);
             this.Controls.Add(this.statusLabel);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "BeamNGUI";
             this.Text = "BeamNGUI";
             this.ResumeLayout(false);

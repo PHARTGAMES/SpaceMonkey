@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Dirt5UI));
             this.vehicleSelector = new System.Windows.Forms.ComboBox();
             this.statusLabel = new System.Windows.Forms.TextBox();
             this.initializeButton = new System.Windows.Forms.Button();
@@ -102,9 +103,10 @@
             this.Controls.Add(this.initializeButton);
             this.Controls.Add(this.statusLabel);
             this.Controls.Add(this.vehicleSelector);
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Dirt5UI_FormClosing);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Dirt5UI";
             this.Text = "Dirt5UI";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Dirt5UI_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
 

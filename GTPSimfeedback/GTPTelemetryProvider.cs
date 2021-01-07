@@ -65,8 +65,8 @@ namespace GTPSimfeedback
         {
             Author = "PEZZALUCIFER";
             Version = "v1.0";
-            BannerImage = @"img\banner_DIRT5.png"; // Image shown on top of the profiles tab
-            IconImage = @"img\DIRT5.jpg";  // Icon used in the tree view for the profile
+            BannerImage = @"img\banner_simfeedback.png"; // Image shown on top of the profiles tab
+            IconImage = @"img\GTPIcon.png";  // Icon used in the tree view for the profile
             TelemetryUpdateFrequency = 100;     // the update frequency in samples per second
             LoadConfig("CMCustomUDP/GTPConfig.txt");
         }

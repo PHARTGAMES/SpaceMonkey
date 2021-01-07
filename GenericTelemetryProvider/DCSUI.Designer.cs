@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DCSUI));
             this.statusLabel = new System.Windows.Forms.TextBox();
             this.matrixBox = new System.Windows.Forms.RichTextBox();
             this.initializeButton = new System.Windows.Forms.Button();
@@ -83,7 +84,7 @@
             this.portLabel.TabIndex = 13;
             this.portLabel.Text = "UDP Receive Port";
             // 
-            // BeamNGUI
+            // DCSUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -93,6 +94,7 @@
             this.Controls.Add(this.initializeButton);
             this.Controls.Add(this.matrixBox);
             this.Controls.Add(this.statusLabel);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "DCSUI";
             this.Text = "DCSUI";
             this.ResumeLayout(false);

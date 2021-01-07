@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WreckfestUI));
             this.vehicleSelector = new System.Windows.Forms.ComboBox();
             this.statusLabel = new System.Windows.Forms.TextBox();
             this.initializeButton = new System.Windows.Forms.Button();
@@ -39,11 +40,6 @@
             // vehicleSelector
             // 
             this.vehicleSelector.FormattingEnabled = true;
-            this.vehicleSelector.Location = new System.Drawing.Point(12, 28);
-            this.vehicleSelector.Name = "vehicleSelector";
-            this.vehicleSelector.Size = new System.Drawing.Size(208, 21);
-            this.vehicleSelector.TabIndex = 2;
-            this.vehicleSelector.SelectedIndexChanged += new System.EventHandler(this.vehicleSelector_SelectedIndexChanged);
             this.vehicleSelector.Items.AddRange(new object[] {
             "00",
             "01",
@@ -69,6 +65,11 @@
             "21",
             "22",
             "23"});
+            this.vehicleSelector.Location = new System.Drawing.Point(12, 28);
+            this.vehicleSelector.Name = "vehicleSelector";
+            this.vehicleSelector.Size = new System.Drawing.Size(208, 21);
+            this.vehicleSelector.TabIndex = 2;
+            this.vehicleSelector.SelectedIndexChanged += new System.EventHandler(this.vehicleSelector_SelectedIndexChanged);
             // 
             // statusLabel
             // 
@@ -127,6 +128,7 @@
             this.Controls.Add(this.initializeButton);
             this.Controls.Add(this.statusLabel);
             this.Controls.Add(this.vehicleSelector);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "WreckfestUI";
             this.Text = "WreckfestUI";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.WreckfestUI_FormClosing);

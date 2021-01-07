@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.Dirt5Button = new System.Windows.Forms.Button();
             this.Filters = new System.Windows.Forms.Button();
             this.fillMMFCheckbox = new System.Windows.Forms.CheckBox();
@@ -388,6 +389,7 @@
             this.Controls.Add(this.fillMMFCheckbox);
             this.Controls.Add(this.Filters);
             this.Controls.Add(this.Dirt5Button);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
             this.Text = "GenericTelemetryProvider";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);

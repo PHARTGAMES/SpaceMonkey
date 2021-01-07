@@ -31,6 +31,7 @@
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FilterUI));
             this.filterChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.keyComboBox = new System.Windows.Forms.ComboBox();
             this.flowLayoutFilters = new System.Windows.Forms.FlowLayoutPanel();
@@ -101,6 +102,7 @@
             this.Controls.Add(this.flowLayoutFilters);
             this.Controls.Add(this.keyComboBox);
             this.Controls.Add(this.filterChart);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FilterUI";
             this.Text = "FilterUI";
             this.Load += new System.EventHandler(this.FilterUI_Load);
