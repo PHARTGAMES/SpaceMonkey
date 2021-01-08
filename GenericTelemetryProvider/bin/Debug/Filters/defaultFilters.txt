@@ -1,23 +1,23 @@
 {
-  "$type": "GenericTelemetryProvider.FilterConfigData, GenericTelemetryProvider",
+  "$type": "GenericTelemetryProvider.FilterConfigData, SpaceMonkeyTP",
   "keys": {
-    "$type": "System.Collections.Generic.List`1[[GenericTelemetryProvider.FilterDataKey, GenericTelemetryProvider]], mscorlib",
+    "$type": "System.Collections.Generic.List`1[[GenericTelemetryProvider.FilterDataKey, SpaceMonkeyTP]], mscorlib",
     "$values": [
       {
-        "$type": "GenericTelemetryProvider.FilterDataKey, GenericTelemetryProvider",
+        "$type": "GenericTelemetryProvider.FilterDataKey, SpaceMonkeyTP",
         "key": 11,
         "filters": {
-          "$type": "System.Collections.Generic.List`1[[GenericTelemetryProvider.FilterData, GenericTelemetryProvider]], mscorlib",
+          "$type": "System.Collections.Generic.List`1[[GenericTelemetryProvider.FilterData, SpaceMonkeyTP]], mscorlib",
           "$values": [
             {
-              "$type": "GenericTelemetryProvider.SmoothFilterData, GenericTelemetryProvider",
+              "$type": "GenericTelemetryProvider.SmoothFilterData, SpaceMonkeyTP",
               "nestCount": 0,
               "sampleCount": 10,
               "maxDelta": 0.5,
               "type": null
             },
             {
-              "$type": "GenericTelemetryProvider.KalmanFilterData, GenericTelemetryProvider",
+              "$type": "GenericTelemetryProvider.KalmanFilterData, SpaceMonkeyTP",
               "a": 1.0,
               "h": 1.0,
               "q": 0.02,
@@ -30,20 +30,20 @@
         }
       },
       {
-        "$type": "GenericTelemetryProvider.FilterDataKey, GenericTelemetryProvider",
+        "$type": "GenericTelemetryProvider.FilterDataKey, SpaceMonkeyTP",
         "key": 12,
         "filters": {
-          "$type": "System.Collections.Generic.List`1[[GenericTelemetryProvider.FilterData, GenericTelemetryProvider]], mscorlib",
+          "$type": "System.Collections.Generic.List`1[[GenericTelemetryProvider.FilterData, SpaceMonkeyTP]], mscorlib",
           "$values": [
             {
-              "$type": "GenericTelemetryProvider.SmoothFilterData, GenericTelemetryProvider",
+              "$type": "GenericTelemetryProvider.SmoothFilterData, SpaceMonkeyTP",
               "nestCount": 0,
               "sampleCount": 10,
               "maxDelta": 0.5,
               "type": null
             },
             {
-              "$type": "GenericTelemetryProvider.KalmanFilterData, GenericTelemetryProvider",
+              "$type": "GenericTelemetryProvider.KalmanFilterData, SpaceMonkeyTP",
               "a": 1.0,
               "h": 1.0,
               "q": 0.02,
@@ -56,20 +56,20 @@
         }
       },
       {
-        "$type": "GenericTelemetryProvider.FilterDataKey, GenericTelemetryProvider",
+        "$type": "GenericTelemetryProvider.FilterDataKey, SpaceMonkeyTP",
         "key": 13,
         "filters": {
-          "$type": "System.Collections.Generic.List`1[[GenericTelemetryProvider.FilterData, GenericTelemetryProvider]], mscorlib",
+          "$type": "System.Collections.Generic.List`1[[GenericTelemetryProvider.FilterData, SpaceMonkeyTP]], mscorlib",
           "$values": [
             {
-              "$type": "GenericTelemetryProvider.SmoothFilterData, GenericTelemetryProvider",
+              "$type": "GenericTelemetryProvider.SmoothFilterData, SpaceMonkeyTP",
               "nestCount": 0,
               "sampleCount": 10,
               "maxDelta": 0.5,
               "type": null
             },
             {
-              "$type": "GenericTelemetryProvider.KalmanFilterData, GenericTelemetryProvider",
+              "$type": "GenericTelemetryProvider.KalmanFilterData, SpaceMonkeyTP",
               "a": 1.0,
               "h": 1.0,
               "q": 0.02,
@@ -82,13 +82,13 @@
         }
       },
       {
-        "$type": "GenericTelemetryProvider.FilterDataKey, GenericTelemetryProvider",
+        "$type": "GenericTelemetryProvider.FilterDataKey, SpaceMonkeyTP",
         "key": 14,
         "filters": {
-          "$type": "System.Collections.Generic.List`1[[GenericTelemetryProvider.FilterData, GenericTelemetryProvider]], mscorlib",
+          "$type": "System.Collections.Generic.List`1[[GenericTelemetryProvider.FilterData, SpaceMonkeyTP]], mscorlib",
           "$values": [
             {
-              "$type": "GenericTelemetryProvider.KalmanFilterData, GenericTelemetryProvider",
+              "$type": "GenericTelemetryProvider.KalmanFilterData, SpaceMonkeyTP",
               "a": 1.0,
               "h": 1.0,
               "q": 0.02,
@@ -101,13 +101,13 @@
         }
       },
       {
-        "$type": "GenericTelemetryProvider.FilterDataKey, GenericTelemetryProvider",
+        "$type": "GenericTelemetryProvider.FilterDataKey, SpaceMonkeyTP",
         "key": 15,
         "filters": {
-          "$type": "System.Collections.Generic.List`1[[GenericTelemetryProvider.FilterData, GenericTelemetryProvider]], mscorlib",
+          "$type": "System.Collections.Generic.List`1[[GenericTelemetryProvider.FilterData, SpaceMonkeyTP]], mscorlib",
           "$values": [
             {
-              "$type": "GenericTelemetryProvider.KalmanFilterData, GenericTelemetryProvider",
+              "$type": "GenericTelemetryProvider.KalmanFilterData, SpaceMonkeyTP",
               "a": 1.0,
               "h": 1.0,
               "q": 0.02,
@@ -120,13 +120,13 @@
         }
       },
       {
-        "$type": "GenericTelemetryProvider.FilterDataKey, GenericTelemetryProvider",
+        "$type": "GenericTelemetryProvider.FilterDataKey, SpaceMonkeyTP",
         "key": 16,
         "filters": {
-          "$type": "System.Collections.Generic.List`1[[GenericTelemetryProvider.FilterData, GenericTelemetryProvider]], mscorlib",
+          "$type": "System.Collections.Generic.List`1[[GenericTelemetryProvider.FilterData, SpaceMonkeyTP]], mscorlib",
           "$values": [
             {
-              "$type": "GenericTelemetryProvider.KalmanFilterData, GenericTelemetryProvider",
+              "$type": "GenericTelemetryProvider.KalmanFilterData, SpaceMonkeyTP",
               "a": 1.0,
               "h": 1.0,
               "q": 0.02,
@@ -139,13 +139,13 @@
         }
       },
       {
-        "$type": "GenericTelemetryProvider.FilterDataKey, GenericTelemetryProvider",
+        "$type": "GenericTelemetryProvider.FilterDataKey, SpaceMonkeyTP",
         "key": 17,
         "filters": {
-          "$type": "System.Collections.Generic.List`1[[GenericTelemetryProvider.FilterData, GenericTelemetryProvider]], mscorlib",
+          "$type": "System.Collections.Generic.List`1[[GenericTelemetryProvider.FilterData, SpaceMonkeyTP]], mscorlib",
           "$values": [
             {
-              "$type": "GenericTelemetryProvider.KalmanFilterData, GenericTelemetryProvider",
+              "$type": "GenericTelemetryProvider.KalmanFilterData, SpaceMonkeyTP",
               "a": 1.0,
               "h": 1.0,
               "q": 0.02,
@@ -158,13 +158,13 @@
         }
       },
       {
-        "$type": "GenericTelemetryProvider.FilterDataKey, GenericTelemetryProvider",
+        "$type": "GenericTelemetryProvider.FilterDataKey, SpaceMonkeyTP",
         "key": 18,
         "filters": {
-          "$type": "System.Collections.Generic.List`1[[GenericTelemetryProvider.FilterData, GenericTelemetryProvider]], mscorlib",
+          "$type": "System.Collections.Generic.List`1[[GenericTelemetryProvider.FilterData, SpaceMonkeyTP]], mscorlib",
           "$values": [
             {
-              "$type": "GenericTelemetryProvider.KalmanFilterData, GenericTelemetryProvider",
+              "$type": "GenericTelemetryProvider.KalmanFilterData, SpaceMonkeyTP",
               "a": 1.0,
               "h": 1.0,
               "q": 0.02,
@@ -177,13 +177,13 @@
         }
       },
       {
-        "$type": "GenericTelemetryProvider.FilterDataKey, GenericTelemetryProvider",
+        "$type": "GenericTelemetryProvider.FilterDataKey, SpaceMonkeyTP",
         "key": 19,
         "filters": {
-          "$type": "System.Collections.Generic.List`1[[GenericTelemetryProvider.FilterData, GenericTelemetryProvider]], mscorlib",
+          "$type": "System.Collections.Generic.List`1[[GenericTelemetryProvider.FilterData, SpaceMonkeyTP]], mscorlib",
           "$values": [
             {
-              "$type": "GenericTelemetryProvider.KalmanFilterData, GenericTelemetryProvider",
+              "$type": "GenericTelemetryProvider.KalmanFilterData, SpaceMonkeyTP",
               "a": 1.0,
               "h": 1.0,
               "q": 0.02,
