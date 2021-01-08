@@ -65,17 +65,17 @@ namespace GTPSimfeedback
         {
             Author = "PEZZALUCIFER";
             Version = "v1.0";
-            BannerImage = @"img\banner_simfeedback.png"; // Image shown on top of the profiles tab
-            IconImage = @"img\GTPIcon.png";  // Icon used in the tree view for the profile
+            BannerImage = @"img\SMBanner.png"; // Image shown on top of the profiles tab
+            IconImage = @"img\SMIcon.png";  // Icon used in the tree view for the profile
             TelemetryUpdateFrequency = 100;     // the update frequency in samples per second
-            LoadConfig("CMCustomUDP/GTPConfig.txt");
+            LoadConfig("CMCustomUDP/SMConfig.txt");
         }
 
         /// <summary>
         /// Name of this TelemetryProvider.
         /// Used for dynamic loading and linking to the profile configuration.
         /// </summary>
-        public override string Name { get { return "gtpsfx"; } }
+        public override string Name { get { return "spacemonkeysfx"; } }
 
         public override void Init(ILogger logger)
         {

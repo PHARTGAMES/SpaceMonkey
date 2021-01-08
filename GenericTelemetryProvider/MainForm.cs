@@ -18,7 +18,7 @@ using CMCustomUDP;
 namespace GenericTelemetryProvider
 {
 
-    public partial class MainForm : Form
+    public partial class GenericTelemetryProvider : Form
     {
 
         Dirt5UI dirt5UI;
@@ -27,11 +27,11 @@ namespace GenericTelemetryProvider
         GTAVUI gtavUI;
         DCSUI dcsUI;
         FilterUI filterUI;
-        public static MainForm Instance;
+        public static GenericTelemetryProvider Instance;
 
         bool ignoreConfigChanges = false;
 
-        public MainForm()
+        public GenericTelemetryProvider()
         {
             InitializeComponent();
         }

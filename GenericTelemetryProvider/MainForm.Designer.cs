@@ -1,6 +1,6 @@
 ﻿namespace GenericTelemetryProvider
 {
-    partial class MainForm
+    partial class GenericTelemetryProvider
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GenericTelemetryProvider));
             this.Dirt5Button = new System.Windows.Forms.Button();
             this.Filters = new System.Windows.Forms.Button();
             this.fillMMFCheckbox = new System.Windows.Forms.CheckBox();
@@ -354,7 +354,7 @@
             this.dcsButton.UseVisualStyleBackColor = true;
             this.dcsButton.Click += new System.EventHandler(this.dcsButton_Click);
             // 
-            // MainForm
+            // GenericTelemetryProvider
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -390,8 +390,8 @@
             this.Controls.Add(this.Filters);
             this.Controls.Add(this.Dirt5Button);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "MainForm";
-            this.Text = "GenericTelemetryProvider";
+            this.Name = "GenericTelemetryProvider";
+            this.Text = "SpaceMonkey";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.ResumeLayout(false);

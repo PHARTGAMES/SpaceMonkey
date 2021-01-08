@@ -7,7 +7,7 @@
     <ProjectGuid>{EDC46C3A-20D4-4EE4-AC8A-C33A053D11DA}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>GenericTelemetryProvider</RootNamespace>
-    <AssemblyName>GenericTelemetryProvider</AssemblyName>
+    <AssemblyName>SpaceMonkeyTP</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -31,6 +31,9 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>GTPIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL" />
@@ -218,6 +221,9 @@
       <Project>{72059f7c-f597-4c05-9c31-c393f9845757}</Project>
       <Name>GTAVAPI</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="GTPIcon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
