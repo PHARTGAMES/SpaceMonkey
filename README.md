@@ -22,7 +22,7 @@ SpaceMonkey supports XINPUT, currently mapped to standard gamepad inputs for ste
 
 The latest installer for SpaceMonkey is here
 
-https://github.com/PHARTGAMES/SpaceMonkey/blob/main/GenericTelemetryProvider/Installer/SpaceMonkeyTP-SetupFiles/SpaceMonkeyTP.msi
+https://github.com/PHARTGAMES/SpaceMonkey/raw/main/GenericTelemetryProvider/Installer/SpaceMonkeyTP-SetupFiles/SpaceMonkeyTP.msi
 
 Install anywhere to your local drive.
 
