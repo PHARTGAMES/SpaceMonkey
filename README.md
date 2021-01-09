@@ -150,6 +150,7 @@ https://github.com/PHARTGAMES/SpaceMonkey/blob/main/GTPSimfeedback/README.md
 # MMF Support
 
 The mutex used by SpaceMonkey is named "GenericTelemetryProviderMutex"
+
 The MMF used by SpaceMonkey is named "GenericTelemetryProviderFiltered"
 
 Example MMF usage here https://github.com/PHARTGAMES/SpaceMonkey/blob/main/GTPSimfeedback/GTPTelemetryProvider.cs
