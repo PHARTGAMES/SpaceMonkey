@@ -106,6 +106,24 @@ All changes to config options are saved as they are changed.
 3. Press the Initialize! button.
 4. Space Monkey will now wait for a connection from DCS and output telemetry automatically. You can launch DCS and any other software at this point.
 
+---
+
+
+## SimCommander 4
+
+## Setup
+1. Create a new game entry under settings with the following settings. Point the Game Exe at the SpaceMonkeyTP.exe in the location you installed it to previously.
+![SC4Game](https://github.com/PHARTGAMES/SpaceMonkey/blob/main/Documentation/SC4Game.PNG?raw=true))]
+
+2. You have the option to create a duplicate of an existing Dirt Rally 2.0 or Dirt 4 profile, or you can create a profile from scratch, then change it's settings as follows.
+![SC4Profile](https://github.com/PHARTGAMES/SpaceMonkey/blob/main/Documentation/SC4Profile.PNG?raw=true))]
+
+## Usage
+
+1. Click the launch button on your new profile, SpaceMonkey will load.
+2. Perform the Usage steps for the game you wish to use, as described in this document.
+
+
 
 
 
