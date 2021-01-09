@@ -155,4 +155,20 @@ The MMF used by SpaceMonkey is named "GenericTelemetryProviderFiltered"
 
 Example MMF usage here https://github.com/PHARTGAMES/SpaceMonkey/blob/main/GTPSimfeedback/GTPTelemetryProvider.cs
 
+---
 
+# Known Issues
+
+1. Sometimes SpaceMonkey will not close correctly. In the case that SC4 thinks the app is still running or running the app doesn't create a new window, find the SpaceMonkeyTP.exe process in task manager and end the process manually.
+
+---
+
+# Support
+
+SpaceMonkeyTelemetry@gmail.com
+
+---
+
+# Authors
+
+PEZZALUCIFER
