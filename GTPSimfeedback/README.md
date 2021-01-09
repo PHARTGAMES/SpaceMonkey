@@ -10,8 +10,6 @@ SpaceMonkey Simfeedback is a SimFeedback plugin for the SpaceMonkey Telemetry Pr
 
 ### Usage
 
-# General Usage
-
 1. Launch SpaceMonkeyTP.exe
 2. Configure SpaceMonkeyTP.exe as described here https://github.com/PHARTGAMES/SpaceMonkey
 3. Select the SpaceMonkey compatible profile in SimFeedback and press Start.
