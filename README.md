@@ -9,6 +9,8 @@ SpaceMonkey contains telemetry visualisation and filtering functionality.
 
 SpaceMonkey supports XINPUT, currently mapped to standard gamepad inputs for steering (left stick), accelerator(right trigger), and brake(left trigger). Clutch and axis assignments coming in a future version. Use the XBOX 360 controller emulator to map your direct input devices to an XINPUT gamepad. https://www.x360ce.com/
 
+SpaceMonkey has been tested with SimCommander 4 (Accuforce v2) and SimFeedback (motion) and should work with any software that supports Dirt 4 Custom UDP.
+
 ### Supported Games
 
 - Dirt 5
@@ -143,6 +145,13 @@ Setup instructions here
 
 https://github.com/PHARTGAMES/SpaceMonkey/blob/main/GTPSimfeedback/README.md
 
+---
 
+# MMF Support
+
+The mutex used by SpaceMonkey is named "GenericTelemetryProviderMutex"
+The MMF used by SpaceMonkey is named "GenericTelemetryProviderFiltered"
+
+Example MMF usage here https://github.com/PHARTGAMES/SpaceMonkey/blob/main/GTPSimfeedback/GTPTelemetryProvider.cs
 
 
