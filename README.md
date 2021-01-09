@@ -18,6 +18,15 @@ SpaceMonkey supports XINPUT, currently mapped to standard gamepad inputs for ste
 - Digital Combat Simulator
 
 
+## Installation
+
+The latest installer for SpaceMonkey is here
+
+https://github.com/PHARTGAMES/SpaceMonkey/blob/main/GenericTelemetryProvider/Installer/SpaceMonkeyTP-SetupFiles/SpaceMonkeyTP.msi
+
+Install anywhere to your local drive.
+
+
 ## Main Interface
 
 
@@ -34,6 +43,8 @@ All changes to config options are saved as they are changed.
 
 
 ---
+# Games
+
 ## DIRT5
 
 ### Usage
@@ -109,21 +120,28 @@ All changes to config options are saved as they are changed.
 ---
 
 
-## SimCommander 4
+# SimCommander 4
 
-## Setup
+### Setup
 1. Create a new game entry under settings with the following settings. Point the Game Exe at the SpaceMonkeyTP.exe in the location you installed it to previously.
 ![SC4Game](https://github.com/PHARTGAMES/SpaceMonkey/blob/main/Documentation/SC4Game.PNG?raw=true))]
 
 2. You have the option to create a duplicate of an existing Dirt Rally 2.0 or Dirt 4 profile, or you can create a profile from scratch, then change it's settings as follows.
 ![SC4Profile](https://github.com/PHARTGAMES/SpaceMonkey/blob/main/Documentation/SC4Profile.PNG?raw=true))]
 
-## Usage
+### Usage
 
 1. Click the launch button on your new profile, SpaceMonkey will load.
 2. Perform the Usage steps for the game you wish to use, as described in this document.
 
 
+---
+
+# SimFeedback
+
+Setup instructions here
+
+https://github.com/PHARTGAMES/SpaceMonkey/blob/main/GTPSimfeedback/README.md
 
 
 
