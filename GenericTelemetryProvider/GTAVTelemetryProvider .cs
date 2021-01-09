@@ -211,7 +211,7 @@ namespace GenericTelemetryProvider
 
         public override void CalcVelocity()
         {
-            Vector3 worldVelocity = (gtaVel * gtaData.dt) / dt;
+            Vector3 worldVelocity = gtaVel;// (gtaVel * gtaData.dt) / dt;
             lastWorldVelocity = worldVelocity;
 
             Matrix4x4 rotation = new Matrix4x4();
