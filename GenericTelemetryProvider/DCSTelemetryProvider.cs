@@ -66,9 +66,13 @@ namespace GenericTelemetryProvider
 
                     Byte[] received = socket.Receive(ref senderIP);
 
+                    if (socket.Available != 0)
+                        continue;
+
                     telemetryData.FromString(Encoding.UTF8.GetString(received));
                     dt = (float)sw.ElapsedMilliseconds / 1000.0f;
                     sw.Restart();
+
                     ProcessData(dt);
 
                     if (socket.Available == 0)
@@ -164,7 +168,7 @@ namespace GenericTelemetryProvider
         public override void CalcVelocity()
         {
             //            base.CalcVelocity();
-
+            
             Matrix4x4 rotation = new Matrix4x4();
             rotation = transform;
             rotation.M41 = 0.0f;
@@ -175,7 +179,6 @@ namespace GenericTelemetryProvider
             Matrix4x4 rotInv = new Matrix4x4();
             Matrix4x4.Invert(rotation, out rotInv);
 
-//            Vector3 worldVelocity = new Vector3(telemetryData.velX, telemetryData.velY, telemetryData.velZ);
             Vector3 worldVelocity = new Vector3(telemetryData.velZ, telemetryData.velY, telemetryData.velX);
 
 
@@ -185,6 +188,7 @@ namespace GenericTelemetryProvider
             rawData.local_velocity_x = localVelocity.X;
             rawData.local_velocity_y = localVelocity.Y;
             rawData.local_velocity_z = localVelocity.Z;
+            
         }
 
         public override void FilterVelocity()

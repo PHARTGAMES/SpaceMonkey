@@ -28,6 +28,7 @@ namespace GenericTelemetryProvider
         DCSUI dcsUI;
         FilterUI filterUI;
         public static GenericTelemetryProvider Instance;
+        public string versionString = "v1.0.1";
 
         bool ignoreConfigChanges = false;
 
@@ -39,6 +40,8 @@ namespace GenericTelemetryProvider
         private void MainForm_Load(object sender, EventArgs e)
         {
             Instance = this;
+
+            this.Text = "SpaceMonkey " + versionString;
             CMCustomUDPData.formatFilename = "PacketFormats\\defaultFormat.xml";
             if(Directory.Exists("Configs"))
             {
