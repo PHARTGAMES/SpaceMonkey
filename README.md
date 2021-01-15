@@ -22,7 +22,7 @@ SpaceMonkey has been tested with SimCommander 4 (Accuforce v2) and SimFeedback (
 
 ## Installation
 
-The latest installer for SpaceMonkey is here (v1.0.1)
+The latest installer for SpaceMonkey is here (v1.0.2)
 
 https://github.com/PHARTGAMES/SpaceMonkey/raw/main/GenericTelemetryProvider/Installer/SpaceMonkeyTP-SetupFiles/SpaceMonkeyTP.msi
 
