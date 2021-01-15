@@ -111,6 +111,7 @@ All changes to config options are saved as they are changed.
 
 1. Backup any Export.lua files in your C:\Users\USER_NAME\Saved Games\DCS\Scripts\
 2. Run the "SMTP DCS Export Plugin.msi" installer in the DCS subfolder of SpaceMonkey. Install into your C:\Users\USER_NAME\Saved Games\DCS\Scripts folder, the default destination should be appropriate.
+3. If you are using multiple export files, you can remove the SpaceMonkey Export.lua and add a "dofile(lfs.writedir()..[[Scripts\ExportSM.lua]])" entry to your main Export.lua.
 
 ### Usage
 
@@ -128,7 +129,7 @@ All changes to config options are saved as they are changed.
 1. Create a new game entry under settings with the following settings. Point the Game Exe at the SpaceMonkeyTP.exe in the location you installed it to previously.
 ![SC4Game](https://github.com/PHARTGAMES/SpaceMonkey/blob/main/Documentation/SC4Game.PNG?raw=true))]
 
-2. You have the option to create a duplicate of an existing Dirt Rally 2.0 or Dirt 4 profile, or you can create a profile from scratch, then change it's settings as follows.
+2. For car games, you have the option to create a duplicate of an existing Dirt Rally 2.0 or Dirt 4 profile, for Aircraft games you can duplicate an X-Plane profile. You can also create a profile from scratch, then change it's settings as follows.
 ![SC4Profile](https://github.com/PHARTGAMES/SpaceMonkey/blob/main/Documentation/SC4Profile.PNG?raw=true))]
 
 ### Usage
