@@ -9,7 +9,7 @@
     <ROW Property="ProductCode" Value="1033:{FC8966CF-97BB-427B-B4FB-04A7C939D33E} " Type="16"/>
     <ROW Property="ProductLanguage" Value="1033"/>
     <ROW Property="ProductName" Value="SpaceMonkey DCS Export Plugin"/>
-    <ROW Property="ProductVersion" Value="1.0.0" Type="32"/>
+    <ROW Property="ProductVersion" Value="1.0.1" Type="32"/>
     <ROW Property="SecureCustomProperties" Value="OLDPRODUCTS;AI_NEWERPRODUCTFOUND"/>
     <ROW Property="UpgradeCode" Value="{0D1AF467-E3FE-4EBA-B038-83BAA327204D}"/>
     <ROW Property="WindowsType9X" MultiBuildValue="DefaultBuild:Windows 9x/ME" ValueLocId="-"/>
@@ -36,6 +36,7 @@
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiFilesComponent">
     <ROW File="Export.lua" Component_="Export.lua" FileName="Export.lua" Attributes="0" SourcePath="..\Export.lua" SelfReg="false"/>
+    <ROW File="ExportSM.lua" Component_="Export.lua" FileName="ExportSM.lua" Attributes="0" SourcePath="..\ExportSM.lua" SelfReg="false"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.BootstrOptComponent">
     <ROW BootstrOptKey="GlobalOptions" DownloadFolder="[AppDataFolder][|Manufacturer]\[|ProductName]\prerequisites" Options="2"/>
