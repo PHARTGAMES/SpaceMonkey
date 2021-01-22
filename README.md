@@ -52,9 +52,10 @@ All changes to config options are saved as they are changed.
 ### Usage
 
 1. Load Dirt 5 and get to the main menu with the vehicle visible.
-2. Go to the main interface of Space Monkey and press the DIRT5 button.
-3. Click the Initialize! button in the SpaceMonkey Dirt5UI and wait for the game's memory to be scanned. If successful the status message will change to Success! and you will see debug output in the text box.
-4. SpaceMonkey will now be outputting telemetry.
+2. Go to the main interface of Space Monkey and select a main config for DIRT5.
+3. Go to the main interface of Space Monkey and press the DIRT5 button.
+4. Click the Initialize! button in the SpaceMonkey Dirt5UI and wait for the game's memory to be scanned. If successful the status message will change to Success! and you will see debug output in the text box.
+5. SpaceMonkey will now be outputting telemetry.
 
 
 ---
@@ -64,10 +65,11 @@ All changes to config options are saved as they are changed.
 
 1. Load Wreckfest in 32 bit mode.
 2. Setup a session and get to the stage where you have the start race option on the left and the selected vehicle in the centre of the screen.
-3. Go to the main interface of Space Monkey and press the Wreckfest button.
-4. Select the player number from the drop down. In single player this is always 00. In multiplayer this is the order of your player in the lobby at the point that you join the lobby. Check as soon as you enter the lobby or you may get the wrong number.
-5. Click the Initialize button and wait for the game's memory to be scanned. If successful the status message will change to Success! and you will see debug output in the text box.
-6. Space Monkey will now be outputting telemetry.
+3. Go to the main interface of Space Monkey and select a main config for Wreckfest.
+4. Go to the main interface of Space Monkey and press the Wreckfest button.
+5. Select the player number from the drop down. In single player this is always 00. In multiplayer this is the order of your player in the lobby at the point that you join the lobby. Check as soon as you enter the lobby or you may get the wrong number.
+6. Click the Initialize button and wait for the game's memory to be scanned. If successful the status message will change to Success! and you will see debug output in the text box.
+7. Space Monkey will now be outputting telemetry.
 
 ---
 ## BeamNG.Drive
@@ -84,10 +86,11 @@ All changes to config options are saved as they are changed.
 
 ### Usage
 
-1. Go to the main interface of Space Monkey and press the BeamNG Drive button.
-2. Specify the UDP receive port specified in the setup step (Default 4444)
-3. Press the Initialize! button.
-4. Space Monkey will now wait for a connection from BeamNG.Drive and output telemetry automatically. You can launch BeamNG.Drive and any other software at this point.
+1. Go to the main interface of Space Monkey and select a main config for BeamNG Drive.
+2. Go to the main interface of Space Monkey and press the BeamNG Drive button.
+3. Specify the UDP receive port specified in the setup step (Default 4444)
+4. Press the Initialize! button.
+5. Space Monkey will now wait for a connection from BeamNG.Drive and output telemetry automatically. You can launch BeamNG.Drive and any other software at this point.
 
 ---
 ## GTAV
@@ -100,9 +103,10 @@ All changes to config options are saved as they are changed.
 
 ### Usage
 
-1. Go to the main interface of Space Monkey and press the GTAV button.
-2. Press the Initialize! button.
-3. Space Monkey will now wait for a connection from GTAV and output telemetry automatically. You can launch GTAV and any other software at this point.
+1. Go to the main interface of Space Monkey and select a main config for GTAV.
+2. Go to the main interface of Space Monkey and press the GTAV button.
+3. Press the Initialize! button.
+4. Space Monkey will now wait for a connection from GTAV and output telemetry automatically. You can launch GTAV and any other software at this point.
 
 ---
 ## Digital Combat Simulator
@@ -115,10 +119,11 @@ All changes to config options are saved as they are changed.
 
 ### Usage
 
-1. Go to the main interface of Space Monkey and press the DCS button.
-2. Specify the UDP receive port specified in the setup step (Default 6666). If you want to recieve on a different port you will also need to edit the Export.lua file installed to C:\Users\USER_NAME\Saved Games\DCS\Scripts\ and change the port.
-3. Press the Initialize! button.
-4. Space Monkey will now wait for a connection from DCS and output telemetry automatically. You can launch DCS and any other software at this point.
+1. Go to the main interface of Space Monkey and select a main config for DCS.
+2. Go to the main interface of Space Monkey and press the DCS button.
+3. Specify the UDP receive port specified in the setup step (Default 6666). If you want to recieve on a different port you will also need to edit the Export.lua file installed to C:\Users\USER_NAME\Saved Games\DCS\Scripts\ and change the port.
+4. Press the Initialize! button.
+5. Space Monkey will now wait for a connection from DCS and output telemetry automatically. You can launch DCS and any other software at this point.
 
 ---
 
