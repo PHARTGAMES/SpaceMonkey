@@ -27,6 +27,7 @@ namespace GenericTelemetryProvider
         GTAVUI gtavUI;
         DCSUI dcsUI;
         MonsterGamesUI mgUI;
+        WRCUI wrcUI;
         FilterUI filterUI;
         public static GenericTelemetryProvider Instance;
         public string versionString = "v1.0.1";
@@ -490,6 +491,20 @@ namespace GenericTelemetryProvider
 
             Thread x = new Thread(new ParameterizedThreadStart((form) => ((MonsterGamesUI)form).ShowDialog()));
             x.Start(mgUI);
+        }
+
+        private void WRCButton_Click(object sender, EventArgs e)
+        {
+            if (wrcUI != null)
+            {
+                wrcUI.Close();
+                wrcUI = null;
+            }
+
+            wrcUI = new WRCUI();
+
+            Thread x = new Thread(new ParameterizedThreadStart((form) => ((WRCUI)form).ShowDialog()));
+            x.Start(wrcUI);
         }
     }
 }

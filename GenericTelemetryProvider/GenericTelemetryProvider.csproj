@@ -68,8 +68,16 @@
     <Compile Include="DCSTelemetryProvider.cs" />
     <Compile Include="FilterModule.cs" />
     <Compile Include="InjectionManager.cs" />
+    <Compile Include="WRCAPI.cs" />
+    <Compile Include="WRCTelemetryProvider.cs" />
     <Compile Include="MonsterGamesTelemetryProvider.cs" />
     <Compile Include="GTAVTelemetryProvider .cs" />
+    <Compile Include="WRCUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WRCUI.Designer.cs">
+      <DependentUpon>WRCUI.cs</DependentUpon>
+    </Compile>
     <Compile Include="MonsterGamesUI.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -167,6 +175,9 @@
     <Compile Include="XInputController.cs" />
     <EmbeddedResource Include="DCSUI.resx">
       <DependentUpon>DCSUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WRCUI.resx">
+      <DependentUpon>WRCUI.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MonsterGamesUI.resx">
       <DependentUpon>MonsterGamesUI.cs</DependentUpon>
