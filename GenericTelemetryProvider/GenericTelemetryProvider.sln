@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30621.155
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.1267
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenericTelemetryProvider", "GenericTelemetryProvider.csproj", "{EDC46C3A-20D4-4EE4-AC8A-C33A053D11DA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMCustomUDP", "..\CMCustomUDP\CMCustomUDP.csproj", "{5CD4D965-FB7F-41E9-AF9A-86EBF9EA15A3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GTAVAPI", "..\GTAVAPI\GTAVAPI.csproj", "{72059F7C-F597-4C05-9C31-C393F9845757}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonsterGamesAPI", "..\MonsterGamesAPI\MonsterGamesAPI.csproj", "{DF06AED7-12BC-486D-8AC5-37BE43B164C3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{72059F7C-F597-4C05-9C31-C393F9845757}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72059F7C-F597-4C05-9C31-C393F9845757}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{72059F7C-F597-4C05-9C31-C393F9845757}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF06AED7-12BC-486D-8AC5-37BE43B164C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF06AED7-12BC-486D-8AC5-37BE43B164C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF06AED7-12BC-486D-8AC5-37BE43B164C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF06AED7-12BC-486D-8AC5-37BE43B164C3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

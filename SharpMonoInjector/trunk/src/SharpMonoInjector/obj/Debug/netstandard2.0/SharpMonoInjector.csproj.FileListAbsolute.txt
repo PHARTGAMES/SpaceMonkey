@@ -1,0 +1,9 @@
+D:\Personal\projects\SpaceMonkey\trunk\SharpMonoInjector\trunk\build\debug\netstandard2.0\SharpMonoInjector.deps.json
+D:\Personal\projects\SpaceMonkey\trunk\SharpMonoInjector\trunk\build\debug\netstandard2.0\SharpMonoInjector.dll
+D:\Personal\projects\SpaceMonkey\trunk\SharpMonoInjector\trunk\build\debug\netstandard2.0\SharpMonoInjector.pdb
+D:\Personal\projects\SpaceMonkey\trunk\SharpMonoInjector\trunk\src\SharpMonoInjector\obj\Debug\netstandard2.0\SharpMonoInjector.csprojAssemblyReference.cache
+D:\Personal\projects\SpaceMonkey\trunk\SharpMonoInjector\trunk\src\SharpMonoInjector\obj\Debug\netstandard2.0\SharpMonoInjector.csproj.CoreCompileInputs.cache
+D:\Personal\projects\SpaceMonkey\trunk\SharpMonoInjector\trunk\src\SharpMonoInjector\obj\Debug\netstandard2.0\SharpMonoInjector.AssemblyInfoInputs.cache
+D:\Personal\projects\SpaceMonkey\trunk\SharpMonoInjector\trunk\src\SharpMonoInjector\obj\Debug\netstandard2.0\SharpMonoInjector.AssemblyInfo.cs
+D:\Personal\projects\SpaceMonkey\trunk\SharpMonoInjector\trunk\src\SharpMonoInjector\obj\Debug\netstandard2.0\SharpMonoInjector.dll
+D:\Personal\projects\SpaceMonkey\trunk\SharpMonoInjector\trunk\src\SharpMonoInjector\obj\Debug\netstandard2.0\SharpMonoInjector.pdb

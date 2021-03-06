@@ -37,6 +37,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL" />
+    <Reference Include="SharpMonoInjector, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SharpMonoInjector\trunk\build\debug\netstandard2.0\SharpMonoInjector.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
@@ -63,7 +67,15 @@
     </Compile>
     <Compile Include="DCSTelemetryProvider.cs" />
     <Compile Include="FilterModule.cs" />
+    <Compile Include="InjectionManager.cs" />
+    <Compile Include="MonsterGamesTelemetryProvider.cs" />
     <Compile Include="GTAVTelemetryProvider .cs" />
+    <Compile Include="MonsterGamesUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MonsterGamesUI.Designer.cs">
+      <DependentUpon>MonsterGamesUI.cs</DependentUpon>
+    </Compile>
     <Compile Include="GTAVUI.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -156,6 +168,9 @@
     <EmbeddedResource Include="DCSUI.resx">
       <DependentUpon>DCSUI.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="MonsterGamesUI.resx">
+      <DependentUpon>MonsterGamesUI.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GTAVUI.resx">
       <DependentUpon>GTAVUI.cs</DependentUpon>
     </EmbeddedResource>
@@ -221,9 +236,16 @@
       <Project>{72059f7c-f597-4c05-9c31-c393f9845757}</Project>
       <Name>GTAVAPI</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MonsterGamesAPI\MonsterGamesAPI.csproj">
+      <Project>{df06aed7-12bc-486d-8ac5-37be43b164c3}</Project>
+      <Name>MonsterGamesAPI</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="GTPIcon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\MonsterGamesTelemetry.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -26,6 +26,7 @@ namespace GenericTelemetryProvider
         BeamNGUI beamNGUI;
         GTAVUI gtavUI;
         DCSUI dcsUI;
+        MonsterGamesUI mgUI;
         FilterUI filterUI;
         public static GenericTelemetryProvider Instance;
         public string versionString = "v1.0.1";
@@ -475,6 +476,20 @@ namespace GenericTelemetryProvider
             Thread x = new Thread(new ParameterizedThreadStart((form) => ((DCSUI)form).ShowDialog()));
             x.Start(dcsUI);
 
+        }
+
+        private void mgButton_Click(object sender, EventArgs e)
+        {
+            if (mgUI != null)
+            {
+                mgUI.Close();
+                mgUI = null;
+            }
+
+            mgUI = new MonsterGamesUI();
+
+            Thread x = new Thread(new ParameterizedThreadStart((form) => ((MonsterGamesUI)form).ShowDialog()));
+            x.Start(mgUI);
         }
     }
 }

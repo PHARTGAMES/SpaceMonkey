@@ -1,1 +1,1 @@
-Configs\defaultConfig.txt
+Configs\MonsterGamesConfig.txt

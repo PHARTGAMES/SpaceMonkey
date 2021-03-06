@@ -59,13 +59,15 @@
             this.beamNGButton = new System.Windows.Forms.Button();
             this.gtavButton = new System.Windows.Forms.Button();
             this.dcsButton = new System.Windows.Forms.Button();
+            this.mgButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // Dirt5Button
             // 
-            this.Dirt5Button.Location = new System.Drawing.Point(12, 12);
+            this.Dirt5Button.Location = new System.Drawing.Point(24, 23);
+            this.Dirt5Button.Margin = new System.Windows.Forms.Padding(6);
             this.Dirt5Button.Name = "Dirt5Button";
-            this.Dirt5Button.Size = new System.Drawing.Size(149, 44);
+            this.Dirt5Button.Size = new System.Drawing.Size(298, 85);
             this.Dirt5Button.TabIndex = 0;
             this.Dirt5Button.Text = "DIRT5";
             this.Dirt5Button.UseVisualStyleBackColor = true;
@@ -73,9 +75,10 @@
             // 
             // Filters
             // 
-            this.Filters.Location = new System.Drawing.Point(167, 12);
+            this.Filters.Location = new System.Drawing.Point(334, 23);
+            this.Filters.Margin = new System.Windows.Forms.Padding(6);
             this.Filters.Name = "Filters";
-            this.Filters.Size = new System.Drawing.Size(159, 44);
+            this.Filters.Size = new System.Drawing.Size(318, 85);
             this.Filters.TabIndex = 1;
             this.Filters.Text = "Filters";
             this.Filters.UseVisualStyleBackColor = true;
@@ -84,9 +87,10 @@
             // fillMMFCheckbox
             // 
             this.fillMMFCheckbox.AutoSize = true;
-            this.fillMMFCheckbox.Location = new System.Drawing.Point(469, 52);
+            this.fillMMFCheckbox.Location = new System.Drawing.Point(938, 100);
+            this.fillMMFCheckbox.Margin = new System.Windows.Forms.Padding(6);
             this.fillMMFCheckbox.Name = "fillMMFCheckbox";
-            this.fillMMFCheckbox.Size = new System.Drawing.Size(65, 17);
+            this.fillMMFCheckbox.Size = new System.Drawing.Size(127, 29);
             this.fillMMFCheckbox.TabIndex = 3;
             this.fillMMFCheckbox.Text = "Fill MMF";
             this.fillMMFCheckbox.UseVisualStyleBackColor = true;
@@ -95,9 +99,10 @@
             // udpCheckBox
             // 
             this.udpCheckBox.AutoSize = true;
-            this.udpCheckBox.Location = new System.Drawing.Point(469, 75);
+            this.udpCheckBox.Location = new System.Drawing.Point(938, 144);
+            this.udpCheckBox.Margin = new System.Windows.Forms.Padding(6);
             this.udpCheckBox.Name = "udpCheckBox";
-            this.udpCheckBox.Size = new System.Drawing.Size(77, 17);
+            this.udpCheckBox.Size = new System.Drawing.Size(144, 29);
             this.udpCheckBox.TabIndex = 4;
             this.udpCheckBox.Text = "Send UDP";
             this.udpCheckBox.UseVisualStyleBackColor = true;
@@ -106,52 +111,58 @@
             // ipLabel
             // 
             this.ipLabel.AutoSize = true;
-            this.ipLabel.Location = new System.Drawing.Point(466, 95);
+            this.ipLabel.Location = new System.Drawing.Point(932, 183);
+            this.ipLabel.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.ipLabel.Name = "ipLabel";
-            this.ipLabel.Size = new System.Drawing.Size(43, 13);
+            this.ipLabel.Size = new System.Drawing.Size(81, 25);
             this.ipLabel.TabIndex = 5;
             this.ipLabel.Text = "UDP IP";
             // 
             // udpIPTextBox
             // 
-            this.udpIPTextBox.Location = new System.Drawing.Point(469, 111);
+            this.udpIPTextBox.Location = new System.Drawing.Point(938, 213);
+            this.udpIPTextBox.Margin = new System.Windows.Forms.Padding(6);
             this.udpIPTextBox.Name = "udpIPTextBox";
-            this.udpIPTextBox.Size = new System.Drawing.Size(125, 20);
+            this.udpIPTextBox.Size = new System.Drawing.Size(246, 31);
             this.udpIPTextBox.TabIndex = 6;
             this.udpIPTextBox.Text = "127.0.0.1";
             this.udpIPTextBox.TextChanged += new System.EventHandler(this.udpIPTextBox_TextChanged);
             // 
             // portTextBox
             // 
-            this.portTextBox.Location = new System.Drawing.Point(603, 111);
+            this.portTextBox.Location = new System.Drawing.Point(1206, 213);
+            this.portTextBox.Margin = new System.Windows.Forms.Padding(6);
             this.portTextBox.Name = "portTextBox";
-            this.portTextBox.Size = new System.Drawing.Size(53, 20);
+            this.portTextBox.Size = new System.Drawing.Size(102, 31);
             this.portTextBox.TabIndex = 7;
             this.portTextBox.TextChanged += new System.EventHandler(this.portTextBox_TextChanged);
             // 
             // udpLabel
             // 
             this.udpLabel.AutoSize = true;
-            this.udpLabel.Location = new System.Drawing.Point(600, 95);
+            this.udpLabel.Location = new System.Drawing.Point(1200, 183);
+            this.udpLabel.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.udpLabel.Name = "udpLabel";
-            this.udpLabel.Size = new System.Drawing.Size(26, 13);
+            this.udpLabel.Size = new System.Drawing.Size(51, 25);
             this.udpLabel.TabIndex = 8;
             this.udpLabel.Text = "Port";
             // 
             // destinationsLabel
             // 
             this.destinationsLabel.AutoSize = true;
-            this.destinationsLabel.Location = new System.Drawing.Point(466, 196);
+            this.destinationsLabel.Location = new System.Drawing.Point(932, 377);
+            this.destinationsLabel.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.destinationsLabel.Name = "destinationsLabel";
-            this.destinationsLabel.Size = new System.Drawing.Size(137, 13);
+            this.destinationsLabel.Size = new System.Drawing.Size(276, 25);
             this.destinationsLabel.TabIndex = 10;
             this.destinationsLabel.Text = "Packet Format Destinations";
             // 
             // destinationFindButton
             // 
-            this.destinationFindButton.Location = new System.Drawing.Point(631, 196);
+            this.destinationFindButton.Location = new System.Drawing.Point(1262, 377);
+            this.destinationFindButton.Margin = new System.Windows.Forms.Padding(6);
             this.destinationFindButton.Name = "destinationFindButton";
-            this.destinationFindButton.Size = new System.Drawing.Size(25, 25);
+            this.destinationFindButton.Size = new System.Drawing.Size(50, 48);
             this.destinationFindButton.TabIndex = 11;
             this.destinationFindButton.Text = "...";
             this.destinationFindButton.UseVisualStyleBackColor = true;
@@ -160,18 +171,20 @@
             // formatDestinationsBox
             // 
             this.formatDestinationsBox.FormattingEnabled = true;
-            this.formatDestinationsBox.Location = new System.Drawing.Point(469, 212);
+            this.formatDestinationsBox.Location = new System.Drawing.Point(938, 408);
+            this.formatDestinationsBox.Margin = new System.Windows.Forms.Padding(6);
             this.formatDestinationsBox.Name = "formatDestinationsBox";
-            this.formatDestinationsBox.Size = new System.Drawing.Size(153, 21);
+            this.formatDestinationsBox.Size = new System.Drawing.Size(302, 33);
             this.formatDestinationsBox.TabIndex = 12;
             this.formatDestinationsBox.DropDown += new System.EventHandler(this.AdjustWidthComboBox_DropDown);
             this.formatDestinationsBox.SelectedIndexChanged += new System.EventHandler(this.formatDestinationsBox_SelectedIndexChanged);
             // 
             // deleteDestinationButton
             // 
-            this.deleteDestinationButton.Location = new System.Drawing.Point(632, 227);
+            this.deleteDestinationButton.Location = new System.Drawing.Point(1264, 437);
+            this.deleteDestinationButton.Margin = new System.Windows.Forms.Padding(6);
             this.deleteDestinationButton.Name = "deleteDestinationButton";
-            this.deleteDestinationButton.Size = new System.Drawing.Size(25, 25);
+            this.deleteDestinationButton.Size = new System.Drawing.Size(50, 48);
             this.deleteDestinationButton.TabIndex = 13;
             this.deleteDestinationButton.Text = "-";
             this.deleteDestinationButton.UseVisualStyleBackColor = true;
@@ -180,26 +193,29 @@
             // configComboBox
             // 
             this.configComboBox.FormattingEnabled = true;
-            this.configComboBox.Location = new System.Drawing.Point(469, 25);
+            this.configComboBox.Location = new System.Drawing.Point(938, 48);
+            this.configComboBox.Margin = new System.Windows.Forms.Padding(6);
             this.configComboBox.Name = "configComboBox";
-            this.configComboBox.Size = new System.Drawing.Size(157, 21);
+            this.configComboBox.Size = new System.Drawing.Size(310, 33);
             this.configComboBox.TabIndex = 14;
             this.configComboBox.SelectedIndexChanged += new System.EventHandler(this.configComboBox_SelectedIndexChanged);
             // 
             // configLabel
             // 
             this.configLabel.AutoSize = true;
-            this.configLabel.Location = new System.Drawing.Point(466, 9);
+            this.configLabel.Location = new System.Drawing.Point(932, 17);
+            this.configLabel.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.configLabel.Name = "configLabel";
-            this.configLabel.Size = new System.Drawing.Size(70, 13);
+            this.configLabel.Size = new System.Drawing.Size(140, 25);
             this.configLabel.TabIndex = 15;
             this.configLabel.Text = "Select Config";
             // 
             // addConfigButton
             // 
-            this.addConfigButton.Location = new System.Drawing.Point(632, 22);
+            this.addConfigButton.Location = new System.Drawing.Point(1264, 42);
+            this.addConfigButton.Margin = new System.Windows.Forms.Padding(6);
             this.addConfigButton.Name = "addConfigButton";
-            this.addConfigButton.Size = new System.Drawing.Size(25, 25);
+            this.addConfigButton.Size = new System.Drawing.Size(50, 48);
             this.addConfigButton.TabIndex = 16;
             this.addConfigButton.Text = "+";
             this.addConfigButton.UseVisualStyleBackColor = true;
@@ -208,63 +224,70 @@
             // packetFormatComboBox
             // 
             this.packetFormatComboBox.FormattingEnabled = true;
-            this.packetFormatComboBox.Location = new System.Drawing.Point(469, 160);
+            this.packetFormatComboBox.Location = new System.Drawing.Point(938, 308);
+            this.packetFormatComboBox.Margin = new System.Windows.Forms.Padding(6);
             this.packetFormatComboBox.Name = "packetFormatComboBox";
-            this.packetFormatComboBox.Size = new System.Drawing.Size(184, 21);
+            this.packetFormatComboBox.Size = new System.Drawing.Size(364, 33);
             this.packetFormatComboBox.TabIndex = 17;
             this.packetFormatComboBox.SelectedIndexChanged += new System.EventHandler(this.packetFormatComboBox_SelectedIndexChanged);
             // 
             // packetFormatLabel
             // 
             this.packetFormatLabel.AutoSize = true;
-            this.packetFormatLabel.Location = new System.Drawing.Point(466, 144);
+            this.packetFormatLabel.Location = new System.Drawing.Point(932, 277);
+            this.packetFormatLabel.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.packetFormatLabel.Name = "packetFormatLabel";
-            this.packetFormatLabel.Size = new System.Drawing.Size(76, 13);
+            this.packetFormatLabel.Size = new System.Drawing.Size(151, 25);
             this.packetFormatLabel.TabIndex = 18;
             this.packetFormatLabel.Text = "Packet Format";
             // 
             // filtersComboBox
             // 
             this.filtersComboBox.FormattingEnabled = true;
-            this.filtersComboBox.Location = new System.Drawing.Point(469, 270);
+            this.filtersComboBox.Location = new System.Drawing.Point(938, 519);
+            this.filtersComboBox.Margin = new System.Windows.Forms.Padding(6);
             this.filtersComboBox.Name = "filtersComboBox";
-            this.filtersComboBox.Size = new System.Drawing.Size(188, 21);
+            this.filtersComboBox.Size = new System.Drawing.Size(372, 33);
             this.filtersComboBox.TabIndex = 19;
             this.filtersComboBox.SelectedIndexChanged += new System.EventHandler(this.filtersComboBox_SelectedIndexChanged);
             // 
             // filterConfigLabel
             // 
             this.filterConfigLabel.AutoSize = true;
-            this.filterConfigLabel.Location = new System.Drawing.Point(466, 254);
+            this.filterConfigLabel.Location = new System.Drawing.Point(932, 488);
+            this.filterConfigLabel.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.filterConfigLabel.Name = "filterConfigLabel";
-            this.filterConfigLabel.Size = new System.Drawing.Size(62, 13);
+            this.filterConfigLabel.Size = new System.Drawing.Size(128, 25);
             this.filterConfigLabel.TabIndex = 20;
             this.filterConfigLabel.Text = "Filter Config";
             // 
             // hkComboBox
             // 
             this.hkComboBox.FormattingEnabled = true;
-            this.hkComboBox.Location = new System.Drawing.Point(469, 317);
+            this.hkComboBox.Location = new System.Drawing.Point(938, 610);
+            this.hkComboBox.Margin = new System.Windows.Forms.Padding(6);
             this.hkComboBox.Name = "hkComboBox";
-            this.hkComboBox.Size = new System.Drawing.Size(113, 21);
+            this.hkComboBox.Size = new System.Drawing.Size(222, 33);
             this.hkComboBox.TabIndex = 21;
             this.hkComboBox.SelectedIndexChanged += new System.EventHandler(this.hkComboBox_SelectedIndexChanged);
             // 
             // hotkeyLabel
             // 
             this.hotkeyLabel.AutoSize = true;
-            this.hotkeyLabel.Location = new System.Drawing.Point(466, 301);
+            this.hotkeyLabel.Location = new System.Drawing.Point(932, 579);
+            this.hotkeyLabel.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.hotkeyLabel.Name = "hotkeyLabel";
-            this.hotkeyLabel.Size = new System.Drawing.Size(81, 13);
+            this.hotkeyLabel.Size = new System.Drawing.Size(160, 25);
             this.hotkeyLabel.TabIndex = 22;
             this.hotkeyLabel.Text = "Toggle Hot Key";
             // 
             // hkWindowsCheckbox
             // 
             this.hkWindowsCheckbox.AutoSize = true;
-            this.hkWindowsCheckbox.Location = new System.Drawing.Point(469, 345);
+            this.hkWindowsCheckbox.Location = new System.Drawing.Point(938, 663);
+            this.hkWindowsCheckbox.Margin = new System.Windows.Forms.Padding(6);
             this.hkWindowsCheckbox.Name = "hkWindowsCheckbox";
-            this.hkWindowsCheckbox.Size = new System.Drawing.Size(79, 17);
+            this.hkWindowsCheckbox.Size = new System.Drawing.Size(149, 29);
             this.hkWindowsCheckbox.TabIndex = 23;
             this.hkWindowsCheckbox.Text = "+ Windows";
             this.hkWindowsCheckbox.UseVisualStyleBackColor = true;
@@ -273,9 +296,10 @@
             // hkAltCheckbox
             // 
             this.hkAltCheckbox.AutoSize = true;
-            this.hkAltCheckbox.Location = new System.Drawing.Point(469, 369);
+            this.hkAltCheckbox.Location = new System.Drawing.Point(938, 710);
+            this.hkAltCheckbox.Margin = new System.Windows.Forms.Padding(6);
             this.hkAltCheckbox.Name = "hkAltCheckbox";
-            this.hkAltCheckbox.Size = new System.Drawing.Size(47, 17);
+            this.hkAltCheckbox.Size = new System.Drawing.Size(87, 29);
             this.hkAltCheckbox.TabIndex = 24;
             this.hkAltCheckbox.Text = "+ Alt";
             this.hkAltCheckbox.UseVisualStyleBackColor = true;
@@ -284,9 +308,10 @@
             // hkShiftCheckBox
             // 
             this.hkShiftCheckBox.AutoSize = true;
-            this.hkShiftCheckBox.Location = new System.Drawing.Point(556, 345);
+            this.hkShiftCheckBox.Location = new System.Drawing.Point(1112, 663);
+            this.hkShiftCheckBox.Margin = new System.Windows.Forms.Padding(6);
             this.hkShiftCheckBox.Name = "hkShiftCheckBox";
-            this.hkShiftCheckBox.Size = new System.Drawing.Size(56, 17);
+            this.hkShiftCheckBox.Size = new System.Drawing.Size(105, 29);
             this.hkShiftCheckBox.TabIndex = 25;
             this.hkShiftCheckBox.Text = "+ Shift";
             this.hkShiftCheckBox.UseVisualStyleBackColor = true;
@@ -295,9 +320,10 @@
             // hkCtrlCheckbox
             // 
             this.hkCtrlCheckbox.AutoSize = true;
-            this.hkCtrlCheckbox.Location = new System.Drawing.Point(556, 369);
+            this.hkCtrlCheckbox.Location = new System.Drawing.Point(1112, 710);
+            this.hkCtrlCheckbox.Margin = new System.Windows.Forms.Padding(6);
             this.hkCtrlCheckbox.Name = "hkCtrlCheckbox";
-            this.hkCtrlCheckbox.Size = new System.Drawing.Size(50, 17);
+            this.hkCtrlCheckbox.Size = new System.Drawing.Size(95, 29);
             this.hkCtrlCheckbox.TabIndex = 26;
             this.hkCtrlCheckbox.Text = "+ Ctrl";
             this.hkCtrlCheckbox.UseVisualStyleBackColor = true;
@@ -306,9 +332,10 @@
             // hkEnabledCheckbox
             // 
             this.hkEnabledCheckbox.AutoSize = true;
-            this.hkEnabledCheckbox.Location = new System.Drawing.Point(592, 319);
+            this.hkEnabledCheckbox.Location = new System.Drawing.Point(1184, 613);
+            this.hkEnabledCheckbox.Margin = new System.Windows.Forms.Padding(6);
             this.hkEnabledCheckbox.Name = "hkEnabledCheckbox";
-            this.hkEnabledCheckbox.Size = new System.Drawing.Size(65, 17);
+            this.hkEnabledCheckbox.Size = new System.Drawing.Size(123, 29);
             this.hkEnabledCheckbox.TabIndex = 27;
             this.hkEnabledCheckbox.Text = "Enabled";
             this.hkEnabledCheckbox.UseVisualStyleBackColor = true;
@@ -316,9 +343,10 @@
             // 
             // wreckfestButton
             // 
-            this.wreckfestButton.Location = new System.Drawing.Point(13, 63);
+            this.wreckfestButton.Location = new System.Drawing.Point(26, 121);
+            this.wreckfestButton.Margin = new System.Windows.Forms.Padding(6);
             this.wreckfestButton.Name = "wreckfestButton";
-            this.wreckfestButton.Size = new System.Drawing.Size(148, 45);
+            this.wreckfestButton.Size = new System.Drawing.Size(296, 87);
             this.wreckfestButton.TabIndex = 28;
             this.wreckfestButton.Text = "Wreckfest";
             this.wreckfestButton.UseVisualStyleBackColor = true;
@@ -326,9 +354,10 @@
             // 
             // beamNGButton
             // 
-            this.beamNGButton.Location = new System.Drawing.Point(13, 114);
+            this.beamNGButton.Location = new System.Drawing.Point(26, 219);
+            this.beamNGButton.Margin = new System.Windows.Forms.Padding(6);
             this.beamNGButton.Name = "beamNGButton";
-            this.beamNGButton.Size = new System.Drawing.Size(148, 45);
+            this.beamNGButton.Size = new System.Drawing.Size(296, 87);
             this.beamNGButton.TabIndex = 29;
             this.beamNGButton.Text = "BeamNG Drive";
             this.beamNGButton.UseVisualStyleBackColor = true;
@@ -336,9 +365,10 @@
             // 
             // gtavButton
             // 
-            this.gtavButton.Location = new System.Drawing.Point(13, 166);
+            this.gtavButton.Location = new System.Drawing.Point(26, 319);
+            this.gtavButton.Margin = new System.Windows.Forms.Padding(6);
             this.gtavButton.Name = "gtavButton";
-            this.gtavButton.Size = new System.Drawing.Size(148, 45);
+            this.gtavButton.Size = new System.Drawing.Size(296, 87);
             this.gtavButton.TabIndex = 30;
             this.gtavButton.Text = "GTA V";
             this.gtavButton.UseVisualStyleBackColor = true;
@@ -346,19 +376,31 @@
             // 
             // dcsButton
             // 
-            this.dcsButton.Location = new System.Drawing.Point(13, 217);
+            this.dcsButton.Location = new System.Drawing.Point(26, 417);
+            this.dcsButton.Margin = new System.Windows.Forms.Padding(6);
             this.dcsButton.Name = "dcsButton";
-            this.dcsButton.Size = new System.Drawing.Size(148, 45);
+            this.dcsButton.Size = new System.Drawing.Size(296, 87);
             this.dcsButton.TabIndex = 31;
             this.dcsButton.Text = "DCS";
             this.dcsButton.UseVisualStyleBackColor = true;
             this.dcsButton.Click += new System.EventHandler(this.dcsButton_Click);
             // 
+            // mgButton
+            // 
+            this.mgButton.Location = new System.Drawing.Point(26, 519);
+            this.mgButton.Name = "mgButton";
+            this.mgButton.Size = new System.Drawing.Size(296, 87);
+            this.mgButton.TabIndex = 32;
+            this.mgButton.Text = "Monster Games";
+            this.mgButton.UseVisualStyleBackColor = true;
+            this.mgButton.Click += new System.EventHandler(this.mgButton_Click);
+            // 
             // GenericTelemetryProvider
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(665, 417);
+            this.ClientSize = new System.Drawing.Size(1330, 802);
+            this.Controls.Add(this.mgButton);
             this.Controls.Add(this.dcsButton);
             this.Controls.Add(this.gtavButton);
             this.Controls.Add(this.beamNGButton);
@@ -390,6 +432,7 @@
             this.Controls.Add(this.Filters);
             this.Controls.Add(this.Dirt5Button);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "GenericTelemetryProvider";
             this.Text = "SpaceMonkey";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
@@ -431,6 +474,7 @@
         private System.Windows.Forms.Button beamNGButton;
         private System.Windows.Forms.Button gtavButton;
         private System.Windows.Forms.Button dcsButton;
+        private System.Windows.Forms.Button mgButton;
     }
 }
 
