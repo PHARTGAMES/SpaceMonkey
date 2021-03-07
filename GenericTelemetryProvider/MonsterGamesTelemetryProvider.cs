@@ -95,9 +95,10 @@ namespace GenericTelemetryProvider
                     //wait for telemetry
                     if (socket.Available == 0)
                     {
-                        if (sw.ElapsedMilliseconds > 500)
+                        using (var sleeper = new ManualResetEvent(false))
                         {
-                            Thread.Sleep(1000);
+                            int processTime = (int)processSW.ElapsedMilliseconds;
+                            sleeper.WaitOne(Math.Max(0, updateDelay));
                         }
                         continue;
                     }
@@ -117,10 +118,13 @@ namespace GenericTelemetryProvider
                         ProcessMonsterGamesData(frameDT);
                     }
 
-                    using (var sleeper = new ManualResetEvent(false))
+                    if (socket.Available == 0)
                     {
-                        int processTime = (int)processSW.ElapsedMilliseconds;
-                        sleeper.WaitOne(Math.Max(0, updateDelay - processTime));
+                        using (var sleeper = new ManualResetEvent(false))
+                        {
+                            int processTime = (int)processSW.ElapsedMilliseconds;
+                            sleeper.WaitOne(Math.Max(0, updateDelay - processTime));
+                        }
                     }
                 }
                 catch (Exception e)
@@ -159,7 +163,7 @@ namespace GenericTelemetryProvider
             transform.M43 = data.m43 * posScalar;
             transform.M44 = 1.0f;// data.m44;
 
-            ProcessTransform(transform, data.dt);//_dt);
+            ProcessTransform(transform, _dt);// data.dt);//_dt);
         }
 
         public override bool ProcessTransform(Matrix4x4 newTransform, float inDT)
