@@ -29,6 +29,7 @@ namespace GenericTelemetryProvider
         {
             base.Run();
 
+            updateDelay = 10;
             maxAccel2DMagSusp = 6.0f;
             telemetryPausedTime = 1.5f;
 
@@ -98,7 +99,7 @@ namespace GenericTelemetryProvider
                         using (var sleeper = new ManualResetEvent(false))
                         {
                             int processTime = (int)processSW.ElapsedMilliseconds;
-                            sleeper.WaitOne(Math.Max(0, updateDelay));
+                            sleeper.WaitOne(1);
                         }
                         continue;
                     }
@@ -109,17 +110,18 @@ namespace GenericTelemetryProvider
                     //                    data = (MonsterGamesData)Marshal.PtrToStructure(alloc.AddrOfPinnedObject(), typeof(MonsterGamesData));
                     //                    alloc.Free();
 
-                    data = JsonConvert.DeserializeObject<MonsterGamesData>(System.Text.Encoding.UTF8.GetString(received));
-
-                    float frameDT = sw.ElapsedMilliseconds / 1000.0f;
-                    sw.Restart();
-                    if(!data.paused)
-                    {
-                        ProcessMonsterGamesData(frameDT);
-                    }
 
                     if (socket.Available == 0)
                     {
+                        data = JsonConvert.DeserializeObject<MonsterGamesData>(System.Text.Encoding.UTF8.GetString(received));
+
+                        float frameDT = sw.ElapsedMilliseconds / 1000.0f;
+                        sw.Restart();
+                        if (!data.paused)
+                        {
+                            ProcessMonsterGamesData(frameDT);
+                        }
+
                         using (var sleeper = new ManualResetEvent(false))
                         {
                             int processTime = (int)processSW.ElapsedMilliseconds;
@@ -144,26 +146,25 @@ namespace GenericTelemetryProvider
             if (data == null)
                 return;
 
-            float posScalar = 1.0f;
             transform = new Matrix4x4();
-            transform.M11 = data.m31;
-            transform.M12 = data.m32;
-            transform.M13 = data.m33;
+            transform.M11 = data.m11;
+            transform.M12 = data.m12;
+            transform.M13 = data.m13;
             transform.M14 = 0.0f;// data.m14;
             transform.M21 = data.m21;
             transform.M22 = data.m22;
             transform.M23 = data.m23;
             transform.M24 = 0.0f;// data.m24;
-            transform.M31 = data.m11;
-            transform.M32 = data.m12;
-            transform.M33 = data.m13;
+            transform.M31 = data.m31;
+            transform.M32 = data.m32;
+            transform.M33 = data.m33;
             transform.M34 = 0.0f;// data.m34;
-            transform.M41 = data.m41 * posScalar;
-            transform.M42 = data.m42 * posScalar;
-            transform.M43 = data.m43 * posScalar;
+            transform.M41 = data.m41;
+            transform.M42 = data.m42;
+            transform.M43 = data.m43;
             transform.M44 = 1.0f;// data.m44;
 
-            ProcessTransform(transform, _dt);// data.dt);//_dt);
+            ProcessTransform(transform, data.dt);
         }
 
         public override bool ProcessTransform(Matrix4x4 newTransform, float inDT)
@@ -192,7 +193,7 @@ namespace GenericTelemetryProvider
         public override void FilterDT()
         {
             if (dt <= 0)
-                dt = 0.015f;
+                dt = 0.01f;
         }
 
         public override bool CalcPosition()
