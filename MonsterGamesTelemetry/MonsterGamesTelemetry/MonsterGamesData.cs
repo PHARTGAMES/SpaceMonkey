@@ -9,6 +9,8 @@ namespace MonsterGamesAPI
     [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Ansi)]
     public class MonsterGamesData
     {
+        public uint packetId;
+
         public float m11;
         public float m12;
         public float m13;
@@ -35,6 +37,14 @@ namespace MonsterGamesAPI
         public int gear;
         public int gears;
         public float engineRPM;
+
+        public float accelX;
+        public float accelY;
+        public float accelZ;
+
+        public float pitch;
+        public float yaw;
+        public float roll;
 
         public byte[] ToByteArray()
         {

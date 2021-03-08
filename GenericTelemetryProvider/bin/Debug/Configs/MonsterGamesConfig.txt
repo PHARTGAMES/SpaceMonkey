@@ -4,7 +4,7 @@
   "udpPort": 10001,
   "fillMMF": true,
   "copyFormatDestinations": [],
-  "packetFormat": "Filters\\MonsterFilters.txt",
+  "packetFormat": "PacketFormats\\defaultPacketFormat.xml",
   "filterConfig": "Filters\\MonsterFilters.txt",
   "hotkey": {
     "key": 56,

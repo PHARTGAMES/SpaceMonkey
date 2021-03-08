@@ -23,13 +23,13 @@ namespace GenericTelemetryProvider
         MonsterGamesData data;
         int readPort = 13371;
         private IPEndPoint senderIP;                   // IP address of the sender for the udp connection used by the worker thread
-
+        uint lastPacketId = 0;
 
         public override void Run()
         {
             base.Run();
 
-            updateDelay = 10;
+            updateDelay = 18;
             maxAccel2DMagSusp = 6.0f;
             telemetryPausedTime = 1.5f;
 
@@ -79,26 +79,24 @@ namespace GenericTelemetryProvider
             socket.ExclusiveAddressUse = false;
             socket.Client.Bind(new IPEndPoint(IPAddress.Any, readPort));
 
-
             StartSending();
 
             Stopwatch sw = new Stopwatch();
             sw.Start();
 
             Stopwatch processSW = new Stopwatch();
+            processSW.Start();
 
              //read and process
             while (!IsStopped)
             {
                 try
                 {
-                    processSW.Restart();
                     //wait for telemetry
                     if (socket.Available == 0)
                     {
                         using (var sleeper = new ManualResetEvent(false))
                         {
-                            int processTime = (int)processSW.ElapsedMilliseconds;
                             sleeper.WaitOne(1);
                         }
                         continue;
@@ -115,18 +113,42 @@ namespace GenericTelemetryProvider
                     {
                         data = JsonConvert.DeserializeObject<MonsterGamesData>(System.Text.Encoding.UTF8.GetString(received));
 
-                        float frameDT = sw.ElapsedMilliseconds / 1000.0f;
+                        if (data.packetId < lastPacketId && Math.Abs((long)data.packetId - (long)lastPacketId) < 1000)
+                        {
+                            continue;
+                        }
+
+                        lastPacketId = data.packetId;
+
+                        float frameDT = (float)sw.Elapsed.TotalSeconds;
+                        Console.WriteLine("FrameDT: " + frameDT);
+                        frameDT = data.dt;
+                        //                        float updateDelaySecs = (updateDelay / 1000.0f);
+                        //                        frameDT = updateDelaySecs - (updateDelaySecs - frameDT);// 0.02f;
+                        //frameDT = data.dt;
                         sw.Restart();
                         if (!data.paused)
                         {
                             ProcessMonsterGamesData(frameDT);
                         }
+                        /*
+                                                int processTime = (int)processSW.ElapsedMilliseconds;
+                                                Thread.Sleep(Math.Max(0, 20 - processTime));
+                                                processSW.Restart();
+                                                */
+                                                /*
+                        int processTime = (int)processSW.ElapsedMilliseconds;
+                        Console.WriteLine("ProcessTime: " + processTime);
 
                         using (var sleeper = new ManualResetEvent(false))
                         {
-                            int processTime = (int)processSW.ElapsedMilliseconds;
-                            sleeper.WaitOne(Math.Max(0, updateDelay - processTime));
+
+                            //updateDelay = Math.Min(updateDelay, processTime);
+                            sleeper.WaitOne(Math.Max(0, updateDelay - processTime), false);
+//                            sleeper.WaitOne(updateDelay, false);
                         }
+                        processSW.Restart();
+                        */
                     }
                 }
                 catch (Exception e)
@@ -164,7 +186,7 @@ namespace GenericTelemetryProvider
             transform.M43 = data.m43;
             transform.M44 = 1.0f;// data.m44;
 
-            ProcessTransform(transform, data.dt);
+            ProcessTransform(transform, _dt);// data.dt);
         }
 
         public override bool ProcessTransform(Matrix4x4 newTransform, float inDT)
@@ -172,7 +194,7 @@ namespace GenericTelemetryProvider
             if (!base.ProcessTransform(newTransform, inDT))
                 return false;
 
-            ui.DebugTextChanged(JsonConvert.SerializeObject(filteredData, Formatting.Indented) + "\n dt: " + dt + "\n steer: " + InputModule.Instance.controller.leftThumb.X + "\n accel: " + InputModule.Instance.controller.rightTrigger + "\n brake: " + InputModule.Instance.controller.leftTrigger);
+            ui.DebugTextChanged("dt: " + inDT + "\n" + JsonConvert.SerializeObject(filteredData, Formatting.Indented) + "\n steer: " + InputModule.Instance.controller.leftThumb.X + "\n accel: " + InputModule.Instance.controller.rightTrigger + "\n brake: " + InputModule.Instance.controller.leftTrigger);
 
             SendFilteredData();
 
@@ -193,7 +215,7 @@ namespace GenericTelemetryProvider
         public override void FilterDT()
         {
             if (dt <= 0)
-                dt = 0.01f;
+                dt = 0.000001f;
         }
 
         public override bool CalcPosition()
@@ -252,7 +274,13 @@ namespace GenericTelemetryProvider
 
         public override void CalcAcceleration()
         {
-            base.CalcAcceleration();
+            //            base.CalcAcceleration();
+
+            rawData.gforce_lateral = data.accelX;
+            rawData.gforce_vertical = data.accelY;
+            rawData.gforce_longitudinal = data.accelZ;
+
+            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, accelKeyMask, false);
         }
 
         public override void CalcAngles()
