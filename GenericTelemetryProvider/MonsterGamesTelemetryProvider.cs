@@ -81,11 +81,6 @@ namespace GenericTelemetryProvider
 
             StartSending();
 
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
-
-            Stopwatch processSW = new Stopwatch();
-            processSW.Start();
 
              //read and process
             while (!IsStopped)
@@ -104,10 +99,6 @@ namespace GenericTelemetryProvider
 
                     Byte[] received = socket.Receive(ref senderIP);
 
-                    //                    var alloc = GCHandle.Alloc(received, GCHandleType.Pinned);
-                    //                    data = (MonsterGamesData)Marshal.PtrToStructure(alloc.AddrOfPinnedObject(), typeof(MonsterGamesData));
-                    //                    alloc.Free();
-
 
                     if (socket.Available == 0)
                     {
@@ -120,35 +111,10 @@ namespace GenericTelemetryProvider
 
                         lastPacketId = data.packetId;
 
-                        float frameDT = (float)sw.Elapsed.TotalSeconds;
-                        Console.WriteLine("FrameDT: " + frameDT);
-                        frameDT = data.dt;
-                        //                        float updateDelaySecs = (updateDelay / 1000.0f);
-                        //                        frameDT = updateDelaySecs - (updateDelaySecs - frameDT);// 0.02f;
-                        //frameDT = data.dt;
-                        sw.Restart();
                         if (!data.paused)
                         {
-                            ProcessMonsterGamesData(frameDT);
+                            ProcessMonsterGamesData(data.dt);
                         }
-                        /*
-                                                int processTime = (int)processSW.ElapsedMilliseconds;
-                                                Thread.Sleep(Math.Max(0, 20 - processTime));
-                                                processSW.Restart();
-                                                */
-                                                /*
-                        int processTime = (int)processSW.ElapsedMilliseconds;
-                        Console.WriteLine("ProcessTime: " + processTime);
-
-                        using (var sleeper = new ManualResetEvent(false))
-                        {
-
-                            //updateDelay = Math.Min(updateDelay, processTime);
-                            sleeper.WaitOne(Math.Max(0, updateDelay - processTime), false);
-//                            sleeper.WaitOne(updateDelay, false);
-                        }
-                        processSW.Restart();
-                        */
                     }
                 }
                 catch (Exception e)
@@ -169,22 +135,6 @@ namespace GenericTelemetryProvider
                 return;
 
             transform = new Matrix4x4();
-            transform.M11 = data.m11;
-            transform.M12 = data.m12;
-            transform.M13 = data.m13;
-            transform.M14 = 0.0f;// data.m14;
-            transform.M21 = data.m21;
-            transform.M22 = data.m22;
-            transform.M23 = data.m23;
-            transform.M24 = 0.0f;// data.m24;
-            transform.M31 = data.m31;
-            transform.M32 = data.m32;
-            transform.M33 = data.m33;
-            transform.M34 = 0.0f;// data.m34;
-            transform.M41 = data.m41;
-            transform.M42 = data.m42;
-            transform.M43 = data.m43;
-            transform.M44 = 1.0f;// data.m44;
 
             ProcessTransform(transform, _dt);// data.dt);
         }
@@ -202,8 +152,8 @@ namespace GenericTelemetryProvider
         }
 
         public override bool ExtractFwdUpRht()
-        {            
-            return base.ExtractFwdUpRht();
+        {
+            return true;
 
         }
 
@@ -215,19 +165,14 @@ namespace GenericTelemetryProvider
         public override void FilterDT()
         {
             if (dt <= 0)
-                dt = 0.000001f;
+                dt = 0.01f;
         }
 
         public override bool CalcPosition()
         {
-
-            Vector3 currRawPos = new Vector3(transform.M41, transform.M42, transform.M43);
-
-            rawData.position_x = currRawPos.X;
-            rawData.position_y = currRawPos.Y;
-            rawData.position_z = currRawPos.Z;
-
-            lastRawPos = currRawPos;
+            rawData.position_x = data.posX;
+            rawData.position_y = data.posY;
+            rawData.position_z = data.posZ;
 
             //filter position
             FilterModuleCustom.Instance.Filter(rawData, ref filteredData, posKeyMask, true);
@@ -239,31 +184,9 @@ namespace GenericTelemetryProvider
 
         public override void CalcVelocity()
         {
-            Vector3 worldVelocity = (worldPosition - lastPosition) / dt;
-            lastWorldVelocity = worldVelocity;
-
-            lastPosition = transform.Translation = worldPosition;
-
-            Matrix4x4 rotation = new Matrix4x4();
-            rotation = transform;
-            rotation.M41 = 0.0f;
-            rotation.M42 = 0.0f;
-            rotation.M43 = 0.0f;
-            rotation.M44 = 1.0f;
-
-            Matrix4x4 rotInv = new Matrix4x4();
-            Matrix4x4.Invert(rotation, out rotInv);
-
-            //transform world velocity to local space
-            Vector3 localVelocity = Vector3.Transform(worldVelocity, rotInv);
-
-//            localVelocity.X = -localVelocity.X;
-
-            rawData.local_velocity_x = localVelocity.X;
-            rawData.local_velocity_y = localVelocity.Y;
-            rawData.local_velocity_z = localVelocity.Z;
-
-//            rawData.local_velocity_x = -(float)rawData.local_velocity_x;
+            rawData.local_velocity_x = data.velX;
+            rawData.local_velocity_y = data.velY;
+            rawData.local_velocity_z = data.velZ;
         }
 
         public override void FilterVelocity()
@@ -274,7 +197,6 @@ namespace GenericTelemetryProvider
 
         public override void CalcAcceleration()
         {
-            //            base.CalcAcceleration();
 
             rawData.gforce_lateral = data.accelX;
             rawData.gforce_vertical = data.accelY;
@@ -285,13 +207,22 @@ namespace GenericTelemetryProvider
 
         public override void CalcAngles()
         {
-            Quaternion quat = Quaternion.CreateFromRotationMatrix(transform);
+            rawData.pitch = data.pitch;
+            rawData.yaw = data.yaw;
+            rawData.roll = Utils.LoopAngleRad(data.roll, (float)Math.PI * 0.5f);
+        }
 
-            Vector3 pyr = Utils.GetPYRFromQuaternion(quat);
+        public override void CalcAngularVelocityAndAccel()
+        {
+            rawData.yaw_velocity = data.yawVel;
+            rawData.pitch_velocity = data.pitchVel;
+            rawData.roll_velocity = data.rollVel;
 
-            rawData.pitch = pyr.X;
-            rawData.yaw = pyr.Y;
-            rawData.roll = Utils.LoopAngleRad(pyr.Z, (float)Math.PI * 0.5f);
+            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, angVelKeyMask, false);
+
+            rawData.yaw_acceleration = data.yawAccel;
+            rawData.pitch_acceleration = data.pitchAccel;
+            rawData.roll_acceleration = data.rollAccel;
         }
 
         public override void SimulateEngine()

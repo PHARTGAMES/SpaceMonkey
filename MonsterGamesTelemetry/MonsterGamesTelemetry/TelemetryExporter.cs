@@ -14,10 +14,10 @@ namespace MonsterGamesTelemetry
         uint packetCounter = 0;
 
         private UdpClient udpClient;
-        float sendTimer = 0.0f;
-        float sendRate = 0.015f;
-        Vector3 lastPosition = Vector3.zero;
         Vector3 lastVelocity = Vector3.zero;
+        Vector3 lastRotation = Vector3.zero;
+        Vector3 lastRotVel = Vector3.zero;
+        Vector3 lastPosition = Vector3.zero;
 
         public void Start()
         {
@@ -29,98 +29,104 @@ namespace MonsterGamesTelemetry
 
         public void FixedUpdate()
         {
-            //sendTimer += Time.deltaTime;
+            float deltaTime = Time.fixedDeltaTime;
 
-            //if (sendTimer >= sendRate)
+            LCarPacket carPacket = GetCarPacket(0);
+//            Rigidbody carBody = GetCarBody(0);
+            Transform carTransform = GetCarTransform(0);
+
+            if (carTransform != null)//carBody != null)
             {
-                float deltaTime = Time.fixedDeltaTime;// Time.deltaTime;
-                sendTimer = Mathf.Clamp(sendTimer - sendRate, 0, sendRate);
 
-                LCarPacket carPacket = GetCarPacket(0);
-                Rigidbody carBody = GetCarBody(0);
+                //                Vector3 position = carBody.position;
+                //                Quaternion rotation = carBody.rotation;
 
-//                if (carPacket != null)
-                if (carBody != null)
-                {
-                    data.paused = MGIPauseController.GetGlobal().IsPaused();
-
-                    //Vector3 position = carPacket.rigidbody_f.pos.Convert();
-                    //Quaternion rotation = carPacket.rigidbody_f.q.Convert();
-
-                    Vector3 position = carBody.position;
-                    Quaternion rotation = carBody.rotation;
+                Vector3 position = carTransform.position;
+                Quaternion rotation = carTransform.rotation;
                                        
-                    Matrix4x4 ltw = new Matrix4x4();
+                Matrix4x4 ltw = new Matrix4x4();
 
-                    ltw.SetTRS(position, rotation, Vector3.one);
+                ltw.SetTRS(position, rotation, Vector3.one);
 
-                    data.packetId = packetCounter;
+                data.packetId = packetCounter;
 
-                    if (packetCounter == uint.MaxValue-1)
-                        packetCounter = 0;
-                    else
-                        packetCounter++;
+                if (packetCounter == uint.MaxValue-1)
+                    packetCounter = 0;
+                else
+                    packetCounter++;
 
-                    data.m11 = ltw.m00;
-                    data.m12 = ltw.m10;
-                    data.m13 = ltw.m20;
-                    data.m14 = ltw.m30;
+                //Vector3 velocity = carBody.velocity;
+                Vector3 velocity = (lastPosition - position) / deltaTime;
+                lastPosition = position;
+                Vector3 acceleration = (velocity - lastVelocity) / deltaTime;
+                lastVelocity = velocity;
 
-                    data.m21 = ltw.m01;
-                    data.m22 = ltw.m11;
-                    data.m23 = ltw.m21;
-                    data.m24 = ltw.m31;
+                ltw.SetColumn(3, new Vector4(0, 0, 0, 1));
+                Matrix4x4 inverseLTW = ltw.inverse;
+                acceleration = ltw.MultiplyVector(acceleration);
+                velocity = ltw.MultiplyVector(velocity);
 
-                    data.m31 = ltw.m02;
-                    data.m32 = ltw.m12;
-                    data.m33 = ltw.m22;
-                    data.m34 = ltw.m32;
+                data.posX = position.x;
+                data.posY = position.y;
+                data.posZ = position.z;
 
-                    data.m41 = ltw.m03;
-                    data.m42 = ltw.m13;
-                    data.m43 = ltw.m23;
-                    data.m44 = ltw.m33;
+                Vector3 pyr = rotation.eulerAngles * ((float)Mathf.PI / 180.0f);
+                data.pitch = pyr.x;
+                data.yaw = pyr.y;
+                data.roll = pyr.z;
 
-                    data.dt = deltaTime;
+                data.velX = velocity.x;
+                data.velY = velocity.y;
+                data.velZ = velocity.z;
 
+                data.accelX = acceleration.x;
+                data.accelY = acceleration.y;
+                data.accelZ = acceleration.z;
+
+                data.pitchVel = CalculateAngularChange(lastRotation.x, pyr.x) / deltaTime;
+                data.yawVel = CalculateAngularChange(lastRotation.y, pyr.y) / deltaTime;
+                data.rollVel = CalculateAngularChange(lastRotation.z, pyr.z) / deltaTime;
+
+                lastRotation = pyr;
+
+                data.pitchAccel = data.pitchVel - lastRotVel.x;
+                data.yawAccel = data.yawVel - lastRotVel.y;
+                data.rollAccel = data.rollVel - lastRotVel.z;
+
+                lastRotVel = new Vector3(data.pitchVel, data.yawVel, data.rollVel);
+
+                data.paused = MGIPauseController.GetGlobal().IsPaused();
+
+                data.dt = deltaTime;
+
+                if (carPacket != null)
+                {
                     data.gears = 6;
                     data.gear = carPacket.gear;
 
                     data.engineRPM = carPacket.rpm;
-
-
-                    Vector3 velocity = (position - lastPosition) / deltaTime;
-                    lastPosition = position;
-                    //                    Vector3 acceleration = (velocity - lastVelocity) / deltaTime;
-                    //                    lastVelocity = velocity;
-
-                    Vector3 acceleration = (carBody.velocity - lastVelocity) / deltaTime;
-                    lastVelocity = carBody.velocity;
-
-                    ltw.SetColumn(3, new Vector4(0, 0, 0, 1));
-                    Matrix4x4 inverseLTW = ltw.inverse;
-                    acceleration = ltw.MultiplyVector(acceleration);
-
-                    data.accelX = acceleration.x;
-                    data.accelY = acceleration.y;
-                    data.accelZ = acceleration.z;
-
-
-
-                    Vector3 pyr = rotation.eulerAngles;
-
-                    data.pitch = pyr.x;
-                    data.yaw = pyr.y;
-                    data.roll = pyr.z;
-
-                    string output = JsonConvert.SerializeObject(data, Formatting.Indented);
-                    byte[] bytes = Encoding.UTF8.GetBytes(output);
-
-                    udpClient.Send(bytes, bytes.Length);
                 }
+
+                string output = JsonConvert.SerializeObject(data, Formatting.Indented);
+                byte[] bytes = Encoding.UTF8.GetBytes(output);
+
+                udpClient.Send(bytes, bytes.Length);
             }
 
 
+        }
+
+        public static float CalculateAngularChange(float sourceA, float targetA)
+        {
+            sourceA *= (180.0f / (float)Mathf.PI);
+            targetA *= (180.0f / (float)Mathf.PI);
+
+            float a = targetA - sourceA;
+            float sign = Mathf.Sign(a);
+
+            a = ((Mathf.Abs(a) + 180) % 360 - 180) * sign;
+
+            return a * ((float)Mathf.PI / 180.0f);
         }
 
         private void OnDestroy()
@@ -161,6 +167,21 @@ namespace MonsterGamesTelemetry
             {
                 int focusCar = MGIGameMaster.GetGlobal().GetFocusCar(carIdx);
                 result = physXProvider.GetRigidBody(focusCar);
+            }
+
+            return result;
+        }
+
+        protected static Transform GetCarTransform(int carIdx)
+        {
+            Transform result = null;
+
+            MGIGameMaster mgigameMaster = MGIGameMaster.TryGlobal();
+            MGIPhysXProvider physXProvider = MGIPhysXProvider.GetGlobal();
+            if (physXProvider != null && mgigameMaster != null && mgigameMaster.HasPhysicsStarted() && mgigameMaster.IsFocusCar(carIdx))
+            {
+                int focusCar = MGIGameMaster.GetGlobal().GetFocusCar(carIdx);
+                result = physXProvider.GetCarTransform(focusCar);
             }
 
             return result;

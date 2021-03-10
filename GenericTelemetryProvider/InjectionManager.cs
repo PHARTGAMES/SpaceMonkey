@@ -139,7 +139,7 @@ namespace GenericTelemetryProvider
         private static void SetStatus(string v1, State v2)
         {
             statusMutex.WaitOne();
-            status = v1 + "State: " + v2.ToString();
+            status = v1 + " State: " + v2.ToString();
             statusState = v2;
             statusMutex.ReleaseMutex();
         }

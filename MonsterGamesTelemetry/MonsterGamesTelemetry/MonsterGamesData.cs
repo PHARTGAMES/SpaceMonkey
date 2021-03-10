@@ -11,25 +11,29 @@ namespace MonsterGamesAPI
     {
         public uint packetId;
 
-        public float m11;
-        public float m12;
-        public float m13;
-        public float m14;
+        public float posX;
+        public float posY;
+        public float posZ;
 
-        public float m21;
-        public float m22;
-        public float m23;
-        public float m24;
+        public float pitch;
+        public float yaw;
+        public float roll;
 
-        public float m31;
-        public float m32;
-        public float m33;
-        public float m34;
+        public float velX;
+        public float velY;
+        public float velZ;
 
-        public float m41;
-        public float m42;
-        public float m43;
-        public float m44;
+        public float accelX;
+        public float accelY;
+        public float accelZ;
+
+        public float pitchVel;
+        public float yawVel;
+        public float rollVel;
+
+        public float pitchAccel;
+        public float yawAccel;
+        public float rollAccel;
 
         public bool paused;
         public float dt;
@@ -38,13 +42,6 @@ namespace MonsterGamesAPI
         public int gears;
         public float engineRPM;
 
-        public float accelX;
-        public float accelY;
-        public float accelZ;
-
-        public float pitch;
-        public float yaw;
-        public float roll;
 
         public byte[] ToByteArray()
         {
