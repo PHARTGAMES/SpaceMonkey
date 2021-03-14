@@ -32,22 +32,13 @@ namespace MonsterGamesTelemetry
             float deltaTime = Time.fixedDeltaTime;
 
             LCarPacket carPacket = GetCarPacket(0);
-//            Rigidbody carBody = GetCarBody(0);
             Transform carTransform = GetCarTransform(0);
 
-            if (carTransform != null)//carBody != null)
+            if (carTransform != null)
             {
-
-                //                Vector3 position = carBody.position;
-                //                Quaternion rotation = carBody.rotation;
-
                 Vector3 position = carTransform.position;
                 Quaternion rotation = carTransform.rotation;
                                        
-                Matrix4x4 ltw = new Matrix4x4();
-
-                ltw.SetTRS(position, rotation, Vector3.one);
-
                 data.packetId = packetCounter;
 
                 if (packetCounter == uint.MaxValue-1)
@@ -55,16 +46,13 @@ namespace MonsterGamesTelemetry
                 else
                     packetCounter++;
 
-                //Vector3 velocity = carBody.velocity;
-                Vector3 velocity = (lastPosition - position) / deltaTime;
+                Vector3 velocity = (position - lastPosition) / deltaTime;
                 lastPosition = position;
+
+                velocity = carTransform.InverseTransformDirection(velocity);
+
                 Vector3 acceleration = (velocity - lastVelocity) / deltaTime;
                 lastVelocity = velocity;
-
-                ltw.SetColumn(3, new Vector4(0, 0, 0, 1));
-                Matrix4x4 inverseLTW = ltw.inverse;
-                acceleration = ltw.MultiplyVector(acceleration);
-                velocity = ltw.MultiplyVector(velocity);
 
                 data.posX = position.x;
                 data.posY = position.y;
@@ -89,9 +77,9 @@ namespace MonsterGamesTelemetry
 
                 lastRotation = pyr;
 
-                data.pitchAccel = data.pitchVel - lastRotVel.x;
-                data.yawAccel = data.yawVel - lastRotVel.y;
-                data.rollAccel = data.rollVel - lastRotVel.z;
+                data.pitchAccel = (data.pitchVel - lastRotVel.x) / deltaTime;
+                data.yawAccel = (data.yawVel - lastRotVel.y) / deltaTime;
+                data.rollAccel = (data.rollVel - lastRotVel.z) / deltaTime;
 
                 lastRotVel = new Vector3(data.pitchVel, data.yawVel, data.rollVel);
 

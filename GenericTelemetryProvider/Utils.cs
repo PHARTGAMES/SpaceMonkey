@@ -153,5 +153,15 @@ namespace GenericTelemetryProvider
             return loopedAngle;
         }
 
+        public static float FlipAngleRad(float angle)
+        {
+            if (angle > (float)Math.PI)
+            {
+                angle = (-(float)Math.PI + (angle - (float)Math.PI));
+            }
+
+            return angle;
+        }
+
     }
 }

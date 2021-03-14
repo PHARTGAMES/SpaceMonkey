@@ -24,6 +24,7 @@ namespace GenericTelemetryProvider
         int readPort = 13371;
         private IPEndPoint senderIP;                   // IP address of the sender for the udp connection used by the worker thread
         uint lastPacketId = 0;
+        float worldScale = 0.1f;
 
         public override void Run()
         {
@@ -170,9 +171,9 @@ namespace GenericTelemetryProvider
 
         public override bool CalcPosition()
         {
-            rawData.position_x = data.posX;
-            rawData.position_y = data.posY;
-            rawData.position_z = data.posZ;
+            rawData.position_x = data.posX * worldScale;
+            rawData.position_y = data.posY * worldScale;
+            rawData.position_z = data.posZ * worldScale;
 
             //filter position
             FilterModuleCustom.Instance.Filter(rawData, ref filteredData, posKeyMask, true);
@@ -184,9 +185,9 @@ namespace GenericTelemetryProvider
 
         public override void CalcVelocity()
         {
-            rawData.local_velocity_x = data.velX;
-            rawData.local_velocity_y = data.velY;
-            rawData.local_velocity_z = data.velZ;
+            rawData.local_velocity_x = data.velX * worldScale;
+            rawData.local_velocity_y = data.velY * worldScale;
+            rawData.local_velocity_z = data.velZ * worldScale;
         }
 
         public override void FilterVelocity()
@@ -198,18 +199,18 @@ namespace GenericTelemetryProvider
         public override void CalcAcceleration()
         {
 
-            rawData.gforce_lateral = data.accelX;
-            rawData.gforce_vertical = data.accelY;
-            rawData.gforce_longitudinal = data.accelZ;
+            rawData.gforce_lateral = data.accelX * worldScale;
+            rawData.gforce_vertical = data.accelY * worldScale;
+            rawData.gforce_longitudinal = data.accelZ * worldScale;
 
             FilterModuleCustom.Instance.Filter(rawData, ref filteredData, accelKeyMask, false);
         }
 
         public override void CalcAngles()
         {
-            rawData.pitch = data.pitch;
+            rawData.pitch = Utils.LoopAngleRad(Utils.FlipAngleRad(data.pitch), (float)Math.PI * 0.5f);
             rawData.yaw = data.yaw;
-            rawData.roll = Utils.LoopAngleRad(data.roll, (float)Math.PI * 0.5f);
+            rawData.roll = Utils.LoopAngleRad(Utils.FlipAngleRad(data.roll), (float)Math.PI * 0.5f);
         }
 
         public override void CalcAngularVelocityAndAccel()
