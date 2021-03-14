@@ -5,7 +5,7 @@
   "fillMMF": true,
   "copyFormatDestinations": [],
   "packetFormat": "PacketFormats\\defaultPacketFormat.xml",
-  "filterConfig": "Filters\\defaultFilters.txt",
+  "filterConfig": "Filters\\WRCfilters.txt",
   "hotkey": {
     "key": 56,
     "enabled": true,

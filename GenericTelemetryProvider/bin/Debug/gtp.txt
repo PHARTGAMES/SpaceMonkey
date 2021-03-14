@@ -1,1 +1,1 @@
-Configs\MonsterGamesConfig.txt
+Configs\WRCConfig.txt

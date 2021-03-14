@@ -363,7 +363,7 @@ namespace GenericTelemetryProvider
             if (filtersComboBox.SelectedItem == null)
                 return;
 
-            MainConfig.Instance.configData.filterConfig = MainConfig.Instance.configData.packetFormat = "Filters\\" + (string)filtersComboBox.SelectedItem + ".txt";
+            MainConfig.Instance.configData.filterConfig = "Filters\\" + (string)filtersComboBox.SelectedItem + ".txt";
             MainConfig.Instance.Save();
         }
 
