@@ -64,17 +64,12 @@ namespace GenericTelemetryProvider
                         telemetryData = (RBRAPI)Marshal.PtrToStructure(alloc.AddrOfPinnedObject(), typeof(RBRAPI));
                         alloc.Free();
 
-                        if (telemetryData.totalSteps_ > step)
+                        if (telemetryData.totalSteps_ > step || ((long)telemetryData.totalSteps_-(long)step) < -100)
                         {
                             step = telemetryData.totalSteps_;
                             dt = (float)sw.Elapsed.TotalSeconds;
                             sw.Restart();
                             ProcessRBRAPI(dt);
-                        }
-                        else
-                        {
-                            bool plop = true;
-                            plop = false;
                         }
                     }
                 }
@@ -149,7 +144,7 @@ namespace GenericTelemetryProvider
 
         public override void CalcVelocity()
         {
-            rawData.local_velocity_x = telemetryData.car_.velocities_.sway_;
+            rawData.local_velocity_x = -telemetryData.car_.velocities_.sway_;
             rawData.local_velocity_y = telemetryData.car_.velocities_.heave_;
             rawData.local_velocity_z = telemetryData.car_.velocities_.surge_;
         }
@@ -163,7 +158,7 @@ namespace GenericTelemetryProvider
         public override void CalcAcceleration()
         {
 
-            rawData.gforce_lateral = telemetryData.car_.accelerations_.sway_;
+            rawData.gforce_lateral = -telemetryData.car_.accelerations_.sway_;
             rawData.gforce_vertical = telemetryData.car_.accelerations_.heave_;
             rawData.gforce_longitudinal = telemetryData.car_.accelerations_.surge_;
 
@@ -172,22 +167,22 @@ namespace GenericTelemetryProvider
 
         public override void CalcAngles()
         {
-            rawData.pitch = Utils.LoopAngleRad(Utils.FlipAngleRad(telemetryData.car_.pitch_ * ((float)Math.PI / 180.0f)), (float)Math.PI * 0.5f);
+            rawData.pitch = Utils.LoopAngleRad(Utils.FlipAngleRad(-telemetryData.car_.pitch_ * ((float)Math.PI / 180.0f)), (float)Math.PI * 0.5f);
             rawData.yaw = telemetryData.car_.yaw_ * ((float)Math.PI / 180.0f);
-            rawData.roll = Utils.LoopAngleRad(Utils.FlipAngleRad(telemetryData.car_.roll_ * ((float)Math.PI / 180.0f)), (float)Math.PI * 0.5f);
+            rawData.roll = Utils.LoopAngleRad(Utils.FlipAngleRad(-telemetryData.car_.roll_ * ((float)Math.PI / 180.0f)), (float)Math.PI * 0.5f);
         }
 
         public override void CalcAngularVelocityAndAccel()
         {
             rawData.yaw_velocity = telemetryData.car_.velocities_.yaw_ * ((float)Math.PI / 180.0f);
-            rawData.pitch_velocity = telemetryData.car_.velocities_.pitch_ * ((float)Math.PI / 180.0f);
-            rawData.roll_velocity = telemetryData.car_.velocities_.roll_ * ((float)Math.PI / 180.0f);
+            rawData.pitch_velocity = -telemetryData.car_.velocities_.pitch_ * ((float)Math.PI / 180.0f);
+            rawData.roll_velocity = -telemetryData.car_.velocities_.roll_ * ((float)Math.PI / 180.0f);
 
             FilterModuleCustom.Instance.Filter(rawData, ref filteredData, angVelKeyMask, false);
 
             rawData.yaw_acceleration = telemetryData.car_.accelerations_.yaw_ * ((float)Math.PI / 180.0f);
-            rawData.pitch_acceleration = telemetryData.car_.accelerations_.pitch_ * ((float)Math.PI / 180.0f);
-            rawData.roll_acceleration = telemetryData.car_.accelerations_.roll_ * ((float)Math.PI / 180.0f);
+            rawData.pitch_acceleration = -telemetryData.car_.accelerations_.pitch_ * ((float)Math.PI / 180.0f);
+            rawData.roll_acceleration = -telemetryData.car_.accelerations_.roll_ * ((float)Math.PI / 180.0f);
         }
 
         public override void SimulateEngine()
