@@ -131,6 +131,9 @@ namespace GenericTelemetryProvider
 
             StopSending();
 
+            Thread.CurrentThread.Join();
+
+
         }
 
         public override bool ProcessTransform(Matrix4x4 newTransform, float inDT)

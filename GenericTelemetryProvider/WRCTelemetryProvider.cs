@@ -107,9 +107,11 @@ namespace GenericTelemetryProvider
             }
 
             StopSending();
+            Thread.CurrentThread.Join();
+
         }
 
-            
+
 
         void ProcessWRCData(float _dt)
         {

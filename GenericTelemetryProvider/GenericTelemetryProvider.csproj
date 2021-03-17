@@ -59,6 +59,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="RBRTelemetryProvider.cs" />
+    <Compile Include="RBRUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RBRUI.Designer.cs">
+      <DependentUpon>RBRUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RBRAPI.cs" />
     <Compile Include="DCSUI.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -173,6 +181,9 @@
     <Compile Include="Utils.cs" />
     <Compile Include="WreckfestTelemetryProvider.cs" />
     <Compile Include="XInputController.cs" />
+    <EmbeddedResource Include="RBRUI.resx">
+      <DependentUpon>RBRUI.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="DCSUI.resx">
       <DependentUpon>DCSUI.cs</DependentUpon>
     </EmbeddedResource>

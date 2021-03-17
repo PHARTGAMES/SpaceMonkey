@@ -131,6 +131,8 @@ namespace GenericTelemetryProvider
             }
 
             StopSending();
+
+            Thread.CurrentThread.Join();
         }
 
             

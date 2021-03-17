@@ -94,6 +94,9 @@ namespace GenericTelemetryProvider
 
             StopSending();
             socket.Close();
+
+            Thread.CurrentThread.Join();
+
         }
 
         void ProcessData(float dt)

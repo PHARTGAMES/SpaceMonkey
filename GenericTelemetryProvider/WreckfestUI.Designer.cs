@@ -131,7 +131,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "WreckfestUI";
             this.Text = "WreckfestUI";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.WreckfestUI_FormClosing);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OnFormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
 

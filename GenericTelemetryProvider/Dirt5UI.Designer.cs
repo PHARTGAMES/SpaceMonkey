@@ -106,7 +106,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Dirt5UI";
             this.Text = "Dirt5UI";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Dirt5UI_FormClosing);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OnFormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
 

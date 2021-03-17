@@ -21,16 +21,17 @@ namespace GenericTelemetryProvider
     public partial class GenericTelemetryProvider : Form
     {
 
-        Dirt5UI dirt5UI;
+        public Dirt5UI dirt5UI;
         WreckfestUI wreckfestUI;
         BeamNGUI beamNGUI;
         GTAVUI gtavUI;
         DCSUI dcsUI;
         MonsterGamesUI mgUI;
         WRCUI wrcUI;
+        RBRUI rbrUI;
         FilterUI filterUI;
         public static GenericTelemetryProvider Instance;
-        public string versionString = "v1.0.1";
+        public string versionString = "v1.0.2";
 
         bool ignoreConfigChanges = false;
 
@@ -161,36 +162,32 @@ namespace GenericTelemetryProvider
 
         private void Dirt5Button_Click(object sender, EventArgs e)
         {
-            if (dirt5UI == null)
+            if (dirt5UI != null && !dirt5UI.IsDisposed)
             {
-                dirt5UI = new Dirt5UI();
+                dirt5UI.BeginInvoke(new Action<Form>((s) => { s.Close(); }), dirt5UI);
+            }
+            dirt5UI = new Dirt5UI();
 
-                Thread x = new Thread(new ParameterizedThreadStart((form) => ((Dirt5UI)form).ShowDialog()));
-                x.Start(dirt5UI);
-            }
-            else
-            {
-                dirt5UI.Close();
-            }
+            Thread x = new Thread(new ParameterizedThreadStart((form) => ((Dirt5UI)form).ShowDialog()));
+            x.Start(dirt5UI);
 
         }
 
         private void Filters_Click(object sender, EventArgs e)
         {
-            if (filterUI == null)
-            {
-                filterUI = new FilterUI();
 
-                Thread x = new Thread(new ParameterizedThreadStart((form) => 
-                { 
-                    ((FilterUI)form).ShowDialog();
-                }));
-                x.Start(filterUI);
-            }
-            else
+            if (filterUI != null && !filterUI.IsDisposed)
             {
-                filterUI.Close();
+                filterUI.BeginInvoke(new Action<Form>((s) => { s.Close(); }), filterUI);
             }
+
+            filterUI = new FilterUI();
+
+            Thread x = new Thread(new ParameterizedThreadStart((form) => 
+            { 
+                ((FilterUI)form).ShowDialog();
+            }));
+            x.Start(filterUI);
         }
 
         private void udpIPTextBox_TextChanged(object sender, EventArgs e)
@@ -424,10 +421,10 @@ namespace GenericTelemetryProvider
 
         private void wreckfestButton_Click(object sender, EventArgs e)
         {
-            if(wreckfestUI != null)
+
+            if (wreckfestUI != null && !wreckfestUI.IsDisposed)
             {
-                wreckfestUI.Close();
-                wreckfestUI = null;
+                wreckfestUI.BeginInvoke(new Action<Form>((s) => { s.Close(); }), wreckfestUI);
             }
 
             wreckfestUI = new WreckfestUI();
@@ -438,10 +435,9 @@ namespace GenericTelemetryProvider
 
         private void beamNGButton_Click(object sender, EventArgs e)
         {
-            if (beamNGUI != null)
+            if (beamNGUI != null && !beamNGUI.IsDisposed)
             {
-                beamNGUI.Close();
-                beamNGUI = null;
+                beamNGUI.BeginInvoke(new Action<Form>((s) => { s.Close(); }), beamNGUI);
             }
 
             beamNGUI = new BeamNGUI();
@@ -452,10 +448,9 @@ namespace GenericTelemetryProvider
 
         private void gtavButton_Click(object sender, EventArgs e)
         {
-            if (gtavUI != null)
+            if (gtavUI != null && !gtavUI.IsDisposed)
             {
-                gtavUI.Close();
-                gtavUI = null;
+                gtavUI.BeginInvoke(new Action<Form>((s) => { s.Close(); }), gtavUI);
             }
 
             gtavUI = new GTAVUI();
@@ -466,10 +461,9 @@ namespace GenericTelemetryProvider
 
         private void dcsButton_Click(object sender, EventArgs e)
         {
-            if (dcsUI != null)
+            if (dcsUI != null && !dcsUI.IsDisposed)
             {
-                dcsUI.Close();
-                dcsUI = null;
+                dcsUI.BeginInvoke(new Action<Form>((s) => { s.Close(); }), dcsUI);
             }
 
             dcsUI = new DCSUI();
@@ -481,11 +475,11 @@ namespace GenericTelemetryProvider
 
         private void mgButton_Click(object sender, EventArgs e)
         {
-            if (mgUI != null)
+            if (mgUI != null && !mgUI.IsDisposed)
             {
-                mgUI.Close();
-                mgUI = null;
+                mgUI.BeginInvoke(new Action<Form>((s) => { s.Close(); }), mgUI);
             }
+              
 
             mgUI = new MonsterGamesUI();
 
@@ -495,10 +489,9 @@ namespace GenericTelemetryProvider
 
         private void WRCButton_Click(object sender, EventArgs e)
         {
-            if (wrcUI != null)
+            if (wrcUI != null && !wrcUI.IsDisposed)
             {
-                wrcUI.Close();
-                wrcUI = null;
+                wrcUI.BeginInvoke(new Action<Form>((s) => { s.Close(); }), wrcUI);
             }
 
             wrcUI = new WRCUI();
@@ -506,5 +499,19 @@ namespace GenericTelemetryProvider
             Thread x = new Thread(new ParameterizedThreadStart((form) => ((WRCUI)form).ShowDialog()));
             x.Start(wrcUI);
         }
+
+        private void RBRButton_Click(object sender, EventArgs e)
+        {
+            if (rbrUI != null && !rbrUI.IsDisposed)
+            {
+                rbrUI.BeginInvoke(new Action<Form>((s) => { s.Close(); }), wrcUI);
+            }
+
+            rbrUI = new RBRUI();
+
+            Thread x = new Thread(new ParameterizedThreadStart((form) => ((RBRUI)form).ShowDialog()));
+            x.Start(rbrUI);
+        }
+
     }
 }

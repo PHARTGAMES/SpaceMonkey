@@ -126,9 +126,12 @@ namespace GenericTelemetryProvider
             }
 
             StopSending();
+
+            Thread.CurrentThread.Join();
+
         }
 
-            
+
 
         void ProcessMonsterGamesData(float _dt)
         {

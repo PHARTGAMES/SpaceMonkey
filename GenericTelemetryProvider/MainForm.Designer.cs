@@ -61,6 +61,7 @@
             this.dcsButton = new System.Windows.Forms.Button();
             this.mgButton = new System.Windows.Forms.Button();
             this.WRCButton = new System.Windows.Forms.Button();
+            this.RBRButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // Dirt5Button
@@ -382,18 +383,18 @@
             this.dcsButton.Name = "dcsButton";
             this.dcsButton.Size = new System.Drawing.Size(222, 70);
             this.dcsButton.TabIndex = 31;
-            this.dcsButton.Text = "DCS";
+            this.dcsButton.Text = "Digital Combat Simulator";
             this.dcsButton.UseVisualStyleBackColor = true;
             this.dcsButton.Click += new System.EventHandler(this.dcsButton_Click);
             // 
             // mgButton
             // 
             this.mgButton.Location = new System.Drawing.Point(20, 415);
-            this.mgButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.mgButton.Margin = new System.Windows.Forms.Padding(2);
             this.mgButton.Name = "mgButton";
             this.mgButton.Size = new System.Drawing.Size(222, 70);
             this.mgButton.TabIndex = 32;
-            this.mgButton.Text = "Monster Games";
+            this.mgButton.Text = "Nascar Heat 4/5\r\nAll American Racing\r\nSprint Car Racing";
             this.mgButton.UseVisualStyleBackColor = true;
             this.mgButton.Click += new System.EventHandler(this.mgButton_Click);
             // 
@@ -403,15 +404,26 @@
             this.WRCButton.Name = "WRCButton";
             this.WRCButton.Size = new System.Drawing.Size(222, 70);
             this.WRCButton.TabIndex = 33;
-            this.WRCButton.Text = "WRC";
+            this.WRCButton.Text = "WRC 7/8/9";
             this.WRCButton.UseVisualStyleBackColor = true;
             this.WRCButton.Click += new System.EventHandler(this.WRCButton_Click);
+            // 
+            // RBRButton
+            // 
+            this.RBRButton.Location = new System.Drawing.Point(20, 575);
+            this.RBRButton.Name = "RBRButton";
+            this.RBRButton.Size = new System.Drawing.Size(222, 70);
+            this.RBRButton.TabIndex = 34;
+            this.RBRButton.Text = "Richard Burns Rally\r\nNGP6";
+            this.RBRButton.UseVisualStyleBackColor = true;
+            this.RBRButton.Click += new System.EventHandler(this.RBRButton_Click);
             // 
             // GenericTelemetryProvider
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(998, 642);
+            this.ClientSize = new System.Drawing.Size(998, 664);
+            this.Controls.Add(this.RBRButton);
             this.Controls.Add(this.WRCButton);
             this.Controls.Add(this.mgButton);
             this.Controls.Add(this.dcsButton);
@@ -489,6 +501,7 @@
         private System.Windows.Forms.Button dcsButton;
         private System.Windows.Forms.Button mgButton;
         private System.Windows.Forms.Button WRCButton;
+        private System.Windows.Forms.Button RBRButton;
     }
 }
 

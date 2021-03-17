@@ -90,6 +90,9 @@ namespace GenericTelemetryProvider
 
             StopSending();
             socket.Close();
+
+            Thread.CurrentThread.Join();
+
         }
 
         void ProcessBNGAPI(float dt)

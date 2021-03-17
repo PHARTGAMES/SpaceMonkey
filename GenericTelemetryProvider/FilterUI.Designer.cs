@@ -108,6 +108,7 @@
             this.Load += new System.EventHandler(this.FilterUI_Load);
             ((System.ComponentModel.ISupportInitialize)(this.filterChart)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OnFormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
 

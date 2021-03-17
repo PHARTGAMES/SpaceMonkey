@@ -100,6 +100,16 @@ namespace GenericTelemetryProvider
             provider.Run();
 
         }
+
+        private void OnFormClosing(object sender, FormClosingEventArgs e)
+        {
+            provider.StopAllThreads();
+            provider.Stop();
+            this.Dispose();
+
+            Application.ExitThread();
+        }
+
     }
 
     public class BeamNGConfig

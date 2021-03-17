@@ -256,5 +256,12 @@ namespace GenericTelemetryProvider
             chart.AxisY.Maximum = chartSize;
             
         }
+
+
+        private void OnFormClosing(object sender, FormClosingEventArgs e)
+        {
+            this.Dispose();
+            Application.ExitThread();
+        }
     }
 }
