@@ -18,11 +18,16 @@ SpaceMonkey has been tested with SimCommander 4 (Accuforce v2) and SimFeedback (
 - BeamNG.Drive
 - GTA 5
 - Digital Combat Simulator
+- Nascar Heat 4/5 (MonsterGames)
+- All American Racing (MonsterGames)
+- Sprint Car Racing (MonsterGames)
+- WRC 7/8/9
+- Richard Burns Rally (NGP 6)
 
 
 ## Installation
 
-The latest installer for SpaceMonkey is here (v1.0.2)
+The latest installer for SpaceMonkey is here (v1.0.3)
 
 https://github.com/PHARTGAMES/SpaceMonkey/raw/main/GenericTelemetryProvider/Installer/SpaceMonkeyTP-SetupFiles/SpaceMonkeyTP.msi
 
@@ -127,6 +132,63 @@ All changes to config options are saved as they are changed.
 
 ---
 
+
+## Nascar Heat 4/5, All American Racing and Sprint Car Racing.
+
+### Usage
+
+1. Load the game.
+2. Go to the main interface of Space Monkey and select a main config for MonsterGames..
+3. Go to the main interface of Space Monkey and press the Nascar Heat 4/5..etc.. button which will load the MonsterGamesUI.
+4. In the Monster Games UI, click the Initialize button and wait for a message box to appear in the top left corner of the game window stating that SpaceMonkey is injected.
+5. Space Monkey will now be outputting telemetry. Load any other software at this point.
+
+---
+## WRC 7/8/9
+
+### Warning
+
+This feature only outputs Sway, Heave and Surge accelerations and may not perform optimally. It uses a dll provided by the user Motion4All on RaceDepartment.
+
+### Setup
+
+1. Extract the contents of the "WRCInjection.zip" file in the WRC subfolder of SpaceMonkey into your WRC 7/8/9 game folder.
+2. Run the Install.bat file.
+
+### Usage
+
+1. Go to the main interface of Space Monkey and select a main config for WRC.
+2. Go to the main interface of Space Monkey and press the WRC 7/8/9 button.
+3. Press the Initialize! button.
+4. Space Monkey will now wait for a connection from WRC and output telemetry automatically. You can launch WRC and any other software at this point.
+
+---
+## Richard Burns Rally (NGP 6)
+
+### Setup
+
+1. Ensure you have NGP 6 installed in your Richard Burns Rally installation.
+2. Edit the RichardBurnsRally.ini file next to the RichardBurnsRally_SSE.exe and ensure that these settings under the [NGP] section look like this:
+
+udpTelemetry=1
+
+udpTelemetryAddress=192.168.50.194
+
+udpTelemetryPort=6775
+
+You may be able to use 127.0.0.1 if you enable loopback from your internal ip, however you can just resolve your IPv4 using ipconfig.exe on a command prompt.
+
+3. In the game make sure that options/plugins/ngp6/udp telemetry is turned on (u to toggle), but it should be if the RichardBurnsRally.ini is setup correctly.
+
+### Usage
+
+1. Go to the main interface of Space Monkey and select a main config for Richard Burns Rally.
+2. Go to the main interface of Space Monkey and press the Richard Burns Rally button.
+3. Specify the UDP receive port specified in the setup step (Default 6775)
+4. Press the Initialize! button.
+5. Space Monkey will now wait for a connection from Richard Burns Rally and output telemetry automatically. You can launch Richard Burns Rally and any other software at this point.
+
+---
 
 # SimCommander 4
 
