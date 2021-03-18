@@ -148,7 +148,8 @@ All changes to config options are saved as they are changed.
 
 ### Warning
 
-This feature only outputs Sway, Heave and Surge accelerations and may not perform optimally. It uses a dll provided by the user Motion4All on RaceDepartment.
+This feature only outputs Sway, Heave and Surge accelerations and may not perform optimally. As such, the output does not have enough information to run an Accuforce wheel in FFB Foundation mode through SimCommander. 
+It uses a dll provided by the user Motion4All on RaceDepartment.
 
 ### Setup
 
