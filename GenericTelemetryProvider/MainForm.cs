@@ -31,7 +31,7 @@ namespace GenericTelemetryProvider
         RBRUI rbrUI;
         FilterUI filterUI;
         public static GenericTelemetryProvider Instance;
-        public string versionString = "v1.0.2";
+        public string versionString = "v1.0.3";
 
         bool ignoreConfigChanges = false;
 

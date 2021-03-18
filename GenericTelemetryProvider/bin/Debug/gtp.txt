@@ -1,1 +1,1 @@
-Configs\RBRConfig.txt
+Configs\defaultConfig.txt
