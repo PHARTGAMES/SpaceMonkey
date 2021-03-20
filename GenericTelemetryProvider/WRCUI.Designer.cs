@@ -32,6 +32,7 @@
             this.statusLabel = new System.Windows.Forms.TextBox();
             this.matrixBox = new System.Windows.Forms.RichTextBox();
             this.initializeButton = new System.Windows.Forms.Button();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.SuspendLayout();
             // 
             // statusLabel
@@ -67,11 +68,19 @@
             this.initializeButton.UseVisualStyleBackColor = true;
             this.initializeButton.Click += new System.EventHandler(this.initializeButton_Click);
             // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(28, 60);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(313, 82);
+            this.progressBar1.TabIndex = 10;
+            // 
             // WRCUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(724, 1695);
+            this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.initializeButton);
             this.Controls.Add(this.matrixBox);
             this.Controls.Add(this.statusLabel);
@@ -89,5 +98,6 @@
         private System.Windows.Forms.TextBox statusLabel;
         private System.Windows.Forms.RichTextBox matrixBox;
         private System.Windows.Forms.Button initializeButton;
+        private System.Windows.Forms.ProgressBar progressBar1;
     }
 }

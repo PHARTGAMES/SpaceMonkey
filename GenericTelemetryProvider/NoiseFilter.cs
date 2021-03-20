@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GenericTelemetryProvider;
 
 namespace NoiseFilters
 {
@@ -199,5 +200,39 @@ namespace NoiseFilters
 
         }
 
+    }
+
+    public class KalmanVelocityFilter
+    {
+        public float A, H, Q, R, P, x;
+        public float initial_P;
+        public float initial_x;
+        public float value;
+
+        KalmanFilter kalman;
+
+        public KalmanVelocityFilter(float A, float H, float Q, float R, float initial_P, float initial_x)
+        {
+            this.A = A;
+            this.H = H;
+            this.Q = Q;
+            this.R = R;
+            this.initial_P = this.P = initial_P;
+            this.initial_x = this.x = initial_x;
+
+            kalman = new KalmanFilter(A, H, Q, R, initial_P, initial_x);
+        }
+
+        public float Filter(float sample)
+        {
+            float vel = (sample - value) / GenericProviderBase.dt;
+
+            float newValue = value + kalman.Filter(vel) * GenericProviderBase.dt;
+
+            value = newValue;
+            return newValue;
+        }
+
+        
     }
 }

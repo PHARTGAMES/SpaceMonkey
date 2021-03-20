@@ -41,6 +41,7 @@ namespace GenericTelemetryProvider
             Butterworth,
             FIR,
             Median,
+            KalmanVelocity,
 
             Max
         }
@@ -329,6 +330,16 @@ namespace GenericTelemetryProvider
                 case FilterType.Kalman:
                     {
                         KalmanNoiseFilter newKalmanFilter = new KalmanNoiseFilter();
+                        newKalmanFilter.SetParameters(1, 1, 0.02f, 1, 0.02f, 0.0f);
+
+                        filterList.Add(newKalmanFilter);
+                        newFilter = newKalmanFilter;
+
+                        break;
+                    }
+                case FilterType.KalmanVelocity:
+                    {
+                        KalmanVelocityNoiseFilter newKalmanFilter = new KalmanVelocityNoiseFilter();
                         newKalmanFilter.SetParameters(1, 1, 0.02f, 1, 0.02f, 0.0f);
 
                         filterList.Add(newKalmanFilter);

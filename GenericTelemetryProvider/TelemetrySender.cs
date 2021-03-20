@@ -13,11 +13,13 @@ namespace GenericTelemetryProvider
         {
             try
             {
-                if (udpClient == null)
+                if (udpClient != null)
                 {
-                    udpClient = new UdpClient();
-                    udpClient.Connect(ip, port);
+                    StopSending();
                 }
+                udpClient = new UdpClient();
+                udpClient.Connect(ip, port);
+                disposed = false;
             }
             catch
             {

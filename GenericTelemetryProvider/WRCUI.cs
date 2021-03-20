@@ -60,15 +60,28 @@ namespace GenericTelemetryProvider
             File.WriteAllText(saveFilename, output);
         }
 
+
+        public void ProgressBarChanged(int progress)
+        {
+            Utils.SetProgressThreadSafe(progressBar1, progress);
+        }
+
+
         public void StatusTextChanged(string text)
         {
             Utils.SetTextBoxThreadSafe(statusLabel, text);
+        }
+
+        public void InitButtonStatusChanged(bool enable)
+        {
+            Utils.EnableButtonThreadSafe(initializeButton, enable);
         }
 
         public void DebugTextChanged(string text)
         {
             Utils.SetRichTextBoxThreadSafe(matrixBox, text);
         }
+
 
 
         private void statusLabel_TextChanged(object sender, EventArgs e)

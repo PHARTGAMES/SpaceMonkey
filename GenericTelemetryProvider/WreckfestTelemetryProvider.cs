@@ -116,6 +116,7 @@ namespace GenericTelemetryProvider
                 }
 
             }
+            reader.CloseHandle();
 
             StopSending();
 

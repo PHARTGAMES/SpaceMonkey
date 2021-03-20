@@ -43,7 +43,6 @@ namespace GenericTelemetryProvider
 
             if (mainProcess == null) //no processes, better stop
             {
-
                 ui.StatusTextChanged("DIRT5 exe not running!");
                 return;
             }
@@ -128,6 +127,8 @@ namespace GenericTelemetryProvider
                 }
 
             }
+
+            reader.CloseHandle();
 
             StopSending();
 

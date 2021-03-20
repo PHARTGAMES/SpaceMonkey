@@ -129,6 +129,14 @@ namespace GenericTelemetryProvider
 
                             flowLayoutFilters.Controls.Add(newControl);
                         }
+                        else
+                        if (filter is KalmanVelocityNoiseFilter)
+                        {
+                            KalmanVelocityFilterControl newControl = new KalmanVelocityFilterControl();
+                            newControl.SetFilter((KalmanVelocityNoiseFilter)filter);
+
+                            flowLayoutFilters.Controls.Add(newControl);
+                        }
 
                     }
                 }
@@ -213,7 +221,11 @@ namespace GenericTelemetryProvider
             {
                 FilterModuleCustom.Instance.DeleteFilter(((MedianFilterControl)control).filter, filterKey);
             }
-
+            else
+            if (control is KalmanVelocityFilterControl)
+            {
+                FilterModuleCustom.Instance.DeleteFilter(((KalmanVelocityFilterControl)control).filter, filterKey);
+            }
             flowLayoutFilters.Controls.Remove(control);
         }
 
@@ -238,6 +250,11 @@ namespace GenericTelemetryProvider
             if (control is MedianFilterControl)
             {
                 FilterModuleCustom.Instance.MoveFilter(((MedianFilterControl)control).filter, filterKey, direction);
+            }
+            else
+            if (control is KalmanVelocityFilterControl)
+            {
+                FilterModuleCustom.Instance.MoveFilter(((KalmanVelocityFilterControl)control).filter, filterKey, direction);
             }
         }
 

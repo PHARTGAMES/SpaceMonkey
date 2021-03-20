@@ -18,7 +18,7 @@ namespace Sojaner.MemoryScanner
         const Int64 ReadStackSize = 20480;
 
         #endregion
-        
+
         #region Global fields
         //Instance of ProcessMemoryReader class to be used to read the memory.
         ProcessMemoryReader reader;
@@ -28,7 +28,7 @@ namespace Sojaner.MemoryScanner
         IntPtr lastAddress;
 
         //New thread object to run the scan in
-        Thread thread; 
+        Thread thread;
         #endregion
 
         #region Delegate and Event objects
@@ -42,8 +42,14 @@ namespace Sojaner.MemoryScanner
 
         //Delegate and Event objects for raising the ScanCanceled event.
         public delegate void ScanCanceledEventHandler(object sender, ScanCanceledEventArgs e);
-        public event ScanCanceledEventHandler ScanCanceled; 
+        public event ScanCanceledEventHandler ScanCanceled;
         #endregion
+
+        class ScanThreadParams
+        {
+            public object target;
+            public int maxResults;
+        }
 
         #region Methods
         //Class entry point.
@@ -66,7 +72,7 @@ namespace Sojaner.MemoryScanner
         #region Public methods
 
         //Get ready to scan the memory for the string value.
-        public void StartScanForString(string stringValue)
+        public void StartScanForString(string stringValue, int maxResults = -1)
         {
             //Check if the thread is already defined or not.
             if (thread != null)
@@ -89,7 +95,68 @@ namespace Sojaner.MemoryScanner
             thread = new Thread(new ParameterizedThreadStart(StringScanner));
 
             //Start the new thread and set the 32 bit value to look for.
-            thread.Start(stringValue);
+            ScanThreadParams newParameters = new ScanThreadParams();
+            newParameters.target = stringValue;
+            newParameters.maxResults = maxResults;
+            thread.Start(newParameters);
+        }
+
+        public void StartScanForByteArray(byte[] byteArray, int maxResults = -1)
+        {
+            //Check if the thread is already defined or not.
+            if (thread != null)
+            {
+                //If the thread is already defined and is Alive,
+                if (thread.IsAlive)
+                {
+                    //raise the event that shows that the last scan task is canceled
+                    //(because a new task is going to be started as wanted),
+                    ScanCanceledEventArgs cancelEventArgs = new ScanCanceledEventArgs();
+                    ScanCanceled(this, cancelEventArgs);
+
+                    //and then abort the alive thread and so cancel last scan task.
+                    thread.Abort();
+                }
+            }
+            //Set the thread object as a new instant of the Thread class and pass
+            //a new ParameterizedThreadStart class object with the needed method passed to it
+            //to run in the new thread.
+            thread = new Thread(new ParameterizedThreadStart(ByteArrayScanner));
+
+            //Start the new thread and set the 32 bit value to look for.
+            ScanThreadParams newParameters = new ScanThreadParams();
+            newParameters.target = byteArray;
+            newParameters.maxResults = maxResults;
+            thread.Start(newParameters);
+        }
+
+        public void StartScanForFloatPattern(List<FloatPatternStep> pattern, int maxResults=-1)
+        {
+            //Check if the thread is already defined or not.
+            if (thread != null)
+            {
+                //If the thread is already defined and is Alive,
+                if (thread.IsAlive)
+                {
+                    //raise the event that shows that the last scan task is canceled
+                    //(because a new task is going to be started as wanted),
+                    ScanCanceledEventArgs cancelEventArgs = new ScanCanceledEventArgs();
+                    ScanCanceled(this, cancelEventArgs);
+
+                    //and then abort the alive thread and so cancel last scan task.
+                    thread.Abort();
+                }
+            }
+            //Set the thread object as a new instant of the Thread class and pass
+            //a new ParameterizedThreadStart class object with the needed method passed to it
+            //to run in the new thread.
+            thread = new Thread(new ParameterizedThreadStart(FloatPatternScanner));
+
+            //Start the new thread and set the 32 bit value to look for.
+            ScanThreadParams newParameters = new ScanThreadParams();
+            newParameters.target = pattern;
+            newParameters.maxResults = maxResults;
+            thread.Start(newParameters);
         }
 
         //Cancel the scan started.
@@ -109,13 +176,28 @@ namespace Sojaner.MemoryScanner
         [DllImportAttribute("user32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
         public static extern int MessageBox(IntPtr hwnd, String text, String caption, uint type);
 
-        private void StringScanner(object stringObject)
+        private void StringScanner(object _parameters)
         {
+            ScanThreadParams parameters = (ScanThreadParams)_parameters;
 
             //Get the value out of the object to look for it.
-            string stringValue = (string)stringObject;
-            
+            string stringValue = (string)parameters.target;
+
             byte[] bytes = System.Text.Encoding.ASCII.GetBytes(stringValue);
+
+            ScanThreadParams newParams = new ScanThreadParams();
+            newParams.target = bytes;
+            newParams.maxResults = parameters.maxResults;
+
+            ByteArrayScanner(newParams);
+        }
+
+        private void ByteArrayScanner(object _parameters)
+        {
+            ScanThreadParams parameters = (ScanThreadParams)_parameters;
+
+
+            byte[] bytes = (byte[])parameters.target;
             int bytesCount = bytes.Length;
 
             //The difference of scan start point in all loops except first loop,
@@ -151,7 +233,7 @@ namespace Sojaner.MemoryScanner
                 }
 
 
-               // Console.WriteLine("{0}-{1} : {2} bytes {3}", m.BaseAddress.ToString("X"), ((uint)m.BaseAddress + (uint)m.RegionSize - 1).ToString("X"), m.RegionSize, m.State == (int)ProcessMemoryReader.ProcessMemoryReaderApi.InfoState.MEM_COMMIT ? "COMMIT" : "FREE");
+                // Console.WriteLine("{0}-{1} : {2} bytes {3}", m.BaseAddress.ToString("X"), ((uint)m.BaseAddress + (uint)m.RegionSize - 1).ToString("X"), m.RegionSize, m.State == (int)ProcessMemoryReader.ProcessMemoryReaderApi.InfoState.MEM_COMMIT ? "COMMIT" : "FREE");
 
                 baseAddress = (IntPtr)(Int64)address;// m.BaseAddress;
                 lastAddress = (IntPtr)((Int64)address + (Int64)m.RegionSize);
@@ -182,6 +264,9 @@ namespace Sojaner.MemoryScanner
                     //Look to see if there is any other bytes let after the loops.
                     Int64 outOfBounds = memorySize % ReadStackSize;
 
+                    if (outOfBounds != 0)
+                        loopsCount++;
+
                     //Set the currentAddress to first address.
                     Int64 currentAddress = (Int64)baseAddress;
 
@@ -202,7 +287,7 @@ namespace Sojaner.MemoryScanner
                         if (found)
                             break;
 
-                        //Calculte and set the progress percentage.
+                        //Calculate and set the progress percentage.
                         progress = (int)(((double)(currentAddress - (Int64)baseAddress) / (double)memorySize) * 100d);
 
                         //Prepare and set the ScanProgressed event and raise the event.
@@ -210,9 +295,8 @@ namespace Sojaner.MemoryScanner
                         ScanProgressChanged(this, scanProgressEventArgs);
 
                         //Read the bytes from the memory.
-                        reader.ReadProcessMemory((IntPtr)currentAddress, (UInt64)bytesToRead, out bytesReadSize, buffer);
+                        reader.ReadProcessMemory((IntPtr)currentAddress, (UInt64)((i == loopsCount - 1) && outOfBounds != 0 ? outOfBounds : bytesToRead), out bytesReadSize, buffer);
                         array = buffer;
-
 
                         //If any byte is read from the memory (there has been any bytes in the memory block),
                         if (bytesReadSize > 0)
@@ -220,8 +304,6 @@ namespace Sojaner.MemoryScanner
                             //Loop through the bytes one by one to look for the values.
                             for (Int64 j = 0; j < array.Length - arraysDifference; j++)
                             {
-                                if (found)
-                                    break;
                                 int matches = 0;
                                 for (Int64 b = 0; b < bytes.Length && (j + b) < array.Length - arraysDifference; b++)
                                 {
@@ -236,22 +318,16 @@ namespace Sojaner.MemoryScanner
                                     }
                                 }
 
-                                if(matches > 2)
-                                {
-                                    int bla = 0;
-                                    bla = 1;
-
-                                }
-
                                 if (matches == bytes.Length)
                                 {
-
-
                                     Debug.WriteLine("Found string: " + System.Text.Encoding.ASCII.GetString(array, (int)j, bytes.Length).Replace(Convert.ToChar(0x0).ToString(), " "));
                                     finalList.Add(j + (Int64)currentAddress);
                                     Debug.Flush();
                                     found = true;
-                                    break;
+                                    j += matches-1;
+
+                                    if (finalList.Count >= parameters.maxResults && parameters.maxResults != -1)
+                                        break;
                                 }
 
                             }
@@ -264,7 +340,11 @@ namespace Sojaner.MemoryScanner
                         //Set the size of the read block, bigger, to  the steps backward.
                         //Set the size of the read block, to fit the back steps.
                         bytesToRead = ReadStackSize + arraysDifference;
+
+                        if (found == true && finalList.Count >= parameters.maxResults && parameters.maxResults != -1)
+                            break;
                     }
+/*
                     //If there is any more bytes than the loops read,
                     if (!found && outOfBounds > 0)
                     {
@@ -278,8 +358,6 @@ namespace Sojaner.MemoryScanner
                             //Loop through the bytes one by one to look for the values.
                             for (Int64 j = 0; j < outOfBoundsBytes.Length - arraysDifference; j++)
                             {
-                                if (found)
-                                    break;
                                 int matches = 0;
                                 for (Int64 b = 0; b < bytes.Length && (j + b) < outOfBoundsBytes.Length - arraysDifference; b++)
                                 {
@@ -294,23 +372,16 @@ namespace Sojaner.MemoryScanner
                                     }
                                 }
 
-                                if (matches > 2)
-                                {
-                                    int bla = 0;
-                                    bla = 1;
-
-                                }
-
                                 if (matches == bytes.Length)
                                 {
                                     finalList.Add(j + currentAddress);
-                                    found = true;
-                                    break;
+                                    j = j + b;
                                 }
 
                             }
                         }
                     }
+                    */
                 }
                 //If the block could be read in just one read,
                 else
@@ -337,9 +408,6 @@ namespace Sojaner.MemoryScanner
                             //Loop through the array to find the values.
                             for (int j = 0; j < array.Length - arraysDifference; j++)
                             {
-
-                                if (found)
-                                    break;
                                 int matches = 0;
                                 for (int b = 0; b < bytes.Length && (j + b) < array.Length - arraysDifference; b++)
                                 {
@@ -359,9 +427,390 @@ namespace Sojaner.MemoryScanner
                                     finalList.Add(j + currentAddress);
                                     Debug.Flush();
                                     found = true;
-                                    break;
+                                    j += matches-1;
+                                    if (finalList.Count >= parameters.maxResults && parameters.maxResults != -1)
+                                        break;
                                 }
                             }
+                        }
+                    }
+                }
+                if (found == true && finalList.Count >= parameters.maxResults && parameters.maxResults != -1)
+                    break;
+
+            } while (address <= MaxAddress);
+
+            Console.WriteLine("Total Bytes Scanned = " + totalScanned);
+
+            //Close the handle to the process to avoid process errors.
+            reader.CloseHandle();
+
+            //Prepare the ScanProgressed and set the progress percentage to 100% and raise the event.
+            scanProgressEventArgs = new ScanProgressChangedEventArgs(100);
+            ScanProgressChanged(this, scanProgressEventArgs);
+
+            //Prepare and raise the ScanCompleted event.
+            ScanCompletedEventArgs scanCompleteEventArgs = new ScanCompletedEventArgs(finalList.ToArray());
+            ScanCompleted(this, scanCompleteEventArgs);
+        }
+
+        public class FloatPatternStep
+        {
+            public float minValue;
+            public float maxValue;
+            public int byteOffset;
+            public Int64 foundAddress;
+            public float foundValue;
+            public Int64 blockFoundLoop;
+            public Int64 blockAddress;
+            public Int64 blockBytesToRead;
+            public Int64 foundJ;
+
+            public FloatPatternStep(float minValue, float maxValue, int byteOffset)
+            {
+                this.minValue = minValue;
+                this.maxValue = maxValue;
+                this.byteOffset = byteOffset;
+                foundAddress = 0;
+                foundValue = 0;
+
+            }
+
+        }
+
+        private void FloatPatternScanner(object _parameters)
+        {
+            ScanThreadParams parameters = (ScanThreadParams)_parameters;
+
+            List<FloatPatternStep> pattern = (List<FloatPatternStep>)parameters.target;
+
+            int bytesCount = 4; // only searching for floats
+            foreach (FloatPatternStep step in pattern)
+            {
+                bytesCount += step.byteOffset;
+            }
+
+
+            //The difference of scan start point in all loops except first loop,
+            //that doesn't have any difference, is type's Bytes count minus 1.
+            int arraysDifference = bytesCount - 1;
+
+            //prealloc buffer
+            byte[] buffer = new byte[ReadStackSize + arraysDifference];
+
+            //Define a List object to hold the found memory addresses.
+            List<Int64> finalList = new List<Int64>();
+
+            //Open the pocess to read the memory.
+            reader.OpenProcess();
+
+            //Create a new instant of the ScanProgressEventArgs class to be used to raise the
+            //ScanProgressed event and pass the percentage of scan, during the scan progress.
+            ScanProgressChangedEventArgs scanProgressEventArgs;
+
+            Int64 MaxAddress = (Int64)lastAddress;
+            Int64 address = 0;
+            Int64 totalScanned = 0;
+            do
+            {
+                int patternStep = 0;
+                uint infoSize = (uint)Marshal.SizeOf(typeof(ProcessMemoryReader.ProcessMemoryReaderApi.MEMORY_BASIC_INFORMATION64));
+                ProcessMemoryReader.ProcessMemoryReaderApi.MEMORY_BASIC_INFORMATION64 m = new ProcessMemoryReader.ProcessMemoryReaderApi.MEMORY_BASIC_INFORMATION64();
+                int result = ProcessMemoryReader.ProcessMemoryReaderApi.VirtualQueryEx(reader.ReadProcess.Handle, (IntPtr)address, out m, infoSize);
+
+                if (result != infoSize)
+                {
+                    int lastError = Marshal.GetLastWin32Error();
+                    break;
+                }
+
+
+                // Console.WriteLine("{0}-{1} : {2} bytes {3}", m.BaseAddress.ToString("X"), ((uint)m.BaseAddress + (uint)m.RegionSize - 1).ToString("X"), m.RegionSize, m.State == (int)ProcessMemoryReader.ProcessMemoryReaderApi.InfoState.MEM_COMMIT ? "COMMIT" : "FREE");
+
+                baseAddress = (IntPtr)(Int64)address;// m.BaseAddress;
+                lastAddress = (IntPtr)((Int64)address + (Int64)m.RegionSize);
+
+                address = (Int64)m.BaseAddress + (Int64)m.RegionSize;
+                /*
+                if (!(m.State == (int)ProcessMemoryReader.ProcessMemoryReaderApi.InfoState.MEM_COMMIT &&
+                    (m.Type == (int)ProcessMemoryReader.ProcessMemoryReaderApi.InfoType.MEM_MAPPED || m.Type == (int)ProcessMemoryReader.ProcessMemoryReaderApi.InfoType.MEM_PRIVATE)))
+                    continue;
+
+                */
+
+                if (m.State != (int)ProcessMemoryReader.ProcessMemoryReaderApi.InfoState.MEM_COMMIT)
+                    continue;
+
+                totalScanned += (Int64)m.RegionSize;
+
+                //Calculate the size of memory to scan.
+                Int64 memorySize = (Int64)((Int64)lastAddress - (Int64)baseAddress);
+                bool found = false;
+
+                //If more that one block of memory is required to be read,
+                if (memorySize >= ReadStackSize)
+                {
+                    //Count of loops to read the memory blocks.
+                    Int64 loopsCount = memorySize / ReadStackSize;
+
+                    //Look to see if there is any other bytes let after the loops.
+                    Int64 outOfBounds = memorySize % ReadStackSize;
+
+                    //extra loop for out of bounds bytes
+                    if (outOfBounds != 0)
+                        loopsCount++;
+
+                    //Set the currentAddress to first address.
+                    Int64 currentAddress = (Int64)baseAddress;
+
+                    //This will be used to check if any bytes have been read from the memory.
+                    Int64 bytesReadSize;
+
+                    //Set the size of the bytes blocks.
+                    Int64 bytesToRead = ReadStackSize;
+
+                    //An array to hold the bytes read from the memory.
+                    byte[] array;
+
+                    //Progress percentage.
+                    int progress;
+                    Int64 jStart = 0;
+                    for (Int64 i = 0; i < loopsCount; i++)
+                    {
+                        bool skipAddressOffset = false;
+                        if (found)
+                            break;
+
+                        //Calculte and set the progress percentage.
+                        progress = (int)(((double)(currentAddress - (Int64)baseAddress) / (double)memorySize) * 100d);
+
+                        //Prepare and set the ScanProgressed event and raise the event.
+                        scanProgressEventArgs = new ScanProgressChangedEventArgs(progress);
+                        ScanProgressChanged(this, scanProgressEventArgs);
+
+                        
+
+                        //Read the bytes from the memory.
+                        reader.ReadProcessMemory((IntPtr)currentAddress, (UInt64)((i == loopsCount - 1) && outOfBounds != 0 ? outOfBounds : bytesToRead), out bytesReadSize, buffer);
+                        array = buffer;
+
+
+                        //If any byte is read from the memory (there has been any bytes in the memory block),
+                        if (bytesReadSize > 0)
+                        {
+                            //Loop through the bytes 4 at a time to look for the values.
+                            for (Int64 j = jStart; j < array.Length - arraysDifference; j+=4) //4 bytes at a time
+                            {
+                                float memoryValue = System.BitConverter.ToSingle(array, (int)j);
+
+                                FloatPatternStep currStep = pattern[patternStep];
+
+                                if (memoryValue <= currStep.maxValue && memoryValue >= currStep.minValue)
+                                {
+                                    currStep.foundAddress = currentAddress + j;
+                                    currStep.foundValue = memoryValue;
+                                    //save where we found first value
+                                    if (patternStep == 0)
+                                    {
+                                        currStep.blockFoundLoop = i;
+                                        currStep.blockAddress = currentAddress;
+                                        currStep.blockBytesToRead = bytesToRead;
+                                        currStep.foundJ = j;
+                                    }
+
+                                    patternStep++;
+
+                                    //found pattern
+                                    if (patternStep >= pattern.Count)
+                                    {
+                                        found = true;
+                                        Debug.WriteLine("Found pattern");
+                                        finalList.Add(pattern[0].foundAddress);
+                                        Debug.Flush();
+                                        patternStep = 0;
+
+                                        break;
+                                    }
+                                    currStep = pattern[patternStep];
+                                    j += currStep.byteOffset - 4;
+                                    continue;
+                                }
+                                else
+                                {
+                                    if (patternStep != 0)
+                                    {
+                                        //need to skip back some loops
+                                        if (i != pattern[0].blockFoundLoop)
+                                        {
+                                            patternStep = 0;
+                                            i = pattern[0].blockFoundLoop;
+                                            jStart = pattern[0].foundJ + 4;
+                                            skipAddressOffset = true;
+                                            break;
+                                        }
+                                        else //ok to continue same loop
+                                        {
+                                            patternStep = 0;
+                                            j = pattern[0].foundJ;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        if (skipAddressOffset)
+                            continue;
+                        //Move currentAddress after the block already scaned, but
+                        //move it back some steps backward (as much as arraysDifference)
+                        //to avoid loosing any values at the end of the array.
+                        currentAddress += array.Length - arraysDifference;
+
+                        //Set the size of the read block, bigger, to  the steps backward.
+                        //Set the size of the read block, to fit the back steps.
+                        bytesToRead = ReadStackSize + arraysDifference;
+
+                        jStart = 0;
+                    }
+/*
+                    //If there is any more bytes than the loops read,
+                    if (!found && outOfBounds > 0)
+                    {
+                        //Read the additional bytes.
+                        reader.ReadProcessMemory((IntPtr)currentAddress, (UInt64)((Int64)lastAddress - currentAddress), out bytesReadSize, buffer);
+                        byte[] outOfBoundsBytes = buffer;
+
+                        //If any byte is read from the memory (there has been any bytes in the memory block),
+                        if (bytesReadSize > 0)
+                        {
+
+                            //Loop through the bytes 4 at a time to look for the values.
+                            for (Int64 j = 0; j < outOfBoundsBytes.Length - arraysDifference; j += 4) //4 bytes at a time
+                            {
+                                float memoryValue = System.BitConverter.ToSingle(outOfBoundsBytes, (int)j);
+
+                                FloatPatternStep currStep = pattern[patternStep];
+
+                                if (memoryValue <= currStep.maxValue && memoryValue >= currStep.minValue)
+                                {
+                                    currStep.foundAddress = currentAddress + j;
+                                    currStep.foundValue = memoryValue;
+                                    //save where we found first value
+                                    if (patternStep == 0)
+                                    {
+                                        currStep.blockFoundLoop = 0;
+                                        currStep.blockAddress = currentAddress;
+                                        currStep.blockBytesToRead = bytesToRead;
+                                    }
+                                    patternStep++;
+
+                                    if (patternStep >= pattern.Count)
+                                    {
+                                        found = true;
+                                        Debug.WriteLine("Found Pattern");
+                                        finalList.Add(j + (Int64)currentAddress);
+                                        Debug.Flush();
+                                        patternStep = 0;
+
+                                        break;
+                                    }
+                                    currStep = pattern[patternStep];
+                                    j += currStep.byteOffset - 4;
+                                    continue;
+                                }
+                                else
+                                {
+                                    patternStep = 0;
+
+                                    if(currentAddress != pattern[0].blockAddress)
+                                    {
+                                        //this is a problem
+                                        bool boo = true;
+                                        boo = false;
+                                    }
+
+                                    j = (pattern[0].blockAddress - pattern[0].foundAddress);
+                                }
+                            }
+                
+                        }
+                    }*/
+
+                    //reset pattern step if not found for this entire block
+                    if (!found)
+                        patternStep = 0;
+                }
+                //If the block could be read in just one read,
+                else
+                {
+                    //Calculate the memory block's size.
+                    Int64 blockSize = memorySize % ReadStackSize;
+
+                    //Set the currentAddress to first address.
+                    Int64 currentAddress = (Int64)baseAddress;
+
+                    //Holds the count of bytes read from the memory.
+                    Int64 bytesReadSize;
+
+                    //If the memory block can contain at least one 64 bit variable.
+                    if (blockSize > bytesCount)
+                    {
+                        //Read the bytes to the array.
+                        reader.ReadProcessMemory((IntPtr)currentAddress, (UInt64)blockSize, out bytesReadSize, buffer);
+                        byte[] array = buffer;
+
+                        //If any byte is read,
+                        if (bytesReadSize > 0)
+                        {
+                            //Loop through the bytes 4 at a time to look for the values.
+                            for (Int64 j = 0; j < array.Length - arraysDifference; j += 4) //4 bytes at a time
+                            {
+                                float memoryValue = System.BitConverter.ToSingle(array, (int)j);
+
+                                FloatPatternStep currStep = pattern[patternStep];
+
+                                if (memoryValue <= currStep.maxValue && memoryValue >= currStep.minValue)
+                                {
+                                    currStep.foundAddress = currentAddress + j;
+                                    currStep.foundValue = memoryValue;
+                                    //save where we found first value
+                                    if (patternStep == 0)
+                                    {
+                                        currStep.blockFoundLoop = 0;
+                                        currStep.blockAddress = currentAddress;
+                                        currStep.blockBytesToRead = blockSize;
+                                        currStep.foundJ = j;
+                                    }
+                                    patternStep++;
+
+                                    if (patternStep >= pattern.Count)
+                                    {
+                                        found = true;
+                                        Debug.WriteLine("Found Pattern");
+                                        finalList.Add(pattern[0].foundAddress);
+                                        Debug.Flush();
+                                        patternStep = 0;
+                                        break;
+                                    }
+                                    currStep = pattern[patternStep];
+                                    j += currStep.byteOffset - 4;
+                                    continue;
+                                }
+                                else
+                                {
+                                    if (patternStep != 0)
+                                    {
+                                        j = pattern[0].foundJ;
+                                    }
+                                    patternStep = 0;
+                                }
+                            }
+
+                            //reset pattern step here because couldn't find it in entire block
+                            if(!found)
+                            {
+                                patternStep = 0;
+                            }
+
                         }
                     }
                 }
@@ -381,12 +830,13 @@ namespace Sojaner.MemoryScanner
             ScanCompletedEventArgs scanCompleteEventArgs = new ScanCompletedEventArgs(finalList.ToArray());
             ScanCompleted(this, scanCompleteEventArgs);
         }
+        
         #endregion
-        #endregion
+#endregion
     }
 
-    
-    
+
+
     #region EventArgs classes
     public class ScanProgressChangedEventArgs : EventArgs
     {

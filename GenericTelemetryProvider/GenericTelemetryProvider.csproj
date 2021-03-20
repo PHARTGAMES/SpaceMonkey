@@ -59,6 +59,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="KalmanVelocityFilterControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="KalmanVelocityFilterControl.Designer.cs">
+      <DependentUpon>KalmanVelocityFilterControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="KalmanVelocityNoiseFilter.cs" />
     <Compile Include="RBRTelemetryProvider.cs" />
     <Compile Include="RBRUI.cs">
       <SubType>Form</SubType>
@@ -181,6 +188,9 @@
     <Compile Include="Utils.cs" />
     <Compile Include="WreckfestTelemetryProvider.cs" />
     <Compile Include="XInputController.cs" />
+    <EmbeddedResource Include="KalmanVelocityFilterControl.resx">
+      <DependentUpon>KalmanVelocityFilterControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="RBRUI.resx">
       <DependentUpon>RBRUI.cs</DependentUpon>
     </EmbeddedResource>

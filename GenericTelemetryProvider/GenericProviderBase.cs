@@ -40,7 +40,7 @@ namespace GenericTelemetryProvider
         protected Vector3 worldPosition;
 
         protected Matrix4x4 transform;
-        protected float dt;
+        public static float dt;
         protected float maxAccel2DMagSusp = 3.0f;
 
         protected int posKeyMask = CMCustomUDPData.GetKeyMask(CMCustomUDPData.DataKey.position_x, CMCustomUDPData.DataKey.position_y, CMCustomUDPData.DataKey.position_z);
@@ -104,7 +104,8 @@ namespace GenericTelemetryProvider
 
             }
 
-
+            //this will end any threads already running
+            IsStopped = true;
         }
 
         public virtual void StartSending()
