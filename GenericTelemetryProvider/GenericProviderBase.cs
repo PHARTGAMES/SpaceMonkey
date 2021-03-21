@@ -11,6 +11,7 @@ using CMCustomUDP;
 using NoiseFilters;
 using Newtonsoft.Json;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace GenericTelemetryProvider
 {

@@ -456,6 +456,11 @@ namespace Sojaner.MemoryScanner
 
         public class FloatPatternStep
         {
+            public enum Type
+            {
+                Normal,
+                Absolute,
+            }
             public float minValue;
             public float maxValue;
             public int byteOffset;
@@ -465,12 +470,14 @@ namespace Sojaner.MemoryScanner
             public Int64 blockAddress;
             public Int64 blockBytesToRead;
             public Int64 foundJ;
+            public Type type;
 
-            public FloatPatternStep(float minValue, float maxValue, int byteOffset)
+            public FloatPatternStep(float minValue, float maxValue, int byteOffset, Type type = Type.Normal)
             {
                 this.minValue = minValue;
                 this.maxValue = maxValue;
                 this.byteOffset = byteOffset;
+                this.type = type;
                 foundAddress = 0;
                 foundValue = 0;
 
@@ -604,6 +611,15 @@ namespace Sojaner.MemoryScanner
                                 float memoryValue = System.BitConverter.ToSingle(array, (int)j);
 
                                 FloatPatternStep currStep = pattern[patternStep];
+                                
+                                switch(currStep.type)
+                                {
+                                    case FloatPatternStep.Type.Absolute:
+                                    {
+                                        memoryValue = Math.Abs(memoryValue);
+                                        break;
+                                    }
+                                }
 
                                 if (memoryValue <= currStep.maxValue && memoryValue >= currStep.minValue)
                                 {
@@ -767,6 +783,16 @@ namespace Sojaner.MemoryScanner
                                 float memoryValue = System.BitConverter.ToSingle(array, (int)j);
 
                                 FloatPatternStep currStep = pattern[patternStep];
+
+                                switch (currStep.type)
+                                {
+                                    case FloatPatternStep.Type.Absolute:
+                                    {
+                                        memoryValue = Math.Abs(memoryValue);
+                                        break;
+                                    }
+                                }
+
 
                                 if (memoryValue <= currStep.maxValue && memoryValue >= currStep.minValue)
                                 {

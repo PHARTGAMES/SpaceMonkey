@@ -13,7 +13,6 @@ using System.IO.MemoryMappedFiles;
 using WRCAPI;
 using System.Threading.Tasks;
 using Sojaner.MemoryScanner;
-using System.Diagnostics;
 
 namespace GenericTelemetryProvider
 {
@@ -73,7 +72,10 @@ namespace GenericTelemetryProvider
             pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.05f, 0.05f, 4));
             pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.05f, 0.05f, 4));
             pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.00005f, 0.00005f, 4));
-            pattern.Add(new RegularMemoryScan.FloatPatternStep(minValue, maxValue, 104));
+            pattern.Add(new RegularMemoryScan.FloatPatternStep(0.1f, float.MaxValue, 4, RegularMemoryScan.FloatPatternStep.Type.Absolute));
+            pattern.Add(new RegularMemoryScan.FloatPatternStep(0.1f, float.MaxValue, 4, RegularMemoryScan.FloatPatternStep.Type.Absolute));
+            pattern.Add(new RegularMemoryScan.FloatPatternStep(0.1f, float.MaxValue, 4, RegularMemoryScan.FloatPatternStep.Type.Absolute));
+            pattern.Add(new RegularMemoryScan.FloatPatternStep(minValue, maxValue, 92));
             pattern.Add(new RegularMemoryScan.FloatPatternStep(-1.0f, 1.0f, 4));
             pattern.Add(new RegularMemoryScan.FloatPatternStep(-1.0f, 1.0f, 4));
             pattern.Add(new RegularMemoryScan.FloatPatternStep(-1.0f, 1.0f, 4));
@@ -85,7 +87,10 @@ namespace GenericTelemetryProvider
             pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.05f, 0.05f, 4));
             pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.05f, 0.05f, 4));
             pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.00005f, 0.00005f, 4));
-            pattern.Add(new RegularMemoryScan.FloatPatternStep(minValue, maxValue, 104));
+            pattern.Add(new RegularMemoryScan.FloatPatternStep(0.1f, float.MaxValue, 4, RegularMemoryScan.FloatPatternStep.Type.Absolute));
+            pattern.Add(new RegularMemoryScan.FloatPatternStep(0.1f, float.MaxValue, 4, RegularMemoryScan.FloatPatternStep.Type.Absolute));
+            pattern.Add(new RegularMemoryScan.FloatPatternStep(0.1f, float.MaxValue, 4, RegularMemoryScan.FloatPatternStep.Type.Absolute));
+            pattern.Add(new RegularMemoryScan.FloatPatternStep(minValue, maxValue, 92));
             pattern.Add(new RegularMemoryScan.FloatPatternStep(-1.0f, 1.0f, 4));
             pattern.Add(new RegularMemoryScan.FloatPatternStep(-1.0f, 1.0f, 4));
             pattern.Add(new RegularMemoryScan.FloatPatternStep(-1.0f, 1.0f, 4));
@@ -97,7 +102,10 @@ namespace GenericTelemetryProvider
             pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.05f, 0.05f, 4));
             pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.05f, 0.05f, 4));
             pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.00005f, 0.00005f, 4));
-            pattern.Add(new RegularMemoryScan.FloatPatternStep(minValue, maxValue, 104));
+            pattern.Add(new RegularMemoryScan.FloatPatternStep(0.1f, float.MaxValue, 4, RegularMemoryScan.FloatPatternStep.Type.Absolute));
+            pattern.Add(new RegularMemoryScan.FloatPatternStep(0.1f, float.MaxValue, 4, RegularMemoryScan.FloatPatternStep.Type.Absolute));
+            pattern.Add(new RegularMemoryScan.FloatPatternStep(0.1f, float.MaxValue, 4, RegularMemoryScan.FloatPatternStep.Type.Absolute));
+            pattern.Add(new RegularMemoryScan.FloatPatternStep(minValue, maxValue, 92));
             pattern.Add(new RegularMemoryScan.FloatPatternStep(-1.0f, 1.0f, 4));
             pattern.Add(new RegularMemoryScan.FloatPatternStep(-1.0f, 1.0f, 4));
             pattern.Add(new RegularMemoryScan.FloatPatternStep(-1.0f, 1.0f, 4));
@@ -144,7 +152,7 @@ namespace GenericTelemetryProvider
             t.Start();
 
         }
-
+        /*
         void scan_VehicleScanCompleted(object sender, ScanCompletedEventArgs e)
         {
             ui.InitButtonStatusChanged(true);
@@ -188,7 +196,7 @@ namespace GenericTelemetryProvider
             t = new Thread(ReadTelemetry);
             t.Start();
         }
-
+        */
 
         public override void Stop()
         {
@@ -364,6 +372,12 @@ namespace GenericTelemetryProvider
         {
             Vector3 currRawPos = new Vector3(transform.M41, transform.M42, transform.M43);
 
+            //float velMag = (currRawPos - lastRawPos).Length();
+
+            //if (velMag == 0.0f)
+            //{
+            //    return false;
+            //}
 
             rawData.position_x = currRawPos.X;
             rawData.position_y = currRawPos.Y;
@@ -384,6 +398,9 @@ namespace GenericTelemetryProvider
         {
             Vector3 worldVelocity = (worldPosition - lastPosition) / dt;
             lastWorldVelocity = worldVelocity;
+
+            //Debug.WriteLine("Velocity: " + worldVelocity.Length());
+
 
             lastPosition = transform.Translation = worldPosition;
 
