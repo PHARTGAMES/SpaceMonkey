@@ -247,15 +247,21 @@ namespace GenericTelemetryProvider
             Stopwatch sw = new Stopwatch();
             sw.Start();
 
-            Stopwatch processSW = new Stopwatch();
 
-             //read and process
+            //read and process
             while (!IsStopped)
             {
                 try
                 {
-                    processSW.Restart();
-
+                    //dis is super accurate for timing
+                    float frameDT = 0;
+                    while(true)
+                    {
+                        frameDT = (float)sw.Elapsed.TotalSeconds;
+                        if (frameDT >= (updateDelay / 1000.0f))
+                            break;
+                    }
+                    sw.Restart();
 
                     Int64 byteReadSize;
                     reader.ReadProcessMemory((IntPtr)wheelGroupMemoryAddress, wheelGroupReadSize, out byteReadSize, wheelGroupReadBuffer);
@@ -269,16 +275,7 @@ namespace GenericTelemetryProvider
                     wheelsGroupData = (WRCWheelGroupData)Marshal.PtrToStructure(alloc.AddrOfPinnedObject(), typeof(WRCWheelGroupData));
                     alloc.Free();
 
-
-                    float frameDT = (float)sw.Elapsed.TotalSeconds;
-                    sw.Restart();
                     ProcessWRCData(frameDT);
-
-                    using (var sleeper = new ManualResetEvent(false))
-                    {
-                        int processTime = (int)processSW.Elapsed.TotalMilliseconds;
-                        sleeper.WaitOne(Math.Max(0, updateDelay - processTime));
-                    }
 
                 }
                 catch (Exception e)
@@ -374,7 +371,7 @@ namespace GenericTelemetryProvider
 
             //float velMag = (currRawPos - lastRawPos).Length();
 
-            //if (velMag == 0.0f)
+            //if (velMag == 0)
             //{
             //    return false;
             //}
