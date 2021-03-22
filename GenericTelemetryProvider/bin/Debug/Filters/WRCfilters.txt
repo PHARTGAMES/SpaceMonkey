@@ -233,7 +233,18 @@
         "key": 17,
         "filters": {
           "$type": "System.Collections.Generic.List`1[[GenericTelemetryProvider.FilterData, SpaceMonkeyTP]], mscorlib",
-          "$values": []
+          "$values": [
+            {
+              "$type": "GenericTelemetryProvider.KalmanFilterData, SpaceMonkeyTP",
+              "a": 1.0,
+              "h": 1.0,
+              "q": 0.02,
+              "r": 1.0,
+              "p": 0.02,
+              "x": 0.0,
+              "type": null
+            }
+          ]
         }
       },
       {
@@ -241,7 +252,18 @@
         "key": 18,
         "filters": {
           "$type": "System.Collections.Generic.List`1[[GenericTelemetryProvider.FilterData, SpaceMonkeyTP]], mscorlib",
-          "$values": []
+          "$values": [
+            {
+              "$type": "GenericTelemetryProvider.KalmanFilterData, SpaceMonkeyTP",
+              "a": 1.0,
+              "h": 1.0,
+              "q": 0.02,
+              "r": 1.0,
+              "p": 0.02,
+              "x": 0.0,
+              "type": null
+            }
+          ]
         }
       },
       {
@@ -249,7 +271,18 @@
         "key": 19,
         "filters": {
           "$type": "System.Collections.Generic.List`1[[GenericTelemetryProvider.FilterData, SpaceMonkeyTP]], mscorlib",
-          "$values": []
+          "$values": [
+            {
+              "$type": "GenericTelemetryProvider.KalmanFilterData, SpaceMonkeyTP",
+              "a": 1.0,
+              "h": 1.0,
+              "q": 0.02,
+              "r": 1.0,
+              "p": 0.02,
+              "x": 0.0,
+              "type": null
+            }
+          ]
         }
       }
     ]

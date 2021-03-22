@@ -31,7 +31,7 @@ namespace GenericTelemetryProvider
 
         public override void Run()
         {
-            updateDelay = 15;
+            updateDelay =  15;
             base.Run();
 
             maxAccel2DMagSusp = 6.0f;
@@ -296,7 +296,6 @@ namespace GenericTelemetryProvider
 
         void ProcessWRCData(float _dt)
         {
-           // _dt = 0.03f;
             if (wheelsGroupData == null)
                 return;
 
@@ -349,8 +348,6 @@ namespace GenericTelemetryProvider
 
         public override bool ExtractFwdUpRht()
         {
-            //            return base.ExtractFwdUpRht();
-
             return true;
         }
 
@@ -363,18 +360,22 @@ namespace GenericTelemetryProvider
         {
             if (dt <= 0)
                 dt = 0.015f;
+
+            //fixed dt for wrc
+            dt = updateDelay / 1000.0f;
         }
+
         
         public override bool CalcPosition()
         {
             Vector3 currRawPos = new Vector3(transform.M41, transform.M42, transform.M43);
 
-            //float velMag = (currRawPos - lastRawPos).Length();
+            float velMag = (currRawPos - lastRawPos).Length();
 
-            //if (velMag == 0)
-            //{
-            //    return false;
-            //}
+            if (velMag == 0)
+            {
+                return false;
+            }
 
             rawData.position_x = currRawPos.X;
             rawData.position_y = currRawPos.Y;
@@ -422,6 +423,7 @@ namespace GenericTelemetryProvider
             rawData.local_velocity_z = localVelocity.Z;
 
         }
+
 
         public override void CalcAngles()
         {
