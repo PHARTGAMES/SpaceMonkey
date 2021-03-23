@@ -29,6 +29,7 @@ namespace GenericTelemetryProvider
         MonsterGamesUI mgUI;
         WRCUI wrcUI;
         RBRUI rbrUI;
+        SquadronsUI squadronsUI;
         FilterUI filterUI;
         public static GenericTelemetryProvider Instance;
         public string versionString = "v1.0.3";
@@ -513,5 +514,17 @@ namespace GenericTelemetryProvider
             x.Start(rbrUI);
         }
 
+        private void SquadronsBtn_Click(object sender, EventArgs e)
+        {
+            if (squadronsUI != null && !squadronsUI.IsDisposed)
+            {
+                squadronsUI.BeginInvoke(new Action<Form>((s) => { s.Close(); }), squadronsUI);
+            }
+
+            squadronsUI = new SquadronsUI();
+
+            Thread x = new Thread(new ParameterizedThreadStart((form) => ((SquadronsUI)form).ShowDialog()));
+            x.Start(squadronsUI);
+        }
     }
 }

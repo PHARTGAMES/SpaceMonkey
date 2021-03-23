@@ -84,9 +84,16 @@
     <Compile Include="FilterModule.cs" />
     <Compile Include="InjectionManager.cs" />
     <Compile Include="WRCAPI.cs" />
+    <Compile Include="SquadronsTelemetryProvider.cs" />
     <Compile Include="WRCTelemetryProvider.cs" />
     <Compile Include="MonsterGamesTelemetryProvider.cs" />
     <Compile Include="GTAVTelemetryProvider .cs" />
+    <Compile Include="SquadronsUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SquadronsUI.Designer.cs">
+      <DependentUpon>SquadronsUI.cs</DependentUpon>
+    </Compile>
     <Compile Include="WRCUI.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -196,6 +203,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DCSUI.resx">
       <DependentUpon>DCSUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SquadronsUI.resx">
+      <DependentUpon>SquadronsUI.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="WRCUI.resx">
       <DependentUpon>WRCUI.cs</DependentUpon>

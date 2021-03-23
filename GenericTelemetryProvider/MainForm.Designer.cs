@@ -62,6 +62,7 @@
             this.mgButton = new System.Windows.Forms.Button();
             this.WRCButton = new System.Windows.Forms.Button();
             this.RBRButton = new System.Windows.Forms.Button();
+            this.SquadronsBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // Dirt5Button
@@ -418,11 +419,22 @@
             this.RBRButton.UseVisualStyleBackColor = true;
             this.RBRButton.Click += new System.EventHandler(this.RBRButton_Click);
             // 
+            // SquadronsBtn
+            // 
+            this.SquadronsBtn.Location = new System.Drawing.Point(20, 651);
+            this.SquadronsBtn.Name = "SquadronsBtn";
+            this.SquadronsBtn.Size = new System.Drawing.Size(222, 70);
+            this.SquadronsBtn.TabIndex = 35;
+            this.SquadronsBtn.Text = "STAR WARS Squadrons";
+            this.SquadronsBtn.UseVisualStyleBackColor = true;
+            this.SquadronsBtn.Click += new System.EventHandler(this.SquadronsBtn_Click);
+            // 
             // GenericTelemetryProvider
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(998, 664);
+            this.ClientSize = new System.Drawing.Size(998, 818);
+            this.Controls.Add(this.SquadronsBtn);
             this.Controls.Add(this.RBRButton);
             this.Controls.Add(this.WRCButton);
             this.Controls.Add(this.mgButton);
@@ -502,6 +514,7 @@
         private System.Windows.Forms.Button mgButton;
         private System.Windows.Forms.Button WRCButton;
         private System.Windows.Forms.Button RBRButton;
+        private System.Windows.Forms.Button SquadronsBtn;
     }
 }
 

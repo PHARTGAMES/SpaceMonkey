@@ -500,7 +500,7 @@ namespace Sojaner.MemoryScanner
 
             //The difference of scan start point in all loops except first loop,
             //that doesn't have any difference, is type's Bytes count minus 1.
-            int arraysDifference = bytesCount - 1;
+            int arraysDifference = 3;// bytesCount - 1;
 
             //prealloc buffer
             byte[] buffer = new byte[ReadStackSize + arraysDifference];
@@ -585,8 +585,8 @@ namespace Sojaner.MemoryScanner
                     for (Int64 i = 0; i < loopsCount; i++)
                     {
                         bool skipAddressOffset = false;
-                        if (found)
-                            break;
+                        //if (found)
+                        //    break;
 
                         //Calculte and set the progress percentage.
                         progress = (int)(((double)(currentAddress - (Int64)baseAddress) / (double)memorySize) * 100d);
@@ -643,9 +643,28 @@ namespace Sojaner.MemoryScanner
                                         Debug.WriteLine("Found pattern");
                                         finalList.Add(pattern[0].foundAddress);
                                         Debug.Flush();
-                                        patternStep = 0;
 
-                                        break;
+                                        if (pattern[0].foundAddress == 3095615424)
+                                        {
+                                            bool bla = true;
+                                            bla = false;
+                                        }
+
+                                        //need to skip back some loops
+                                        if (i != pattern[0].blockFoundLoop)
+                                        {
+                                            patternStep = 0;
+                                            i = pattern[0].blockFoundLoop;
+                                            jStart = pattern[0].foundJ + 4;
+                                            skipAddressOffset = true;
+                                            break;
+                                        }
+                                        else //ok to continue same loop
+                                        {
+                                            patternStep = 0;
+                                            j = pattern[0].foundJ;
+                                            continue;
+                                        }
                                     }
                                     currStep = pattern[patternStep];
                                     j += currStep.byteOffset - 4;
@@ -814,8 +833,15 @@ namespace Sojaner.MemoryScanner
                                         Debug.WriteLine("Found Pattern");
                                         finalList.Add(pattern[0].foundAddress);
                                         Debug.Flush();
+                                        j = pattern[0].foundJ;
                                         patternStep = 0;
-                                        break;
+
+                                        if(pattern[0].foundAddress == 3095615424)
+                                        {
+                                            bool bla = true;
+                                            bla = false;
+                                        }
+                                        continue;
                                     }
                                     currStep = pattern[patternStep];
                                     j += currStep.byteOffset - 4;
