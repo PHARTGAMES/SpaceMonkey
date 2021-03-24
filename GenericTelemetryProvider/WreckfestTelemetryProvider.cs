@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Diagnostics;
-using Sojaner.MemoryScanner;
 using System.Numerics;
 using System.IO;
 using System.IO.MemoryMappedFiles;

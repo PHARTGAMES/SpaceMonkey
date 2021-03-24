@@ -5,6 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Numerics;
+using System.Threading;
+using System.Timers;
+using System.Diagnostics;
+using Newtonsoft.Json;
+using System.Net;
+using System.Net.Sockets;
+using System.Runtime.InteropServices;
+using System.IO;
+using System.IO.MemoryMappedFiles;
 
 namespace GenericTelemetryProvider
 {
@@ -161,6 +170,36 @@ namespace GenericTelemetryProvider
             }
 
             return angle;
+        }
+
+
+        public static IntPtr GetPointerAddress(Process mainProcess, IntPtr baseAddress, Int64[] offsets)
+        {
+            ProcessMemoryReader reader = new ProcessMemoryReader();
+
+            reader.ReadProcess = mainProcess;
+            reader.OpenProcess();
+
+            IntPtr curAdd = (IntPtr)ReadIntPtrAddress(reader, baseAddress);
+            for (int i = 0; i < offsets.Length - 1; ++i)
+            {
+                curAdd = (IntPtr)ReadIntPtrAddress(reader, (IntPtr)((Int64)curAdd + offsets[i]));
+            }
+            curAdd = (IntPtr)((Int64)curAdd + offsets[offsets.Length - 1]);
+
+            reader.CloseHandle();
+
+            return curAdd;
+        }
+
+        public static Int64 ReadIntPtrAddress(ProcessMemoryReader reader, IntPtr addr)
+        {
+            byte[] results = new byte[8];
+
+            Int64 byteReadSize;
+            reader.ReadProcessMemory((IntPtr)addr, (ulong)results.Length, out byteReadSize, results);
+
+            return BitConverter.ToInt64(results, 0);
         }
 
     }

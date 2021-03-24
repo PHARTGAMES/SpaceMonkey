@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
 using System.Diagnostics;
-using Sojaner.MemoryScanner;
 using System.Numerics;
 using System.IO;
 using System.IO.MemoryMappedFiles;

@@ -12,7 +12,6 @@ using System.IO;
 using System.IO.MemoryMappedFiles;
 using WRCAPI;
 using System.Threading.Tasks;
-using Sojaner.MemoryScanner;
 
 namespace GenericTelemetryProvider
 {
@@ -22,7 +21,7 @@ namespace GenericTelemetryProvider
 
         Int64 vehicleMemoryAddress;
         Int64 wheelMemoryAddress;
-        Int64 wheelGroupMemoryAddress;
+        IntPtr wheelGroupMemoryAddress;
         public WRCUI ui;
         Process mainProcess = null;
 
@@ -51,77 +50,93 @@ namespace GenericTelemetryProvider
                 return;
             }
             
-            RegularMemoryScan scan = new RegularMemoryScan(mainProcess, 0,  140737488355327); //32gig //
-            scan.ScanProgressChanged += new RegularMemoryScan.ScanProgressedEventHandler(scan_ScanProgressChanged);
-            scan.ScanCompleted += new RegularMemoryScan.ScanCompletedEventHandler(scan_PatternScanCompleted);
-            scan.ScanCanceled += new RegularMemoryScan.ScanCanceledEventHandler(scan_ScanCanceled);
+            FindWheelGroupPointerAddress();
 
-            List<RegularMemoryScan.FloatPatternStep> pattern = new List<RegularMemoryScan.FloatPatternStep>();
+            ui.InitButtonStatusChanged(true);
+            ui.StatusTextChanged("If telemetry doesn't update press Initialize!");
 
-            float minValue = 2500;
-            float maxValue = 4000;
-            pattern.Add(new RegularMemoryScan.FloatPatternStep(minValue, maxValue, 0));
-            pattern.Add(new RegularMemoryScan.FloatPatternStep(-1.0f, 1.0f, 4));
-            pattern.Add(new RegularMemoryScan.FloatPatternStep(-1.0f, 1.0f, 4));
-            pattern.Add(new RegularMemoryScan.FloatPatternStep(-1.0f, 1.0f, 4));
-            pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.05f, 0.05f, 16));
-            pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.05f, 0.05f, 4));
-            pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.05f, 0.05f, 4));
-            pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.05f, 0.05f, 4));
-            pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.05f, 0.05f, 4));
-            pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.05f, 0.05f, 4));
-            pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.05f, 0.05f, 4));
-            pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.00005f, 0.00005f, 4));
-            pattern.Add(new RegularMemoryScan.FloatPatternStep(0.1f, float.MaxValue, 4, RegularMemoryScan.FloatPatternStep.Type.Absolute));
-            pattern.Add(new RegularMemoryScan.FloatPatternStep(0.1f, float.MaxValue, 4, RegularMemoryScan.FloatPatternStep.Type.Absolute));
-            pattern.Add(new RegularMemoryScan.FloatPatternStep(0.1f, float.MaxValue, 4, RegularMemoryScan.FloatPatternStep.Type.Absolute));
-            pattern.Add(new RegularMemoryScan.FloatPatternStep(minValue, maxValue, 92));
-            pattern.Add(new RegularMemoryScan.FloatPatternStep(-1.0f, 1.0f, 4));
-            pattern.Add(new RegularMemoryScan.FloatPatternStep(-1.0f, 1.0f, 4));
-            pattern.Add(new RegularMemoryScan.FloatPatternStep(-1.0f, 1.0f, 4));
-            pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.05f, 0.05f, 16));
-            pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.05f, 0.05f, 4));
-            pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.05f, 0.05f, 4));
-            pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.05f, 0.05f, 4));
-            pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.05f, 0.05f, 4));
-            pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.05f, 0.05f, 4));
-            pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.05f, 0.05f, 4));
-            pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.00005f, 0.00005f, 4));
-            pattern.Add(new RegularMemoryScan.FloatPatternStep(0.1f, float.MaxValue, 4, RegularMemoryScan.FloatPatternStep.Type.Absolute));
-            pattern.Add(new RegularMemoryScan.FloatPatternStep(0.1f, float.MaxValue, 4, RegularMemoryScan.FloatPatternStep.Type.Absolute));
-            pattern.Add(new RegularMemoryScan.FloatPatternStep(0.1f, float.MaxValue, 4, RegularMemoryScan.FloatPatternStep.Type.Absolute));
-            pattern.Add(new RegularMemoryScan.FloatPatternStep(minValue, maxValue, 92));
-            pattern.Add(new RegularMemoryScan.FloatPatternStep(-1.0f, 1.0f, 4));
-            pattern.Add(new RegularMemoryScan.FloatPatternStep(-1.0f, 1.0f, 4));
-            pattern.Add(new RegularMemoryScan.FloatPatternStep(-1.0f, 1.0f, 4));
-            pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.05f, 0.05f, 16));
-            pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.05f, 0.05f, 4));
-            pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.05f, 0.05f, 4));
-            pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.05f, 0.05f, 4));
-            pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.05f, 0.05f, 4));
-            pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.05f, 0.05f, 4));
-            pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.05f, 0.05f, 4));
-            pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.00005f, 0.00005f, 4));
-            pattern.Add(new RegularMemoryScan.FloatPatternStep(0.1f, float.MaxValue, 4, RegularMemoryScan.FloatPatternStep.Type.Absolute));
-            pattern.Add(new RegularMemoryScan.FloatPatternStep(0.1f, float.MaxValue, 4, RegularMemoryScan.FloatPatternStep.Type.Absolute));
-            pattern.Add(new RegularMemoryScan.FloatPatternStep(0.1f, float.MaxValue, 4, RegularMemoryScan.FloatPatternStep.Type.Absolute));
-            pattern.Add(new RegularMemoryScan.FloatPatternStep(minValue, maxValue, 92));
-            pattern.Add(new RegularMemoryScan.FloatPatternStep(-1.0f, 1.0f, 4));
-            pattern.Add(new RegularMemoryScan.FloatPatternStep(-1.0f, 1.0f, 4));
-            pattern.Add(new RegularMemoryScan.FloatPatternStep(-1.0f, 1.0f, 4));
-
-            scan.StartScanForFloatPattern(pattern);
+            t = new Thread(ReadTelemetry);
+            t.Start();
             
             /*
+        
+        RegularMemoryScan scan = new RegularMemoryScan(mainProcess, 0,  140737488355327); //32gig //
+        scan.ScanProgressChanged += new RegularMemoryScan.ScanProgressedEventHandler(scan_ScanProgressChanged);
+        scan.ScanCompleted += new RegularMemoryScan.ScanCompletedEventHandler(scan_PatternScanCompleted);
+        scan.ScanCanceled += new RegularMemoryScan.ScanCanceledEventHandler(scan_ScanCanceled);
 
-            RegularMemoryScan scan = new RegularMemoryScan(mainProcess, 0, 140737488355327); //32gig
-            scan.ScanProgressChanged += new RegularMemoryScan.ScanProgressedEventHandler(scan_ScanProgressChanged);
-            scan.ScanCompleted += new RegularMemoryScan.ScanCompletedEventHandler(scan_VehicleScanCompleted);
-            scan.ScanCanceled += new RegularMemoryScan.ScanCanceledEventHandler(scan_ScanCanceled);
+        List<RegularMemoryScan.FloatPatternStep> pattern = new List<RegularMemoryScan.FloatPatternStep>();
 
-            byte[] vehicleBytes = new byte[] { 0x57, 0x72, 0x63, 0x56, 0x65, 0x68, 0x69, 0x63, 0x6C, 0x65, 0x00 };
-            scan.StartScanForByteArray(vehicleBytes);
-            */
+        float minValue = 2500;
+        float maxValue = 4000;
+        pattern.Add(new RegularMemoryScan.FloatPatternStep(minValue, maxValue, 0));
+        pattern.Add(new RegularMemoryScan.FloatPatternStep(-1.0f, 1.0f, 4));
+        pattern.Add(new RegularMemoryScan.FloatPatternStep(-1.0f, 1.0f, 4));
+        pattern.Add(new RegularMemoryScan.FloatPatternStep(-1.0f, 1.0f, 4));
+        pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.05f, 0.05f, 16));
+        pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.05f, 0.05f, 4));
+        pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.05f, 0.05f, 4));
+        pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.05f, 0.05f, 4));
+        pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.05f, 0.05f, 4));
+        pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.05f, 0.05f, 4));
+        pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.05f, 0.05f, 4));
+        pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.00005f, 0.00005f, 4));
+        pattern.Add(new RegularMemoryScan.FloatPatternStep(0.1f, float.MaxValue, 4, RegularMemoryScan.FloatPatternStep.Type.Absolute));
+        pattern.Add(new RegularMemoryScan.FloatPatternStep(0.1f, float.MaxValue, 4, RegularMemoryScan.FloatPatternStep.Type.Absolute));
+        pattern.Add(new RegularMemoryScan.FloatPatternStep(0.1f, float.MaxValue, 4, RegularMemoryScan.FloatPatternStep.Type.Absolute));
+        pattern.Add(new RegularMemoryScan.FloatPatternStep(minValue, maxValue, 92));
+        pattern.Add(new RegularMemoryScan.FloatPatternStep(-1.0f, 1.0f, 4));
+        pattern.Add(new RegularMemoryScan.FloatPatternStep(-1.0f, 1.0f, 4));
+        pattern.Add(new RegularMemoryScan.FloatPatternStep(-1.0f, 1.0f, 4));
+        pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.05f, 0.05f, 16));
+        pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.05f, 0.05f, 4));
+        pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.05f, 0.05f, 4));
+        pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.05f, 0.05f, 4));
+        pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.05f, 0.05f, 4));
+        pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.05f, 0.05f, 4));
+        pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.05f, 0.05f, 4));
+        pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.00005f, 0.00005f, 4));
+        pattern.Add(new RegularMemoryScan.FloatPatternStep(0.1f, float.MaxValue, 4, RegularMemoryScan.FloatPatternStep.Type.Absolute));
+        pattern.Add(new RegularMemoryScan.FloatPatternStep(0.1f, float.MaxValue, 4, RegularMemoryScan.FloatPatternStep.Type.Absolute));
+        pattern.Add(new RegularMemoryScan.FloatPatternStep(0.1f, float.MaxValue, 4, RegularMemoryScan.FloatPatternStep.Type.Absolute));
+        pattern.Add(new RegularMemoryScan.FloatPatternStep(minValue, maxValue, 92));
+        pattern.Add(new RegularMemoryScan.FloatPatternStep(-1.0f, 1.0f, 4));
+        pattern.Add(new RegularMemoryScan.FloatPatternStep(-1.0f, 1.0f, 4));
+        pattern.Add(new RegularMemoryScan.FloatPatternStep(-1.0f, 1.0f, 4));
+        pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.05f, 0.05f, 16));
+        pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.05f, 0.05f, 4));
+        pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.05f, 0.05f, 4));
+        pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.05f, 0.05f, 4));
+        pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.05f, 0.05f, 4));
+        pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.05f, 0.05f, 4));
+        pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.05f, 0.05f, 4));
+        pattern.Add(new RegularMemoryScan.FloatPatternStep(-0.00005f, 0.00005f, 4));
+        pattern.Add(new RegularMemoryScan.FloatPatternStep(0.1f, float.MaxValue, 4, RegularMemoryScan.FloatPatternStep.Type.Absolute));
+        pattern.Add(new RegularMemoryScan.FloatPatternStep(0.1f, float.MaxValue, 4, RegularMemoryScan.FloatPatternStep.Type.Absolute));
+        pattern.Add(new RegularMemoryScan.FloatPatternStep(0.1f, float.MaxValue, 4, RegularMemoryScan.FloatPatternStep.Type.Absolute));
+        pattern.Add(new RegularMemoryScan.FloatPatternStep(minValue, maxValue, 92));
+        pattern.Add(new RegularMemoryScan.FloatPatternStep(-1.0f, 1.0f, 4));
+        pattern.Add(new RegularMemoryScan.FloatPatternStep(-1.0f, 1.0f, 4));
+        pattern.Add(new RegularMemoryScan.FloatPatternStep(-1.0f, 1.0f, 4));
+
+        scan.StartScanForFloatPattern(pattern);
+        */
+        /*
+
+        RegularMemoryScan scan = new RegularMemoryScan(mainProcess, 0, 140737488355327); //32gig
+        scan.ScanProgressChanged += new RegularMemoryScan.ScanProgressedEventHandler(scan_ScanProgressChanged);
+        scan.ScanCompleted += new RegularMemoryScan.ScanCompletedEventHandler(scan_VehicleScanCompleted);
+        scan.ScanCanceled += new RegularMemoryScan.ScanCanceledEventHandler(scan_ScanCanceled);
+
+        byte[] vehicleBytes = new byte[] { 0x57, 0x72, 0x63, 0x56, 0x65, 0x68, 0x69, 0x63, 0x6C, 0x65, 0x00 };
+        scan.StartScanForByteArray(vehicleBytes);
+        */
+        }
+
+        void FindWheelGroupPointerAddress()
+        {
+            Int64[] ptrOffs = new Int64[] { 0x390, 0x80, 0xDE8, 0x1A8, 0x18 };
+            wheelGroupMemoryAddress = Utils.GetPointerAddress(mainProcess, mainProcess.MainModule.BaseAddress + 0x019FC238, ptrOffs);
         }
 
         void scan_ScanProgressChanged(object sender, ScanProgressChangedEventArgs e)
@@ -145,7 +160,7 @@ namespace GenericTelemetryProvider
                 return;
             }
 
-            wheelGroupMemoryAddress = e.MemoryAddresses[e.MemoryAddresses.Length - 1] - 100;
+            wheelGroupMemoryAddress = (IntPtr)e.MemoryAddresses[e.MemoryAddresses.Length - 1] - 100;
 
             //fixme: remove dis and look for vehicle, meby
             t = new Thread(ReadTelemetry);
@@ -268,9 +283,10 @@ namespace GenericTelemetryProvider
 
                     if (byteReadSize == 0)
                     {
+                        FindWheelGroupPointerAddress();
                         continue;
                     }
-
+                    
                     var alloc = GCHandle.Alloc(wheelGroupReadBuffer, GCHandleType.Pinned);
                     wheelsGroupData = (WRCWheelGroupData)Marshal.PtrToStructure(alloc.AddrOfPinnedObject(), typeof(WRCWheelGroupData));
                     alloc.Free();

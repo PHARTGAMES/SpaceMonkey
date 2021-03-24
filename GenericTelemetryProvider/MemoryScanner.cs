@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Runtime.InteropServices;
 
-namespace Sojaner.MemoryScanner
+namespace GenericTelemetryProvider
 {
     public class RegularMemoryScan
     {
@@ -941,7 +941,7 @@ namespace Sojaner.MemoryScanner
     #region ProcessMemoryReader class
     //Thanks goes to Arik Poznanski for P/Invokes and methods needed to read and write the Memory
     //For more information refer to "Minesweeper, Behind the scenes" article by Arik Poznanski at Codeproject.com
-    class ProcessMemoryReader
+    public class ProcessMemoryReader
     {
 
         public ProcessMemoryReader()
@@ -995,15 +995,17 @@ namespace Sojaner.MemoryScanner
             }
         }
 
-        public byte[] ReadProcessMemory(IntPtr MemoryAddress, UInt64 bytesToRead, out Int64 bytesRead, byte[] buffer)
+        public int ReadProcessMemory(IntPtr MemoryAddress, UInt64 bytesToRead, out Int64 bytesRead, byte[] buffer)
         {
 
             IntPtr ptrBytesRead = new IntPtr();
             int rval = ProcessMemoryReaderApi.ReadProcessMemory(m_hProcess, MemoryAddress, buffer, bytesToRead, out ptrBytesRead);
+            if (rval == 1)
+                bytesRead = ptrBytesRead.ToInt64();
+            else
+                bytesRead = 0;
 
-            bytesRead = ptrBytesRead.ToInt64();
-
-            return buffer;
+            return rval;
         }
 
         public void WriteProcessMemory(IntPtr MemoryAddress, byte[] bytesToWrite, out int bytesWritten)

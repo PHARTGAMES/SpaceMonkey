@@ -11,7 +11,6 @@ using System.Runtime.InteropServices;
 using System.IO;
 using System.IO.MemoryMappedFiles;
 using System.Threading.Tasks;
-using Sojaner.MemoryScanner;
 using System.Linq;
 
 namespace GenericTelemetryProvider
@@ -88,6 +87,9 @@ namespace GenericTelemetryProvider
 
             FindMatrixPointerAddress();
 
+            ui.InitButtonStatusChanged(true);
+            ui.StatusTextChanged("If telemetry doesn't update press Initialize!");
+
             t = new Thread(ReadTelemetry);
             t.Start();
 
@@ -96,37 +98,9 @@ namespace GenericTelemetryProvider
         void FindMatrixPointerAddress()
         {
             Int64[] matrixPtrOffs = new Int64[] { 0x40, 0xC0, 0x88, 0x68, 0x3E0 };
-            matrixAddress = GetPointerAddress(mainProcess.MainModule.BaseAddress + 0x03E9FA18, matrixPtrOffs);
+            matrixAddress = Utils.GetPointerAddress(mainProcess, mainProcess.MainModule.BaseAddress + 0x03E9FA18, matrixPtrOffs);
         }
 
-
-        IntPtr GetPointerAddress(IntPtr baseAddress, Int64[] offsets)
-        {
-            ProcessMemoryReader reader = new ProcessMemoryReader();
-
-            reader.ReadProcess = mainProcess;
-            reader.OpenProcess();
-
-            IntPtr curAdd = (IntPtr)ReadInt32(reader, baseAddress);
-            for (int i = 0; i < offsets.Length-1; ++i)
-            {
-                curAdd = (IntPtr)ReadInt32(reader, (IntPtr)((Int64)curAdd + offsets[i]));
-            }
-            curAdd = (IntPtr)((Int64)curAdd + offsets[offsets.Length - 1]);
-
-            reader.CloseHandle();
-
-            return curAdd;
-        }
-        private Int64 ReadInt32(ProcessMemoryReader reader, IntPtr addr)
-        {
-            byte[] results = new byte[8];
-
-            Int64 byteReadSize;
-            reader.ReadProcessMemory((IntPtr)addr, (ulong)results.Length, out byteReadSize, results);
-
-            return BitConverter.ToInt64(results, 0);
-        }
 
         void scan_ScanProgressChanged(object sender, ScanProgressChangedEventArgs e)
         {
@@ -250,9 +224,7 @@ namespace GenericTelemetryProvider
         {
             base.Stop();
 
-
         }
-
 
         void ReadTelemetry()
         {

@@ -102,13 +102,13 @@ namespace GenericTelemetryProvider
             initializeButton.Enabled = false;
             statusLabel.Text = "Waiting For WRC";
 
+            provider.StopAllThreads();
             provider.Stop();
             provider.Run();
 
         }
         private void OnFormClosing(object sender, FormClosingEventArgs e)
         {
-            provider.StopAllThreads();
             provider.Stop();
             this.Dispose();
 

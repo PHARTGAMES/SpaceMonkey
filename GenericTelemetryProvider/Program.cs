@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.Threading;
-using Sojaner.MemoryScanner;
 
 namespace GenericTelemetryProvider
 {

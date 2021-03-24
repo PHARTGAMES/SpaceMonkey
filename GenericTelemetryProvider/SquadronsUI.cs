@@ -102,6 +102,7 @@ namespace GenericTelemetryProvider
             initializeButton.Enabled = false;
             statusLabel.Text = "Waiting For Squadrons";
 
+            provider.StopAllThreads();
             provider.Stop();
             provider.Run();
 
