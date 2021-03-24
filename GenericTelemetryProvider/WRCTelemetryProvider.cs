@@ -384,14 +384,12 @@ namespace GenericTelemetryProvider
         
         public override bool CalcPosition()
         {
-            Vector3 currRawPos = new Vector3(transform.M41, transform.M42, transform.M43);
-
-            float velMag = (currRawPos - lastRawPos).Length();
-
-            if (velMag == 0)
+            if (transform == lastTransform)
             {
                 return false;
             }
+
+            Vector3 currRawPos = new Vector3(transform.M41, transform.M42, transform.M43);
 
             rawData.position_x = currRawPos.X;
             rawData.position_y = currRawPos.Y;

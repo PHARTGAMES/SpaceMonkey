@@ -59,6 +59,7 @@ namespace GenericTelemetryProvider
 
         bool isStopped = false;
         Mutex isStoppedMutex = new Mutex(false);
+        protected Matrix4x4 lastTransform = Matrix4x4.Identity;
 
         public bool IsStopped
         {
@@ -206,8 +207,9 @@ namespace GenericTelemetryProvider
             else
             {
                 filteredData.Copy(lastFilteredData);
-            }    
+            }
 
+            lastTransform = transform;
 
 
             return true;
@@ -240,6 +242,7 @@ namespace GenericTelemetryProvider
             {
                 lastFilteredData = new CMCustomUDPData();
                 lastPosition = transform.Translation;
+                lastTransform = transform;
                 lastFrameValid = true;
                 lastVelocity = Vector3.Zero;
                 lastWorldVelocity = Vector3.Zero;
@@ -261,8 +264,7 @@ namespace GenericTelemetryProvider
 
         public virtual bool CalcPosition()
         {
-            Vector3 currRawPos = new Vector3(transform.M41, transform.M42, transform.M43);
-            
+            /*
             Vector3 rawVel = (currRawPos - lastRawPos) / dt;
             float rawVelMag = rawVel.Length();
             float lastVelMag = lastWorldVelocity.Length();
@@ -272,6 +274,15 @@ namespace GenericTelemetryProvider
                 return false;
             }
             
+             */
+
+            if (transform == lastTransform)
+            {
+                return false;
+            }
+
+            Vector3 currRawPos = new Vector3(transform.M41, transform.M42, transform.M43);
+
             rawData.position_x = currRawPos.X;
             rawData.position_y = currRawPos.Y;
             rawData.position_z = currRawPos.Z;

@@ -27,7 +27,7 @@ namespace GenericTelemetryProvider
 
         public override void Run()
         {
-            updateDelay =  15;
+            updateDelay = 16;
             base.Run();
 
             maxAccel2DMagSusp = 6.0f;
@@ -271,10 +271,12 @@ namespace GenericTelemetryProvider
 
                     Buffer.BlockCopy(readBuffer, 0, floats, 0, readBuffer.Length);
 
-                    Matrix4x4 trans = new Matrix4x4(floats[0], floats[1], floats[2], floats[3]
-                                , floats[4], floats[5], floats[6], floats[7]
-                                , floats[8], floats[9], floats[10], floats[11]
-                                , floats[12], floats[13], floats[14], floats[15]);
+
+
+                    Matrix4x4 trans = new Matrix4x4(floats[0], floats[1], floats[2], 0.0f
+                                                , floats[4], floats[5], floats[6], 0.0f
+                                                , floats[8], floats[9], floats[10], 0.0f
+                                                , floats[12], floats[13], floats[14], 1.0f);
 
                     ProcessSquadronsData(trans, frameDT);
 
@@ -319,7 +321,7 @@ namespace GenericTelemetryProvider
 
         public override bool ExtractFwdUpRht()
         {
-            return true;
+            return base.ExtractFwdUpRht();
         }
 
         public override bool CheckLastFrameValid()
@@ -339,14 +341,13 @@ namespace GenericTelemetryProvider
         
         public override bool CalcPosition()
         {
-            Vector3 currRawPos = new Vector3(transform.M41, transform.M42, transform.M43);
 
-            float velMag = (currRawPos - lastRawPos).Length();
-
-            if (velMag == 0)
+            if (transform == lastTransform)
             {
                 return false;
             }
+
+            Vector3 currRawPos = new Vector3(transform.M41, transform.M42, transform.M43);
 
             rawData.position_x = currRawPos.X;
             rawData.position_y = currRawPos.Y;
