@@ -164,7 +164,7 @@
           "$values": [
             {
               "$type": "GenericTelemetryProvider.MedianFilterData, SpaceMonkeyTP",
-              "sampleCount": 8,
+              "sampleCount": 9,
               "type": null
             },
             {
@@ -188,7 +188,7 @@
           "$values": [
             {
               "$type": "GenericTelemetryProvider.MedianFilterData, SpaceMonkeyTP",
-              "sampleCount": 8,
+              "sampleCount": 9,
               "type": null
             },
             {
@@ -212,7 +212,7 @@
           "$values": [
             {
               "$type": "GenericTelemetryProvider.MedianFilterData, SpaceMonkeyTP",
-              "sampleCount": 8,
+              "sampleCount": 9,
               "type": null
             },
             {

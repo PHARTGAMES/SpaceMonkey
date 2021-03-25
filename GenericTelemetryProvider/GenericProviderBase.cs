@@ -55,7 +55,7 @@ namespace GenericTelemetryProvider
         protected float telemetryPausedTimer = 0.0f;
         protected float telemetryPausedTime = 3.0f;
         public Form gameUI;
-        public int updateDelay = 10;
+        public double updateDelay = 10;
         protected int droppedSampleCount = 0;
 
         bool isStopped = false;
@@ -470,6 +470,7 @@ namespace GenericTelemetryProvider
 
         public virtual void CalcAngularVelocityAndAccel()
         {
+            
             //local non gimbal locked version
             Matrix4x4 lastTransformLocal = Matrix4x4.Multiply(lastTransform, rotInv);
 
@@ -486,9 +487,9 @@ namespace GenericTelemetryProvider
             Vector3 localFwd = new Vector3(0.0f, 0.0f, 1.0f);
 
             //angle * direction
-            float yawVel = (float)Math.Acos((double)Vector3.Dot(fwdProjY, localFwd)) * Math.Sign(Vector3.Dot(lastFwd, localUp));
-            float pitchVel = (float)Math.Acos((double)Vector3.Dot(fwdProjX, localFwd)) * Math.Sign(Vector3.Dot(lastUp, localFwd));
-            float rollVel = (float)Math.Acos((double)Vector3.Dot(rhtProjZ, localRht)) * Math.Sign(Vector3.Dot(lastUp, localRht));
+            float yawVel = -(float)Math.Acos((double)Vector3.Dot(fwdProjY, localFwd)) * Math.Sign(Vector3.Dot(lastFwd, localUp));
+            float pitchVel = -(float)Math.Acos((double)Vector3.Dot(fwdProjX, localFwd)) * Math.Sign(Vector3.Dot(lastUp, localFwd));
+            float rollVel = -(float)Math.Acos((double)Vector3.Dot(rhtProjZ, localRht)) * Math.Sign(Vector3.Dot(lastUp, localRht));
 
             rawData.yaw_velocity = yawVel / dt;
             rawData.pitch_velocity = pitchVel / dt;
@@ -500,7 +501,7 @@ namespace GenericTelemetryProvider
             rawData.pitch_acceleration = ((float)filteredData.pitch_velocity - (float)lastFilteredData.pitch_velocity) / dt;
             rawData.roll_acceleration = ((float)filteredData.roll_velocity - (float)lastFilteredData.roll_velocity) / dt;
 
-
+            
             //world gimbal locked version
             /*
                         rawData.yaw_velocity = Utils.CalculateAngularChange((float) lastFilteredData.yaw, (float) filteredData.yaw) / dt;
@@ -512,13 +513,8 @@ namespace GenericTelemetryProvider
                         rawData.yaw_acceleration = ((float) filteredData.yaw_velocity - (float) lastFilteredData.yaw_velocity) / dt;
                         rawData.pitch_acceleration = ((float) filteredData.pitch_velocity - (float) lastFilteredData.pitch_velocity) / dt;
                         rawData.roll_acceleration = ((float) filteredData.roll_velocity - (float) lastFilteredData.roll_velocity) / dt;
-
             */
-        }
-
-        public virtual void CalcAngularVelocityAndAccelSpace()
-        {
-
+            
         }
 
         public virtual void SimulateEngine()

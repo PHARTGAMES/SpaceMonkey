@@ -78,7 +78,7 @@ namespace GenericTelemetryProvider
                     using (var sleeper = new ManualResetEvent(false))
                     {
                         int processTime = (int)processSW.ElapsedMilliseconds;
-                        sleeper.WaitOne(Math.Max(0, updateDelay - processTime));
+                        sleeper.WaitOne(Math.Max(0, (int)updateDelay - processTime));
                     }
                 }
                 catch (Exception e)

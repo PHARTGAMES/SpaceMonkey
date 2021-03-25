@@ -27,10 +27,13 @@ namespace GenericTelemetryProvider
 
         WRCWheelGroupData wheelsGroupData;
 
+        double minUpdateDelay = 2;
+        double maxUpdateDelay = 1000.0 / 50;
+
 
         public override void Run()
         {
-            updateDelay =  15;
+            updateDelay = 1000.0 / 120;
             base.Run();
 
             maxAccel2DMagSusp = 6.0f;
@@ -269,15 +272,16 @@ namespace GenericTelemetryProvider
                 try
                 {
                     //dis is super accurate for timing
-                    float frameDT = 0;
+                    double frameDT = 0;
                     while(true)
                     {
-                        frameDT = (float)sw.Elapsed.TotalSeconds;
+                        frameDT = sw.Elapsed.TotalSeconds;
                         if (frameDT >= (updateDelay / 1000.0f))
                             break;
                     }
                     sw.Restart();
 
+//                    mainProcess.Suspend();
                     if (droppedSampleCount >= 100)
                     {
                         FindWheelGroupPointerAddress();
@@ -287,6 +291,7 @@ namespace GenericTelemetryProvider
 
                     Int64 byteReadSize;
                     reader.ReadProcessMemory((IntPtr)wheelGroupMemoryAddress, wheelGroupReadSize, out byteReadSize, wheelGroupReadBuffer);
+//                    mainProcess.Resume();
 
                     if (byteReadSize == 0)
                     {
@@ -300,7 +305,7 @@ namespace GenericTelemetryProvider
                     wheelsGroupData = (WRCWheelGroupData)Marshal.PtrToStructure(alloc.AddrOfPinnedObject(), typeof(WRCWheelGroupData));
                     alloc.Free();
 
-                    ProcessWRCData(frameDT);
+                    ProcessWRCData((float)frameDT);
 
                 }
                 catch (Exception e)
@@ -323,7 +328,9 @@ namespace GenericTelemetryProvider
         {
             if (wheelsGroupData == null)
                 return;
-
+            Debug.WriteLine(wheelsGroupData.wheelFL.pos1X);
+            Debug.WriteLine(wheelsGroupData.wheelFL.pos1Y);
+            Debug.WriteLine(wheelsGroupData.wheelFL.pos1Z);
             transform = Matrix4x4.Identity;
 
             Vector3 wPosFL = new Vector3(wheelsGroupData.wheelFL.pos1X, wheelsGroupData.wheelFL.pos1Z, wheelsGroupData.wheelFL.pos1Y);
@@ -387,18 +394,57 @@ namespace GenericTelemetryProvider
                 dt = 0.015f;
 
             //fixed dt for wrc
-            dt = updateDelay / 1000.0f;
+//            dt = (float)updateDelay / 1000.0f;
         }
 
+        Matrix4x4 LerpRotTransform(Matrix4x4 from, Matrix4x4 to, float lerp)
+        {
+            to.M11 = from.M11 + (to.M11 - from.M11) * lerp;
+            to.M12 = from.M12 + (to.M12 - from.M12) * lerp;
+            to.M13 = from.M13 + (to.M13 - from.M13) * lerp;
+
+            to.M21 = from.M21 + (to.M21 - from.M21) * lerp;
+            to.M22 = from.M22 + (to.M22 - from.M22) * lerp;
+            to.M23 = from.M23 + (to.M23 - from.M23) * lerp;
+
+            to.M31 = from.M31 + (to.M31 - from.M31) * lerp;
+            to.M32 = from.M32 + (to.M32 - from.M32) * lerp;
+            to.M33 = from.M33 + (to.M33 - from.M33) * lerp;
+
+            return to;
+        }
+
+        int errorCount = 0;
         
         public override bool CalcPosition()
         {
-            if (transform == lastTransform)
+
+            Vector3 currRawPos = new Vector3(transform.M41, transform.M42, transform.M43);
+
+            Vector3 vel = (currRawPos - lastRawPos);
+            float velMag = vel.Length();
+
+//            Debug.WriteLine("zpos: " + currRawPos.Z);
+//            Debug.WriteLine("zmag: " + vel.Z);
+            Debug.WriteLine("updateDelay: " + updateDelay);
+
+            int maxErrors = 1000;
+
+            double updateDelayOffs = 0.125;
+            if (velMag == 0)
+//            if(lastTransform == transform)
             {
+                errorCount = Math.Min(maxErrors, errorCount + 1);
+                updateDelay = Math.Max(minUpdateDelay, Math.Min(updateDelay + updateDelayOffs, maxUpdateDelay)); 
                 return false;
             }
 
-            Vector3 currRawPos = new Vector3(transform.M41, transform.M42, transform.M43);
+            transform = LerpRotTransform(lastTransform, transform, Math.Min(1.0f, 3.0f * dt));
+
+            if (errorCount > 0)
+                updateDelay = Math.Max(minUpdateDelay, Math.Min(updateDelay - (updateDelayOffs * 0.75), maxUpdateDelay));
+            errorCount = Math.Max(0, errorCount - 1);
+
 
             rawData.position_x = currRawPos.X;
             rawData.position_y = currRawPos.Y;
@@ -461,12 +507,19 @@ namespace GenericTelemetryProvider
 
         public override void SimulateEngine()
         {
-/*
-            rawData.max_rpm = data.engine_max_rpm;
+            /*
+                        rawData.max_rpm = data.engine_max_rpm;
+                        rawData.max_gears = 6;
+                        rawData.gear = data.gear;
+                        rawData.idle_rpm = data.engine_idle_rpm;
+            */
+
+            rawData.max_rpm = 6000;
             rawData.max_gears = 6;
-            rawData.gear = data.gear;
-            rawData.idle_rpm = data.engine_idle_rpm;
-*/
+            rawData.gear = 1;
+            rawData.idle_rpm = 700;
+
+
             Vector3 localVelocity = new Vector3((float)filteredData.local_velocity_x, (float)filteredData.local_velocity_y, (float)filteredData.local_velocity_z);
 
             filteredData.speed = localVelocity.Length();
@@ -478,6 +531,56 @@ namespace GenericTelemetryProvider
             base.ProcessInputs();
 
   //          filteredData.engine_rate = Math.Max(700, Math.Min(6000, 700 + (data.engine_rpm * (6000-700))));
+        }
+    }
+
+
+    public static class ProcessExtension
+    {
+        [Flags]
+        public enum ThreadAccess : int
+        {
+            TERMINATE = (0x0001),
+            SUSPEND_RESUME = (0x0002),
+            GET_CONTEXT = (0x0008),
+            SET_CONTEXT = (0x0010),
+            SET_INFORMATION = (0x0020),
+            QUERY_INFORMATION = (0x0040),
+            SET_THREAD_TOKEN = (0x0080),
+            IMPERSONATE = (0x0100),
+            DIRECT_IMPERSONATION = (0x0200)
+        }
+
+        [DllImport("kernel32.dll")]
+        static extern IntPtr OpenThread(ThreadAccess dwDesiredAccess, bool bInheritHandle, uint dwThreadId);
+        [DllImport("kernel32.dll")]
+        static extern uint SuspendThread(IntPtr hThread);
+        [DllImport("kernel32.dll")]
+        static extern int ResumeThread(IntPtr hThread);
+
+        public static void Suspend(this Process process)
+        {
+            foreach (ProcessThread thread in process.Threads)
+            {
+                var pOpenThread = OpenThread(ThreadAccess.SUSPEND_RESUME, false, (uint)thread.Id);
+                if (pOpenThread == IntPtr.Zero)
+                {
+                    break;
+                }
+                SuspendThread(pOpenThread);
+            }
+        }
+        public static void Resume(this Process process)
+        {
+            foreach (ProcessThread thread in process.Threads)
+            {
+                var pOpenThread = OpenThread(ThreadAccess.SUSPEND_RESUME, false, (uint)thread.Id);
+                if (pOpenThread == IntPtr.Zero)
+                {
+                    break;
+                }
+                ResumeThread(pOpenThread);
+            }
         }
     }
 }

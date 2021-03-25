@@ -345,7 +345,7 @@ namespace GenericTelemetryProvider
                 dt = 0.015f;
 
             //fixed dt for Squadrons
-            dt = updateDelay / 1000.0f;
+            dt = (float)updateDelay / 1000.0f;
         }
 
         
