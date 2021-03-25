@@ -258,12 +258,21 @@ namespace GenericTelemetryProvider
                     }
                     sw.Restart();
 
+                    if(droppedSampleCount >= 100)
+                    {
+                        FindMatrixPointerAddress();
+                        droppedSampleCount = 0;
+                        Debug.WriteLine("Finding Pointer");
+                    }
+
                     Int64 byteReadSize;
                     reader.ReadProcessMemory((IntPtr)matrixAddress, readSize, out byteReadSize, readBuffer);
 
                     if (byteReadSize == 0)
                     {
                         FindMatrixPointerAddress();
+                        droppedSampleCount = 0;
+                        Debug.WriteLine("Finding Pointer");
                         continue;
                     }
 
@@ -271,12 +280,13 @@ namespace GenericTelemetryProvider
 
                     Buffer.BlockCopy(readBuffer, 0, floats, 0, readBuffer.Length);
 
+                    Matrix4x4 trans = new Matrix4x4(
+                              floats[2], floats[1], floats[0], 0.0f
+                            , floats[6], floats[5], floats[4], 0.0f
+                            , floats[10], floats[9], floats[8], 0.0f
+                            , floats[14], floats[13], floats[12], 1.0f);
 
 
-                    Matrix4x4 trans = new Matrix4x4(floats[0], floats[1], floats[2], 0.0f
-                                                , floats[4], floats[5], floats[6], 0.0f
-                                                , floats[8], floats[9], floats[10], 0.0f
-                                                , floats[12], floats[13], floats[14], 1.0f);
 
                     ProcessSquadronsData(trans, frameDT);
 
@@ -381,7 +391,7 @@ namespace GenericTelemetryProvider
             rotation.M43 = 0.0f;
             rotation.M44 = 1.0f;
 
-            Matrix4x4 rotInv = new Matrix4x4();
+            rotInv = new Matrix4x4();
             Matrix4x4.Invert(rotation, out rotInv);
 
             //transform world velocity to local space

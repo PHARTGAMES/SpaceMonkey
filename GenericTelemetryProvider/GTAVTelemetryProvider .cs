@@ -223,7 +223,7 @@ namespace GenericTelemetryProvider
             rotation.M43 = 0.0f;
             rotation.M44 = 1.0f;
 
-            Matrix4x4 rotInv = new Matrix4x4();
+            rotInv = new Matrix4x4();
             Matrix4x4.Invert(rotation, out rotInv);
 
             //transform world velocity to local space

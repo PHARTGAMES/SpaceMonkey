@@ -278,15 +278,24 @@ namespace GenericTelemetryProvider
                     }
                     sw.Restart();
 
+                    if (droppedSampleCount >= 100)
+                    {
+                        FindWheelGroupPointerAddress();
+                        droppedSampleCount = 0;
+                        Debug.WriteLine("Finding Pointer");
+                    }
+
                     Int64 byteReadSize;
                     reader.ReadProcessMemory((IntPtr)wheelGroupMemoryAddress, wheelGroupReadSize, out byteReadSize, wheelGroupReadBuffer);
 
                     if (byteReadSize == 0)
                     {
                         FindWheelGroupPointerAddress();
+                        droppedSampleCount = 0;
+                        Debug.WriteLine("Finding Pointer");
                         continue;
                     }
-                    
+
                     var alloc = GCHandle.Alloc(wheelGroupReadBuffer, GCHandleType.Pinned);
                     wheelsGroupData = (WRCWheelGroupData)Marshal.PtrToStructure(alloc.AddrOfPinnedObject(), typeof(WRCWheelGroupData));
                     alloc.Free();
@@ -423,7 +432,7 @@ namespace GenericTelemetryProvider
             rotation.M43 = 0.0f;
             rotation.M44 = 1.0f;
 
-            Matrix4x4 rotInv = new Matrix4x4();
+            rotInv = new Matrix4x4();
             Matrix4x4.Invert(rotation, out rotInv);
 
             //transform world velocity to local space
