@@ -29,6 +29,7 @@ namespace GenericTelemetryProvider
         WRCUI wrcUI;
         RBRUI rbrUI;
         SquadronsUI squadronsUI;
+        IL2UI il2UI;
         FilterUI filterUI;
         public static GenericTelemetryProvider Instance;
         public string versionString = "v1.0.3";
@@ -524,6 +525,19 @@ namespace GenericTelemetryProvider
 
             Thread x = new Thread(new ParameterizedThreadStart((form) => ((SquadronsUI)form).ShowDialog()));
             x.Start(squadronsUI);
+        }
+
+        private void il2Btn_Click(object sender, EventArgs e)
+        {
+            if (il2UI != null && !il2UI.IsDisposed)
+            {
+                il2UI.BeginInvoke(new Action<Form>((s) => { s.Close(); }), il2UI);
+            }
+
+            il2UI = new IL2UI();
+
+            Thread x = new Thread(new ParameterizedThreadStart((form) => ((IL2UI)form).ShowDialog()));
+            x.Start(il2UI);
         }
     }
 }

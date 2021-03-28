@@ -97,8 +97,7 @@ namespace GenericTelemetryProvider
                 hotkey.Shift = MainConfig.Instance.configData.hotkey.shift;
                 hotkey.Control = MainConfig.Instance.configData.hotkey.ctrl;
                 hotkey.Pressed += delegate {
-                    telemetryPaused = !telemetryPaused;
-                    telemetryPausedTimer = telemetryPausedTime - telemetryPausedTimer;
+                    SetTelemetryPaused(!telemetryPaused);
                 };
 
                 if (hotkey.Register(gameUI))
@@ -110,6 +109,12 @@ namespace GenericTelemetryProvider
 
             //this will end any threads already running
             IsStopped = true;
+        }
+
+        public void SetTelemetryPaused(bool paused)
+        {
+            telemetryPaused = paused;
+            telemetryPausedTimer = telemetryPausedTime - telemetryPausedTimer;
         }
 
         public virtual void StartSending()
@@ -571,6 +576,9 @@ namespace GenericTelemetryProvider
 
             if(telemetryPausedTimer > 0.0f || telemetryPaused)
             {
+				if(telemetryPaused)
+                	filteredData.Copy(lastFilteredData);
+
                 telemetryPausedTimer = Math.Max(0.0f, telemetryPausedTimer - dt);
 
                 float lerp = telemetryPausedTimer / telemetryPausedTime;

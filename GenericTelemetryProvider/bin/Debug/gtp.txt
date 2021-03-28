@@ -1,1 +1,1 @@
-Configs\SquadronsConfig.txt
+Configs\IL2Config.txt
