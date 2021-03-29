@@ -9,28 +9,27 @@ using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.IO;
 using System.IO.MemoryMappedFiles;
-using MonsterGamesAPI;
 using GenericTelemetryProvider.Properties;
 using System.Threading.Tasks;
+using WarplanesWW1API;
 
 namespace GenericTelemetryProvider
 {
-    class MonsterGamesTelemetryProvider : GenericProviderBase
+    class WarplanesWW1TelemetryProvider : GenericProviderBase
     {
         Thread t;
 
-        public MonsterGamesUI ui;
-        MonsterGamesData data;
+        public WarplanesWW1UI ui;
+        WarplanesWW1Data data;
         int readPort = 13371;
         private IPEndPoint senderIP;                   // IP address of the sender for the udp connection used by the worker thread
         uint lastPacketId = 0;
-        float worldScale = 0.1f;
 
         public override void Run()
         {
             base.Run();
 
-            updateDelay = 18;
+            updateDelay = 0;
             maxAccel2DMagSusp = 6.0f;
             telemetryPausedTime = 1.5f;
 
@@ -48,14 +47,14 @@ namespace GenericTelemetryProvider
         void PerformInjection()
         {
             AutoResetEvent injectionEvent = new AutoResetEvent(false);
-            string[] processNames = new string[] { "NascarHeat5", "NascarHeat4", "AllAmericanRacing", "SprintCarRacing" };
+            string[] processNames = new string[] { "WW1" };
                 
             foreach(string processName in processNames)
             {
                 //processName
                 Task.Run(delegate ()
                 {
-                    InjectionManager.Monitor(processName, Resources.MonsterGamesTelemetry, injectionEvent, "MonsterGamesTelemetry");
+                    InjectionManager.Monitor(processName, Resources.WarplanesWW1Telemetry, injectionEvent, "WarplanesWW1Telemetry");
                 });
             }
 
@@ -80,8 +79,10 @@ namespace GenericTelemetryProvider
             socket.ExclusiveAddressUse = false;
             socket.Client.Bind(new IPEndPoint(IPAddress.Any, readPort));
 
-            StartSending();
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
 
+            StartSending();
 
              //read and process
             while (!IsStopped)
@@ -91,31 +92,47 @@ namespace GenericTelemetryProvider
                     //wait for telemetry
                     if (socket.Available == 0)
                     {
-                        using (var sleeper = new ManualResetEvent(false))
+                        if (sw.ElapsedMilliseconds > 500)
                         {
-                            sleeper.WaitOne(1);
+                            Thread.Sleep(1000);
                         }
                         continue;
                     }
 
                     Byte[] received = socket.Receive(ref senderIP);
-
-
-                    if (socket.Available == 0)
+                    /*
+                    while (socket.Available != 0)
                     {
-                        data = JsonConvert.DeserializeObject<MonsterGamesData>(System.Text.Encoding.UTF8.GetString(received));
+                        received = socket.Receive(ref senderIP);
+                        continue;
+                    }                    
+                    */
+                    double frameDT = 0;
+                    while (true)
+                    {
+                        frameDT = sw.Elapsed.TotalSeconds;
+                        if (frameDT >= (updateDelay / 1000.0f))
+                            break;
+                    }
 
-                        if (data.packetId < lastPacketId && Math.Abs((long)data.packetId - (long)lastPacketId) < 1000)
-                        {
-                            continue;
-                        }
+                    //                    data = JsonConvert.DeserializeObject<WarplanesWW1Data>(System.Text.Encoding.UTF8.GetString(received));
+                    var alloc = GCHandle.Alloc(received, GCHandleType.Pinned);
+                    data = (WarplanesWW1Data)Marshal.PtrToStructure(alloc.AddrOfPinnedObject(), typeof(WarplanesWW1Data));
+                    alloc.Free();
 
-                        lastPacketId = data.packetId;
 
-                        if (!data.paused)
-                        {
-                            ProcessMonsterGamesData(data.dt);
-                        }
+                    if (data.packetId < lastPacketId && Math.Abs((long)data.packetId - (long)lastPacketId) < 1000)
+                    {
+                        continue;
+                    }
+
+                    lastPacketId = data.packetId;
+
+                    if (!data.paused)
+                    {
+                        dt = (float)sw.Elapsed.TotalSeconds;
+                        sw.Restart();
+                        ProcessWarplanesWW1Data(data.dt);
                     }
                 }
                 catch (Exception e)
@@ -133,14 +150,16 @@ namespace GenericTelemetryProvider
 
 
 
-        void ProcessMonsterGamesData(float _dt)
+        void ProcessWarplanesWW1Data(float _dt)
         {
             if (data == null)
                 return;
 
             transform = new Matrix4x4();
+            transform = Matrix4x4.CreateFromYawPitchRoll(data.yaw, data.pitch, data.roll);
+            transform.Translation = new Vector3(data.posX, data.posY, data.posZ);
 
-            ProcessTransform(transform, _dt);// data.dt);
+            ProcessTransform(transform, _dt);
         }
 
         public override bool ProcessTransform(Matrix4x4 newTransform, float inDT)
@@ -157,7 +176,7 @@ namespace GenericTelemetryProvider
 
         public override bool ExtractFwdUpRht()
         {
-            return true;
+            return base.ExtractFwdUpRht();
 
         }
 
@@ -172,11 +191,10 @@ namespace GenericTelemetryProvider
                 dt = 0.01f;
         }
 
+        /*
         public override bool CalcPosition()
         {
-            rawData.position_x = data.posX * worldScale;
-            rawData.position_y = data.posY * worldScale;
-            rawData.position_z = data.posZ * worldScale;
+
 
             //filter position
             FilterModuleCustom.Instance.Filter(rawData, ref filteredData, posKeyMask, true);
@@ -185,37 +203,61 @@ namespace GenericTelemetryProvider
 
             return true;
         }
+        */
 
+        
         public override void CalcVelocity()
         {
-            rawData.local_velocity_x = data.velX * worldScale;
-            rawData.local_velocity_y = data.velY * worldScale;
-            rawData.local_velocity_z = data.velZ * worldScale;
-        }
 
+            Matrix4x4 rotation = new Matrix4x4();
+            rotation = transform;
+            rotation.M41 = 0.0f;
+            rotation.M42 = 0.0f;
+            rotation.M43 = 0.0f;
+            rotation.M44 = 1.0f;
+
+            rotInv = new Matrix4x4();
+            Matrix4x4.Invert(rotation, out rotInv);
+
+            rawData.local_velocity_x = data.velX;
+            rawData.local_velocity_y = data.velY;
+            rawData.local_velocity_z = data.velZ;
+        }
+        
         public override void FilterVelocity()
         {
             //filter local velocity
             FilterModuleCustom.Instance.Filter(rawData, ref filteredData, velKeyMask, false);
         }
-
+        /*
         public override void CalcAcceleration()
         {
 
-            rawData.gforce_lateral = data.accelX * worldScale;
-            rawData.gforce_vertical = data.accelY * worldScale;
-            rawData.gforce_longitudinal = data.accelZ * worldScale;
+            rawData.gforce_lateral = data.accelX;
+            rawData.gforce_vertical = data.accelY;
+            rawData.gforce_longitudinal = data.accelZ;
 
             FilterModuleCustom.Instance.Filter(rawData, ref filteredData, accelKeyMask, false);
         }
-
+        */
         public override void CalcAngles()
         {
-            rawData.pitch = Utils.LoopAngleRad(Utils.FlipAngleRad(data.pitch), (float)Math.PI * 0.5f);
-            rawData.yaw = data.yaw;
-            rawData.roll = Utils.LoopAngleRad(Utils.FlipAngleRad(data.roll), (float)Math.PI * 0.5f);
+            /*
+                        rawData.pitch = Utils.LoopAngleRad(Utils.FlipAngleRad(data.pitch), (float)Math.PI * 0.5f);
+                        rawData.yaw = data.yaw;
+                        rawData.roll = Utils.LoopAngleRad(Utils.FlipAngleRad(data.roll), (float)Math.PI * 0.5f);
+            */
+
+            Quaternion quat = Quaternion.CreateFromRotationMatrix(transform);
+
+            Vector3 pyr = Utils.GetPYRFromQuaternion(quat);
+
+            rawData.pitch = Utils.LoopAngleRad(pyr.X, (float)Math.PI * 0.5f);
+            rawData.yaw = pyr.Y;
+            rawData.roll = Utils.LoopAngleRad(pyr.Z, (float)Math.PI * 0.5f);
         }
 
+        /*
         public override void CalcAngularVelocityAndAccel()
         {
             rawData.yaw_velocity = data.yawVel;
@@ -228,12 +270,12 @@ namespace GenericTelemetryProvider
             rawData.pitch_acceleration = data.pitchAccel;
             rawData.roll_acceleration = data.rollAccel;
         }
-
+        */
         public override void SimulateEngine()
         {
             rawData.max_rpm = 6000;
-            rawData.max_gears = data.gears;
-            rawData.gear = data.gear;
+            rawData.max_gears = 6;
+            rawData.gear = 1;
             rawData.idle_rpm = 700;
 
             Vector3 localVelocity = new Vector3((float)filteredData.local_velocity_x, (float)filteredData.local_velocity_y, (float)filteredData.local_velocity_z);

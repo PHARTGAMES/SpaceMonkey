@@ -30,6 +30,7 @@ namespace GenericTelemetryProvider
         RBRUI rbrUI;
         SquadronsUI squadronsUI;
         IL2UI il2UI;
+        WarplanesWW1UI warplanesWW1UI;
         FilterUI filterUI;
         public static GenericTelemetryProvider Instance;
         public string versionString = "v1.0.3";
@@ -538,6 +539,19 @@ namespace GenericTelemetryProvider
 
             Thread x = new Thread(new ParameterizedThreadStart((form) => ((IL2UI)form).ShowDialog()));
             x.Start(il2UI);
+        }
+
+        private void warplanesWW1Btn_Click(object sender, EventArgs e)
+        {
+            if (warplanesWW1UI != null && !warplanesWW1UI.IsDisposed)
+            {
+                warplanesWW1UI.BeginInvoke(new Action<Form>((s) => { s.Close(); }), warplanesWW1UI);
+            }
+
+            warplanesWW1UI = new WarplanesWW1UI();
+
+            Thread x = new Thread(new ParameterizedThreadStart((form) => ((WarplanesWW1UI)form).ShowDialog()));
+            x.Start(warplanesWW1UI);
         }
     }
 }

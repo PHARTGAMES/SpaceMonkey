@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.1267
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarplanesWW1Telemetry", "WarplanesWW1Telemetry.csproj", "{1C2A7237-1DC3-406B-BDAC-E61A1B3E4CA0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1C2A7237-1DC3-406B-BDAC-E61A1B3E4CA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C2A7237-1DC3-406B-BDAC-E61A1B3E4CA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C2A7237-1DC3-406B-BDAC-E61A1B3E4CA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C2A7237-1DC3-406B-BDAC-E61A1B3E4CA0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F018BFDE-58DD-4E06-B9E6-FA49DFD07A9A}
+	EndGlobalSection
+EndGlobal

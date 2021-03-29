@@ -64,6 +64,7 @@
             this.RBRButton = new System.Windows.Forms.Button();
             this.SquadronsBtn = new System.Windows.Forms.Button();
             this.il2Btn = new System.Windows.Forms.Button();
+            this.warplanesWW1Btn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // Dirt5Button
@@ -436,15 +437,26 @@
             this.il2Btn.Name = "il2Btn";
             this.il2Btn.Size = new System.Drawing.Size(222, 70);
             this.il2Btn.TabIndex = 36;
-            this.il2Btn.Text = "IL2 Sturmovik";
+            this.il2Btn.Text = "IL-2 Sturmovik";
             this.il2Btn.UseVisualStyleBackColor = true;
             this.il2Btn.Click += new System.EventHandler(this.il2Btn_Click);
+            // 
+            // warplanesWW1Btn
+            // 
+            this.warplanesWW1Btn.Location = new System.Drawing.Point(20, 412);
+            this.warplanesWW1Btn.Name = "warplanesWW1Btn";
+            this.warplanesWW1Btn.Size = new System.Drawing.Size(222, 70);
+            this.warplanesWW1Btn.TabIndex = 37;
+            this.warplanesWW1Btn.Text = "Warplanes WW1";
+            this.warplanesWW1Btn.UseVisualStyleBackColor = true;
+            this.warplanesWW1Btn.Click += new System.EventHandler(this.warplanesWW1Btn_Click);
             // 
             // GenericTelemetryProvider
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(815, 726);
+            this.Controls.Add(this.warplanesWW1Btn);
             this.Controls.Add(this.il2Btn);
             this.Controls.Add(this.SquadronsBtn);
             this.Controls.Add(this.RBRButton);
@@ -528,6 +540,7 @@
         private System.Windows.Forms.Button RBRButton;
         private System.Windows.Forms.Button SquadronsBtn;
         private System.Windows.Forms.Button il2Btn;
+        private System.Windows.Forms.Button warplanesWW1Btn;
     }
 }
 

@@ -36,7 +36,7 @@ namespace GenericTelemetryProvider
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool SetProcessWorkingSetSize(IntPtr process, UIntPtr minimumWorkingSetSize, UIntPtr maximumWorkingSetSize);
 
-        public static void Monitor(string processName, byte[] dllContent, AutoResetEvent injectionEvent)
+        public static void Monitor(string processName, byte[] dllContent, AutoResetEvent injectionEvent, string namespaceString)
         {
             IntPtr assembly = IntPtr.Zero;
             string lastPid = null;
@@ -76,7 +76,7 @@ namespace GenericTelemetryProvider
                                 assembly = IntPtr.Zero;
                                 try
                                 {
-                                    assembly = enabler.Inject(dllContent, "MonsterGamesTelemetry", "Loader", "Init");
+                                    assembly = enabler.Inject(dllContent, namespaceString, "Loader", "Init");
                                     InjectionManager.minimizeMemory();
                                 }
                                 catch (InjectorException ie)

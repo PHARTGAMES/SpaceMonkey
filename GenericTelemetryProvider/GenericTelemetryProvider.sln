@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GTAVAPI", "..\GTAVAPI\GTAVA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonsterGamesAPI", "..\MonsterGamesAPI\MonsterGamesAPI.csproj", "{DF06AED7-12BC-486D-8AC5-37BE43B164C3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarplanesWW1API", "..\WarplanesWW1API\WarplanesWW1API.csproj", "{D171D832-8C04-433D-8674-BCD70D3E32CE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{DF06AED7-12BC-486D-8AC5-37BE43B164C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF06AED7-12BC-486D-8AC5-37BE43B164C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DF06AED7-12BC-486D-8AC5-37BE43B164C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D171D832-8C04-433D-8674-BCD70D3E32CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D171D832-8C04-433D-8674-BCD70D3E32CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D171D832-8C04-433D-8674-BCD70D3E32CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D171D832-8C04-433D-8674-BCD70D3E32CE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

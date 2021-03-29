@@ -1,1 +1,1 @@
-Configs\IL2Config.txt
+Configs\WarplanesWW1Config.txt

@@ -644,12 +644,6 @@ namespace GenericTelemetryProvider
                                         finalList.Add(pattern[0].foundAddress);
                                         Debug.Flush();
 
-                                        if (pattern[0].foundAddress == 3095615424)
-                                        {
-                                            bool bla = true;
-                                            bla = false;
-                                        }
-
                                         //need to skip back some loops
                                         if (i != pattern[0].blockFoundLoop)
                                         {
@@ -836,11 +830,6 @@ namespace GenericTelemetryProvider
                                         j = pattern[0].foundJ;
                                         patternStep = 0;
 
-                                        if(pattern[0].foundAddress == 3095615424)
-                                        {
-                                            bool bla = true;
-                                            bla = false;
-                                        }
                                         continue;
                                     }
                                     currStep = pattern[patternStep];

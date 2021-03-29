@@ -74,6 +74,13 @@
       <DependentUpon>KalmanVelocityFilterControl.cs</DependentUpon>
     </Compile>
     <Compile Include="KalmanVelocityNoiseFilter.cs" />
+    <Compile Include="WarPlanesWW1TelemetryProvider.cs" />
+    <Compile Include="WarPlanesWW1UI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WarPlanesWW1UI.Designer.cs">
+      <DependentUpon>WarPlanesWW1UI.cs</DependentUpon>
+    </Compile>
     <Compile Include="RBRTelemetryProvider.cs" />
     <Compile Include="RBRUI.cs">
       <SubType>Form</SubType>
@@ -209,6 +216,9 @@
     <EmbeddedResource Include="KalmanVelocityFilterControl.resx">
       <DependentUpon>KalmanVelocityFilterControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="WarPlanesWW1UI.resx">
+      <DependentUpon>WarPlanesWW1UI.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="RBRUI.resx">
       <DependentUpon>RBRUI.cs</DependentUpon>
     </EmbeddedResource>
@@ -293,12 +303,19 @@
       <Project>{df06aed7-12bc-486d-8ac5-37be43b164c3}</Project>
       <Name>MonsterGamesAPI</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WarplanesWW1API\WarplanesWW1API.csproj">
+      <Project>{d171d832-8c04-433d-8674-bcd70d3e32ce}</Project>
+      <Name>WarplanesWW1API</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="GTPIcon.ico" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\MonsterGamesTelemetry.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\WarplanesWW1Telemetry.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

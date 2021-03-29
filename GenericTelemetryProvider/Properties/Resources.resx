@@ -124,4 +124,7 @@
   <data name="MonsterGamesTelemetry" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\MonsterGamesTelemetry.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="WarplanesWW1Telemetry" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\warplanesww1telemetry.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>
