@@ -100,22 +100,14 @@ namespace GenericTelemetryProvider
                     }
 
                     Byte[] received = socket.Receive(ref senderIP);
-                    /*
+                    
                     while (socket.Available != 0)
                     {
                         received = socket.Receive(ref senderIP);
                         continue;
                     }                    
-                    */
-                    double frameDT = 0;
-                    while (true)
-                    {
-                        frameDT = sw.Elapsed.TotalSeconds;
-                        if (frameDT >= (updateDelay / 1000.0f))
-                            break;
-                    }
+                    
 
-                    //                    data = JsonConvert.DeserializeObject<WarplanesWW1Data>(System.Text.Encoding.UTF8.GetString(received));
                     var alloc = GCHandle.Alloc(received, GCHandleType.Pinned);
                     data = (WarplanesWW1Data)Marshal.PtrToStructure(alloc.AddrOfPinnedObject(), typeof(WarplanesWW1Data));
                     alloc.Free();
@@ -132,7 +124,7 @@ namespace GenericTelemetryProvider
                     {
                         dt = (float)sw.Elapsed.TotalSeconds;
                         sw.Restart();
-                        ProcessWarplanesWW1Data(data.dt);
+                        ProcessWarplanesWW1Data(dt);// data.dt);
                     }
                 }
                 catch (Exception e)
@@ -229,7 +221,7 @@ namespace GenericTelemetryProvider
             //filter local velocity
             FilterModuleCustom.Instance.Filter(rawData, ref filteredData, velKeyMask, false);
         }
-        /*
+        
         public override void CalcAcceleration()
         {
 
@@ -239,7 +231,7 @@ namespace GenericTelemetryProvider
 
             FilterModuleCustom.Instance.Filter(rawData, ref filteredData, accelKeyMask, false);
         }
-        */
+        
         public override void CalcAngles()
         {
             /*

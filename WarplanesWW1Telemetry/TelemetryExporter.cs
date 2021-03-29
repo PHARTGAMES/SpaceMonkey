@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
-using Valve.Newtonsoft.Json;
 using System.Net.Sockets;
-using System.Text;
 
 namespace WarplanesWW1Telemetry
 {
@@ -17,6 +15,8 @@ namespace WarplanesWW1Telemetry
         Vector3 lastRotVel = Vector3.zero;
         Vector3 lastPosition = Vector3.zero;
 
+
+
         public void Start()
         {
             startTime = Time.time;
@@ -26,20 +26,21 @@ namespace WarplanesWW1Telemetry
             udpClient.Connect("127.0.0.1", 13371);
         }
 
-//        public void FixedUpdate()
-        public void Update()
-        {
+        public void LateUpdate()
+        { 
             //            Debug.unityLogger.logEnabled = true;
 
-            float deltaTime = Time.unscaledDeltaTime;// Time.fixedDeltaTime;
+            float deltaTime = Time.deltaTime;
 
-            
             PlaneBody planeBody = PlaneSteering.GetPlane();
 
             if (planeBody == null)
                 return;
 
-            
+            Rigidbody rigidBody = planeBody.GetComponent<Rigidbody>();
+            v0 = v1;
+            v1 = rigidBody.velocity;
+
             Transform planeTransform = planeBody.transform;
 
             Vector3 position = planeTransform.position;
@@ -52,12 +53,12 @@ namespace WarplanesWW1Telemetry
             else
                 packetCounter++;
 
-            Vector3 velocity = (position - lastPosition) / deltaTime;
+            Vector3 velocity = RealisticFlying.speed;// (position - lastPosition) / deltaTime;
             lastPosition = position;
 
             velocity = planeTransform.InverseTransformDirection(velocity);
 
-            Vector3 acceleration = (velocity - lastVelocity) / deltaTime;
+            Vector3 acceleration = ((velocity - lastVelocity) / deltaTime) * 0.10197162129779283f;
             lastVelocity = velocity;
 
             data.posX = position.x;
@@ -96,9 +97,6 @@ namespace WarplanesWW1Telemetry
             data.engineRPM = (700.0f + (planeBody.GetTrottle() * 5000.0f));
 
             //FIXME: use Cannon from inside PlaneBody
-
-            //string output = JsonConvert.SerializeObject(data, Formatting.Indented);
-            //byte[] bytes = Encoding.UTF8.GetBytes(output);
 
             byte[] bytes = data.ToByteArray();
 
