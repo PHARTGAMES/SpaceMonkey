@@ -74,7 +74,14 @@
       <DependentUpon>KalmanVelocityFilterControl.cs</DependentUpon>
     </Compile>
     <Compile Include="KalmanVelocityNoiseFilter.cs" />
+    <Compile Include="VTOLVRTelemetryProvider.cs" />
     <Compile Include="WarPlanesWW1TelemetryProvider.cs" />
+    <Compile Include="VTOLVRUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VTOLVRUI.Designer.cs">
+      <DependentUpon>VTOLVRUI.cs</DependentUpon>
+    </Compile>
     <Compile Include="WarPlanesWW1UI.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -216,6 +223,9 @@
     <EmbeddedResource Include="KalmanVelocityFilterControl.resx">
       <DependentUpon>KalmanVelocityFilterControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="VTOLVRUI.resx">
+      <DependentUpon>VTOLVRUI.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="WarPlanesWW1UI.resx">
       <DependentUpon>WarPlanesWW1UI.cs</DependentUpon>
     </EmbeddedResource>
@@ -303,6 +313,10 @@
       <Project>{df06aed7-12bc-486d-8ac5-37be43b164c3}</Project>
       <Name>MonsterGamesAPI</Name>
     </ProjectReference>
+    <ProjectReference Include="..\VTOLVRAPI\VTOLVRAPI.csproj">
+      <Project>{1ece0c19-57d7-41be-88d5-2fec3011a321}</Project>
+      <Name>VTOLVRAPI</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WarplanesWW1API\WarplanesWW1API.csproj">
       <Project>{d171d832-8c04-433d-8674-bcd70d3e32ce}</Project>
       <Name>WarplanesWW1API</Name>
@@ -315,6 +329,7 @@
     <EmbeddedResource Include="Resources\MonsterGamesTelemetry.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\VTOLVRTelemetry.dll" />
     <Content Include="Resources\WarplanesWW1Telemetry.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

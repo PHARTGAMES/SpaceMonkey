@@ -65,6 +65,7 @@
             this.SquadronsBtn = new System.Windows.Forms.Button();
             this.il2Btn = new System.Windows.Forms.Button();
             this.warplanesWW1Btn = new System.Windows.Forms.Button();
+            this.vtolvrBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // Dirt5Button
@@ -451,11 +452,22 @@
             this.warplanesWW1Btn.UseVisualStyleBackColor = true;
             this.warplanesWW1Btn.Click += new System.EventHandler(this.warplanesWW1Btn_Click);
             // 
+            // vtolvrBtn
+            // 
+            this.vtolvrBtn.Location = new System.Drawing.Point(248, 412);
+            this.vtolvrBtn.Name = "vtolvrBtn";
+            this.vtolvrBtn.Size = new System.Drawing.Size(222, 70);
+            this.vtolvrBtn.TabIndex = 38;
+            this.vtolvrBtn.Text = "VTOL VR";
+            this.vtolvrBtn.UseVisualStyleBackColor = true;
+            this.vtolvrBtn.Click += new System.EventHandler(this.vtolvrBtn_Click);
+            // 
             // GenericTelemetryProvider
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(815, 726);
+            this.Controls.Add(this.vtolvrBtn);
             this.Controls.Add(this.warplanesWW1Btn);
             this.Controls.Add(this.il2Btn);
             this.Controls.Add(this.SquadronsBtn);
@@ -541,6 +553,7 @@
         private System.Windows.Forms.Button SquadronsBtn;
         private System.Windows.Forms.Button il2Btn;
         private System.Windows.Forms.Button warplanesWW1Btn;
+        private System.Windows.Forms.Button vtolvrBtn;
     }
 }
 

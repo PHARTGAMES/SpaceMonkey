@@ -1,22 +1,29 @@
-﻿using UnityEngine;
+using System;
+using System.Collections;
+using UnityEngine;
 using System.Net.Sockets;
 
-namespace WarplanesWW1Telemetry
+namespace VTOLVRTelemetry
 {
-    class TelemetryExporter : MonoBehaviour
+    public class TelemetryExporter : MonoBehaviour
     {
-        WarplanesWW1Data data = new WarplanesWW1Data();
+        VTOLVRData data = new VTOLVRData();
         float startTime;
+
+        public UdpClient udpClient;
+
+        public string receiverIp = "127.0.0.1";
+
+        public int receiverPort = 5640;
+
         uint packetCounter = 0;
 
-        private UdpClient udpClient;
-        Vector3 lastVelocity = Vector3.zero;
         Vector3 lastRotation = Vector3.zero;
+        Vector3 lastVelocity = Vector3.zero;
         Vector3 lastRotVel = Vector3.zero;
-        Vector3 lastPosition = Vector3.zero;
         
-
-        public void Start()
+        // This method is run once, when the Mod Loader is done initialising this game object
+        void Start()
         {
             startTime = Time.time;
 
@@ -25,53 +32,56 @@ namespace WarplanesWW1Telemetry
             udpClient.Connect("127.0.0.1", 13371);
         }
 
-        public void LateUpdate()
-        { 
-            //            Debug.unityLogger.logEnabled = true;
+
+        private void LateUpdate()
+        {
+
+            //Debug.unityLogger.logEnabled = true;
+
+            Actor playerActor = FlightSceneManager.instance.playerActor;
+
+            if (playerActor == null)
+                return;
+
 
             float deltaTime = Time.deltaTime;
 
-            PlaneBody planeBody = PlaneSteering.GetPlane();
+            GameObject playersVehicleGameObject = playerActor.gameObject;
 
-            if (planeBody == null)
-                return;
+            Transform planeTransform = playersVehicleGameObject.transform;
 
-            Transform planeTransform = planeBody.transform;
-
-            Vector3 position = planeTransform.position;
-            Quaternion rotation = planeTransform.rotation;
-                                       
             data.packetId = packetCounter;
 
-            if (packetCounter == uint.MaxValue-1)
+            if (packetCounter == uint.MaxValue - 1)
                 packetCounter = 0;
             else
                 packetCounter++;
 
-            Vector3 velocity = RealisticFlying.speed;// (position - lastPosition) / deltaTime;
-            lastPosition = position;
-
-            velocity = planeTransform.InverseTransformDirection(velocity);
-
-            Vector3 acceleration = ((velocity - lastVelocity) / deltaTime) * 0.10197162129779283f;
-            lastVelocity = velocity;
+            Vector3 position = planeTransform.position;
+            Quaternion rotation = planeTransform.rotation;
 
             data.posX = position.x;
             data.posY = position.y;
             data.posZ = position.z;
 
-            Vector3 pyr = rotation.eulerAngles * ((float)Mathf.PI / 180.0f);
-            data.pitch = pyr.x;
-            data.yaw = pyr.y;
-            data.roll = pyr.z;
+            Vector3 velocity = playerActor.velocity;
+            velocity = planeTransform.InverseTransformDirection(velocity);
+            lastVelocity = velocity;
 
             data.velX = velocity.x;
             data.velY = velocity.y;
             data.velZ = velocity.z;
 
+            Vector3 acceleration = playerActor.flightInfo.acceleration * 0.10197162129779283f; //convert to g accel
+
             data.accelX = acceleration.x;
             data.accelY = acceleration.y;
             data.accelZ = acceleration.z;
+
+            Vector3 pyr = rotation.eulerAngles * ((float)Mathf.PI / 180.0f);
+            data.pitch = pyr.x;
+            data.yaw = pyr.y;
+            data.roll = pyr.z;
 
             data.pitchVel = CalculateAngularChange(lastRotation.x, pyr.x) / deltaTime;
             data.yawVel = CalculateAngularChange(lastRotation.y, pyr.y) / deltaTime;
@@ -85,19 +95,19 @@ namespace WarplanesWW1Telemetry
 
             lastRotVel = new Vector3(data.pitchVel, data.yawVel, data.rollVel);
 
-            data.paused = false;// !Mission.IsFinished() && Mission.OnAnyMission;
+            ModuleEngine[] engines = playersVehicleGameObject.GetComponentsInChildren<ModuleEngine>();
+            float rpm = 0;
+            foreach (ModuleEngine moduleEngine in playersVehicleGameObject.GetComponentsInChildren<ModuleEngine>())
+            {
+                rpm += moduleEngine.displayedRPM;
+            }
+            rpm /= (float)engines.Length;
 
-            data.dt = deltaTime;
-
-            data.engineRPM = (700.0f + (planeBody.GetTrottle() * 5000.0f));
-
-            //FIXME: use Cannon from inside PlaneBody
+            data.paused = false;
 
             byte[] bytes = data.ToByteArray();
 
             udpClient.SendAsync(bytes, bytes.Length);
-
-
         }
 
         public static float CalculateAngularChange(float sourceA, float targetA)
@@ -127,8 +137,5 @@ namespace WarplanesWW1Telemetry
             GUI.TextArea(new Rect(0, 0, 300, 50), "!!!!!!!!!!! SPACEMONKEY INJECTED !!!!!!!!!!!");
         }
 
-
     }
-
-
 }
