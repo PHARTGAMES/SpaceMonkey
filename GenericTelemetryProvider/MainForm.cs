@@ -13,6 +13,7 @@ using System.Numerics;
 using System.IO;
 using System.IO.MemoryMappedFiles;
 using CMCustomUDP;
+using System.Globalization;
 
 namespace GenericTelemetryProvider
 {
@@ -40,6 +41,7 @@ namespace GenericTelemetryProvider
 
         public GenericTelemetryProvider()
         {
+            CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
             InitializeComponent();
         }
 
