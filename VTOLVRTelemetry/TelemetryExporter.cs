@@ -32,9 +32,18 @@ namespace VTOLVRTelemetry
             udpClient.Connect("127.0.0.1", 13371);
         }
 
+        private void FixedUpdate()
+        {
+            SendTelemetry(Time.fixedDeltaTime);
+        }
 
         private void LateUpdate()
         {
+//            SendTelemetry(Time.deltaTime);
+        }
+
+        void SendTelemetry(float deltaTime)
+        { 
 
             //Debug.unityLogger.logEnabled = true;
 
@@ -42,9 +51,6 @@ namespace VTOLVRTelemetry
 
             if (playerActor == null)
                 return;
-
-
-            float deltaTime = Time.deltaTime;
 
             GameObject playersVehicleGameObject = playerActor.gameObject;
 
