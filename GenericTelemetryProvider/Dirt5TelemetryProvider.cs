@@ -83,8 +83,6 @@ namespace GenericTelemetryProvider
             Stopwatch sw = new Stopwatch();
             sw.Start();
 
-            Stopwatch processSW = new Stopwatch();
-
 
             StartSending();
  
@@ -92,7 +90,16 @@ namespace GenericTelemetryProvider
             {
                 try
                 {
-                    processSW.Restart();
+
+                    double frameDT = 0;
+                    while (true)
+                    {
+                        frameDT = sw.Elapsed.TotalSeconds;
+                        if (frameDT >= (updateDelay / 1000.0f))
+                            break;
+                    }
+                    sw.Restart();
+
                     Int64 byteReadSize;
                     reader.ReadProcessMemory((IntPtr)memoryAddress, readSize, out byteReadSize, readBuffer);
 
@@ -110,15 +117,8 @@ namespace GenericTelemetryProvider
                                 , floats[8], floats[9], floats[10], floats[11]
                                 , floats[12], floats[13], floats[14], floats[15]);
 
-                    dt = (float)sw.ElapsedMilliseconds / 1000.0f;
-                    sw.Restart();
-                    ProcessTransform(transform, dt);
+                    ProcessTransform(transform, (float)frameDT);
 
-                    using (var sleeper = new ManualResetEvent(false))
-                    {
-                        int processTime = (int)processSW.ElapsedMilliseconds;
-                        sleeper.WaitOne(Math.Max(0, (int)updateDelay - processTime));
-                    }
                 }
                 catch (Exception e)
                 {

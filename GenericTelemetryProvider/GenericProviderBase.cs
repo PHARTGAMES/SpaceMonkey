@@ -265,7 +265,7 @@ namespace GenericTelemetryProvider
 
         public virtual void FilterDT()
         {
-            dt = dtFilter.Filter(dt);
+            //dt = dtFilter.Filter(dt);
 
             if (dt <= 0)
                 dt = 0.015f;
