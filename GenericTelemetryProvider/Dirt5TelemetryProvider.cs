@@ -67,7 +67,7 @@ namespace GenericTelemetryProvider
             string scanString = "B`U>B`U>";
 
 
-            scan.StartScanForString(scanString);
+            scan.StartScanForString(scanString, 1);
 
         }
 
@@ -124,7 +124,6 @@ namespace GenericTelemetryProvider
                 {
                     Thread.Sleep(1000);
                 }
-
             }
 
             reader.CloseHandle();
@@ -133,8 +132,9 @@ namespace GenericTelemetryProvider
 
             Thread.CurrentThread.Join();
 
-
         }
+
+
 
         public override bool ProcessTransform(Matrix4x4 newTransform, float inDT)
         {
@@ -148,7 +148,6 @@ namespace GenericTelemetryProvider
 
             return true;
         }
-
 
 
         void scan_ScanProgressChanged(object sender, ScanProgressChangedEventArgs e)
