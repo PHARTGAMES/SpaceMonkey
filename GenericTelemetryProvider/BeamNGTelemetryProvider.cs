@@ -38,8 +38,6 @@ namespace GenericTelemetryProvider
             Stopwatch sw = new Stopwatch();
             sw.Start();
 
-            Stopwatch processSW = new Stopwatch();
-
             StartSending();
 
 
@@ -48,7 +46,6 @@ namespace GenericTelemetryProvider
                 try
                 {
 
-                    processSW.Restart();
                     //wait for telemetry
                     if (socket.Available == 0)
                     {
@@ -61,6 +58,9 @@ namespace GenericTelemetryProvider
 
                     Byte[] received = socket.Receive(ref senderIP);
 
+                    if (socket.Available != 0)
+                        continue;
+
                     var alloc = GCHandle.Alloc(received, GCHandleType.Pinned);
                     telemetryData = (BNGAPI)Marshal.PtrToStructure(alloc.AddrOfPinnedObject(), typeof(BNGAPI));
                     alloc.Free();
@@ -70,16 +70,11 @@ namespace GenericTelemetryProvider
                         && telemetryData.magic[2] == 'G'
                         && telemetryData.magic[3] == '1')
                     {
-                        dt = (float)sw.ElapsedMilliseconds / 1000.0f;
+                        dt = (float)sw.Elapsed.TotalSeconds;
                         sw.Restart();
                         ProcessBNGAPI(dt);
                     }
 
-                    using (var sleeper = new ManualResetEvent(false))
-                    {
-                        int processTime = (int)processSW.ElapsedMilliseconds;
-                        sleeper.WaitOne(Math.Max(0, (int)updateDelay - processTime));
-                    }
                 }
                 catch (Exception e)
                 {
@@ -99,12 +94,6 @@ namespace GenericTelemetryProvider
         {
             if (telemetryData == null)
                 return;
-
-            //Matrix4x4 rollRot = Matrix4x4.CreateRotationZ(telemetryData.rollPos);
-            //Matrix4x4 pitchRot = Matrix4x4.CreateRotationX(telemetryData.pitchPos);
-            //Matrix4x4 yawRot = Matrix4x4.CreateRotationY(telemetryData.yawPos);
-            //transform = Matrix4x4.Multiply(rollRot, pitchRot);
-            //transform = Matrix4x4.Multiply(transform, yawRot);
 
             transform = Matrix4x4.CreateFromYawPitchRoll(telemetryData.yawPos, telemetryData.pitchPos, telemetryData.rollPos);
             transform.Translation = new Vector3(telemetryData.posX, telemetryData.posZ, telemetryData.posY);
@@ -163,7 +152,6 @@ namespace GenericTelemetryProvider
             worldPosition = new Vector3((float)filteredData.position_x, (float)filteredData.position_y, (float)filteredData.position_z);
 
             return true;
-
         }
 
         public override void CalcVelocity()
@@ -181,9 +169,6 @@ namespace GenericTelemetryProvider
             Matrix4x4.Invert(rotation, out rotInv);
 
             Vector3 worldVelocity = new Vector3(telemetryData.velX, telemetryData.velZ, telemetryData.velY);
-
-
-            //transform world velocity to local space
             Vector3 localVelocity = Vector3.Transform(worldVelocity, rotInv);
 
             rawData.local_velocity_x = localVelocity.X;
@@ -192,17 +177,19 @@ namespace GenericTelemetryProvider
 
             //            rawData.local_velocity_x = -(float)rawData.local_velocity_x;
         }
-
-        public override void FilterVelocity()
-        {
-            base.FilterVelocity();
-        }
-
+        /*
         public override void CalcAcceleration()
         {
-            base.CalcAcceleration();
-        }
+            Vector3 worldAcc = new Vector3(telemetryData.accX, telemetryData.accZ, telemetryData.accY);
+            Vector3 localAcc = Vector3.Transform(worldAcc, rotInv);
 
+            rawData.gforce_lateral = localAcc.X;
+            rawData.gforce_vertical = localAcc.Y;
+            rawData.gforce_longitudinal = localAcc.Z;
+
+            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, accelKeyMask, false);
+        }
+        */
         public override void CalcAngles()
         {
           
@@ -213,6 +200,21 @@ namespace GenericTelemetryProvider
             rawData.pitch = -pyr.X;
             rawData.yaw = -pyr.Y;
             rawData.roll = Utils.LoopAngleRad(-pyr.Z, (float)Math.PI * 0.5f);
+        }
+
+
+        public override void CalcAngularVelocityAndAccel()
+        {
+            rawData.yaw_velocity = telemetryData.yawRate;
+            rawData.pitch_velocity = telemetryData.pitchRate;
+            rawData.roll_velocity = telemetryData.rollRate;
+
+            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, angVelKeyMask, false);
+
+            rawData.yaw_acceleration = telemetryData.yawAcc;
+            rawData.pitch_acceleration = telemetryData.pitchAcc;
+            rawData.roll_acceleration = telemetryData.rollAcc;
+
         }
 
     }
