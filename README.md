@@ -181,7 +181,7 @@ udpTelemetryAddress=192.168.50.194
 
 udpTelemetryPort=6775
 
-You may be able to use 127.0.0.1 if you enable loopback from your internal ip, however you can just resolve your IPv4 using ipconfig.exe on a command prompt.
+You may be able to use 127.0.0.1 for the udpTelemetryAddress
 
 3. In the game make sure that options/plugins/ngp6/udp telemetry is turned on (u to toggle), but it should be if the RichardBurnsRally.ini is setup correctly.
 
