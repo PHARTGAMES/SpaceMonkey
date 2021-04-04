@@ -23,15 +23,15 @@ SpaceMonkey has been tested with SimCommander 4 (Accuforce v2) and SimFeedback (
 - Sprint Car Racing (MonsterGames)
 - WRC 7/8/9
 - Richard Burns Rally (NGP 6)
-- STAR WARS: Squadrons (Coming v1.0.4)
-- Warplanes: WW1 (Coming v1.0.4)
-- VTOL VR (Coming v1.0.4)
-- IL-2 Sturmovik (Coming v1.0.4)
+- STAR WARS: Squadrons
+- Warplanes: WW1
+- VTOL VR
+- IL-2 Sturmovik
 
 
 ## Installation
 
-The latest installer for SpaceMonkey is here (v1.0.3)
+The latest installer for SpaceMonkey is here (v1.0.4)
 
 https://github.com/PHARTGAMES/SpaceMonkey/raw/main/GenericTelemetryProvider/Installer/SpaceMonkeyTP-SetupFiles/SpaceMonkeyTP.msi
 
