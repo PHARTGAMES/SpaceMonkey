@@ -23,6 +23,10 @@ SpaceMonkey has been tested with SimCommander 4 (Accuforce v2) and SimFeedback (
 - Sprint Car Racing (MonsterGames)
 - WRC 7/8/9
 - Richard Burns Rally (NGP 6)
+- STAR WARS: Squadrons (Coming v1.0.4)
+- Warplanes: WW1 (Coming v1.0.4)
+- VTOL VR (Coming v1.0.4)
+- IL-2 Sturmovik (Coming v1.0.4)
 
 
 ## Installation
@@ -190,6 +194,86 @@ You may be able to use 127.0.0.1 if you enable loopback from your internal ip, h
 5. Space Monkey will now wait for a connection from Richard Burns Rally and output telemetry automatically. You can launch Richard Burns Rally and any other software at this point.
 
 ---
+## STAR WARS: Squadrons
+
+### Warning
+
+This only works offline and with the Steam version of the game. You must uninstall EasyAntiCheat for Space Monkey to work. You need to block connections to the game in your firewall so that it can't tell the servers that you are playing with EasyAntiCheat disabled. Follow the Setup steps.
+
+### Setup
+
+1. Setup firewall rules to block udp and tcp from both the starwarssquadrons.exe and starwarssquadrons_launcher.exe files.
+2. In the STAR WARS: Squadrons game folder there is a subfolder named EasyAntiCheat. Run EasyAntiCheat_Setup.exe and choose uninstall.
+3. In the SpaceMonkey install folder there is a subfolder name Squadrons. Copy the steam_appid.txt from this folder into the STAR WARS: Squadrons game folder.
+
+### Usage
+
+1. Launch STAR WARS: Squadrons by running the starwarssquadrons.exe located in the game install folder.
+2. Go to the main interface of Space Monkey and select a main config for Squadrons.
+3. Go to the main interface of Space Monkey and press the STAR WARS: Squadrons button which will load the Squadrons UI.
+4. Press the Initialize! button.
+5. You can now switch back to STAR WARS: Squadrons and you should have telemetry once you start a game.
+
+---
+
+## Warplanes WW1
+
+### Usage
+
+1. Load the game.
+2. Go to the main interface of Space Monkey and select a main config for Warplanes WW1..
+3. Go to the main interface of Space Monkey and press the Warplanes WW1 button which will load the Warplanes WW1 UI.
+4. In the Warplanes WW1 UI, click the Initialize button .
+5. Space Monkey will now be outputting telemetry. Load any other software at this point.
+
+---
+
+
+## VTOL VR
+
+### Usage
+
+1. Load the game.
+2. Go to the main interface of Space Monkey and select a main config for VTOL VR..
+3. Go to the main interface of Space Monkey and press the VTOL VR button which will load the VTOL VR UI.
+4. In the VTOL VR UI, click the Initialize button .
+5. Space Monkey will now be outputting telemetry. Load any other software at this point.
+
+---
+
+## IL-2 Sturmovik
+
+### Setup
+
+1. Edit the file data/startup.cfg located within the IL-2 Sturmovik game folder and add the following:
+
+[KEY = motiondevice]
+
+addr = "127.0.0.1"
+
+decimation = 1
+
+enable = true
+
+port = 4321
+
+[END]
+
+Simulation produces 50Hz rate data output (output 50 samples per second) of in-game player body's state: orientation, rotation speed (spin) and acceleration (if game mission has user-controlled body). To reduce UDP messages output rate the above setup section contains an integer setting “decimation”: UDP_output_rate = Data_output_rate / decimation The default setup makes UDP output rate at the simulation's rate and is equal 50Hz.
+
+Some people may find better results with "decimation = 2".
+
+### Usage
+
+1. Go to the main interface of Space Monkey and select a main config for IL-2 Sturmovik.
+2. Go to the main interface of Space Monkey and press the IL-2 Sturmovik button.
+3. Specify the UDP receive port specified in the setup step (Default 4321)
+4. Press the Initialize! button.
+5. Space Monkey will now wait for a connection from IL-2 Sturmovik and output telemetry automatically. You can launch IL-2 Sturmovik and any other software at this point.
+
+---
+
+
 
 # SimCommander 4
 
