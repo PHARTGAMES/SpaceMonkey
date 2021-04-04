@@ -1,1 +1,1 @@
-Configs\WarplanesWW1Config.txt
+Configs\defaultConfig.txt
