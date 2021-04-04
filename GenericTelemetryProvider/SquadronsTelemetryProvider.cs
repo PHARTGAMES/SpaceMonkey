@@ -23,6 +23,7 @@ namespace GenericTelemetryProvider
         public SquadronsUI ui;
         Process mainProcess = null;
         IntPtr matrixAddress;
+        bool spikeDetected = false;
 
 
         public override void Run()
@@ -372,11 +373,23 @@ namespace GenericTelemetryProvider
 
             return true;
         }
-        
 
         public override void CalcVelocity()
         {
             Vector3 worldVelocity = (worldPosition - lastPosition) / dt;
+
+            // spike fix when going in and out of menus
+            if ((worldVelocity.Length() == 0 && lastWorldVelocity.Length() != 0) || spikeDetected)
+            {
+                worldVelocity = lastWorldVelocity;
+                if (!spikeDetected)
+                    spikeDetected = true;
+                else
+                    spikeDetected = false;
+            }
+            else
+                spikeDetected = false;
+            
             lastWorldVelocity = worldVelocity;
 
             //Debug.WriteLine("Velocity: " + worldVelocity.Length());
