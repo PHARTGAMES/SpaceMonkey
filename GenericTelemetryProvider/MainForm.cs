@@ -35,7 +35,7 @@ namespace GenericTelemetryProvider
         VTOLVRUI vtolVRUI;
         FilterUI filterUI;
         public static GenericTelemetryProvider Instance;
-        public string versionString = "v1.0.3";
+        public string versionString = "v1.0.4";
 
         bool ignoreConfigChanges = false;
 

@@ -12,7 +12,7 @@
     <ROW Property="ProductCode" Value="1033:{28F219E8-117D-45EF-BC0E-DC140157D61F} " Type="16"/>
     <ROW Property="ProductLanguage" Value="1033"/>
     <ROW Property="ProductName" Value="SpaceMonkeyTP"/>
-    <ROW Property="ProductVersion" Value="1.0.3" Type="32"/>
+    <ROW Property="ProductVersion" Value="1.0.4" Type="32"/>
     <ROW Property="SecureCustomProperties" Value="OLDPRODUCTS;AI_NEWERPRODUCTFOUND"/>
     <ROW Property="UpgradeCode" Value="{DB0D552B-6C6F-4109-8226-33F4862D0228}"/>
     <ROW Property="WindowsType9X" MultiBuildValue="DefaultBuild:Windows 9x/ME" ValueLocId="-"/>
@@ -32,74 +32,48 @@
     <ROW Directory="Dirt5_Dir" Directory_Parent="APPDIR" DefaultDir="Dirt5"/>
     <ROW Directory="Filters_Dir" Directory_Parent="APPDIR" DefaultDir="Filters"/>
     <ROW Directory="GTAV_Dir" Directory_Parent="APPDIR" DefaultDir="GTAV"/>
+    <ROW Directory="IL2_Dir" Directory_Parent="APPDIR" DefaultDir="IL2"/>
     <ROW Directory="MonsterGames_Dir" Directory_Parent="APPDIR" DefaultDir="MONSTE~1|MonsterGames"/>
     <ROW Directory="PacketFormats_Dir" Directory_Parent="APPDIR" DefaultDir="PACKET~1|PacketFormats"/>
     <ROW Directory="RBR_Dir" Directory_Parent="APPDIR" DefaultDir="RBR"/>
+    <ROW Directory="Squadrons_Dir" Directory_Parent="APPDIR" DefaultDir="SQUADR~1|Squadrons"/>
     <ROW Directory="TARGETDIR" DefaultDir="SourceDir"/>
     <ROW Directory="WRC_Dir" Directory_Parent="APPDIR" DefaultDir="WRC"/>
     <ROW Directory="Wreckfest_Dir" Directory_Parent="APPDIR" DefaultDir="WRECKF~1|Wreckfest"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiCompsComponent">
     <ROW Component="APPDIR" ComponentId="{4F5CF310-7596-43B8-8A10-DC64207D7BAD}" Directory_="APPDIR" Attributes="0"/>
-    <ROW Component="BeamNGConfig.txt" ComponentId="{5817FF05-976F-455C-AD35-C4D041E5416D}" Directory_="BeamNG_Dir" Attributes="0" KeyPath="BeamNGConfig.txt" Type="0"/>
-    <ROW Component="BeamNGConfig.txt_1" ComponentId="{F3F9B5EA-41D9-47DC-87C9-0F5AA729EAC5}" Directory_="Configs_Dir" Attributes="0" KeyPath="BeamNGConfig.txt_1" Type="0"/>
-    <ROW Component="BeamNGFilters.txt" ComponentId="{6AA0335A-AEB4-4B44-8897-4D16CFE5FEA2}" Directory_="Filters_Dir" Attributes="0" KeyPath="BeamNGFilters.txt" Type="0"/>
-    <ROW Component="CMCustomUDP.dll" ComponentId="{6FD93CE4-9DCE-44CB-A65D-4D282BF18F5F}" Directory_="APPDIR" Attributes="0" KeyPath="CMCustomUDP.dll"/>
-    <ROW Component="DCSConfig.txt" ComponentId="{C3208A7F-9DA3-4865-A561-CAB721FC7EA0}" Directory_="DCS_Dir" Attributes="0" KeyPath="DCSConfig.txt_1" Type="0"/>
-    <ROW Component="Dirt5Config.txt" ComponentId="{15D7DF33-51C6-44B3-83F9-80E152A67CCD}" Directory_="Dirt5_Dir" Attributes="0" KeyPath="Dirt5Config.txt" Type="0"/>
-    <ROW Component="GTAVAPI.dll" ComponentId="{1B74CF3C-863B-4A2A-A7F1-BA4BC7C761B6}" Directory_="APPDIR" Attributes="0" KeyPath="GTAVAPI.dll"/>
-    <ROW Component="GTAVConfig.txt" ComponentId="{A85928EE-4D7C-4888-98C7-2AA0582C2A11}" Directory_="GTAV_Dir" Attributes="0" KeyPath="GTAVConfig.txt" Type="0"/>
-    <ROW Component="MonsterGamesAPI.dll" ComponentId="{059E9E91-F0E4-4C10-95CF-B9627742C84F}" Directory_="APPDIR" Attributes="0" KeyPath="MonsterGamesAPI.dll"/>
-    <ROW Component="MonsterGamesTelemetry.dll" ComponentId="{A7236729-6D0A-4D20-A94D-363CBCBABD84}" Directory_="MonsterGames_Dir" Attributes="0" KeyPath="MonsterGamesTelemetry.dll"/>
-    <ROW Component="Newtonsoft.Json.dll" ComponentId="{2F998BE1-45A5-4FC6-9764-CD26B2998F5F}" Directory_="APPDIR" Attributes="0" KeyPath="Newtonsoft.Json.dll"/>
+    <ROW Component="BeamNGConfig.txt" ComponentId="{4E3BE5D9-4DB4-44CC-A2E2-37532912AA5E}" Directory_="BeamNG_Dir" Attributes="0" KeyPath="BeamNGConfig.txt" Type="0"/>
+    <ROW Component="BeamNGConfig.txt_1" ComponentId="{7700AE8E-86D8-44BD-8876-0A008CA1E6B4}" Directory_="Configs_Dir" Attributes="0" KeyPath="BeamNGConfig.txt_1" Type="0"/>
+    <ROW Component="BeamNGFilters.txt" ComponentId="{4100DC27-79A3-42BF-A510-5B665D930BC2}" Directory_="Filters_Dir" Attributes="0" KeyPath="BeamNGFilters.txt" Type="0"/>
+    <ROW Component="CMCustomUDP.dll" ComponentId="{3545417D-A090-4463-B0FB-07546ACEB88C}" Directory_="APPDIR" Attributes="0" KeyPath="CMCustomUDP.dll"/>
+    <ROW Component="DCSConfig.txt" ComponentId="{D1F5D84C-EAAE-4899-9262-602E8A7D7132}" Directory_="DCS_Dir" Attributes="0" KeyPath="DCSConfig.txt_1" Type="0"/>
+    <ROW Component="Dirt5Config.txt" ComponentId="{8B511B27-051B-4223-A9BA-6C73C3F1B5CD}" Directory_="Dirt5_Dir" Attributes="0" KeyPath="Dirt5Config.txt" Type="0"/>
+    <ROW Component="GTAVAPI.dll" ComponentId="{9AC41CEA-B2CB-41F6-AA16-CDFE77CDCA52}" Directory_="APPDIR" Attributes="0" KeyPath="GTAVAPI.dll"/>
+    <ROW Component="GTAVConfig.txt" ComponentId="{26CAF501-E025-45AD-A8B5-E256382201FD}" Directory_="GTAV_Dir" Attributes="0" KeyPath="GTAVConfig.txt" Type="0"/>
+    <ROW Component="IL2Config.txt" ComponentId="{F0AC530E-8375-4591-89D0-99EC3CAAC1DE}" Directory_="IL2_Dir" Attributes="0" KeyPath="IL2Config.txt_1" Type="0"/>
+    <ROW Component="MonsterGamesAPI.dll" ComponentId="{AE27D794-6FA9-468F-8160-4EE3010C7F70}" Directory_="APPDIR" Attributes="0" KeyPath="MonsterGamesAPI.dll"/>
+    <ROW Component="MonsterGamesTelemetry.dll" ComponentId="{2F89625C-52F2-4F1B-8E3B-CBEBA71CF527}" Directory_="MonsterGames_Dir" Attributes="0" KeyPath="MonsterGamesTelemetry.dll"/>
+    <ROW Component="Newtonsoft.Json.dll" ComponentId="{CCE05229-7407-4C3E-AC24-A7E604DCDACD}" Directory_="APPDIR" Attributes="0" KeyPath="Newtonsoft.Json.dll"/>
     <ROW Component="ProductInformation" ComponentId="{B3C5559E-115B-4C83-9E62-C09C2E862C7E}" Directory_="APPDIR" Attributes="4" KeyPath="Version"/>
-    <ROW Component="RBRConfig.txt" ComponentId="{BDB99500-53D3-4DCA-9D74-67328E0FEF52}" Directory_="RBR_Dir" Attributes="0" KeyPath="RBRConfig.txt_1" Type="0"/>
-    <ROW Component="SharpMonoInjector.dll" ComponentId="{569E37BD-3616-4A5A-90C9-DB8279912B23}" Directory_="APPDIR" Attributes="0" KeyPath="SharpMonoInjector.dll"/>
-    <ROW Component="SpaceMonkeyTP.exe" ComponentId="{78F87AFC-4AC6-4C75-8B60-10FBF21F1C8E}" Directory_="APPDIR" Attributes="256" KeyPath="SpaceMonkeyTP.exe"/>
-    <ROW Component="WRCInjection.zip" ComponentId="{396D544A-6B8C-49C1-BDAF-024026DFB7A5}" Directory_="WRC_Dir" Attributes="0" KeyPath="WRCInjection.zip" Type="0"/>
-    <ROW Component="WreckfestConfig.txt" ComponentId="{3C689187-B6F5-4118-963A-4348B7DE1E5E}" Directory_="Wreckfest_Dir" Attributes="0" KeyPath="WreckfestConfig.txt_1" Type="0"/>
-    <ROW Component="XInputDotNetPure.dll" ComponentId="{A4CA051E-A5BB-4FDE-A207-B66F3A8DF3DF}" Directory_="APPDIR" Attributes="256" KeyPath="XInputDotNetPure.dll"/>
-    <ROW Component="XInputInterface.dll" ComponentId="{F6F97EEE-8BCE-413B-8F72-AFA470255EA4}" Directory_="APPDIR" Attributes="256" KeyPath="XInputInterface.dll"/>
-    <ROW Component="defaultPacketFormat.xml" ComponentId="{CAE783D2-77FD-46A4-BFF6-C2D1CA0D23AB}" Directory_="PacketFormats_Dir" Attributes="0" KeyPath="defaultPacketFormat.xml" Type="0"/>
-    <ROW Component="gtp.txt" ComponentId="{77E85D19-260F-43FC-83E3-7E898A616930}" Directory_="APPDIR" Attributes="0" KeyPath="gtp.txt" Type="0"/>
+    <ROW Component="RBRConfig.txt" ComponentId="{703F62DB-B82F-4A55-8BC9-026640B90A24}" Directory_="RBR_Dir" Attributes="0" KeyPath="RBRConfig.txt_1" Type="0"/>
+    <ROW Component="SharpMonoInjector.dll" ComponentId="{B2CD60CD-5AC6-4817-9EB0-437CCE9BE4F7}" Directory_="APPDIR" Attributes="0" KeyPath="SharpMonoInjector.dll"/>
+    <ROW Component="SpaceMonkeyTP.exe" ComponentId="{47DA16EE-3243-4FE2-86EB-88BBD8812E6A}" Directory_="APPDIR" Attributes="256" KeyPath="SpaceMonkeyTP.exe"/>
+    <ROW Component="VTOLVRAPI.dll" ComponentId="{94A0CA87-4D89-42CB-AA81-6CAA2EBEC1C2}" Directory_="APPDIR" Attributes="0" KeyPath="VTOLVRAPI.dll"/>
+    <ROW Component="WRCInjection.zip" ComponentId="{47918194-B33C-4CE9-B956-936058A5E7B1}" Directory_="WRC_Dir" Attributes="0" KeyPath="WRCInjection.zip" Type="0"/>
+    <ROW Component="WarplanesWW1API.dll" ComponentId="{58ABCAD6-A4E9-45C1-B28D-68E3E387B9DC}" Directory_="APPDIR" Attributes="0" KeyPath="WarplanesWW1API.dll"/>
+    <ROW Component="WreckfestConfig.txt" ComponentId="{49B19BE4-D84B-4751-B6A9-F9FD98CB01B9}" Directory_="Wreckfest_Dir" Attributes="0" KeyPath="WreckfestConfig.txt_1" Type="0"/>
+    <ROW Component="XInputDotNetPure.dll" ComponentId="{8F994AF8-A73F-49D8-B830-43E581035DA6}" Directory_="APPDIR" Attributes="256" KeyPath="XInputDotNetPure.dll"/>
+    <ROW Component="XInputInterface.dll" ComponentId="{9A009991-1111-4F19-B925-55524A2F97D7}" Directory_="APPDIR" Attributes="256" KeyPath="XInputInterface.dll"/>
+    <ROW Component="defaultPacketFormat.xml" ComponentId="{45EC3BE9-738A-4CFE-B848-24FC081F9FC2}" Directory_="PacketFormats_Dir" Attributes="0" KeyPath="defaultPacketFormat.xml" Type="0"/>
+    <ROW Component="gtp.txt" ComponentId="{EBED94D1-0AEE-4E22-9853-D1E52D894199}" Directory_="APPDIR" Attributes="0" KeyPath="gtp.txt" Type="0"/>
+    <ROW Component="steam_appid.txt" ComponentId="{E8225D97-9AF8-47F8-A772-5158DBE8388E}" Directory_="Squadrons_Dir" Attributes="0" KeyPath="steam_appid.txt" Type="0"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiFeatsComponent">
     <ROW Feature="MainFeature" Title="MainFeature" Description="Description" Display="1" Level="1" Directory_="APPDIR" Attributes="0"/>
     <ATTRIBUTE name="CurrentFeature" value="MainFeature"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiFilesComponent">
-    <ROW File="BeamNGConfig.txt" Component_="BeamNGConfig.txt" FileName="BEAMNG~1.TXT|BeamNGConfig.txt" Attributes="0" SourcePath="..\bin\Debug\BeamNG\BeamNGConfig.txt" SelfReg="false"/>
-    <ROW File="BeamNGConfig.txt_1" Component_="BeamNGConfig.txt_1" FileName="BEAMNG~1.TXT|BeamNGConfig.txt" Attributes="0" SourcePath="..\bin\Debug\Configs\BeamNGConfig.txt" SelfReg="false"/>
-    <ROW File="DCSConfig.txt" Component_="BeamNGConfig.txt_1" FileName="DCSCON~1.TXT|DCSConfig.txt" Attributes="0" SourcePath="..\bin\Debug\Configs\DCSConfig.txt" SelfReg="false"/>
-    <ROW File="defaultConfig.txt" Component_="BeamNGConfig.txt_1" FileName="DEFAUL~1.TXT|defaultConfig.txt" Attributes="0" SourcePath="..\bin\Debug\Configs\defaultConfig.txt" SelfReg="false"/>
-    <ROW File="dirt5_Simfeedback_SC4.txt" Component_="BeamNGConfig.txt_1" FileName="DIRT5_~1.TXT|dirt5_Simfeedback_SC4.txt" Attributes="0" SourcePath="..\bin\Debug\Configs\dirt5_Simfeedback_SC4.txt" SelfReg="false"/>
-    <ROW File="GTAVDefault.txt" Component_="BeamNGConfig.txt_1" FileName="GTAVDE~1.TXT|GTAVDefault.txt" Attributes="0" SourcePath="..\bin\Debug\Configs\GTAVDefault.txt" SelfReg="false"/>
-    <ROW File="MonsterGamesConfig.txt" Component_="BeamNGConfig.txt_1" FileName="MONSTE~1.TXT|MonsterGamesConfig.txt" Attributes="0" SourcePath="..\bin\Debug\Configs\MonsterGamesConfig.txt" SelfReg="false"/>
-    <ROW File="RBRConfig.txt" Component_="BeamNGConfig.txt_1" FileName="RBRCON~1.TXT|RBRConfig.txt" Attributes="0" SourcePath="..\bin\Debug\Configs\RBRConfig.txt" SelfReg="false"/>
-    <ROW File="WRCConfig.txt" Component_="BeamNGConfig.txt_1" FileName="WRCCON~1.TXT|WRCConfig.txt" Attributes="0" SourcePath="..\bin\Debug\Configs\WRCConfig.txt" SelfReg="false"/>
-    <ROW File="WreckfestConfig.txt" Component_="BeamNGConfig.txt_1" FileName="WRECKF~1.TXT|WreckfestConfig.txt" Attributes="0" SourcePath="..\bin\Debug\Configs\WreckfestConfig.txt" SelfReg="false"/>
-    <ROW File="DCSConfig.txt_1" Component_="DCSConfig.txt" FileName="DCSCON~1.TXT|DCSConfig.txt" Attributes="0" SourcePath="..\bin\Debug\DCS\DCSConfig.txt" SelfReg="false"/>
-    <ROW File="SMTPDCSExportPlugin.msi" Component_="DCSConfig.txt" FileName="SMTPDC~1.MSI|SMTP DCS Export Plugin.msi" Attributes="0" SourcePath="..\bin\Debug\DCS\SMTP DCS Export Plugin.msi" SelfReg="false"/>
-    <ROW File="Dirt5Config.txt" Component_="Dirt5Config.txt" FileName="DIRT5C~1.TXT|Dirt5Config.txt" Attributes="0" SourcePath="..\bin\Debug\Dirt5\Dirt5Config.txt" SelfReg="false"/>
-    <ROW File="Dirt5Vehicles.txt" Component_="Dirt5Config.txt" FileName="DIRT5V~1.TXT|Dirt5Vehicles.txt" Attributes="0" SourcePath="..\bin\Debug\Dirt5\Dirt5Vehicles.txt" SelfReg="false"/>
-    <ROW File="BeamNGFilters.txt" Component_="BeamNGFilters.txt" FileName="BEAMNG~1.TXT|BeamNGFilters.txt" Attributes="0" SourcePath="..\bin\Debug\Filters\BeamNGFilters.txt" SelfReg="false"/>
-    <ROW File="DCSFilters.txt" Component_="BeamNGFilters.txt" FileName="DCSFIL~1.TXT|DCSFilters.txt" Attributes="0" SourcePath="..\bin\Debug\Filters\DCSFilters.txt" SelfReg="false"/>
-    <ROW File="defaultFilters.txt" Component_="BeamNGFilters.txt" FileName="DEFAUL~1.TXT|defaultFilters.txt" Attributes="0" SourcePath="..\bin\Debug\Filters\defaultFilters.txt" SelfReg="false"/>
-    <ROW File="Dirt5Filters.txt" Component_="BeamNGFilters.txt" FileName="DIRT5F~1.TXT|Dirt5Filters.txt" Attributes="0" SourcePath="..\bin\Debug\Filters\Dirt5Filters.txt" SelfReg="false"/>
-    <ROW File="GTAVFilters.txt" Component_="BeamNGFilters.txt" FileName="GTAVFI~1.TXT|GTAVFilters.txt" Attributes="0" SourcePath="..\bin\Debug\Filters\GTAVFilters.txt" SelfReg="false"/>
-    <ROW File="MonsterFilters.txt" Component_="BeamNGFilters.txt" FileName="MONSTE~1.TXT|MonsterFilters.txt" Attributes="0" SourcePath="..\bin\Debug\Filters\MonsterFilters.txt" SelfReg="false"/>
-    <ROW File="RBRFilters.txt" Component_="BeamNGFilters.txt" FileName="RBRFIL~1.TXT|RBRFilters.txt" Attributes="0" SourcePath="..\bin\Debug\Filters\RBRFilters.txt" SelfReg="false"/>
-    <ROW File="WRCfilters.txt" Component_="BeamNGFilters.txt" FileName="WRCFIL~1.TXT|WRCfilters.txt" Attributes="0" SourcePath="..\bin\Debug\Filters\WRCfilters.txt" SelfReg="false"/>
-    <ROW File="WreckfestFilters.txt" Component_="BeamNGFilters.txt" FileName="WRECKF~1.TXT|WreckfestFilters.txt" Attributes="0" SourcePath="..\bin\Debug\Filters\WreckfestFilters.txt" SelfReg="false"/>
-    <ROW File="GTAVConfig.txt" Component_="GTAVConfig.txt" FileName="GTAVCO~1.TXT|GTAVConfig.txt" Attributes="0" SourcePath="..\bin\Debug\GTAV\GTAVConfig.txt" SelfReg="false"/>
-    <ROW File="SMTPGTAPlugin.msi" Component_="GTAVConfig.txt" FileName="SMTPGT~1.MSI|SMTP GTA Plugin.msi" Attributes="0" SourcePath="..\bin\Debug\GTAV\SMTP GTA Plugin.msi" SelfReg="false"/>
-    <ROW File="MonsterGamesTelemetry.dll" Component_="MonsterGamesTelemetry.dll" FileName="MONSTE~1.DLL|MonsterGamesTelemetry.dll" Attributes="0" SourcePath="..\bin\Debug\MonsterGames\MonsterGamesTelemetry.dll" SelfReg="false"/>
-    <ROW File="MonsterGamesTelemetry.pdb" Component_="MonsterGamesTelemetry.dll" FileName="MONSTE~1.PDB|MonsterGamesTelemetry.pdb" Attributes="0" SourcePath="..\bin\Debug\MonsterGames\MonsterGamesTelemetry.pdb" SelfReg="false"/>
-    <ROW File="defaultPacketFormat.xml" Component_="defaultPacketFormat.xml" FileName="DEFAUL~1.XML|defaultPacketFormat.xml" Attributes="0" SourcePath="..\bin\Debug\PacketFormats\defaultPacketFormat.xml" SelfReg="false"/>
-    <ROW File="SimXperience_Dirt_V1.xml" Component_="defaultPacketFormat.xml" FileName="SIMXPE~1.XML|SimXperience_Dirt_V1.xml" Attributes="0" SourcePath="..\bin\Debug\PacketFormats\SimXperience_Dirt_V1.xml" SelfReg="false"/>
-    <ROW File="RBRConfig.txt_1" Component_="RBRConfig.txt" FileName="RBRCON~1.TXT|RBRConfig.txt" Attributes="0" SourcePath="..\bin\Debug\RBR\RBRConfig.txt" SelfReg="false"/>
-    <ROW File="WRCInjection.zip" Component_="WRCInjection.zip" FileName="WRCINJ~1.ZIP|WRCInjection.zip" Attributes="0" SourcePath="..\bin\Debug\WRC\WRCInjection.zip" SelfReg="false"/>
-    <ROW File="WreckfestConfig.txt_1" Component_="WreckfestConfig.txt" FileName="WRECKF~1.TXT|WreckfestConfig.txt" Attributes="0" SourcePath="..\bin\Debug\Wreckfest\WreckfestConfig.txt" SelfReg="false"/>
     <ROW File="CMCustomUDP.dll" Component_="CMCustomUDP.dll" FileName="CMCUST~1.DLL|CMCustomUDP.dll" Attributes="0" SourcePath="..\bin\Debug\CMCustomUDP.dll" SelfReg="false"/>
     <ROW File="CMCustomUDP.pdb" Component_="CMCustomUDP.dll" FileName="CMCUST~1.PDB|CMCustomUDP.pdb" Attributes="0" SourcePath="..\bin\Debug\CMCustomUDP.pdb" SelfReg="false"/>
     <ROW File="GTAVAPI.dll" Component_="GTAVAPI.dll" FileName="GTAVAPI.dll" Attributes="0" SourcePath="..\bin\Debug\GTAVAPI.dll" SelfReg="false"/>
@@ -113,10 +87,56 @@
     <ROW File="SpaceMonkeyTP.exe" Component_="SpaceMonkeyTP.exe" FileName="SPACEM~1.EXE|SpaceMonkeyTP.exe" Attributes="0" SourcePath="..\bin\Debug\SpaceMonkeyTP.exe" SelfReg="false" DigSign="true"/>
     <ROW File="SpaceMonkeyTP.exe.config" Component_="gtp.txt" FileName="SPACEM~1.CON|SpaceMonkeyTP.exe.config" Attributes="0" SourcePath="..\bin\Debug\SpaceMonkeyTP.exe.config" SelfReg="false"/>
     <ROW File="SpaceMonkeyTP.pdb" Component_="SpaceMonkeyTP.exe" FileName="SPACEM~1.PDB|SpaceMonkeyTP.pdb" Attributes="0" SourcePath="..\bin\Debug\SpaceMonkeyTP.pdb" SelfReg="false"/>
+    <ROW File="VTOLVRAPI.dll" Component_="VTOLVRAPI.dll" FileName="VTOLVR~1.DLL|VTOLVRAPI.dll" Attributes="0" SourcePath="..\bin\Debug\VTOLVRAPI.dll" SelfReg="false"/>
+    <ROW File="VTOLVRAPI.pdb" Component_="VTOLVRAPI.dll" FileName="VTOLVR~1.PDB|VTOLVRAPI.pdb" Attributes="0" SourcePath="..\bin\Debug\VTOLVRAPI.pdb" SelfReg="false"/>
+    <ROW File="WarplanesWW1API.dll" Component_="WarplanesWW1API.dll" FileName="WARPLA~1.DLL|WarplanesWW1API.dll" Attributes="0" SourcePath="..\bin\Debug\WarplanesWW1API.dll" SelfReg="false"/>
+    <ROW File="WarplanesWW1API.pdb" Component_="WarplanesWW1API.dll" FileName="WARPLA~1.PDB|WarplanesWW1API.pdb" Attributes="0" SourcePath="..\bin\Debug\WarplanesWW1API.pdb" SelfReg="false"/>
     <ROW File="XInputDotNetPure.dll" Component_="XInputDotNetPure.dll" FileName="XINPUT~1.DLL|XInputDotNetPure.dll" Attributes="0" SourcePath="..\bin\Debug\XInputDotNetPure.dll" SelfReg="false"/>
     <ROW File="XInputDotNetPure.pdb" Component_="XInputDotNetPure.dll" FileName="XINPUT~1.PDB|XInputDotNetPure.pdb" Attributes="0" SourcePath="..\bin\Debug\XInputDotNetPure.pdb" SelfReg="false"/>
     <ROW File="XInputInterface.dll" Component_="XInputInterface.dll" FileName="XINPUT~2.DLL|XInputInterface.dll" Attributes="0" SourcePath="..\bin\Debug\XInputInterface.dll" SelfReg="false"/>
     <ROW File="XInputInterface.pdb" Component_="XInputInterface.dll" FileName="XINPUT~2.PDB|XInputInterface.pdb" Attributes="0" SourcePath="..\bin\Debug\XInputInterface.pdb" SelfReg="false"/>
+    <ROW File="BeamNGConfig.txt" Component_="BeamNGConfig.txt" FileName="BEAMNG~1.TXT|BeamNGConfig.txt" Attributes="0" SourcePath="..\bin\Debug\BeamNG\BeamNGConfig.txt" SelfReg="false"/>
+    <ROW File="BeamNGConfig.txt_1" Component_="BeamNGConfig.txt_1" FileName="BEAMNG~1.TXT|BeamNGConfig.txt" Attributes="0" SourcePath="..\bin\Debug\Configs\BeamNGConfig.txt" SelfReg="false"/>
+    <ROW File="DCSConfig.txt" Component_="BeamNGConfig.txt_1" FileName="DCSCON~1.TXT|DCSConfig.txt" Attributes="0" SourcePath="..\bin\Debug\Configs\DCSConfig.txt" SelfReg="false"/>
+    <ROW File="defaultConfig.txt" Component_="BeamNGConfig.txt_1" FileName="DEFAUL~1.TXT|defaultConfig.txt" Attributes="0" SourcePath="..\bin\Debug\Configs\defaultConfig.txt" SelfReg="false"/>
+    <ROW File="dirt5_Simfeedback_SC4.txt" Component_="BeamNGConfig.txt_1" FileName="DIRT5_~1.TXT|dirt5_Simfeedback_SC4.txt" Attributes="0" SourcePath="..\bin\Debug\Configs\dirt5_Simfeedback_SC4.txt" SelfReg="false"/>
+    <ROW File="GTAVDefault.txt" Component_="BeamNGConfig.txt_1" FileName="GTAVDE~1.TXT|GTAVDefault.txt" Attributes="0" SourcePath="..\bin\Debug\Configs\GTAVDefault.txt" SelfReg="false"/>
+    <ROW File="IL2Config.txt" Component_="BeamNGConfig.txt_1" FileName="IL2CON~1.TXT|IL2Config.txt" Attributes="0" SourcePath="..\bin\Debug\Configs\IL2Config.txt" SelfReg="false"/>
+    <ROW File="MonsterGamesConfig.txt" Component_="BeamNGConfig.txt_1" FileName="MONSTE~1.TXT|MonsterGamesConfig.txt" Attributes="0" SourcePath="..\bin\Debug\Configs\MonsterGamesConfig.txt" SelfReg="false"/>
+    <ROW File="RBRConfig.txt" Component_="BeamNGConfig.txt_1" FileName="RBRCON~1.TXT|RBRConfig.txt" Attributes="0" SourcePath="..\bin\Debug\Configs\RBRConfig.txt" SelfReg="false"/>
+    <ROW File="SquadronsConfig.txt" Component_="BeamNGConfig.txt_1" FileName="SQUADR~1.TXT|SquadronsConfig.txt" Attributes="0" SourcePath="..\bin\Debug\Configs\SquadronsConfig.txt" SelfReg="false"/>
+    <ROW File="VTOLVRConfig.txt" Component_="BeamNGConfig.txt_1" FileName="VTOLVR~1.TXT|VTOLVRConfig.txt" Attributes="0" SourcePath="..\bin\Debug\Configs\VTOLVRConfig.txt" SelfReg="false"/>
+    <ROW File="WarplanesWW1Config.txt" Component_="BeamNGConfig.txt_1" FileName="WARPLA~1.TXT|WarplanesWW1Config.txt" Attributes="0" SourcePath="..\bin\Debug\Configs\WarplanesWW1Config.txt" SelfReg="false"/>
+    <ROW File="WRCConfig.txt" Component_="BeamNGConfig.txt_1" FileName="WRCCON~1.TXT|WRCConfig.txt" Attributes="0" SourcePath="..\bin\Debug\Configs\WRCConfig.txt" SelfReg="false"/>
+    <ROW File="WreckfestConfig.txt" Component_="BeamNGConfig.txt_1" FileName="WRECKF~1.TXT|WreckfestConfig.txt" Attributes="0" SourcePath="..\bin\Debug\Configs\WreckfestConfig.txt" SelfReg="false"/>
+    <ROW File="DCSConfig.txt_1" Component_="DCSConfig.txt" FileName="DCSCON~1.TXT|DCSConfig.txt" Attributes="0" SourcePath="..\bin\Debug\DCS\DCSConfig.txt" SelfReg="false"/>
+    <ROW File="SMTPDCSExportPlugin.msi" Component_="DCSConfig.txt" FileName="SMTPDC~1.MSI|SMTP DCS Export Plugin.msi" Attributes="0" SourcePath="..\bin\Debug\DCS\SMTP DCS Export Plugin.msi" SelfReg="false"/>
+    <ROW File="Dirt5Config.txt" Component_="Dirt5Config.txt" FileName="DIRT5C~1.TXT|Dirt5Config.txt" Attributes="0" SourcePath="..\bin\Debug\Dirt5\Dirt5Config.txt" SelfReg="false"/>
+    <ROW File="Dirt5Vehicles.txt" Component_="Dirt5Config.txt" FileName="DIRT5V~1.TXT|Dirt5Vehicles.txt" Attributes="0" SourcePath="..\bin\Debug\Dirt5\Dirt5Vehicles.txt" SelfReg="false"/>
+    <ROW File="BeamNGFilters.txt" Component_="BeamNGFilters.txt" FileName="BEAMNG~1.TXT|BeamNGFilters.txt" Attributes="0" SourcePath="..\bin\Debug\Filters\BeamNGFilters.txt" SelfReg="false"/>
+    <ROW File="DCSFilters.txt" Component_="BeamNGFilters.txt" FileName="DCSFIL~1.TXT|DCSFilters.txt" Attributes="0" SourcePath="..\bin\Debug\Filters\DCSFilters.txt" SelfReg="false"/>
+    <ROW File="defaultFilters.txt" Component_="BeamNGFilters.txt" FileName="DEFAUL~1.TXT|defaultFilters.txt" Attributes="0" SourcePath="..\bin\Debug\Filters\defaultFilters.txt" SelfReg="false"/>
+    <ROW File="Dirt5Filters.txt" Component_="BeamNGFilters.txt" FileName="DIRT5F~1.TXT|Dirt5Filters.txt" Attributes="0" SourcePath="..\bin\Debug\Filters\Dirt5Filters.txt" SelfReg="false"/>
+    <ROW File="GTAVFilters.txt" Component_="BeamNGFilters.txt" FileName="GTAVFI~1.TXT|GTAVFilters.txt" Attributes="0" SourcePath="..\bin\Debug\Filters\GTAVFilters.txt" SelfReg="false"/>
+    <ROW File="IL2Filters.txt" Component_="BeamNGFilters.txt" FileName="IL2FIL~1.TXT|IL2Filters.txt" Attributes="0" SourcePath="..\bin\Debug\Filters\IL2Filters.txt" SelfReg="false"/>
+    <ROW File="MonsterFilters.txt" Component_="BeamNGFilters.txt" FileName="MONSTE~1.TXT|MonsterFilters.txt" Attributes="0" SourcePath="..\bin\Debug\Filters\MonsterFilters.txt" SelfReg="false"/>
+    <ROW File="RBRFilters.txt" Component_="BeamNGFilters.txt" FileName="RBRFIL~1.TXT|RBRFilters.txt" Attributes="0" SourcePath="..\bin\Debug\Filters\RBRFilters.txt" SelfReg="false"/>
+    <ROW File="SquadronsFilters.txt" Component_="BeamNGFilters.txt" FileName="SQUADR~1.TXT|SquadronsFilters.txt" Attributes="0" SourcePath="..\bin\Debug\Filters\SquadronsFilters.txt" SelfReg="false"/>
+    <ROW File="VTOLVRFilters.txt" Component_="BeamNGFilters.txt" FileName="VTOLVR~1.TXT|VTOLVRFilters.txt" Attributes="0" SourcePath="..\bin\Debug\Filters\VTOLVRFilters.txt" SelfReg="false"/>
+    <ROW File="WarplanesWW1Filters.txt" Component_="BeamNGFilters.txt" FileName="WARPLA~1.TXT|WarplanesWW1Filters.txt" Attributes="0" SourcePath="..\bin\Debug\Filters\WarplanesWW1Filters.txt" SelfReg="false"/>
+    <ROW File="WRCfilters.txt" Component_="BeamNGFilters.txt" FileName="WRCFIL~1.TXT|WRCfilters.txt" Attributes="0" SourcePath="..\bin\Debug\Filters\WRCfilters.txt" SelfReg="false"/>
+    <ROW File="WreckfestFilters.txt" Component_="BeamNGFilters.txt" FileName="WRECKF~1.TXT|WreckfestFilters.txt" Attributes="0" SourcePath="..\bin\Debug\Filters\WreckfestFilters.txt" SelfReg="false"/>
+    <ROW File="GTAVConfig.txt" Component_="GTAVConfig.txt" FileName="GTAVCO~1.TXT|GTAVConfig.txt" Attributes="0" SourcePath="..\bin\Debug\GTAV\GTAVConfig.txt" SelfReg="false"/>
+    <ROW File="SMTPGTAPlugin.msi" Component_="GTAVConfig.txt" FileName="SMTPGT~1.MSI|SMTP GTA Plugin.msi" Attributes="0" SourcePath="..\bin\Debug\GTAV\SMTP GTA Plugin.msi" SelfReg="false"/>
+    <ROW File="IL2Config.txt_1" Component_="IL2Config.txt" FileName="IL2CON~1.TXT|IL2Config.txt" Attributes="0" SourcePath="..\bin\Debug\IL2\IL2Config.txt" SelfReg="false"/>
+    <ROW File="MonsterGamesTelemetry.dll" Component_="MonsterGamesTelemetry.dll" FileName="MONSTE~1.DLL|MonsterGamesTelemetry.dll" Attributes="0" SourcePath="..\bin\Debug\MonsterGames\MonsterGamesTelemetry.dll" SelfReg="false"/>
+    <ROW File="MonsterGamesTelemetry.pdb" Component_="MonsterGamesTelemetry.dll" FileName="MONSTE~1.PDB|MonsterGamesTelemetry.pdb" Attributes="0" SourcePath="..\bin\Debug\MonsterGames\MonsterGamesTelemetry.pdb" SelfReg="false"/>
+    <ROW File="defaultPacketFormat.xml" Component_="defaultPacketFormat.xml" FileName="DEFAUL~1.XML|defaultPacketFormat.xml" Attributes="0" SourcePath="..\bin\Debug\PacketFormats\defaultPacketFormat.xml" SelfReg="false"/>
+    <ROW File="SimXperience_Dirt_V1.xml" Component_="defaultPacketFormat.xml" FileName="SIMXPE~1.XML|SimXperience_Dirt_V1.xml" Attributes="0" SourcePath="..\bin\Debug\PacketFormats\SimXperience_Dirt_V1.xml" SelfReg="false"/>
+    <ROW File="RBRConfig.txt_1" Component_="RBRConfig.txt" FileName="RBRCON~1.TXT|RBRConfig.txt" Attributes="0" SourcePath="..\bin\Debug\RBR\RBRConfig.txt" SelfReg="false"/>
+    <ROW File="WRCInjection.zip" Component_="WRCInjection.zip" FileName="WRCINJ~1.ZIP|WRCInjection.zip" Attributes="0" SourcePath="..\bin\Debug\WRC\WRCInjection.zip" SelfReg="false"/>
+    <ROW File="WreckfestConfig.txt_1" Component_="WreckfestConfig.txt" FileName="WRECKF~1.TXT|WreckfestConfig.txt" Attributes="0" SourcePath="..\bin\Debug\Wreckfest\WreckfestConfig.txt" SelfReg="false"/>
+    <ROW File="steam_appid.txt" Component_="steam_appid.txt" FileName="STEAM_~1.TXT|steam_appid.txt" Attributes="0" SourcePath="..\bin\Debug\Squadrons\steam_appid.txt" SelfReg="false"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.BootstrOptComponent">
     <ROW BootstrOptKey="GlobalOptions" DownloadFolder="[AppDataFolder][|Manufacturer]\[|ProductName]\prerequisites" Options="2"/>
@@ -194,17 +214,6 @@
   <COMPONENT cid="caphyon.advinst.msicomp.MsiFeatCompsComponent">
     <ROW Feature_="MainFeature" Component_="APPDIR"/>
     <ROW Feature_="MainFeature" Component_="ProductInformation"/>
-    <ROW Feature_="MainFeature" Component_="BeamNGConfig.txt"/>
-    <ROW Feature_="MainFeature" Component_="BeamNGConfig.txt_1"/>
-    <ROW Feature_="MainFeature" Component_="DCSConfig.txt"/>
-    <ROW Feature_="MainFeature" Component_="Dirt5Config.txt"/>
-    <ROW Feature_="MainFeature" Component_="BeamNGFilters.txt"/>
-    <ROW Feature_="MainFeature" Component_="GTAVConfig.txt"/>
-    <ROW Feature_="MainFeature" Component_="MonsterGamesTelemetry.dll"/>
-    <ROW Feature_="MainFeature" Component_="defaultPacketFormat.xml"/>
-    <ROW Feature_="MainFeature" Component_="RBRConfig.txt"/>
-    <ROW Feature_="MainFeature" Component_="WRCInjection.zip"/>
-    <ROW Feature_="MainFeature" Component_="WreckfestConfig.txt"/>
     <ROW Feature_="MainFeature" Component_="CMCustomUDP.dll"/>
     <ROW Feature_="MainFeature" Component_="GTAVAPI.dll"/>
     <ROW Feature_="MainFeature" Component_="gtp.txt"/>
@@ -212,8 +221,23 @@
     <ROW Feature_="MainFeature" Component_="Newtonsoft.Json.dll"/>
     <ROW Feature_="MainFeature" Component_="SharpMonoInjector.dll"/>
     <ROW Feature_="MainFeature" Component_="SpaceMonkeyTP.exe"/>
+    <ROW Feature_="MainFeature" Component_="VTOLVRAPI.dll"/>
+    <ROW Feature_="MainFeature" Component_="WarplanesWW1API.dll"/>
     <ROW Feature_="MainFeature" Component_="XInputDotNetPure.dll"/>
     <ROW Feature_="MainFeature" Component_="XInputInterface.dll"/>
+    <ROW Feature_="MainFeature" Component_="BeamNGConfig.txt"/>
+    <ROW Feature_="MainFeature" Component_="BeamNGConfig.txt_1"/>
+    <ROW Feature_="MainFeature" Component_="DCSConfig.txt"/>
+    <ROW Feature_="MainFeature" Component_="Dirt5Config.txt"/>
+    <ROW Feature_="MainFeature" Component_="BeamNGFilters.txt"/>
+    <ROW Feature_="MainFeature" Component_="GTAVConfig.txt"/>
+    <ROW Feature_="MainFeature" Component_="IL2Config.txt"/>
+    <ROW Feature_="MainFeature" Component_="MonsterGamesTelemetry.dll"/>
+    <ROW Feature_="MainFeature" Component_="defaultPacketFormat.xml"/>
+    <ROW Feature_="MainFeature" Component_="RBRConfig.txt"/>
+    <ROW Feature_="MainFeature" Component_="WRCInjection.zip"/>
+    <ROW Feature_="MainFeature" Component_="WreckfestConfig.txt"/>
+    <ROW Feature_="MainFeature" Component_="steam_appid.txt"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiIconsComponent">
     <ROW Name="GTPIcon.exe" SourcePath="..\GTPIcon.ico" Index="0"/>

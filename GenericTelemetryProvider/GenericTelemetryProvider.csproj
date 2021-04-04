@@ -116,6 +116,7 @@
     <Compile Include="SquadronsUI.Designer.cs">
       <DependentUpon>SquadronsUI.cs</DependentUpon>
     </Compile>
+    <Compile Include="WRCTelemetryProvider_v2.cs" />
     <Compile Include="WRCUI.cs">
       <SubType>Form</SubType>
     </Compile>
