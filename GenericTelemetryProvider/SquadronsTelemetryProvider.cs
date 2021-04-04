@@ -263,7 +263,7 @@ namespace GenericTelemetryProvider
                     {
                         FindMatrixPointerAddress();
                         droppedSampleCount = 0;
-                        Debug.WriteLine("Finding Pointer");
+                        //Debug.WriteLine("Finding Pointer");
                     }
 
                     Int64 byteReadSize;
@@ -273,7 +273,7 @@ namespace GenericTelemetryProvider
                     {
                         FindMatrixPointerAddress();
                         droppedSampleCount = 0;
-                        Debug.WriteLine("Finding Pointer");
+                        //Debug.WriteLine("Finding Pointer");
                         continue;
                     }
 
