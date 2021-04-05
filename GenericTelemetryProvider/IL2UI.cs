@@ -105,7 +105,8 @@ namespace GenericTelemetryProvider
         {
             provider.StopAllThreads();
             provider.Stop();
-            this.Dispose();
+            if (!IsDisposed)
+                BeginInvoke(new Action<Form>((s) => { s.Dispose(); }), this);
 
             Application.ExitThread();
         }

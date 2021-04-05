@@ -31,6 +31,7 @@ namespace GenericTelemetryProvider
             telemetryPausedTime = 1.5f;
 
             t = new Thread(ReadTelemetry);
+            t.IsBackground = true;
             t.Start();
         }
 

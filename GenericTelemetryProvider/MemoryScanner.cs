@@ -93,6 +93,7 @@ namespace GenericTelemetryProvider
             //a new ParameterizedThreadStart class object with the needed method passed to it
             //to run in the new thread.
             thread = new Thread(new ParameterizedThreadStart(StringScanner));
+            thread.IsBackground = true;
 
             //Start the new thread and set the 32 bit value to look for.
             ScanThreadParams newParameters = new ScanThreadParams();
@@ -122,6 +123,7 @@ namespace GenericTelemetryProvider
             //a new ParameterizedThreadStart class object with the needed method passed to it
             //to run in the new thread.
             thread = new Thread(new ParameterizedThreadStart(ByteArrayScanner));
+            thread.IsBackground = true;
 
             //Start the new thread and set the 32 bit value to look for.
             ScanThreadParams newParameters = new ScanThreadParams();
@@ -151,6 +153,7 @@ namespace GenericTelemetryProvider
             //a new ParameterizedThreadStart class object with the needed method passed to it
             //to run in the new thread.
             thread = new Thread(new ParameterizedThreadStart(FloatPatternScanner));
+            thread.IsBackground = true;
 
             //Start the new thread and set the 32 bit value to look for.
             ScanThreadParams newParameters = new ScanThreadParams();

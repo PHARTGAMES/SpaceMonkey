@@ -161,19 +161,28 @@ namespace GenericTelemetryProvider
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
- 
-            Application.Exit();
+            try
+            {
+                Application.Exit();
+            }
+            catch
+            {
+
+            }
+
         }
 
         private void Dirt5Button_Click(object sender, EventArgs e)
         {
             if (dirt5UI != null && !dirt5UI.IsDisposed)
             {
-                dirt5UI.BeginInvoke(new Action<Form>((s) => { s.Close(); }), dirt5UI);
+                dirt5UI.Dispose();
+                dirt5UI = null;
             }
             dirt5UI = new Dirt5UI();
 
             Thread x = new Thread(new ParameterizedThreadStart((form) => ((Dirt5UI)form).ShowDialog()));
+            x.IsBackground = true;
             x.Start(dirt5UI);
 
         }
@@ -183,7 +192,8 @@ namespace GenericTelemetryProvider
 
             if (filterUI != null && !filterUI.IsDisposed)
             {
-                filterUI.BeginInvoke(new Action<Form>((s) => { s.Close(); }), filterUI);
+                filterUI.Dispose();
+                filterUI = null;
             }
 
             filterUI = new FilterUI();
@@ -192,6 +202,7 @@ namespace GenericTelemetryProvider
             { 
                 ((FilterUI)form).ShowDialog();
             }));
+            x.IsBackground = true;
             x.Start(filterUI);
         }
 
@@ -429,12 +440,14 @@ namespace GenericTelemetryProvider
 
             if (wreckfestUI != null && !wreckfestUI.IsDisposed)
             {
-                wreckfestUI.BeginInvoke(new Action<Form>((s) => { s.Close(); }), wreckfestUI);
+                wreckfestUI.Dispose();
+                wreckfestUI = null;
             }
 
             wreckfestUI = new WreckfestUI();
 
             Thread x = new Thread(new ParameterizedThreadStart((form) => ((WreckfestUI)form).ShowDialog()));
+            x.IsBackground = true;
             x.Start(wreckfestUI);
         }
 
@@ -448,6 +461,7 @@ namespace GenericTelemetryProvider
             beamNGUI = new BeamNGUI();
 
             Thread x = new Thread(new ParameterizedThreadStart((form) => ((BeamNGUI)form).ShowDialog()));
+            x.IsBackground = true;
             x.Start(beamNGUI);
         }
 
@@ -455,12 +469,14 @@ namespace GenericTelemetryProvider
         {
             if (gtavUI != null && !gtavUI.IsDisposed)
             {
-                gtavUI.BeginInvoke(new Action<Form>((s) => { s.Close(); }), gtavUI);
+                gtavUI.Dispose();
+                gtavUI = null;
             }
 
             gtavUI = new GTAVUI();
 
             Thread x = new Thread(new ParameterizedThreadStart((form) => ((GTAVUI)form).ShowDialog()));
+            x.IsBackground = true;
             x.Start(gtavUI);
         }
 
@@ -468,12 +484,14 @@ namespace GenericTelemetryProvider
         {
             if (dcsUI != null && !dcsUI.IsDisposed)
             {
-                dcsUI.BeginInvoke(new Action<Form>((s) => { s.Close(); }), dcsUI);
+                dcsUI.Dispose();
+                dcsUI = null;
             }
 
             dcsUI = new DCSUI();
 
             Thread x = new Thread(new ParameterizedThreadStart((form) => ((DCSUI)form).ShowDialog()));
+            x.IsBackground = true;
             x.Start(dcsUI);
 
         }
@@ -482,13 +500,15 @@ namespace GenericTelemetryProvider
         {
             if (mgUI != null && !mgUI.IsDisposed)
             {
-                mgUI.BeginInvoke(new Action<Form>((s) => { s.Close(); }), mgUI);
+                mgUI.Dispose();
+                mgUI = null;
             }
               
 
             mgUI = new MonsterGamesUI();
 
             Thread x = new Thread(new ParameterizedThreadStart((form) => ((MonsterGamesUI)form).ShowDialog()));
+            x.IsBackground = true;
             x.Start(mgUI);
         }
 
@@ -496,12 +516,14 @@ namespace GenericTelemetryProvider
         {
             if (wrcUI != null && !wrcUI.IsDisposed)
             {
-                wrcUI.BeginInvoke(new Action<Form>((s) => { s.Close(); }), wrcUI);
+                wrcUI.Dispose();
+                wrcUI = null;
             }
 
             wrcUI = new WRCUI();
 
             Thread x = new Thread(new ParameterizedThreadStart((form) => ((WRCUI)form).ShowDialog()));
+            x.IsBackground = true;
             x.Start(wrcUI);
         }
 
@@ -509,12 +531,14 @@ namespace GenericTelemetryProvider
         {
             if (rbrUI != null && !rbrUI.IsDisposed)
             {
-                rbrUI.BeginInvoke(new Action<Form>((s) => { s.Close(); }), wrcUI);
+                rbrUI.Dispose();
+                rbrUI = null;
             }
 
             rbrUI = new RBRUI();
 
             Thread x = new Thread(new ParameterizedThreadStart((form) => ((RBRUI)form).ShowDialog()));
+            x.IsBackground = true;
             x.Start(rbrUI);
         }
 
@@ -522,12 +546,14 @@ namespace GenericTelemetryProvider
         {
             if (squadronsUI != null && !squadronsUI.IsDisposed)
             {
-                squadronsUI.BeginInvoke(new Action<Form>((s) => { s.Close(); }), squadronsUI);
+                squadronsUI.Dispose();
+                squadronsUI = null;
             }
 
             squadronsUI = new SquadronsUI();
 
             Thread x = new Thread(new ParameterizedThreadStart((form) => ((SquadronsUI)form).ShowDialog()));
+            x.IsBackground = true;
             x.Start(squadronsUI);
         }
 
@@ -535,12 +561,14 @@ namespace GenericTelemetryProvider
         {
             if (il2UI != null && !il2UI.IsDisposed)
             {
-                il2UI.BeginInvoke(new Action<Form>((s) => { s.Close(); }), il2UI);
+                il2UI.Dispose();
+                il2UI = null;
             }
 
             il2UI = new IL2UI();
 
             Thread x = new Thread(new ParameterizedThreadStart((form) => ((IL2UI)form).ShowDialog()));
+            x.IsBackground = true;
             x.Start(il2UI);
         }
 
@@ -548,12 +576,14 @@ namespace GenericTelemetryProvider
         {
             if (warplanesWW1UI != null && !warplanesWW1UI.IsDisposed)
             {
-                warplanesWW1UI.BeginInvoke(new Action<Form>((s) => { s.Close(); }), warplanesWW1UI);
+                warplanesWW1UI.Dispose();
+                warplanesWW1UI = null;
             }
 
             warplanesWW1UI = new WarplanesWW1UI();
 
             Thread x = new Thread(new ParameterizedThreadStart((form) => ((WarplanesWW1UI)form).ShowDialog()));
+            x.IsBackground = true;
             x.Start(warplanesWW1UI);
         }
 
@@ -561,12 +591,14 @@ namespace GenericTelemetryProvider
         {
             if (vtolVRUI != null && !warplanesWW1UI.IsDisposed)
             {
-                vtolVRUI.BeginInvoke(new Action<Form>((s) => { s.Close(); }), vtolVRUI);
+                vtolVRUI.Dispose();
+                vtolVRUI = null;
             }
 
             vtolVRUI = new VTOLVRUI();
 
             Thread x = new Thread(new ParameterizedThreadStart((form) => ((VTOLVRUI)form).ShowDialog()));
+            x.IsBackground = true;
             x.Start(vtolVRUI);
         }
     }

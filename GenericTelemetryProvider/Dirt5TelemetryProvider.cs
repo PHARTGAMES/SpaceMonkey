@@ -177,6 +177,7 @@ namespace GenericTelemetryProvider
             ui.StatusTextChanged("Success");
 
             t = new Thread(ScanComplete);
+            t.IsBackground = true;
             t.Start();
         }
 

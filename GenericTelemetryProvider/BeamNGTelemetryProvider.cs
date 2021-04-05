@@ -25,6 +25,7 @@ namespace GenericTelemetryProvider
             base.Run();
 
             t = new Thread(ReadTelemetry);
+            t.IsBackground = true;
             t.Start();
         }
 

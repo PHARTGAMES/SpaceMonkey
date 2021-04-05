@@ -74,6 +74,7 @@
       <DependentUpon>KalmanVelocityFilterControl.cs</DependentUpon>
     </Compile>
     <Compile Include="KalmanVelocityNoiseFilter.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="VTOLVRTelemetryProvider.cs" />
     <Compile Include="WarPlanesWW1TelemetryProvider.cs" />
     <Compile Include="VTOLVRUI.cs">

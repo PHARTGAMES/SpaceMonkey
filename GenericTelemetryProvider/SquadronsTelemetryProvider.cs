@@ -92,6 +92,7 @@ namespace GenericTelemetryProvider
             ui.StatusTextChanged("If telemetry doesn't update press Initialize!");
 
             t = new Thread(ReadTelemetry);
+            t.IsBackground = true;
             t.Start();
 
         }
@@ -130,6 +131,7 @@ namespace GenericTelemetryProvider
 
 
             t = new Thread(ReadTelemetry);
+            t.IsBackground = true;
             t.Start();
         }
 

@@ -17,6 +17,7 @@ namespace GenericTelemetryProvider
             try
             {
                 Thread t = new Thread(() => GetFile(OnComplete));
+                t.IsBackground = true;
                 t.TrySetApartmentState(ApartmentState.STA);
                 t.Start();
                 t.Join();

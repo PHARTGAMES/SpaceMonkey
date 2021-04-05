@@ -30,6 +30,7 @@ namespace GenericTelemetryProvider
             telemetryData = new DCSData();
 
             t = new Thread(ReadTelemetry);
+            t.IsBackground = true;
             t.Start();
         }
 

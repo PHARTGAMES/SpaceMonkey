@@ -157,6 +157,7 @@ namespace GenericTelemetryProvider
             {
                 ((FilterPicker)form).ShowDialog();
             }));
+            x.IsBackground = true;
             x.Start(picker);
 
         }
@@ -277,7 +278,8 @@ namespace GenericTelemetryProvider
 
         private void OnFormClosing(object sender, FormClosingEventArgs e)
         {
-            this.Dispose();
+            if (!IsDisposed)
+                BeginInvoke(new Action<Form>((s) => { s.Dispose(); }), this);
             Application.ExitThread();
         }
     }

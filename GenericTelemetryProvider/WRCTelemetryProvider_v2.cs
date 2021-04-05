@@ -59,6 +59,7 @@ namespace GenericTelemetryProvider
             ui.StatusTextChanged("If telemetry doesn't update press Initialize!");
 
             t = new Thread(ReadTelemetry);
+            t.IsBackground = true;
             t.Start();
             
             /*
@@ -167,6 +168,7 @@ namespace GenericTelemetryProvider
 
             //fixme: remove dis and look for vehicle, meby
             t = new Thread(ReadTelemetry);
+            t.IsBackground = true;
             t.Start();
 
         }
@@ -212,6 +214,7 @@ namespace GenericTelemetryProvider
             ui.StatusTextChanged("Success");
 
             t = new Thread(ReadTelemetry);
+            t.IsBackground = true;
             t.Start();
         }
         */
