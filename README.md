@@ -11,6 +11,10 @@ SpaceMonkey supports XINPUT, currently mapped to standard gamepad inputs for ste
 
 SpaceMonkey has been tested with SimCommander 4 (Accuforce v2) and SimFeedback (motion) and should work with any software that supports Dirt 4 Custom UDP.
 
+```diff
+- Please make sure you run SpaceMonkeyTP.exe as administrator or use a user account with administrator privileges.
+```
+
 ### Supported Games
 
 - Dirt 5
