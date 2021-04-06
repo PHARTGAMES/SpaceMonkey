@@ -9,7 +9,7 @@ SpaceMonkey contains telemetry visualisation and filtering functionality.
 
 SpaceMonkey supports XINPUT, currently mapped to standard gamepad inputs for steering (left stick), accelerator(right trigger), and brake(left trigger). Clutch and axis assignments coming in a future version. Use the XBOX 360 controller emulator to map your direct input devices to an XINPUT gamepad. https://www.x360ce.com/
 
-SpaceMonkey has been tested with SimCommander 4 (Accuforce v2) and SimFeedback (motion) and should work with any software that supports Dirt 4 Custom UDP.
+SpaceMonkey has been tested with Sim Racing Studio (motion, wind, shakers and led), SimCommander 4 (Accuforce v2) and SimFeedback (motion) and should work with any software that supports Dirt 4 Custom UDP.
 
 ```diff
 - Please make sure you run SpaceMonkeyTP.exe as administrator or use a user account with administrator privileges.
@@ -277,7 +277,13 @@ Some people may find better results with "decimation = 2".
 
 ---
 
+# Sim Racing Studio
 
+More info here
+
+https://www.simracingstudio.com/post/do-you-play-wreckfest-dirt-5-wrc-nascar-4---5-star-wars-squadron-vtol-vr-www1-etc
+
+---
 
 # SimCommander 4
 
