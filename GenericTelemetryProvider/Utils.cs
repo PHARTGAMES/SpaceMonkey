@@ -48,6 +48,17 @@ namespace GenericTelemetryProvider
                 comboBox.Items.Add(entry);
         }
 
+
+        public static void SetComboBoxSelectedIndexThreadSafe(ComboBox comboBox, int index)
+        {
+            if (comboBox.InvokeRequired)
+            {
+                comboBox.BeginInvoke(new Action<int>((s) => { comboBox.SelectedIndex = s; }), index);
+            }
+            else
+                comboBox.SelectedIndex = index;
+        }
+
         public static void SetRichTextBoxThreadSafe(RichTextBox textBox, string text)
         {
             if (textBox.InvokeRequired)

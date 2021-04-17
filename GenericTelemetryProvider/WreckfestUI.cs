@@ -64,7 +64,7 @@ namespace GenericTelemetryProvider
                 {
                     if (((string)vehicleSelector.Items[i]).CompareTo(config.selectedVehicle) == 0)
                     {
-                        vehicleSelector.SelectedIndex = i;
+                        Utils.SetComboBoxSelectedIndexThreadSafe(vehicleSelector, i);
                         break;
                     }
                 }
