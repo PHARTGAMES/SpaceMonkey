@@ -55,7 +55,7 @@ namespace GenericTelemetryProvider
         protected float telemetryPausedTimer = 0.0f;
         protected float telemetryPausedTime = 3.0f;
         public Form gameUI;
-        public double updateDelay = 10;
+        public double updateDelay = 10;//ms?
         protected int droppedSampleCount = 0;
 
         bool isStopped = false;
@@ -286,9 +286,10 @@ namespace GenericTelemetryProvider
             
              */
 
+            //If the remote game code hasn't updated, nwait for the next tick
             if (transform == lastTransform)
             {
-                return false;
+                return false;//vehicle hasn't moved at all
             }
 
             Vector3 currRawPos = new Vector3(transform.M41, transform.M42, transform.M43);
@@ -296,6 +297,12 @@ namespace GenericTelemetryProvider
             rawData.position_x = currRawPos.X;
             rawData.position_y = currRawPos.Y;
             rawData.position_z = currRawPos.Z;
+
+            //Position MUST have changed (transform == last will proceed if the position is the same, but the orientation has changed)
+            if (lastRawPos == currRawPos)
+            {
+                return false;//vehicle hasn't moved(but MAY have updated it's orientiation - this is the closest we'll get to an atomic read)
+            }
 
             lastRawPos = currRawPos;
 

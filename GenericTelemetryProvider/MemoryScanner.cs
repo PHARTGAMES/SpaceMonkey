@@ -24,7 +24,7 @@ namespace GenericTelemetryProvider
         ProcessMemoryReader reader;
 
         //Start and End addresses to be scaned.
-        IntPtr baseAddress;
+        IntPtr startAddress;//Renamed to avoid confusion with the base/start address of a subscan
         IntPtr lastAddress;
 
         //New thread object to run the scan in
@@ -64,7 +64,7 @@ namespace GenericTelemetryProvider
             reader.ReadProcess = process;
 
             //Set the Start and End addresses of the scan to what is wanted.
-            baseAddress = (IntPtr)StartAddress;
+            startAddress = (IntPtr)StartAddress;
             lastAddress = (IntPtr)EndAddress;//The scan starts from baseAddress,
             //and progresses up to EndAddress.
         }
@@ -220,8 +220,8 @@ namespace GenericTelemetryProvider
             //ScanProgressed event and pass the percentage of scan, during the scan progress.
             ScanProgressChangedEventArgs scanProgressEventArgs;
 
-            Int64 MaxAddress = (Int64)lastAddress;
-            Int64 address = 0;
+            Int64 MaxAddress = (Int64)lastAddress;//last as in 'final' not as in 'previous'
+            Int64 address = (Int64)startAddress;
             Int64 totalScanned = 0;
             do
             {
@@ -238,10 +238,12 @@ namespace GenericTelemetryProvider
 
                 // Console.WriteLine("{0}-{1} : {2} bytes {3}", m.BaseAddress.ToString("X"), ((uint)m.BaseAddress + (uint)m.RegionSize - 1).ToString("X"), m.RegionSize, m.State == (int)ProcessMemoryReader.ProcessMemoryReaderApi.InfoState.MEM_COMMIT ? "COMMIT" : "FREE");
 
-                baseAddress = (IntPtr)(Int64)address;// m.BaseAddress;
+                //Start and end of this sub-scan
+                startAddress = (IntPtr)(Int64)address;// m.BaseAddress;
                 lastAddress = (IntPtr)((Int64)address + (Int64)m.RegionSize);
 
-                address = (Int64)m.BaseAddress + (Int64)m.RegionSize;
+                //m.BaseAddress doesn't appear to be set, and baseAddress is a member of this class
+                address = (Int64)m.BaseAddress + (Int64)m.RegionSize;//A better name is 'StartAddress'
                 /*
                 if (!(m.State == (int)ProcessMemoryReader.ProcessMemoryReaderApi.InfoState.MEM_COMMIT &&
                     (m.Type == (int)ProcessMemoryReader.ProcessMemoryReaderApi.InfoType.MEM_MAPPED || m.Type == (int)ProcessMemoryReader.ProcessMemoryReaderApi.InfoType.MEM_PRIVATE)))
@@ -255,7 +257,7 @@ namespace GenericTelemetryProvider
                 totalScanned += (Int64)m.RegionSize;
 
                 //Calculate the size of memory to scan.
-                Int64 memorySize = (Int64)((Int64)lastAddress - (Int64)baseAddress);
+                Int64 memorySize = (Int64)((Int64)lastAddress - (Int64)startAddress);
                 bool found = false;
 
                 //If more that one block of memory is requered to be read,
@@ -271,7 +273,7 @@ namespace GenericTelemetryProvider
                         loopsCount++;
 
                     //Set the currentAddress to first address.
-                    Int64 currentAddress = (Int64)baseAddress;
+                    Int64 currentAddress = (Int64)startAddress;
 
                     //This will be used to check if any bytes have been read from the memory.
                     Int64 bytesReadSize;
@@ -291,10 +293,10 @@ namespace GenericTelemetryProvider
                             break;
 
                         //Calculate and set the progress percentage.
-                        progress = (int)(((double)(currentAddress - (Int64)baseAddress) / (double)memorySize) * 100d);
+                        progress = (int)(((double)(currentAddress - (Int64)startAddress) / (double)memorySize) * 100d);
 
                         //Prepare and set the ScanProgressed event and raise the event.
-                        scanProgressEventArgs = new ScanProgressChangedEventArgs(progress);
+                        scanProgressEventArgs = new ScanProgressChangedEventArgs(progress, currentAddress);
                         ScanProgressChanged(this, scanProgressEventArgs);
 
                         //Read the bytes from the memory.
@@ -393,7 +395,7 @@ namespace GenericTelemetryProvider
                     Int64 blockSize = memorySize % ReadStackSize;
 
                     //Set the currentAddress to first address.
-                    Int64 currentAddress = (Int64)baseAddress;
+                    Int64 currentAddress = (Int64)startAddress;
 
                     //Holds the count of bytes read from the memory.
                     Int64 bytesReadSize;
@@ -449,7 +451,7 @@ namespace GenericTelemetryProvider
             reader.CloseHandle();
 
             //Prepare the ScanProgressed and set the progress percentage to 100% and raise the event.
-            scanProgressEventArgs = new ScanProgressChangedEventArgs(100);
+            scanProgressEventArgs = new ScanProgressChangedEventArgs(100, 0);
             ScanProgressChanged(this, scanProgressEventArgs);
 
             //Prepare and raise the ScanCompleted event.
@@ -537,7 +539,7 @@ namespace GenericTelemetryProvider
 
                 // Console.WriteLine("{0}-{1} : {2} bytes {3}", m.BaseAddress.ToString("X"), ((uint)m.BaseAddress + (uint)m.RegionSize - 1).ToString("X"), m.RegionSize, m.State == (int)ProcessMemoryReader.ProcessMemoryReaderApi.InfoState.MEM_COMMIT ? "COMMIT" : "FREE");
 
-                baseAddress = (IntPtr)(Int64)address;// m.BaseAddress;
+                startAddress = (IntPtr)(Int64)address;// m.BaseAddress;
                 lastAddress = (IntPtr)((Int64)address + (Int64)m.RegionSize);
 
                 address = (Int64)m.BaseAddress + (Int64)m.RegionSize;
@@ -554,7 +556,7 @@ namespace GenericTelemetryProvider
                 totalScanned += (Int64)m.RegionSize;
 
                 //Calculate the size of memory to scan.
-                Int64 memorySize = (Int64)((Int64)lastAddress - (Int64)baseAddress);
+                Int64 memorySize = (Int64)((Int64)lastAddress - (Int64)startAddress);
                 bool found = false;
 
                 //If more that one block of memory is required to be read,
@@ -571,7 +573,7 @@ namespace GenericTelemetryProvider
                         loopsCount++;
 
                     //Set the currentAddress to first address.
-                    Int64 currentAddress = (Int64)baseAddress;
+                    Int64 currentAddress = (Int64)startAddress;
 
                     //This will be used to check if any bytes have been read from the memory.
                     Int64 bytesReadSize;
@@ -592,10 +594,10 @@ namespace GenericTelemetryProvider
                         //    break;
 
                         //Calculte and set the progress percentage.
-                        progress = (int)(((double)(currentAddress - (Int64)baseAddress) / (double)memorySize) * 100d);
+                        progress = (int)(((double)(currentAddress - (Int64)startAddress) / (double)memorySize) * 100d);
 
                         //Prepare and set the ScanProgressed event and raise the event.
-                        scanProgressEventArgs = new ScanProgressChangedEventArgs(progress);
+                        scanProgressEventArgs = new ScanProgressChangedEventArgs(progress, currentAddress);
                         ScanProgressChanged(this, scanProgressEventArgs);
 
                         
@@ -778,7 +780,7 @@ namespace GenericTelemetryProvider
                     Int64 blockSize = memorySize % ReadStackSize;
 
                     //Set the currentAddress to first address.
-                    Int64 currentAddress = (Int64)baseAddress;
+                    Int64 currentAddress = (Int64)startAddress;
 
                     //Holds the count of bytes read from the memory.
                     Int64 bytesReadSize;
@@ -867,7 +869,7 @@ namespace GenericTelemetryProvider
             reader.CloseHandle();
 
             //Prepare the ScanProgressed and set the progress percentage to 100% and raise the event.
-            scanProgressEventArgs = new ScanProgressChangedEventArgs(100);
+            scanProgressEventArgs = new ScanProgressChangedEventArgs(100,0);
             ScanProgressChanged(this, scanProgressEventArgs);
 
             //Prepare and raise the ScanCompleted event.
@@ -884,11 +886,13 @@ namespace GenericTelemetryProvider
     #region EventArgs classes
     public class ScanProgressChangedEventArgs : EventArgs
     {
-        public ScanProgressChangedEventArgs(int Progress)
+        public ScanProgressChangedEventArgs(int Progress, long MemoryAddress)
         {
             progress = Progress;
+            memoryAddress = MemoryAddress;
         }
         private int progress;
+        private long memoryAddress;
         public int Progress
         {
             set
@@ -900,6 +904,20 @@ namespace GenericTelemetryProvider
                 return progress;
             }
         }
+
+        public long MemoryAddress
+        {
+            set
+            {
+                memoryAddress = value;
+            }
+            get
+            {
+                return memoryAddress;
+            }
+        }
+
+
     }
 
     public class ScanCompletedEventArgs : EventArgs

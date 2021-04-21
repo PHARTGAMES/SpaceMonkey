@@ -35,6 +35,18 @@
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.matrixBox = new System.Windows.Forms.RichTextBox();
             this.vehicleLabel = new System.Windows.Forms.Label();
+            this.InvertYawToggle = new System.Windows.Forms.CheckBox();
+            this.ZeroiseTiltToggle = new System.Windows.Forms.CheckBox();
+            this.VelocityScale = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.StartAddress = new System.Windows.Forms.TextBox();
+            this.GForceScale = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.UpdateRate = new System.Windows.Forms.TextBox();
+            this.GForceClip = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // vehicleSelector
@@ -101,9 +113,9 @@
             // 
             // matrixBox
             // 
-            this.matrixBox.Location = new System.Drawing.Point(12, 120);
+            this.matrixBox.Location = new System.Drawing.Point(12, 249);
             this.matrixBox.Name = "matrixBox";
-            this.matrixBox.Size = new System.Drawing.Size(459, 1005);
+            this.matrixBox.Size = new System.Drawing.Size(459, 1050);
             this.matrixBox.TabIndex = 8;
             this.matrixBox.Text = "";
             this.matrixBox.TextChanged += new System.EventHandler(this.matrixBox_TextChanged);
@@ -117,11 +129,137 @@
             this.vehicleLabel.TabIndex = 12;
             this.vehicleLabel.Text = "Vehicle";
             // 
+            // InvertYawToggle
+            // 
+            this.InvertYawToggle.AutoSize = true;
+            this.InvertYawToggle.Checked = true;
+            this.InvertYawToggle.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.InvertYawToggle.Location = new System.Drawing.Point(13, 56);
+            this.InvertYawToggle.Name = "InvertYawToggle";
+            this.InvertYawToggle.Size = new System.Drawing.Size(77, 17);
+            this.InvertYawToggle.TabIndex = 13;
+            this.InvertYawToggle.Text = "Invert Yaw";
+            this.InvertYawToggle.UseVisualStyleBackColor = true;
+            this.InvertYawToggle.CheckedChanged += new System.EventHandler(this.InvertYawToggle_CheckedChanged);
+            // 
+            // ZeroiseTiltToggle
+            // 
+            this.ZeroiseTiltToggle.AutoSize = true;
+            this.ZeroiseTiltToggle.Location = new System.Drawing.Point(13, 82);
+            this.ZeroiseTiltToggle.Name = "ZeroiseTiltToggle";
+            this.ZeroiseTiltToggle.Size = new System.Drawing.Size(78, 17);
+            this.ZeroiseTiltToggle.TabIndex = 14;
+            this.ZeroiseTiltToggle.Text = "Zeroise Tilt";
+            this.ZeroiseTiltToggle.UseVisualStyleBackColor = true;
+            this.ZeroiseTiltToggle.CheckedChanged += new System.EventHandler(this.ZeroiseTiltToggle_CheckedChanged);
+            // 
+            // VelocityScale
+            // 
+            this.VelocityScale.Location = new System.Drawing.Point(96, 53);
+            this.VelocityScale.Name = "VelocityScale";
+            this.VelocityScale.Size = new System.Drawing.Size(34, 20);
+            this.VelocityScale.TabIndex = 15;
+            this.VelocityScale.Text = "1.0";
+            this.VelocityScale.TextChanged += new System.EventHandler(this.VelocityScale_TextChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(136, 57);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(74, 13);
+            this.label1.TabIndex = 16;
+            this.label1.Text = "Velocity Scale";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(136, 108);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(70, 13);
+            this.label2.TabIndex = 17;
+            this.label2.Text = "Start Address";
+            // 
+            // StartAddress
+            // 
+            this.StartAddress.Location = new System.Drawing.Point(51, 105);
+            this.StartAddress.Name = "StartAddress";
+            this.StartAddress.Size = new System.Drawing.Size(78, 20);
+            this.StartAddress.TabIndex = 18;
+            this.StartAddress.Text = "1500000000";
+            this.StartAddress.TextChanged += new System.EventHandler(this.StartAddress_TextChanged);
+            // 
+            // GForceScale
+            // 
+            this.GForceScale.Location = new System.Drawing.Point(96, 79);
+            this.GForceScale.Name = "GForceScale";
+            this.GForceScale.Size = new System.Drawing.Size(34, 20);
+            this.GForceScale.TabIndex = 19;
+            this.GForceScale.Text = "100";
+            this.GForceScale.TextChanged += new System.EventHandler(this.GForceScale_TextChanged);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(136, 82);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(75, 13);
+            this.label3.TabIndex = 20;
+            this.label3.Text = "G-Force Scale";
+            // 
+            // UpdateRate
+            // 
+            this.UpdateRate.Location = new System.Drawing.Point(12, 157);
+            this.UpdateRate.Name = "UpdateRate";
+            this.UpdateRate.Size = new System.Drawing.Size(34, 20);
+            this.UpdateRate.TabIndex = 21;
+            this.UpdateRate.Text = "1000";
+            this.UpdateRate.TextChanged += new System.EventHandler(this.UpdateRate_TextChanged);
+            // 
+            // GForceClip
+            // 
+            this.GForceClip.Location = new System.Drawing.Point(12, 131);
+            this.GForceClip.Name = "GForceClip";
+            this.GForceClip.Size = new System.Drawing.Size(34, 20);
+            this.GForceClip.TabIndex = 22;
+            this.GForceClip.Text = "1500";
+            this.GForceClip.TextChanged += new System.EventHandler(this.GForceClip_TextChanged);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(60, 134);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(69, 13);
+            this.label4.TabIndex = 23;
+            this.label4.Text = "G Force Strip";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(61, 160);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(62, 13);
+            this.label5.TabIndex = 24;
+            this.label5.Text = "Update (hz)";
+            // 
             // WreckfestUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(483, 1137);
+            this.ClientSize = new System.Drawing.Size(483, 1311);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.GForceClip);
+            this.Controls.Add(this.UpdateRate);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.GForceScale);
+            this.Controls.Add(this.StartAddress);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.VelocityScale);
+            this.Controls.Add(this.ZeroiseTiltToggle);
+            this.Controls.Add(this.InvertYawToggle);
             this.Controls.Add(this.vehicleLabel);
             this.Controls.Add(this.matrixBox);
             this.Controls.Add(this.progressBar1);
@@ -145,5 +283,17 @@
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.RichTextBox matrixBox;
         private System.Windows.Forms.Label vehicleLabel;
+        private System.Windows.Forms.CheckBox InvertYawToggle;
+        private System.Windows.Forms.CheckBox ZeroiseTiltToggle;
+        private System.Windows.Forms.TextBox VelocityScale;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox StartAddress;
+        private System.Windows.Forms.TextBox GForceScale;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox UpdateRate;
+        private System.Windows.Forms.TextBox GForceClip;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
     }
 }

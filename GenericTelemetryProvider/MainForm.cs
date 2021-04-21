@@ -446,7 +446,11 @@ namespace GenericTelemetryProvider
 
             wreckfestUI = new WreckfestUI();
 
-            Thread x = new Thread(new ParameterizedThreadStart((form) => ((WreckfestUI)form).ShowDialog()));
+            wreckfestUI.ShowDialog();
+
+            Thread x = new Thread(new ParameterizedThreadStart((form) => ((WreckfestUI)form).ThreadStart()));
+
+            //Thread x = new Thread(new ParameterizedThreadStart((form) => ((WreckfestUI)form).ShowDialog()));
             x.IsBackground = true;
             x.Start(wreckfestUI);
         }
