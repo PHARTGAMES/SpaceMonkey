@@ -12,9 +12,27 @@ using NoiseFilters;
 using System.Runtime.InteropServices;
 using Newtonsoft.Json;
 using CMCustomUDP;
+using System.Security;//for WinAPI
 
-namespace GenericTelemetryProvider
+namespace GenericTelemetryProvider 
 {
+    //Well this is a pain in the ass - if it all works, put it somewhere neatly
+    public static class WinApi
+    {
+        /// <summary>TimeBeginPeriod(). See the Windows API documentation for details.</summary>
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Interoperability", "CA1401:PInvokesShouldNotBeVisible"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2118:ReviewSuppressUnmanagedCodeSecurityUsage"), SuppressUnmanagedCodeSecurity]
+        [DllImport("winmm.dll", EntryPoint = "timeBeginPeriod", SetLastError = true)]
+
+        public static extern uint TimeBeginPeriod(uint uMilliseconds);
+
+        /// <summary>TimeEndPeriod(). See the Windows API documentation for details.</summary>
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Interoperability", "CA1401:PInvokesShouldNotBeVisible"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2118:ReviewSuppressUnmanagedCodeSecurityUsage"), SuppressUnmanagedCodeSecurity]
+        [DllImport("winmm.dll", EntryPoint = "timeEndPeriod", SetLastError = true)]
+
+        public static extern uint TimeEndPeriod(uint uMilliseconds);
+    }
     class WreckfestTelemetryProvider : GenericProviderBase
     {
         Int64 memoryAddress;
@@ -123,8 +141,10 @@ namespace GenericTelemetryProvider
                     {
                         
                         if (lrSleepMS < 1f) lrSleepMS = 1f;//do not allow strangling of the CPU
-
+                        
+                        WinApi.TimeBeginPeriod(1);
                         Thread.Sleep((int)lrSleepMS);
+                        WinApi.TimeEndPeriod(1);
                     }
 
                 
