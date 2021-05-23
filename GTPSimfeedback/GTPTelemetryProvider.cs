@@ -36,6 +36,7 @@ using System.IO;
 using System.IO.MemoryMappedFiles;
 using CMCustomUDP;
 using Newtonsoft.Json;
+using System.Globalization;
 
 namespace GTPSimfeedback
 {
@@ -63,6 +64,7 @@ namespace GTPSimfeedback
         /// </summary>
         public GTPTelemetryProvider() : base()
         {
+            CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
             Author = "PEZZALUCIFER";
             Version = "v1.0";
             BannerImage = @"img\SMBanner.png"; // Image shown on top of the profiles tab

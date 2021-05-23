@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
 using System.Xml;
+using System.Globalization;
 
 namespace CMCustomUDP
 {
@@ -223,6 +224,9 @@ namespace CMCustomUDP
 
         public void Init()
         {
+
+            CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+
             XmlDocument doc = new XmlDocument();
             doc.Load(formatFilename);
 

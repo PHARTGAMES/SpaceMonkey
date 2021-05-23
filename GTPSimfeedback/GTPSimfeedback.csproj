@@ -64,7 +64,7 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\SimFeedback-AC-Servo\Src\SimFeedbackTelemetryProvider\SimFeedbackTelemetryProvider.csproj">
+    <ProjectReference Include="..\..\..\Simfeedback-ACServo\trunk\Src\SimFeedbackTelemetryProvider\SimFeedbackTelemetryProvider.csproj">
       <Project>{a43fc598-5e10-4730-83f8-ca0f6164c988}</Project>
       <Name>SimFeedbackTelemetryProvider</Name>
     </ProjectReference>
