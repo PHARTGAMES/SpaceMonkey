@@ -23,6 +23,7 @@ namespace GenericTelemetryProvider
 
         public Dirt5UI dirt5UI;
         WreckfestUI wreckfestUI;
+        WreckfestUIExperiments wreckfestUIExperiments;
         BeamNGUI beamNGUI;
         GTAVUI gtavUI;
         DCSUI dcsUI;
@@ -455,6 +456,25 @@ namespace GenericTelemetryProvider
             x.Start(wreckfestUI);
         }
 
+        private void wreckfestExperimentsButton_Click(object sender, EventArgs e)
+        {
+
+            if (wreckfestUIExperiments != null && !wreckfestUIExperiments.IsDisposed)
+            {
+                wreckfestUIExperiments.Dispose();
+                wreckfestUIExperiments = null;
+            }
+
+            wreckfestUIExperiments = new WreckfestUIExperiments();
+
+            wreckfestUIExperiments.ShowDialog();
+
+            Thread x = new Thread(new ParameterizedThreadStart((form) => ((WreckfestUIExperiments)form).ThreadStart()));
+
+            x.IsBackground = true;
+            x.Start(wreckfestUI);
+        }
+
         private void beamNGButton_Click(object sender, EventArgs e)
         {
             if (beamNGUI != null && !beamNGUI.IsDisposed)
@@ -605,5 +625,7 @@ namespace GenericTelemetryProvider
             x.IsBackground = true;
             x.Start(vtolVRUI);
         }
+
+
     }
 }

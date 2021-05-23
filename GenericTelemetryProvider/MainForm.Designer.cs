@@ -66,6 +66,7 @@
             this.il2Btn = new System.Windows.Forms.Button();
             this.warplanesWW1Btn = new System.Windows.Forms.Button();
             this.vtolvrBtn = new System.Windows.Forms.Button();
+            this.wreckfestExperimentsButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // Dirt5Button
@@ -462,11 +463,23 @@
             this.vtolvrBtn.UseVisualStyleBackColor = true;
             this.vtolvrBtn.Click += new System.EventHandler(this.vtolvrBtn_Click);
             // 
+            // wreckfestExperimentsButton
+            // 
+            this.wreckfestExperimentsButton.Location = new System.Drawing.Point(20, 642);
+            this.wreckfestExperimentsButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.wreckfestExperimentsButton.Name = "wreckfestExperimentsButton";
+            this.wreckfestExperimentsButton.Size = new System.Drawing.Size(222, 70);
+            this.wreckfestExperimentsButton.TabIndex = 39;
+            this.wreckfestExperimentsButton.Text = "Wreckfest\r\nExperimental";
+            this.wreckfestExperimentsButton.UseVisualStyleBackColor = true;
+            this.wreckfestExperimentsButton.Click += new System.EventHandler(this.wreckfestExperimentsButton_Click);
+            // 
             // GenericTelemetryProvider
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(815, 726);
+            this.Controls.Add(this.wreckfestExperimentsButton);
             this.Controls.Add(this.vtolvrBtn);
             this.Controls.Add(this.warplanesWW1Btn);
             this.Controls.Add(this.il2Btn);
@@ -554,6 +567,7 @@
         private System.Windows.Forms.Button il2Btn;
         private System.Windows.Forms.Button warplanesWW1Btn;
         private System.Windows.Forms.Button vtolvrBtn;
+        private System.Windows.Forms.Button wreckfestExperimentsButton;
     }
 }
 
