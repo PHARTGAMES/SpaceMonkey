@@ -49,6 +49,8 @@ namespace GenericTelemetryProvider
         {
             Instance = this;
 
+            Utils.TimeBeginPeriod(1);
+
             this.Text = "SpaceMonkey " + versionString;
             CMCustomUDPData.formatFilename = "PacketFormats\\defaultFormat.xml";
             if(Directory.Exists("Configs"))
@@ -161,6 +163,8 @@ namespace GenericTelemetryProvider
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            Utils.TimeEndPeriod(1);
+
             try
             {
                 Application.Exit();
@@ -446,11 +450,7 @@ namespace GenericTelemetryProvider
 
             wreckfestUI = new WreckfestUI();
 
-            wreckfestUI.ShowDialog();
-
-            Thread x = new Thread(new ParameterizedThreadStart((form) => ((WreckfestUI)form).ThreadStart()));
-
-            //Thread x = new Thread(new ParameterizedThreadStart((form) => ((WreckfestUI)form).ShowDialog()));
+            Thread x = new Thread(new ParameterizedThreadStart((form) => ((WreckfestUI)form).ShowDialog()));
             x.IsBackground = true;
             x.Start(wreckfestUI);
         }

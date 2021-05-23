@@ -14,6 +14,7 @@ using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.IO;
 using System.IO.MemoryMappedFiles;
+using System.Security;
 
 namespace GenericTelemetryProvider
 {
@@ -212,6 +213,21 @@ namespace GenericTelemetryProvider
 
             return BitConverter.ToInt64(results, 0);
         }
+
+
+        /// <summary>TimeBeginPeriod(). See the Windows API documentation for details.</summary>
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Interoperability", "CA1401:PInvokesShouldNotBeVisible"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2118:ReviewSuppressUnmanagedCodeSecurityUsage"), SuppressUnmanagedCodeSecurity]
+        [DllImport("winmm.dll", EntryPoint = "timeBeginPeriod", SetLastError = true)]
+
+        public static extern uint TimeBeginPeriod(uint uMilliseconds);
+
+        /// <summary>TimeEndPeriod(). See the Windows API documentation for details.</summary>
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Interoperability", "CA1401:PInvokesShouldNotBeVisible"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2118:ReviewSuppressUnmanagedCodeSecurityUsage"), SuppressUnmanagedCodeSecurity]
+        [DllImport("winmm.dll", EntryPoint = "timeEndPeriod", SetLastError = true)]
+
+        public static extern uint TimeEndPeriod(uint uMilliseconds);
 
     }
 }

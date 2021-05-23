@@ -12,27 +12,11 @@ using NoiseFilters;
 using System.Runtime.InteropServices;
 using Newtonsoft.Json;
 using CMCustomUDP;
-using System.Security;//for WinAPI
+
 
 namespace GenericTelemetryProvider 
 {
-    //Well this is a pain in the ass - if it all works, put it somewhere neatly
-    public static class WinApi
-    {
-        /// <summary>TimeBeginPeriod(). See the Windows API documentation for details.</summary>
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Interoperability", "CA1401:PInvokesShouldNotBeVisible"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2118:ReviewSuppressUnmanagedCodeSecurityUsage"), SuppressUnmanagedCodeSecurity]
-        [DllImport("winmm.dll", EntryPoint = "timeBeginPeriod", SetLastError = true)]
-
-        public static extern uint TimeBeginPeriod(uint uMilliseconds);
-
-        /// <summary>TimeEndPeriod(). See the Windows API documentation for details.</summary>
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Interoperability", "CA1401:PInvokesShouldNotBeVisible"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2118:ReviewSuppressUnmanagedCodeSecurityUsage"), SuppressUnmanagedCodeSecurity]
-        [DllImport("winmm.dll", EntryPoint = "timeEndPeriod", SetLastError = true)]
-
-        public static extern uint TimeEndPeriod(uint uMilliseconds);
-    }
     class WreckfestTelemetryProvider : GenericProviderBase
     {
         Int64 memoryAddress;
@@ -142,16 +126,11 @@ namespace GenericTelemetryProvider
                         
                         if (lrSleepMS < 1f) lrSleepMS = 1f;//do not allow strangling of the CPU
                         
-                        WinApi.TimeBeginPeriod(1);
                         Thread.Sleep((int)lrSleepMS);
-                        WinApi.TimeEndPeriod(1);
                     }
-
                 
                     frameDT += sw.Elapsed.TotalSeconds;//this should hopefully just be exactly updateDelay * 1000
                     sw.Restart();
-
-
 
                     Int64 byteReadSize;
                     reader.ReadProcessMemory((IntPtr)memoryAddress, readSize, out byteReadSize, readBuffer);
@@ -291,6 +270,49 @@ namespace GenericTelemetryProvider
             t = new Thread(ScanComplete);
             t.IsBackground = true;
             t.Start();
+        }
+
+        public override bool CalcPosition()
+        {
+            /*
+            Vector3 rawVel = (currRawPos - lastRawPos) / dt;
+            float rawVelMag = rawVel.Length();
+            float lastVelMag = lastWorldVelocity.Length();
+
+            if (rawVelMag <= lastVelMag * 0.25f && (lastVelMag < rawVelMag * 10000.0f || rawVelMag <= float.Epsilon))
+            {
+                return false;
+            }
+            
+             */
+
+            //If the remote game code hasn't updated, nwait for the next tick
+            if (transform == lastTransform)
+            {
+                return false;//vehicle hasn't moved at all
+            }
+
+            Vector3 currRawPos = new Vector3(transform.M41, transform.M42, transform.M43);
+
+            rawData.position_x = currRawPos.X;
+            rawData.position_y = currRawPos.Y;
+            rawData.position_z = currRawPos.Z;
+
+            //Position MUST have changed (transform == last will proceed if the position is the same, but the orientation has changed)
+            if (lastRawPos == currRawPos)
+            {
+                return false;//vehicle hasn't moved(but MAY have updated it's orientiation - this is the closest we'll get to an atomic read)
+            }
+
+            lastRawPos = currRawPos;
+
+            //filter position
+            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, posKeyMask, true);
+
+            //assign
+            worldPosition = new Vector3((float)filteredData.position_x, (float)filteredData.position_y, (float)filteredData.position_z);
+
+            return true;
         }
 
         public override void CalcAngles()
