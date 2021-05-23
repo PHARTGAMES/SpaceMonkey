@@ -152,6 +152,13 @@
     <Compile Include="MedianFilterControl.Designer.cs">
       <DependentUpon>MedianFilterControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="WreckfestTelemetryProviderExperiments.cs" />
+    <Compile Include="WreckfestUIExperiments.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WreckfestUIExperiments.Designer.cs">
+      <DependentUpon>WreckfestUIExperiments.cs</DependentUpon>
+    </Compile>
     <Compile Include="WreckfestUI.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -254,6 +261,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MedianFilterControl.resx">
       <DependentUpon>MedianFilterControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WreckfestUIExperiments.resx">
+      <DependentUpon>WreckfestUIExperiments.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="WreckfestUI.resx">
       <DependentUpon>WreckfestUI.cs</DependentUpon>
