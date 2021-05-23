@@ -74,6 +74,13 @@
       <DependentUpon>KalmanVelocityFilterControl.cs</DependentUpon>
     </Compile>
     <Compile Include="KalmanVelocityNoiseFilter.cs" />
+    <Compile Include="OverloadTelemetryProvider.cs" />
+    <Compile Include="OverloadUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OverloadUI.Designer.cs">
+      <DependentUpon>OverloadUI.cs</DependentUpon>
+    </Compile>
     <Compile Include="Settings.cs" />
     <Compile Include="VTOLVRTelemetryProvider.cs" />
     <Compile Include="WarPlanesWW1TelemetryProvider.cs" />
@@ -232,6 +239,9 @@
     <EmbeddedResource Include="KalmanVelocityFilterControl.resx">
       <DependentUpon>KalmanVelocityFilterControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="OverloadUI.resx">
+      <DependentUpon>OverloadUI.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="VTOLVRUI.resx">
       <DependentUpon>VTOLVRUI.cs</DependentUpon>
     </EmbeddedResource>
@@ -325,6 +335,10 @@
       <Project>{df06aed7-12bc-486d-8ac5-37be43b164c3}</Project>
       <Name>MonsterGamesAPI</Name>
     </ProjectReference>
+    <ProjectReference Include="..\OverloadTelemetry\OverloadTelemetry.csproj">
+      <Project>{d113346d-947f-4f82-8014-e63e863308d1}</Project>
+      <Name>OverloadTelemetry</Name>
+    </ProjectReference>
     <ProjectReference Include="..\VTOLVRAPI\VTOLVRAPI.csproj">
       <Project>{1ece0c19-57d7-41be-88d5-2fec3011a321}</Project>
       <Name>VTOLVRAPI</Name>
@@ -341,6 +355,7 @@
     <EmbeddedResource Include="Resources\MonsterGamesTelemetry.dll" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\OverloadTelemetry.dll" />
     <Content Include="Resources\VTOLVRTelemetry.dll" />
     <Content Include="Resources\WarplanesWW1Telemetry.dll" />
   </ItemGroup>

@@ -34,9 +34,10 @@ namespace GenericTelemetryProvider
         IL2UI il2UI;
         WarplanesWW1UI warplanesWW1UI;
         VTOLVRUI vtolVRUI;
+        OverloadUI overloadUI;
         FilterUI filterUI;
         public static GenericTelemetryProvider Instance;
-        public string versionString = "v1.0.4";
+        public string versionString = "v1.0.5p";
 
         bool ignoreConfigChanges = false;
 
@@ -613,7 +614,7 @@ namespace GenericTelemetryProvider
 
         private void vtolvrBtn_Click(object sender, EventArgs e)
         {
-            if (vtolVRUI != null && !warplanesWW1UI.IsDisposed)
+            if (vtolVRUI != null && !vtolVRUI.IsDisposed)
             {
                 vtolVRUI.Dispose();
                 vtolVRUI = null;
@@ -626,6 +627,19 @@ namespace GenericTelemetryProvider
             x.Start(vtolVRUI);
         }
 
+        private void overloadButton_Click(object sender, EventArgs e)
+        {
+            if (overloadUI != null && !overloadUI.IsDisposed)
+            {
+                overloadUI.Dispose();
+                overloadUI = null;
+            }
 
+            overloadUI = new OverloadUI();
+
+            Thread x = new Thread(new ParameterizedThreadStart((form) => ((OverloadUI)form).ShowDialog()));
+            x.IsBackground = true;
+            x.Start(overloadUI);
+        }
     }
 }

@@ -67,6 +67,7 @@
             this.warplanesWW1Btn = new System.Windows.Forms.Button();
             this.vtolvrBtn = new System.Windows.Forms.Button();
             this.wreckfestExperimentsButton = new System.Windows.Forms.Button();
+            this.overloadButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // Dirt5Button
@@ -474,11 +475,23 @@
             this.wreckfestExperimentsButton.UseVisualStyleBackColor = true;
             this.wreckfestExperimentsButton.Click += new System.EventHandler(this.wreckfestExperimentsButton_Click);
             // 
+            // overloadButton
+            // 
+            this.overloadButton.Location = new System.Drawing.Point(20, 491);
+            this.overloadButton.Margin = new System.Windows.Forms.Padding(2);
+            this.overloadButton.Name = "overloadButton";
+            this.overloadButton.Size = new System.Drawing.Size(222, 70);
+            this.overloadButton.TabIndex = 40;
+            this.overloadButton.Text = "Overload";
+            this.overloadButton.UseVisualStyleBackColor = true;
+            this.overloadButton.Click += new System.EventHandler(this.overloadButton_Click);
+            // 
             // GenericTelemetryProvider
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(815, 726);
+            this.Controls.Add(this.overloadButton);
             this.Controls.Add(this.wreckfestExperimentsButton);
             this.Controls.Add(this.vtolvrBtn);
             this.Controls.Add(this.warplanesWW1Btn);
@@ -568,6 +581,7 @@
         private System.Windows.Forms.Button warplanesWW1Btn;
         private System.Windows.Forms.Button vtolvrBtn;
         private System.Windows.Forms.Button wreckfestExperimentsButton;
+        private System.Windows.Forms.Button overloadButton;
     }
 }
 
