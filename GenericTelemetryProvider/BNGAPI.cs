@@ -73,6 +73,32 @@ namespace GenericTelemetryProvider
         public float pitchAcc;
         public float yawAcc;
 
+        //engine
+        public float engine_rate;
+        public float idle_rpm;
+        public float max_rpm;
+
+        //gears
+        public int gear;
+        public int max_gears;
+
+        //suspension 
+        public float suspension_position_bl;
+        public float suspension_position_br;
+        public float suspension_position_fl;
+        public float suspension_position_fr;
+
+        public float suspension_velocity_bl;
+        public float suspension_velocity_br;
+        public float suspension_velocity_fl;
+        public float suspension_velocity_fr;
+
+        public float suspension_acceleration_bl;
+        public float suspension_acceleration_br;
+        public float suspension_acceleration_fl;
+        public float suspension_acceleration_fr;
+
+
         public void CopyFields(BNGAPI other)
         {
             posX = other.posX;
@@ -102,6 +128,29 @@ namespace GenericTelemetryProvider
             rollAcc = other.rollAcc;
             pitchAcc = other.pitchAcc;
             yawAcc = other.yawAcc;
+
+
+            engine_rate = other.engine_rate;
+            idle_rpm = other.idle_rpm;
+            max_rpm = other.max_rpm;
+
+            gear = other.gear;
+            max_gears = other.max_gears;
+
+            suspension_position_bl = other.suspension_position_bl;
+            suspension_position_br = other.suspension_position_br;
+            suspension_position_fl = other.suspension_position_fl;
+            suspension_position_fr = other.suspension_position_fr;
+
+            suspension_velocity_bl = other.suspension_velocity_bl;
+            suspension_velocity_br = other.suspension_velocity_br;
+            suspension_velocity_fl = other.suspension_velocity_fl;
+            suspension_velocity_fr = other.suspension_velocity_fr;
+
+            suspension_acceleration_bl = other.suspension_acceleration_bl;
+            suspension_acceleration_br = other.suspension_acceleration_br;
+            suspension_acceleration_fl = other.suspension_acceleration_fl;
+            suspension_acceleration_fr = other.suspension_acceleration_fr;
 
         }
 
@@ -134,6 +183,30 @@ namespace GenericTelemetryProvider
             rollAcc = 0;
             pitchAcc = 0;
             yawAcc = 0;
+
+
+            engine_rate = 0;
+            idle_rpm = 0;
+            max_rpm = 0;
+
+            gear = 0;
+            max_gears = 0;
+
+            suspension_position_bl = 0;
+            suspension_position_br = 0;
+            suspension_position_fl = 0;
+            suspension_position_fr = 0;
+
+            suspension_velocity_bl = 0;
+            suspension_velocity_br = 0;
+            suspension_velocity_fl = 0;
+            suspension_velocity_fr = 0;
+
+            suspension_acceleration_bl = 0;
+            suspension_acceleration_br = 0;
+            suspension_acceleration_fl = 0;
+            suspension_acceleration_fr = 0;
+
         }
 
         public float PitchAngle

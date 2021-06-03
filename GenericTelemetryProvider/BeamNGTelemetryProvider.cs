@@ -69,7 +69,7 @@ namespace GenericTelemetryProvider
                     if (telemetryData.magic[0] == 'B'
                         && telemetryData.magic[1] == 'N'
                         && telemetryData.magic[2] == 'G'
-                        && telemetryData.magic[3] == '1')
+                        && telemetryData.magic[3] == '2')
                     {
                         dt = (float)sw.Elapsed.TotalSeconds;
                         sw.Restart();
@@ -216,6 +216,49 @@ namespace GenericTelemetryProvider
             rawData.pitch_acceleration = telemetryData.pitchAcc;
             rawData.roll_acceleration = telemetryData.rollAcc;
 
+        }
+
+        public override void SimulateEngine()
+        {
+            rawData.max_rpm = telemetryData.max_rpm;
+            rawData.max_gears = telemetryData.max_gears;
+            rawData.gear = telemetryData.gear;
+            rawData.idle_rpm = telemetryData.idle_rpm;
+            rawData.engine_rate = telemetryData.engine_rate;
+
+            Vector3 localVelocity = new Vector3((float)filteredData.local_velocity_x, (float)filteredData.local_velocity_y, (float)filteredData.local_velocity_z);
+            rawData.speed = localVelocity.Length();
+        }
+
+        public override void ProcessInputs()
+        {
+        }
+
+        public override void SimulateSuspension()
+        {
+
+            rawData.suspension_position_bl = telemetryData.suspension_position_bl;
+            rawData.suspension_position_br = telemetryData.suspension_position_br;
+            rawData.suspension_position_fl = telemetryData.suspension_position_fl;
+            rawData.suspension_position_fr = telemetryData.suspension_position_fr;
+
+            rawData.suspension_velocity_bl = telemetryData.suspension_velocity_bl;
+            rawData.suspension_velocity_br = telemetryData.suspension_velocity_br;
+            rawData.suspension_velocity_fl = telemetryData.suspension_velocity_fl;
+            rawData.suspension_velocity_fr = telemetryData.suspension_velocity_fr;
+
+            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, suspVelKeyMask, false);
+
+            rawData.suspension_acceleration_bl = telemetryData.suspension_acceleration_bl;
+            rawData.suspension_acceleration_br = telemetryData.suspension_acceleration_br;
+            rawData.suspension_acceleration_fl = telemetryData.suspension_acceleration_fl;
+            rawData.suspension_acceleration_fr = telemetryData.suspension_acceleration_fr;
+
+            //calc wheel patch speed.
+            rawData.wheel_patch_speed_bl = filteredData.local_velocity_z;
+            rawData.wheel_patch_speed_br = filteredData.local_velocity_z;
+            rawData.wheel_patch_speed_fl = filteredData.local_velocity_z;
+            rawData.wheel_patch_speed_fr = filteredData.local_velocity_z;
         }
 
     }
