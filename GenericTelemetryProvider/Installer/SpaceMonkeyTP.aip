@@ -9,10 +9,10 @@
     <ROW Property="ARPCOMMENTS" Value="This installer database contains the logic and data required to install [|ProductName]." ValueLocId="*"/>
     <ROW Property="ARPPRODUCTICON" Value="GTPIcon.exe" Type="8"/>
     <ROW Property="Manufacturer" Value="PHARTGAMES"/>
-    <ROW Property="ProductCode" Value="1033:{28F219E8-117D-45EF-BC0E-DC140157D61F} " Type="16"/>
+    <ROW Property="ProductCode" Value="1033:{F18666E4-BD21-44B0-9529-AC1728202981} " Type="16"/>
     <ROW Property="ProductLanguage" Value="1033"/>
     <ROW Property="ProductName" Value="SpaceMonkeyTP"/>
-    <ROW Property="ProductVersion" Value="1.0.4" Type="32"/>
+    <ROW Property="ProductVersion" Value="1.0.5" Type="32"/>
     <ROW Property="SecureCustomProperties" Value="OLDPRODUCTS;AI_NEWERPRODUCTFOUND"/>
     <ROW Property="UpgradeCode" Value="{DB0D552B-6C6F-4109-8226-33F4862D0228}"/>
     <ROW Property="WindowsType9X" MultiBuildValue="DefaultBuild:Windows 9x/ME" ValueLocId="-"/>
@@ -55,6 +55,7 @@
     <ROW Component="MonsterGamesAPI.dll" ComponentId="{AE27D794-6FA9-468F-8160-4EE3010C7F70}" Directory_="APPDIR" Attributes="0" KeyPath="MonsterGamesAPI.dll"/>
     <ROW Component="MonsterGamesTelemetry.dll" ComponentId="{2F89625C-52F2-4F1B-8E3B-CBEBA71CF527}" Directory_="MonsterGames_Dir" Attributes="0" KeyPath="MonsterGamesTelemetry.dll"/>
     <ROW Component="Newtonsoft.Json.dll" ComponentId="{CCE05229-7407-4C3E-AC24-A7E604DCDACD}" Directory_="APPDIR" Attributes="0" KeyPath="Newtonsoft.Json.dll"/>
+    <ROW Component="OverloadTelemetry.dll" ComponentId="{802A5357-C077-4442-83D3-3E034D21F7D1}" Directory_="APPDIR" Attributes="0" KeyPath="OverloadTelemetry.dll"/>
     <ROW Component="ProductInformation" ComponentId="{B3C5559E-115B-4C83-9E62-C09C2E862C7E}" Directory_="APPDIR" Attributes="4" KeyPath="Version"/>
     <ROW Component="RBRConfig.txt" ComponentId="{703F62DB-B82F-4A55-8BC9-026640B90A24}" Directory_="RBR_Dir" Attributes="0" KeyPath="RBRConfig.txt_1" Type="0"/>
     <ROW Component="SharpMonoInjector.dll" ComponentId="{B2CD60CD-5AC6-4817-9EB0-437CCE9BE4F7}" Directory_="APPDIR" Attributes="0" KeyPath="SharpMonoInjector.dll"/>
@@ -137,6 +138,11 @@
     <ROW File="WRCInjection.zip" Component_="WRCInjection.zip" FileName="WRCINJ~1.ZIP|WRCInjection.zip" Attributes="0" SourcePath="..\bin\Debug\WRC\WRCInjection.zip" SelfReg="false"/>
     <ROW File="WreckfestConfig.txt_1" Component_="WreckfestConfig.txt" FileName="WRECKF~1.TXT|WreckfestConfig.txt" Attributes="0" SourcePath="..\bin\Debug\Wreckfest\WreckfestConfig.txt" SelfReg="false"/>
     <ROW File="steam_appid.txt" Component_="steam_appid.txt" FileName="STEAM_~1.TXT|steam_appid.txt" Attributes="0" SourcePath="..\bin\Debug\Squadrons\steam_appid.txt" SelfReg="false"/>
+    <ROW File="OverloadTelemetry.dll" Component_="OverloadTelemetry.dll" FileName="OVERLO~1.DLL|OverloadTelemetry.dll" Attributes="0" SourcePath="..\bin\Debug\OverloadTelemetry.dll" SelfReg="false"/>
+    <ROW File="OverloadTelemetry.pdb" Component_="OverloadTelemetry.dll" FileName="OVERLO~1.PDB|OverloadTelemetry.pdb" Attributes="0" SourcePath="..\bin\Debug\OverloadTelemetry.pdb" SelfReg="false"/>
+    <ROW File="SpaceMonkeyBeamNG.Driveplugin.msi" Component_="BeamNGConfig.txt" FileName="SPACEM~1.MSI|SpaceMonkey BeamNG.Drive plugin.msi" Attributes="0" SourcePath="..\bin\Debug\BeamNG\SpaceMonkey BeamNG.Drive plugin.msi" SelfReg="false"/>
+    <ROW File="OverloadConfig.txt" Component_="BeamNGConfig.txt_1" FileName="OVERLO~1.TXT|OverloadConfig.txt" Attributes="0" SourcePath="..\bin\Debug\Configs\OverloadConfig.txt" SelfReg="false"/>
+    <ROW File="OverloadFilters.txt" Component_="BeamNGFilters.txt" FileName="OVERLO~1.TXT|OverloadFilters.txt" Attributes="0" SourcePath="..\bin\Debug\Filters\OverloadFilters.txt" SelfReg="false"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.BootstrOptComponent">
     <ROW BootstrOptKey="GlobalOptions" DownloadFolder="[AppDataFolder][|Manufacturer]\[|ProductName]\prerequisites" Options="2"/>
@@ -238,6 +244,7 @@
     <ROW Feature_="MainFeature" Component_="WRCInjection.zip"/>
     <ROW Feature_="MainFeature" Component_="WreckfestConfig.txt"/>
     <ROW Feature_="MainFeature" Component_="steam_appid.txt"/>
+    <ROW Feature_="MainFeature" Component_="OverloadTelemetry.dll"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiIconsComponent">
     <ROW Name="GTPIcon.exe" SourcePath="..\GTPIcon.ico" Index="0"/>

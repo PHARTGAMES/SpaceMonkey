@@ -37,7 +37,7 @@ namespace GenericTelemetryProvider
         OverloadUI overloadUI;
         FilterUI filterUI;
         public static GenericTelemetryProvider Instance;
-        public string versionString = "v1.0.5p";
+        public string versionString = "v1.0.5";
 
         bool ignoreConfigChanges = false;
 

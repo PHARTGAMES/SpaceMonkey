@@ -87,32 +87,46 @@ local function sendDataPaketV1(dt)
   lastFrameData.pitchRate = pitchRate
   lastFrameData.yawRate = yawRate
 
-
+  -- engine bits
   local engine = powertrain.getDevice("mainEngine")
   local gearbox = powertrain.getDevice("gearbox")
 
-  o.engine_rate = engine and engine.outputAV1 * avToRPM or 0
-  o.gear = gearbox and gearbox.gearIndex or 0
-  o.max_gears = gearbox and gearbox.maxGearIndex or 0
+  if engine ~= nil then
+    o.engine_rate = engine and engine.outputAV1 * avToRPM or 0
+    o.idle_rpm = engine.idleRPM
+    o.max_rpm = engine.maxRPM
+  end
 
-  o.idle_rpm = engine.idleRPM
-  o.max_rpm = engine.maxRPM
+  if gearbox ~= nil then
+	o.gear = gearbox and gearbox.gearIndex or 0
+	o.max_gears = gearbox and gearbox.maxGearIndex or 0
+  end
 
   -- suspension bits
   local wheelAccess = M.wheelAccess
-   
 
   local suspMag = 10
 
-  local wheelPos = invQuat * vec3(obj:getNodePosition(wheelAccess.rearLeft.node1));
-  o.suspension_position_bl = wheelPos.z * suspMag
-  wheelPos = invQuat * vec3(obj:getNodePosition(wheelAccess.rearRight.node1));
-  o.suspension_position_br = wheelPos.z * suspMag
-  wheelPos = invQuat * vec3(obj:getNodePosition(wheelAccess.frontLeft.node1));
-  o.suspension_position_fl = wheelPos.z * suspMag
-  wheelPos = invQuat * vec3(obj:getNodePosition(wheelAccess.frontRight.node1));
-  o.suspension_position_fr = wheelPos.z * suspMag
+  local wheelPos = vec3(0,0,0)
+  if wheelAccess.rearLeft ~= nil then
+  	wheelPos = invQuat * vec3(obj:getNodePosition(wheelAccess.rearLeft.node1));
+	o.suspension_position_bl = wheelPos.z * suspMag
+  end
 
+  if wheelAccess.rearRight ~= nil then
+    wheelPos = invQuat * vec3(obj:getNodePosition(wheelAccess.rearRight.node1));
+    o.suspension_position_br = wheelPos.z * suspMag
+  end
+
+  if wheelAccess.frontLeft ~= nil then
+    wheelPos = invQuat * vec3(obj:getNodePosition(wheelAccess.frontLeft.node1));
+    o.suspension_position_fl = wheelPos.z * suspMag
+  end
+
+  if wheelAccess.frontRight ~= nil then
+  	  wheelPos = invQuat * vec3(obj:getNodePosition(wheelAccess.frontRight.node1));
+	  o.suspension_position_fr = wheelPos.z * suspMag
+  end
 
   o.suspension_velocity_bl = (o.suspension_position_bl - lastFrameData.suspension_position_bl ) / dt
   o.suspension_velocity_br = (o.suspension_position_br - lastFrameData.suspension_position_br ) / dt
@@ -205,7 +219,7 @@ local function initV1()
   if not hasDefinedV1Struct then
     ffi.cdef [[
     typedef struct motionSim_t  {
-      //Magic to check if packet is actually useful, fixed value of "BNG1"
+      //Magic to check if packet is actually useful, fixed value of "BNG2"
       char           magic[4];
 
       //World position of the car
@@ -299,7 +313,7 @@ local function initV1()
   accYSmoother = newExponentialSmoothing(accelerationSmoothingY)
   accZSmoother = newExponentialSmoothing(accelerationSmoothingZ)
 
-  log("I", "motionSim.initV1", string.format("MotionSim V1 active! IP config: %s:%d, update rate: %dhz", ip, port, updateRate))
+  log("I", "motionSim.initV1", string.format("SpaceMonkey MotionSim V1 active! IP config: %s:%d, update rate: %dhz", ip, port, updateRate))
 
   udpSocket = socket.udp()
 
@@ -329,12 +343,12 @@ local function init(jbeamData)
   isMotionSimEnabled = settings.getValue("motionSimEnabled") or false
   if isMotionSimEnabled then
     local motionSimVersion = settings.getValue("motionSimVersion") or 1
-    log("I", "motionSim.init", "Trying to load motionSim with version: " .. motionSimVersion)
+    log("I", "motionSim.init", "Trying to load SpaceMonkey motionSim with version: " .. motionSimVersion)
     if motionSimVersion == 1 then
-      log("D", "motionSim.init", "MotionSim V1 active!")
+      log("D", "motionSim.init", "SpaceMonkey motionSim active!" .. motionSimVersion)
       initV1()
     else
-      log("E", "motionSim.init", "Unknown motionSim version: " .. motionSimVersion)
+      log("E", "motionSim.init", "Unknown SpaceMonkey motionSim version: " .. motionSimVersion)
     end
   end
 end
