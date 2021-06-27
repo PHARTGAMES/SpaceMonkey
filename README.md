@@ -31,11 +31,12 @@ SpaceMonkey has been tested with Sim Racing Studio (motion, wind, shakers and le
 - Warplanes: WW1
 - VTOL VR
 - IL-2 Sturmovik
+- Overload
 
 
 ## Installation
 
-The latest installer for SpaceMonkey is here (v1.0.4)
+The latest installer for SpaceMonkey is here (v1.0.5)
 
 https://github.com/PHARTGAMES/SpaceMonkey/raw/main/GenericTelemetryProvider/Installer/SpaceMonkeyTP-SetupFiles/SpaceMonkeyTP.msi
 
@@ -84,12 +85,16 @@ All changes to config options are saved as they are changed.
 6. Click the Initialize button and wait for the game's memory to be scanned. If successful the status message will change to Success! and you will see debug output in the text box.
 7. Space Monkey will now be outputting telemetry.
 
+### Notes
+- Adam Sawkins has made some changes to Wreckfest to make it work better with SRS. Those changes are available under the new Wreckfest Experimental button (v1.0.5).
+
 ---
 ## BeamNG.Drive
 
 ### Setup
 
-1. Within BeamNG.drive 'Options > OTHER', set the following options:
+1. Run the SpaceMonkey BeamNG.Drive plugin.msi installer in the BeamNG subfolder of Space Monkey to install the BeamNG.Drive telemetry provider into BeamNG.Drive.
+2. Within BeamNG.drive 'Options > OTHER', set the following options:
 
 - MotionSim enabled [x]
 - IP: 127.0.0.1
@@ -275,6 +280,20 @@ Some people may find better results with "decimation = 2".
 4. Press the Initialize! button.
 5. Space Monkey will now wait for a connection from IL-2 Sturmovik and output telemetry automatically. You can launch IL-2 Sturmovik and any other software at this point.
 
+
+---
+
+
+## Overload.
+
+### Usage
+
+1. Load the game. (Tested with the steam version)
+2. Go to the main interface of Space Monkey and select a main config for Overload..
+3. Go to the main interface of Space Monkey and press the Overload button which will load the OverloadUI.
+4. In the Overload UI, click the Initialize button and wait for a message box to appear in the top left corner of the game window stating that SpaceMonkey is injected.
+5. Space Monkey will now be outputting telemetry. Load any other software at this point.
+
 ---
 
 # Sim Racing Studio
@@ -320,18 +339,33 @@ Example MMF usage here https://github.com/PHARTGAMES/SpaceMonkey/blob/main/GTPSi
 
 ---
 
+# ChangeLog
+
+Release v1.0.5
+
+1. Added Overload support
+2. Added Extra telemetry for engine, gears and suspension to BeamNG.drive. This will work with SimCommander Simvibe.
+3. Added Wreckfest Experimental for SRS users.
+4. Fixes for crashes caused by incorrect culture being set.
+5. Fixes for timer accuracy.
+6. Fixes for app not closing threads correctly at shutdown.
+
+---
+
 # Known Issues
 
-1. Sometimes SpaceMonkey will not close correctly. In the case that SC4 thinks the app is still running or running the app doesn't create a new window, find the SpaceMonkeyTP.exe process in task manager and end the process manually.
+https://github.com/PHARTGAMES/SpaceMonkey/issues
 
 ---
 
 # Support
 
 SpaceMonkeyTelemetry@gmail.com
+or
+Enter an issue here https://github.com/PHARTGAMES/SpaceMonkey/issues
 
 ---
 
-# Authors
+# Contributors
 
-PEZZALUCIFER
+https://github.com/PHARTGAMES/SpaceMonkey/graphs/contributors
