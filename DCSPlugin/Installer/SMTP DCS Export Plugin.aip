@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<DOCUMENT Type="Advanced Installer" CreateVersion="17.8" version="17.8" Modules="simple" RootPath="." Language="en" Id="{C4CE1E3D-72AE-45CE-8935-CFFCB40715AB}">
+<DOCUMENT Type="Advanced Installer" CreateVersion="17.8" version="18.0" Modules="simple" RootPath="." Language="en" Id="{C4CE1E3D-72AE-45CE-8935-CFFCB40715AB}">
   <COMPONENT cid="caphyon.advinst.msicomp.MsiPropsComponent">
     <ROW Property="AI_BITMAP_DISPLAY_MODE" Value="0"/>
     <ROW Property="ALLUSERS" Value="1"/>
@@ -9,7 +9,7 @@
     <ROW Property="ProductCode" Value="1033:{FC8966CF-97BB-427B-B4FB-04A7C939D33E} " Type="16"/>
     <ROW Property="ProductLanguage" Value="1033"/>
     <ROW Property="ProductName" Value="SpaceMonkey DCS Export Plugin"/>
-    <ROW Property="ProductVersion" Value="1.0.1" Type="32"/>
+    <ROW Property="ProductVersion" Value="1.0.2" Type="32"/>
     <ROW Property="SecureCustomProperties" Value="OLDPRODUCTS;AI_NEWERPRODUCTFOUND"/>
     <ROW Property="UpgradeCode" Value="{0D1AF467-E3FE-4EBA-B038-83BAA327204D}"/>
     <ROW Property="WindowsType9X" MultiBuildValue="DefaultBuild:Windows 9x/ME" ValueLocId="-"/>

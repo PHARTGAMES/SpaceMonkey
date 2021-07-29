@@ -72,7 +72,7 @@
             this.portTextBox.Name = "portTextBox";
             this.portTextBox.Size = new System.Drawing.Size(211, 20);
             this.portTextBox.TabIndex = 11;
-            this.portTextBox.Text = "6666";
+            this.portTextBox.Text = "6665";
             this.portTextBox.TextChanged += new System.EventHandler(this.portTextBox_TextChanged);
             // 
             // portLabel

@@ -56,7 +56,7 @@ f_SpaceMonkey = {
 		package.cpath = package.cpath..";"..lfs.currentdir().."/LuaSocket/?.dll"
 		socket = require("socket")
 		host = host or "localhost"
-		port = port or 6666
+		port = port or 6665
 	
 		udpServer = socket.udp()
 		udpServer:setoption('reuseaddr',true)
