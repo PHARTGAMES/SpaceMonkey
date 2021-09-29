@@ -1,0 +1,13 @@
+ModCFG
+{
+    title = BalsaTelemetry
+    author = PEZZALUCIFER
+    modVersion = 0.0.1
+    Plugin
+    {
+        name = BalsaTelemetry
+        description = Motion Telemetry for SpaceMonkey
+        asmpath = Addons/BalsaTelemetry/BalsaTelemetry.dll
+        order = 100
+    }
+} 

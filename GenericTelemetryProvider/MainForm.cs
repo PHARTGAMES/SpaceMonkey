@@ -35,6 +35,7 @@ namespace GenericTelemetryProvider
         WarplanesWW1UI warplanesWW1UI;
         VTOLVRUI vtolVRUI;
         OverloadUI overloadUI;
+        BalsaUI balsaUI;
         FilterUI filterUI;
         public static GenericTelemetryProvider Instance;
         public string versionString = "v1.0.5";
@@ -640,6 +641,21 @@ namespace GenericTelemetryProvider
             Thread x = new Thread(new ParameterizedThreadStart((form) => ((OverloadUI)form).ShowDialog()));
             x.IsBackground = true;
             x.Start(overloadUI);
+        }
+
+        private void balsaButton_Click(object sender, EventArgs e)
+        {
+            if (balsaUI != null && !balsaUI.IsDisposed)
+            {
+                balsaUI.Dispose();
+                balsaUI = null;
+            }
+
+            balsaUI = new BalsaUI();
+
+            Thread x = new Thread(new ParameterizedThreadStart((form) => ((BalsaUI)form).ShowDialog()));
+            x.IsBackground = true;
+            x.Start(balsaUI);
         }
     }
 }

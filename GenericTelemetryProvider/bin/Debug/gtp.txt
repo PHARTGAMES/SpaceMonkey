@@ -1,1 +1,1 @@
-Configs\defaultConfig.txt
+Configs\BalsaConfig.txt
