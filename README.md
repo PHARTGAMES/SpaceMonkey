@@ -38,7 +38,10 @@ SpaceMonkey has been tested with Sim Racing Studio (motion, wind, shakers and le
 
 The latest installer for SpaceMonkey is here (v1.0.5)
 
-https://github.com/PHARTGAMES/SpaceMonkey/raw/main/GenericTelemetryProvider/Installer/SpaceMonkeyTP-SetupFiles/SpaceMonkeyTP.msi
+```diff
+The 1.0.5 installer has been taken down as it possibly contains a Backdoor:Win32/Bladabindi!ml trojan in the SharpMonoInjector.dll file.
+Possibly a false positive however since rebuilding the dll Windows Defender no longer detects the trojan.
+```
 
 Install anywhere to your local drive.
 
