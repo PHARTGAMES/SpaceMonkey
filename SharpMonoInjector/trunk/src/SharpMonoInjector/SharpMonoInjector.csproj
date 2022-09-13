@@ -11,5 +11,11 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <OutputPath>..\..\build\release</OutputPath>
   </PropertyGroup>
+  
+    <PropertyGroup>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <PackageId>SharpMonoInjector</PackageId>
+    <AssemblyName>SharpMonoInjector</AssemblyName>
+  </PropertyGroup>
 
 </Project>
