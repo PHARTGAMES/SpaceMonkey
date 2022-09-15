@@ -36,6 +36,7 @@ namespace GenericTelemetryProvider
         VTOLVRUI vtolVRUI;
         OverloadUI overloadUI;
         BalsaUI balsaUI;
+        OpenMotionUI openMotionUI;
         FilterUI filterUI;
         public static GenericTelemetryProvider Instance;
         public string versionString = "v1.0.5";
@@ -657,5 +658,21 @@ namespace GenericTelemetryProvider
             x.IsBackground = true;
             x.Start(balsaUI);
         }
+
+        private void openMotionBtn_Click(object sender, EventArgs e)
+        {
+            if (openMotionUI != null && !openMotionUI.IsDisposed)
+            {
+                openMotionUI.Dispose();
+                openMotionUI = null;
+            }
+
+            openMotionUI = new OpenMotionUI();
+
+            Thread x = new Thread(new ParameterizedThreadStart((form) => ((OpenMotionUI)form).ShowDialog()));
+            x.IsBackground = true;
+            x.Start(openMotionUI);
+        }
+
     }
 }

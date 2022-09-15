@@ -59,6 +59,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="OpenMotionTelemetryProvider.cs" />
+    <Compile Include="OpenMotionUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OpenMotionUI.Designer.cs">
+      <DependentUpon>OpenMotionUI.cs</DependentUpon>
+    </Compile>
     <Compile Include="IL2TelemetryProvider.cs" />
     <Compile Include="IL2UI.cs">
       <SubType>Form</SubType>
@@ -240,6 +247,9 @@
     <Compile Include="Utils.cs" />
     <Compile Include="WreckfestTelemetryProvider.cs" />
     <Compile Include="XInputController.cs" />
+    <EmbeddedResource Include="OpenMotionUI.resx">
+      <DependentUpon>OpenMotionUI.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="IL2UI.resx">
       <DependentUpon>IL2UI.cs</DependentUpon>
     </EmbeddedResource>
@@ -348,6 +358,10 @@
     <ProjectReference Include="..\MonsterGamesAPI\MonsterGamesAPI.csproj">
       <Project>{df06aed7-12bc-486d-8ac5-37be43b164c3}</Project>
       <Name>MonsterGamesAPI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OpenMotionAPI\OpenMotionAPI.csproj">
+      <Project>{9d4c7e8d-6798-4bf5-8bc4-480fdf3f8872}</Project>
+      <Name>OpenMotionAPI</Name>
     </ProjectReference>
     <ProjectReference Include="..\OverloadTelemetry\OverloadTelemetry.csproj">
       <Project>{d113346d-947f-4f82-8014-e63e863308d1}</Project>
