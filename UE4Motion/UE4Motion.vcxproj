@@ -160,6 +160,7 @@
     <ClInclude Include="Debug.h" />
     <ClInclude Include="systemtime.h" />
     <ClInclude Include="UE4Motion.h" />
+    <ClInclude Include="WWFreetrack.h" />
     <ClInclude Include="WWSharedMemory.h" />
   </ItemGroup>
   <ItemGroup>
@@ -169,6 +170,7 @@
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="systemtime.cpp" />
     <ClCompile Include="UE4Motion.cpp" />
+    <ClCompile Include="WWFreetrack.cpp" />
     <ClCompile Include="WWSharedMemory.cpp" />
   </ItemGroup>
   <ItemGroup>

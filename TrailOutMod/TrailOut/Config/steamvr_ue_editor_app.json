@@ -5,7 +5,7 @@
 			"app_key": "application.generated.ue.trailout-18319896.ue4editor.exe",
 			"launch_type": "url",
 			"url": "steam://launch/",
-			"action_manifest_path": "D:/Personal/UE4Projects/TrailOut/Config/SteamVRBindings/steamvr_manifest.json",
+			"action_manifest_path": "D:/Personal/projects/SpaceMonkey/trunk/TrailOutMod/TrailOut/Config/SteamVRBindings/steamvr_manifest.json",
 			"strings":
 			{
 				"en_us":

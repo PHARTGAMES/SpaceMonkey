@@ -62,6 +62,24 @@ BPFUNCTION(TickMotion)
 	}
 }
 
+
+BPFUNCTION(GetHeadTracking)
+{
+	//Log::Print("Called GetHeadTracking");
+	
+	UE4::FVector pos;
+	UE4::FRotator rot;
+
+	s_motionInstance->_GetHeadTracking(pos, rot);
+
+	Log::Print("Pos: %f, %f, %f ", pos.X, pos.Y, pos.Z);
+	Log::Print("Rot: %f, %f, %f ", rot.Pitch, rot.Yaw, rot.Roll);
+
+	stack->SetOutput<UE4::FVector>("Pos", pos);
+	stack->SetOutput<UE4::FRotator>("Rot", rot);
+}
+
+
 // Only Called Once, if you need to hook shit, declare some global non changing values
 void UE4Motion::InitializeMod()
 {
@@ -74,6 +92,8 @@ void UE4Motion::InitializeMod()
 
 	REGISTER_FUNCTION(TickMotion);
 
+	REGISTER_FUNCTION(GetHeadTracking);
+
 	//MinHook::Init(); //Uncomment if you plan to do hooks
 
 	//UseMenuButton = true; // Allows Mod Loader To Show Button
@@ -81,6 +101,15 @@ void UE4Motion::InitializeMod()
 	if (m_ipc == NULL)
 	{
 		m_ipc = new WWSharedMemory("OM_FRAME", "OM_FRAME_MUTEX", WWSharedMemType::WWSharedMem_Write, (void*)&m_frameData, sizeof(m_frameData));
+	}
+
+	if (m_wwFreetrack.Create())
+	{
+		Log::Print("Freetrack Initialized");
+	}
+	else
+	{
+		Log::Print("Freetrack Failed to initialize");
 	}
 
 
@@ -149,3 +178,24 @@ void UE4Motion::_TickMotion()
 	}
 		
 }
+
+void UE4Motion::_GetHeadTracking(UE4::FVector& a_pos, UE4::FRotator& a_rot)
+{
+	if (m_wwFreetrack.IsInitialized())
+	{
+		WWFreetrack::FTData* ftData = m_wwFreetrack.GetFTData();
+
+		if (ftData != NULL)
+		{
+			a_pos.X = ftData->X;
+			a_pos.Y = ftData->Y;
+			a_pos.Z = ftData->Z;
+
+			float rad2deg = (180.0f / 3.14159265359f);
+			a_rot.Pitch = ftData->Pitch * rad2deg;
+			a_rot.Yaw = ftData->Yaw * rad2deg;
+			a_rot.Roll = ftData->Roll * rad2deg;
+		}
+	}
+}
+

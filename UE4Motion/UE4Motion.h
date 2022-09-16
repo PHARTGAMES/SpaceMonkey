@@ -1,6 +1,7 @@
 #pragma once
 #include "Mod/Mod.h"
 #include "WWSharedMemory.h"
+#include "WWFreetrack.h"
 
 
 #pragma pack( push, 0 )
@@ -62,11 +63,14 @@ public:
 
 	void _TickMotion();
 
+	void _GetHeadTracking(UE4::FVector& a_pos, UE4::FRotator& a_rot);
+
 private:
 	// If you have a BP Mod Actor, This is a straight refrence to it
 	UE4::AActor* ModActor = NULL;
 	UE4::AActor* m_motionActor = NULL;
 	WWSharedMemory *m_ipc = NULL;
+	WWFreetrack m_wwFreetrack;
 
 	OpenMotionFrameData m_frameData;
 };
