@@ -155,15 +155,16 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\UnrealModLoader\UnrealEngineModLoader\UE4\Ue4.hpp" />
+    <ClInclude Include="..\UnrealModLoader\UnrealEngineModLoader\UE4\CoreUObject_classes.hpp" />
+    <ClInclude Include="..\UnrealModLoader\UnrealEngineModLoader\UE4\Ue4.hpp" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="systemtime.h" />
     <ClInclude Include="UE4Motion.h" />
     <ClInclude Include="WWSharedMemory.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\UnrealModLoader\UnrealEngineModLoader\UE4\Basic.cpp" />
-    <ClCompile Include="..\..\UnrealModLoader\UnrealEngineModLoader\UE4\CoreUObject_functions.cpp" />
+    <ClCompile Include="..\UnrealModLoader\UnrealEngineModLoader\UE4\Basic.cpp" />
+    <ClCompile Include="..\UnrealModLoader\UnrealEngineModLoader\UE4\CoreUObject_functions.cpp" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="systemtime.cpp" />
@@ -171,7 +172,7 @@
     <ClCompile Include="WWSharedMemory.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\UnrealModLoader\UnrealEngineModLoader\UnrealEngineModLoader.vcxproj">
+    <ProjectReference Include="..\UnrealModLoader\UnrealEngineModLoader\UnrealEngineModLoader.vcxproj">
       <Project>{de3bc2ad-2683-4d76-ad72-95d98164e9c7}</Project>
     </ProjectReference>
   </ItemGroup>

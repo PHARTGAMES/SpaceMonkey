@@ -11,7 +11,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ExampleMod", "..\ExampleMod
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LoaderAutoInjector", "..\LoaderAutoInjector\LoaderAutoInjector.vcxproj", "{ACD937DA-925A-4640-9AD0-39A381D323EA}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UE4Motion", "..\..\UE4Motion\UE4Motion\UE4Motion.vcxproj", "{2B421069-1B7D-4BFB-84E4-EAD95638DC63}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UE4Motion", "..\..\UE4Motion\UE4Motion.vcxproj", "{2B421069-1B7D-4BFB-84E4-EAD95638DC63}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -21,9 +21,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\UnrealModLoader\UnrealEngineModLoader\UE4\Ue4.hpp">
-      <Filter>UE4</Filter>
-    </ClInclude>
     <ClInclude Include="UE4Motion.h">
       <Filter>Mod</Filter>
     </ClInclude>
@@ -36,16 +33,16 @@
     <ClInclude Include="systemtime.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\UnrealModLoader\UnrealEngineModLoader\UE4\CoreUObject_classes.hpp">
+      <Filter>UE4</Filter>
+    </ClInclude>
+    <ClInclude Include="..\UnrealModLoader\UnrealEngineModLoader\UE4\Ue4.hpp">
+      <Filter>UE4</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\UnrealModLoader\UnrealEngineModLoader\UE4\Basic.cpp">
-      <Filter>UE4</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\UnrealModLoader\UnrealEngineModLoader\UE4\CoreUObject_functions.cpp">
-      <Filter>UE4</Filter>
     </ClCompile>
     <ClCompile Include="UE4Motion.cpp">
       <Filter>Mod</Filter>
@@ -58,6 +55,12 @@
     </ClCompile>
     <ClCompile Include="systemtime.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\UnrealModLoader\UnrealEngineModLoader\UE4\Basic.cpp">
+      <Filter>UE4</Filter>
+    </ClCompile>
+    <ClCompile Include="..\UnrealModLoader\UnrealEngineModLoader\UE4\CoreUObject_functions.cpp">
+      <Filter>UE4</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

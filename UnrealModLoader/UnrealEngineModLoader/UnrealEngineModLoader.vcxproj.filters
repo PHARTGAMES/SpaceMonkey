@@ -146,4 +146,7 @@
     </ClInclude>
     <ClInclude Include="UMLDefs.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\UE4Motion\UE4Motion.vcxproj" />
+  </ItemGroup>
 </Project>

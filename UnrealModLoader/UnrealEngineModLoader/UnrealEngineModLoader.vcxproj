@@ -69,6 +69,9 @@
     <ClInclude Include="UnrealEngineModLoader\Utilities\Pattern.h" />
     <ClInclude Include="UnrealEngineModLoader\Utilities\Version.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\UE4Motion\UE4Motion.vcxproj" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
