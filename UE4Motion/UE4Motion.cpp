@@ -72,8 +72,8 @@ BPFUNCTION(GetHeadTracking)
 
 	s_motionInstance->_GetHeadTracking(pos, rot);
 
-	Log::Print("Pos: %f, %f, %f ", pos.X, pos.Y, pos.Z);
-	Log::Print("Rot: %f, %f, %f ", rot.Pitch, rot.Yaw, rot.Roll);
+	//Log::Print("Pos: %f, %f, %f ", pos.X, pos.Y, pos.Z);
+	//Log::Print("Rot: %f, %f, %f ", rot.Pitch, rot.Yaw, rot.Roll);
 
 	stack->SetOutput<UE4::FVector>("Pos", pos);
 	stack->SetOutput<UE4::FRotator>("Rot", rot);
