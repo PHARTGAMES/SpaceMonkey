@@ -85,7 +85,7 @@ public:
 		if (hFTMemMap == NULL)
 			return (ipc_heap = NULL), FALSE;
 
-		ipc_heap = (FTHeap*)MapViewOfFile(hFTMemMap, FILE_MAP_ALL_ACCESS, 0, 0, sizeof(FTHeap));
+		ipc_heap = (FTHeap*)MapViewOfFile(hFTMemMap, FILE_MAP_WRITE, 0, 0, sizeof(FTHeap));
 		ipc_mutex = CreateMutexA(NULL, FALSE, FREETRACK_MUTEX);
 
 		m_ftThread = new std::thread(&WWFreetrack::FTRead, this);
