@@ -36,7 +36,6 @@ public:
 		ModRef = this;
 		CompleteModCreation();
 
-		m_motionActor = NULL;
 	}
 
 	//Called When Internal Mod Setup is finished
@@ -59,16 +58,17 @@ public:
 	//Call ImGui Here (CALLED EVERY FRAME ON DX HOOK)
 	virtual void DrawImGui() override;
 
-	void _SetMotionActor(UE4::AActor* a_motionActor);
-
-	void _TickMotion();
+	void _TickMotion(UE4::FVector a_pos, UE4::FRotator a_rot);
 
 	void _GetHeadTracking(UE4::FVector& a_pos, UE4::FRotator& a_rot);
+
+	void _Cleanup();
+
+	void OnDestroy();
 
 private:
 	// If you have a BP Mod Actor, This is a straight refrence to it
 	UE4::AActor* ModActor = NULL;
-	UE4::AActor* m_motionActor = NULL;
 	WWSharedMemory *m_ipc = NULL;
 	WWFreetrack m_wwFreetrack;
 

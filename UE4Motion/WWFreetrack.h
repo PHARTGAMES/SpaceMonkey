@@ -3,6 +3,7 @@
 #include <vector>
 #include <thread>
 #include <chrono>
+#include "Debug.h"
 
 #if defined( _WINDOWS )
 #include <windows.h>
@@ -83,14 +84,21 @@ public:
 			(LPCSTR)FREETRACK_HEAP);
 
 		if (hFTMemMap == NULL)
+		{
+			Debug::Log("Freetrack Failed to CreateFileMappingA\n");
 			return (ipc_heap = NULL), FALSE;
+		}
 
 		ipc_heap = (FTHeap*)MapViewOfFile(hFTMemMap, FILE_MAP_WRITE, 0, 0, sizeof(FTHeap));
+		if (ipc_heap == NULL)
+		{
+			Debug::Log("Freetrack Failed to MapViewOfFile\n");
+		}
 		ipc_mutex = CreateMutexA(NULL, FALSE, FREETRACK_MUTEX);
 
-		m_ftThread = new std::thread(&WWFreetrack::FTRead, this);
-
 		m_initialized = true;
+
+		m_ftThread = new std::thread(&WWFreetrack::FTRead, this);
 
 		return TRUE;
 	}
@@ -114,13 +122,25 @@ public:
 	{
 		while (m_initialized)
 		{
-			if (ipc_mutex && WaitForSingleObject(ipc_mutex, 16) == WAIT_OBJECT_0) {
+			//Debug::Log("Freetrack FTRead top of loop\n");
+			if (ipc_mutex && WaitForSingleObject(ipc_mutex, INFINITE) == WAIT_OBJECT_0)
+			{
 				memcpy(&m_ftData, &ipc_heap, sizeof(m_ftData));
 				if (ipc_heap->data.DataID > (1 << 29))
 					ipc_heap->data.DataID = 0;
 				ReleaseMutex(ipc_mutex);
+
+				Debug::Log("Freetrack read data\n");
 			}
+			else
+			{
+				Debug::Log("Freetrack WaitForSingleObject took too long\n");
+			}
+
 		}
+
+		Debug::Log("Freetrack FTRead exit\n");
+
 	}
 
 	FTData *GetFTData()

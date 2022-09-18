@@ -20,45 +20,30 @@ static UE4Motion* s_motionInstance = NULL;
 // 
 
 
-BPFUNCTION(SetMotionActor)
-{
-//	Log("Called SetMotionActor\n");
-
-	//Log::Print("Called SetMotionActor\n");
-
-//	std::cout << "WriteToFile" << std::endl;
-	struct InputParams
-	{
-		UE4::AActor *MotionActor;
-		UE4::FString OutputString;
-	};
-	auto Inputs = stack->GetInputParams<InputParams>();
-	stack->SetOutput<bool>("ReturnValue", true);
-
-
-	if (Inputs->MotionActor != NULL)
-	{
-		stack->SetOutput<UE4::FString>("OutputString", L"SetMotionActor Success");
-		stack->SetOutput<bool>("ReturnValue", true);
-
-		s_motionInstance->_SetMotionActor(Inputs->MotionActor);
-	}
-	else
-	{
-		s_motionInstance->_SetMotionActor(NULL);
-		stack->SetOutput<UE4::FString>("OutputString", L"SetMotionActor Failed");
-		stack->SetOutput<bool>("ReturnValue", false);
-	}
- 
-//	stack->SetOutput<UE4::FString>("OutputString", L"KboyGang");
-}
 
 
 BPFUNCTION(TickMotion)
 {
+
+
+	struct InputParams
+	{
+		UE4::FVector Pos;
+		UE4::FRotator Rot;
+	};
+	auto Inputs = stack->GetInputParams<InputParams>();
+
 	if (s_motionInstance != NULL)
 	{
-		s_motionInstance->_TickMotion();
+		s_motionInstance->_TickMotion(Inputs->Pos, Inputs->Rot);
+	}
+}
+
+BPFUNCTION(Cleanup)
+{
+	if (s_motionInstance != NULL)
+	{
+		s_motionInstance->_Cleanup();
 	}
 }
 
@@ -88,8 +73,6 @@ void UE4Motion::InitializeMod()
 	UE4::InitSDK();
 	SetupHooks();
 
-	REGISTER_FUNCTION(SetMotionActor);
-
 	REGISTER_FUNCTION(TickMotion);
 
 	REGISTER_FUNCTION(GetHeadTracking);
@@ -102,6 +85,7 @@ void UE4Motion::InitializeMod()
 	{
 		m_ipc = new WWSharedMemory("OM_FRAME", "OM_FRAME_MUTEX", WWSharedMemType::WWSharedMem_Write, (void*)&m_frameData, sizeof(m_frameData));
 	}
+
 
 	if (m_wwFreetrack.Create())
 	{
@@ -149,27 +133,27 @@ void UE4Motion::DrawImGui()
 {
 }
 
-void UE4Motion::_SetMotionActor(UE4::AActor* a_motionActor)
+
+
+void UE4Motion::_Cleanup()
 {
-	m_motionActor = a_motionActor;
+
 }
 
-void UE4Motion::_TickMotion()
+void UE4Motion::_TickMotion(UE4::FVector a_pos, UE4::FRotator a_rot)
 {
-	if (m_motionActor != NULL && m_ipc != NULL)
+	if (m_ipc != NULL)
 	{
-		UE4::FVector position = m_motionActor->GetActorLocation();
-		UE4::FRotator rotation = m_motionActor->GetActorRotation();
 
 		m_frameData.m_time = SystemTime::GetInSeconds();
-		m_frameData.m_posX = position.X * 0.01f; //convert to meters
-		m_frameData.m_posY = position.Y * 0.01f; //convert to meters
-		m_frameData.m_posZ = position.Z * 0.01f; //convert to meters
+		m_frameData.m_posX = a_pos.X * 0.01f; //convert to meters
+		m_frameData.m_posY = a_pos.Y * 0.01f; //convert to meters
+		m_frameData.m_posZ = a_pos.Z * 0.01f; //convert to meters
 
 		float deg2rad = (3.14159265359f / 180.0f);
-		m_frameData.m_rotP = rotation.Pitch * deg2rad;
-		m_frameData.m_rotY = rotation.Yaw * deg2rad;
-		m_frameData.m_rotR = rotation.Roll * deg2rad;
+		m_frameData.m_rotP = a_rot.Pitch * deg2rad;
+		m_frameData.m_rotY = a_rot.Yaw * deg2rad;
+		m_frameData.m_rotR = a_rot.Roll * deg2rad;
 
 		m_ipc->Write();
 
@@ -195,7 +179,31 @@ void UE4Motion::_GetHeadTracking(UE4::FVector& a_pos, UE4::FRotator& a_rot)
 			a_rot.Pitch = ftData->Pitch * rad2deg;
 			a_rot.Yaw = ftData->Yaw * rad2deg;
 			a_rot.Roll = ftData->Roll * rad2deg;
+
+			//Log::Print("Freetrack Position: X:%f, Y:%f, Z:%f, \n", a_pos.X, a_pos.Y, a_pos.Z);
+			//Log::Print("Freetrack Rotation: P:%f, Y:%f, R:%f, \n", a_rot.Pitch, a_rot.Yaw, a_rot.Roll);
+
 		}
+		else
+		{
+			Debug::Log("NULL ftData\n");
+		}
+	}
+}
+
+
+void UE4Motion::OnDestroy()
+{
+	Debug::Log("UE4Motion::OnDestroy\n");
+
+	if (m_wwFreetrack.IsInitialized())
+		m_wwFreetrack.Destroy();
+
+	if (m_ipc != NULL)
+	{
+		m_ipc->Destroy();
+		delete m_ipc;
+		m_ipc = NULL;
 	}
 }
 

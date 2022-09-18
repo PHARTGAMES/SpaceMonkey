@@ -2,9 +2,10 @@
 #include "UE4Motion.h"
 //Mod* CoreMod;
 
+static Mod* CoreMod = NULL;
 void CreateMod()
 {
-    auto CoreMod = new UE4Motion();
+    CoreMod = new UE4Motion();
 }
 
 BOOL APIENTRY DllMain( HMODULE hModule,
@@ -19,6 +20,10 @@ BOOL APIENTRY DllMain( HMODULE hModule,
     case DLL_THREAD_ATTACH:
     case DLL_THREAD_DETACH:
     case DLL_PROCESS_DETACH:
+        if (CoreMod != NULL && lpReserved != NULL)
+        {
+            ((UE4Motion*)CoreMod)->OnDestroy();
+        }
         break;
     }
     return TRUE;
