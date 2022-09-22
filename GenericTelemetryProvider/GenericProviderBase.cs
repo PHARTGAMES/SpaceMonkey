@@ -492,9 +492,9 @@ namespace GenericTelemetryProvider
             Vector3 localFwd = new Vector3(0.0f, 0.0f, 1.0f);
 
             //angle * direction
-            float yawVel = -(float)Math.Acos((double)Vector3.Dot(fwdProjY, localFwd)) * Math.Sign(Vector3.Dot(lastFwd, localUp));
-            float pitchVel = -(float)Math.Acos((double)Vector3.Dot(fwdProjX, localFwd)) * Math.Sign(Vector3.Dot(lastUp, localFwd));
-            float rollVel = -(float)Math.Acos((double)Vector3.Dot(rhtProjZ, localRht)) * Math.Sign(Vector3.Dot(lastUp, localRht));
+            float yawVel = (float)Math.Acos((double)Vector3.Dot(fwdProjY, localFwd)) * Math.Sign(Vector3.Dot(lastFwd, localRht));
+            float pitchVel = (float)Math.Acos((double)Vector3.Dot(fwdProjX, localFwd)) * Math.Sign(Vector3.Dot(lastUp, localFwd));
+            float rollVel = (float)Math.Acos((double)Vector3.Dot(rhtProjZ, localRht)) * Math.Sign(Vector3.Dot(lastUp, localRht));
 
             rawData.yaw_velocity = yawVel / dt;
             rawData.pitch_velocity = pitchVel / dt;

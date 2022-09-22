@@ -295,6 +295,56 @@ namespace GenericTelemetryProvider
         }
 
 
+        public override void CalcAngularVelocityAndAccel()
+        {
+
+            //local non gimbal locked version
+            Matrix4x4 lastTransformLocal = Matrix4x4.Multiply(lastTransform, rotInv);
+
+            Vector3 lastRht = new Vector3(lastTransformLocal.M11, lastTransformLocal.M12, lastTransformLocal.M13);
+            Vector3 lastUp = new Vector3(lastTransformLocal.M21, lastTransformLocal.M22, lastTransformLocal.M23);
+            Vector3 lastFwd = new Vector3(lastTransformLocal.M31, lastTransformLocal.M32, lastTransformLocal.M33);
+
+            Vector3 fwdProjX = Vector3.Normalize(new Vector3(0.0f, lastFwd.Y, lastFwd.Z));
+            Vector3 fwdProjY = Vector3.Normalize(new Vector3(lastFwd.X, 0.0f, lastFwd.Z));
+            Vector3 rhtProjZ = Vector3.Normalize(new Vector3(lastRht.X, lastRht.Y, 0.0f));
+
+            Vector3 localRht = new Vector3(1.0f, 0.0f, 0.0f);
+            Vector3 localUp = new Vector3(0.0f, 1.0f, 0.0f);
+            Vector3 localFwd = new Vector3(0.0f, 0.0f, 1.0f);
+
+            //angle * direction
+            float yawVel = (float)Math.Acos((double)Vector3.Dot(fwdProjY, localFwd)) * Math.Sign(Vector3.Dot(lastFwd, localRht));
+            float pitchVel = (float)Math.Acos((double)Vector3.Dot(fwdProjX, localFwd)) * Math.Sign(Vector3.Dot(lastUp, localFwd));
+            float rollVel = (float)Math.Acos((double)Vector3.Dot(rhtProjZ, localRht)) * Math.Sign(Vector3.Dot(lastUp, localRht));
+
+            rawData.yaw_velocity = yawVel / dt;
+            rawData.pitch_velocity = pitchVel / dt;
+            rawData.roll_velocity = rollVel / dt;
+
+            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, angVelKeyMask, false);
+
+            rawData.yaw_acceleration = ((float)filteredData.yaw_velocity - (float)lastFilteredData.yaw_velocity) / dt;
+            rawData.pitch_acceleration = ((float)filteredData.pitch_velocity - (float)lastFilteredData.pitch_velocity) / dt;
+            rawData.roll_acceleration = ((float)filteredData.roll_velocity - (float)lastFilteredData.roll_velocity) / dt;
+
+
+            //world gimbal locked version
+            /*
+                        rawData.yaw_velocity = Utils.CalculateAngularChange((float) lastFilteredData.yaw, (float) filteredData.yaw) / dt;
+                        rawData.pitch_velocity = Utils.CalculateAngularChange((float) lastFilteredData.pitch, (float) filteredData.pitch) / dt;
+                        rawData.roll_velocity = Utils.CalculateAngularChange((float) lastFilteredData.roll, (float) filteredData.roll) / dt;
+
+                        FilterModuleCustom.Instance.Filter(rawData, ref filteredData, angVelKeyMask, false);
+
+                        rawData.yaw_acceleration = ((float) filteredData.yaw_velocity - (float) lastFilteredData.yaw_velocity) / dt;
+                        rawData.pitch_acceleration = ((float) filteredData.pitch_velocity - (float) lastFilteredData.pitch_velocity) / dt;
+                        rawData.roll_acceleration = ((float) filteredData.roll_velocity - (float) lastFilteredData.roll_velocity) / dt;
+            */
+
+        }
+
+
     }
 
 }
