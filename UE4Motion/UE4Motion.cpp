@@ -146,14 +146,14 @@ void UE4Motion::_TickMotion(UE4::FVector a_pos, UE4::FRotator a_rot)
 	{
 
 		m_frameData.m_time = SystemTime::GetInSeconds();
-		m_frameData.m_posX = a_pos.X * 0.01f; //convert to meters
-		m_frameData.m_posY = a_pos.Y * 0.01f; //convert to meters
-		m_frameData.m_posZ = a_pos.Z * 0.01f; //convert to meters
+		m_frameData.m_posX = a_pos.Y * 0.01f; //convert to meters
+		m_frameData.m_posY = a_pos.Z * 0.01f; //convert to meters
+		m_frameData.m_posZ = a_pos.X * 0.01f; //convert to meters
 
 		float deg2rad = (3.14159265359f / 180.0f);
-		m_frameData.m_rotP = a_rot.Pitch * deg2rad;
+		m_frameData.m_rotP = -a_rot.Pitch * deg2rad;
 		m_frameData.m_rotY = a_rot.Yaw * deg2rad;
-		m_frameData.m_rotR = a_rot.Roll * deg2rad;
+		m_frameData.m_rotR = -a_rot.Roll * deg2rad;
 
 		m_ipc->Write();
 

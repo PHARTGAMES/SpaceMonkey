@@ -163,11 +163,12 @@ namespace GenericTelemetryProvider
                 return;
             
             transform = new Matrix4x4();
-            //transform = Matrix4x4.CreateFromYawPitchRoll(frameData.m_rotYaw, frameData.m_rotPitch, frameData.m_rotRoll);
+            transform = Matrix4x4.CreateFromYawPitchRoll(frameData.m_rotYaw, frameData.m_rotPitch, frameData.m_rotRoll);
 
-            transform = Matrix4x4.CreateRotationZ(frameData.m_rotPitch);
-            transform = Matrix4x4.Multiply(Matrix4x4.CreateRotationX(frameData.m_rotRoll), transform);
-            transform = Matrix4x4.Multiply(Matrix4x4.CreateRotationY(frameData.m_rotYaw), transform);
+            //transform = Matrix4x4.CreateRotationY(frameData.m_rotYaw);
+            //transform = Matrix4x4.Multiply(Matrix4x4.CreateRotationX(frameData.m_rotPitch), transform);
+            //transform = Matrix4x4.Multiply(Matrix4x4.CreateRotationZ(frameData.m_rotRoll), transform);
+
 
             transform.Translation = new Vector3(frameData.m_posX, frameData.m_posY, frameData.m_posZ);
 
@@ -179,7 +180,7 @@ namespace GenericTelemetryProvider
             if (!base.ProcessTransform(newTransform, inDT))
                 return false;
 
-            ui.DebugTextChanged(JsonConvert.SerializeObject(filteredData, Formatting.Indented) + "\n dt: " + dt + "\n steer: " + InputModule.Instance.controller.leftThumb.X + "\n accel: " + InputModule.Instance.controller.rightTrigger + "\n brake: " + InputModule.Instance.controller.leftTrigger + "\n frametime: " + frameData.m_time + "\n rht: " + rht.X + ", " + rht.Y + ", " + rht.Z + "\n up: " + up.X + ", " + up.Y + ", " + up.Z + "\n fwd: " + fwd.X + ", " + fwd.Y + ", " + fwd.Z);
+            ui.DebugTextChanged(JsonConvert.SerializeObject(filteredData, Formatting.Indented) + "\n dt: " + dt + "\n steer: " + InputModule.Instance.controller.leftThumb.X + "\n accel: " + InputModule.Instance.controller.rightTrigger + "\n brake: " + InputModule.Instance.controller.leftTrigger + "\n frametime: " + frameData.m_time + "\n Pitch: " + frameData.m_rotPitch + ", " + "\n Yaw: " + frameData.m_rotYaw + ", " + "\n Roll: " + frameData.m_rotRoll + ", " + "\n rht: " + rht.X + ", " + rht.Y + ", " + rht.Z + "\n up: " + up.X + ", " + up.Y + ", " + up.Z + "\n fwd: " + fwd.X + ", " + fwd.Y + ", " + fwd.Z);
 
             SendFilteredData();
 
