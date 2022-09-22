@@ -3,8 +3,19 @@
 #include <stdio.h>
 #include "Logger.h"
 #include "systemtime.h"
+#include <cstdarg>
+#include <stdio.h>
+#include <wtypes.h>
+#include <string>
+#include <sstream>
+#include <fstream>
+#include <vector>
 
 static UE4Motion* s_motionInstance = NULL;
+
+float rad2deg = (180.0f / 3.14159265359f);
+float deg2rad = (3.14159265359f / 180.0f);
+
 
 //BPFUNCTION(WriteToFile)
 //{
@@ -65,6 +76,33 @@ BPFUNCTION(GetHeadTracking)
 }
 
 
+float VerticalFOVToHorizontalFOV(float a_vFOV, float a_aspectRatio)
+{
+	float vFOVrad = a_vFOV * deg2rad;
+	float cameraHeightAt1 = tan(vFOVrad * .5f);
+	float horizontalFov = atan(cameraHeightAt1 * a_aspectRatio) * 2.0f * rad2deg;
+
+	Log::Print("Horizontal FOV calculated as: %f", horizontalFov);
+
+	return horizontalFov;
+}
+
+BPFUNCTION(GetHeadTrackingConstants)
+{
+	if (s_motionInstance != NULL)
+	{
+		float hFOV;
+		float worldScale;
+		float aspectRatio;
+
+		s_motionInstance->_GetHeadTrackingConstants(hFOV, worldScale, aspectRatio);
+
+		stack->SetOutput<float>("HFOV", VerticalFOVToHorizontalFOV(hFOV, aspectRatio));
+		stack->SetOutput<float>("WorldScale", worldScale);
+	}
+}
+
+
 // Only Called Once, if you need to hook shit, declare some global non changing values
 void UE4Motion::InitializeMod()
 {
@@ -76,6 +114,8 @@ void UE4Motion::InitializeMod()
 	REGISTER_FUNCTION(TickMotion);
 
 	REGISTER_FUNCTION(GetHeadTracking);
+
+	REGISTER_FUNCTION(GetHeadTrackingConstants);
 
 	//MinHook::Init(); //Uncomment if you plan to do hooks
 
@@ -150,7 +190,6 @@ void UE4Motion::_TickMotion(UE4::FVector a_pos, UE4::FRotator a_rot)
 		m_frameData.m_posY = a_pos.Z * 0.01f; //convert to meters
 		m_frameData.m_posZ = a_pos.X * 0.01f; //convert to meters
 
-		float deg2rad = (3.14159265359f / 180.0f);
 		m_frameData.m_rotP = -a_rot.Pitch * deg2rad;
 		m_frameData.m_rotY = a_rot.Yaw * deg2rad;
 		m_frameData.m_rotR = -a_rot.Roll * deg2rad;
@@ -175,7 +214,6 @@ void UE4Motion::_GetHeadTracking(UE4::FVector& a_pos, UE4::FRotator& a_rot)
 			a_pos.Y = ftData->Y;
 			a_pos.Z = ftData->Z;
 
-			float rad2deg = (180.0f / 3.14159265359f);
 			a_rot.Pitch = ftData->Pitch * rad2deg;
 			a_rot.Yaw = ftData->Yaw * rad2deg;
 			a_rot.Roll = ftData->Roll * rad2deg;
@@ -189,6 +227,68 @@ void UE4Motion::_GetHeadTracking(UE4::FVector& a_pos, UE4::FRotator& a_rot)
 			Debug::Log("NULL ftData\n");
 		}
 	}
+}
+
+
+void UE4Motion::_GetHeadTrackingConstants(float& a_vfov, float& a_worldScale, float& a_aspectRatio)
+{
+
+	std::ifstream inFile("UE4TrackConstants.txt");
+
+	if (!inFile.is_open())
+	{
+		Log::Print("Failed to open UE4TrackConstants.txt");
+		return;
+	}
+
+	std::vector<std::string> lines;
+
+	while (true)
+	{
+		std::string line;
+		if (!std::getline(inFile, line, '\n'))
+			break;
+
+		lines.push_back(line);
+	}
+
+	//Log::Print("UE4TrackConstants:: read %d lines", lines.size());
+
+	for (std::string entry : lines)
+	{
+		if (entry.empty())
+			break;
+
+		std::stringstream ss(entry);
+
+		//Log::Print("UE4TrackConstants:: read line: %s", entry.c_str());
+
+		std::string variable;
+		std::getline(ss, variable , ':');
+
+		std::string value;
+		std::getline(ss, value);
+
+		if (variable.compare("vfov") == 0)
+		{
+			a_vfov = std::stof(value);
+			Log::Print("UE4TrackConstants::%s:%f", variable.c_str(), a_vfov);
+		}
+
+		if (variable.compare("worldscale") == 0)
+		{
+			a_worldScale = std::stof(value);
+			Log::Print("UE4TrackConstants::%s:%f", variable.c_str(), a_worldScale);
+		}
+
+		if (variable.compare("aspectratio") == 0)
+		{
+			a_aspectRatio = std::stof(value);
+			Log::Print("UE4TrackConstants::%s:%f", variable.c_str(), a_aspectRatio);
+		}
+	}
+
+	inFile.close();
 }
 
 

@@ -62,6 +62,8 @@ public:
 
 	void _GetHeadTracking(UE4::FVector& a_pos, UE4::FRotator& a_rot);
 
+	void _GetHeadTrackingConstants(float& a_vfov, float& a_worldScale, float& a_aspectRatio);
+
 	void _Cleanup();
 
 	void OnDestroy();
