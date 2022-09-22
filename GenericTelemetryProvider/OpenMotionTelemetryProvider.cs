@@ -265,8 +265,8 @@ namespace GenericTelemetryProvider
 
             Vector3 pyr = Utils.GetPYRFromQuaternion(quat);
 
-            rawData.pitch = pyr.X;
-            rawData.yaw = pyr.Y;
+            rawData.pitch = -pyr.X;
+            rawData.yaw = -pyr.Y;
             rawData.roll = Utils.LoopAngleRad(-pyr.Z, (float)Math.PI * 0.5f);
         }
 
@@ -289,7 +289,10 @@ namespace GenericTelemetryProvider
             filteredData.engine_rate = 700;// Math.Max(700, Math.Min(6000, 700 + (frameData.engineRPM * (6000-700))));
         }
 
+        public override void SimulateSuspension()
+        {
 
+        }
 
 
     }
