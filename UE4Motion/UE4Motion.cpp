@@ -216,7 +216,7 @@ void UE4Motion::_GetHeadTracking(UE4::FVector& a_pos, UE4::FRotator& a_rot)
 
 			a_rot.Pitch = -ftData->Pitch * rad2deg;
 			a_rot.Yaw = -ftData->Yaw * rad2deg;
-			a_rot.Roll = ftData->Roll * rad2deg;
+			a_rot.Roll = -ftData->Roll * rad2deg;
 
 			//Log::Print("Freetrack Position: X:%f, Y:%f, Z:%f, \n", a_pos.X, a_pos.Y, a_pos.Z);
 			//Log::Print("Freetrack Rotation: P:%f, Y:%f, R:%f, \n", a_rot.Pitch, a_rot.Yaw, a_rot.Roll);
