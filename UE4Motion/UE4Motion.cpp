@@ -210,9 +210,9 @@ void UE4Motion::_GetHeadTracking(UE4::FVector& a_pos, UE4::FRotator& a_rot)
 
 		if (ftData != NULL)
 		{
-			a_pos.X = ftData->X;
-			a_pos.Y = ftData->Z;
-			a_pos.Z = -ftData->Y;
+			a_pos.X = ftData->Z;
+			a_pos.Y = ftData->X;
+			a_pos.Z = ftData->Y;
 
 			a_rot.Pitch = -ftData->Pitch * rad2deg;
 			a_rot.Yaw = -ftData->Yaw * rad2deg;
