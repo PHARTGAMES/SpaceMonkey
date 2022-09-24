@@ -207,7 +207,6 @@ void UE4Motion::_TickMotion(UE4::FVector a_pos, UE4::FRotator a_rot)
 		
 }
 
-float lastTickTime = 0.0f;
 
 void UE4Motion::_GetHeadTracking(UE4::FVector& a_pos, UE4::FRotator& a_rot)
 {
@@ -247,16 +246,13 @@ void UE4Motion::_GetHeadTracking(UE4::FVector& a_pos, UE4::FRotator& a_rot)
 		a_rot.Yaw = -m_freeTrackFrame.m_yaw * rad2deg;
 		a_rot.Roll = -m_freeTrackFrame.m_roll * rad2deg;
 
-		m_freeTrackFrame.m_time = SystemTime::GetInSeconds(); //this must happen for capture sync to know that the game updated it's frame
+		m_freeTrackFrame.m_readtime = SystemTime::GetInSeconds(); //this must happen for capture sync to know that the game updated it's frame
 
-		m_wwFreeTrack->Write();
+		m_wwFreeTrack->Write(); //write back readtime value
 
 		//Log::Print("Freetrack Position: X:%f, Y:%f, Z:%f, \n", a_pos.X, a_pos.Y, a_pos.Z);
 		//Log::Print("Freetrack Rotation: P:%f, Y:%f, R:%f, \n", a_rot.Pitch, a_rot.Yaw, a_rot.Roll);
 	}
-	//float tickTime = SystemTime::GetInSeconds();
-	//Log::Print("_GetHeadTracking DT: %f", (tickTime - lastTickTime));
-	//lastTickTime = tickTime;
 
 }
 

@@ -21,7 +21,7 @@ volatile struct __declspec(dllexport) OpenMotionFrameData
 #pragma pack( push, 0 )
 volatile struct __declspec(dllexport) WWFreeTrackFrameData
 {
-	float m_time = 0;
+	float m_readtime = 0;
 	float m_yaw = 0;   /* positive yaw to the left */
 	float m_pitch = 0; /* positive pitch up */
 	float m_roll = 0;  /* positive roll to the left */
