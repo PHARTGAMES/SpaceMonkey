@@ -126,15 +126,20 @@ void UE4Motion::InitializeMod()
 		m_ipc = new WWSharedMemory("OM_FRAME", "OM_FRAME_MUTEX", WWSharedMemType::WWSharedMem_Write, (void*)&m_frameData, sizeof(m_frameData));
 	}
 
+	if (m_wwFreeTrack == NULL)
+	{
+		m_wwFreeTrack = new WWSharedMemory("WW_FT", "WW_FT_MUTEX", WWSharedMemType::WWSharedMem_Read, (void*)&m_freeTrackFrame, sizeof(m_freeTrackFrame));
+	}
 
-	if (m_wwFreetrack.Create())
-	{
-		Log::Print("Freetrack Initialized");
-	}
-	else
-	{
-		Log::Print("Freetrack Failed to initialize");
-	}
+
+	//if (m_wwFreetrack.Create())
+	//{
+	//	Log::Print("Freetrack Initialized");
+	//}
+	//else
+	//{
+	//	Log::Print("Freetrack Failed to initialize");
+	//}
 
 
 }
@@ -202,31 +207,57 @@ void UE4Motion::_TickMotion(UE4::FVector a_pos, UE4::FRotator a_rot)
 		
 }
 
+float lastTickTime = 0.0f;
+
 void UE4Motion::_GetHeadTracking(UE4::FVector& a_pos, UE4::FRotator& a_rot)
 {
-	if (m_wwFreetrack.IsInitialized())
+	//if (m_wwFreetrack.IsInitialized())
+	//{
+	//	WWFreetrack::FTData* ftData = m_wwFreetrack.GetFTData();
+
+	//	if (ftData != NULL)
+	//	{
+	//		a_pos.X = ftData->Z;
+	//		a_pos.Y = ftData->X;
+	//		a_pos.Z = ftData->Y;
+
+	//		a_rot.Pitch = -ftData->Pitch * rad2deg;
+	//		a_rot.Yaw = -ftData->Yaw * rad2deg;
+	//		a_rot.Roll = -ftData->Roll * rad2deg;
+
+	//		//Log::Print("Freetrack Position: X:%f, Y:%f, Z:%f, \n", a_pos.X, a_pos.Y, a_pos.Z);
+	//		//Log::Print("Freetrack Rotation: P:%f, Y:%f, R:%f, \n", a_rot.Pitch, a_rot.Yaw, a_rot.Roll);
+
+	//	}
+	//	else
+	//	{
+	//		Debug::Log("NULL ftData\n");
+	//	}
+	//}
+
+	if (m_wwFreeTrack != NULL)
 	{
-		WWFreetrack::FTData* ftData = m_wwFreetrack.GetFTData();
+		m_wwFreeTrack->Read();
+		
+		a_pos.X = m_freeTrackFrame.m_z;
+		a_pos.Y = m_freeTrackFrame.m_x;
+		a_pos.Z = m_freeTrackFrame.m_y;
 
-		if (ftData != NULL)
-		{
-			a_pos.X = ftData->Z;
-			a_pos.Y = ftData->X;
-			a_pos.Z = ftData->Y;
+		a_rot.Pitch = -m_freeTrackFrame.m_pitch * rad2deg;
+		a_rot.Yaw = -m_freeTrackFrame.m_yaw * rad2deg;
+		a_rot.Roll = -m_freeTrackFrame.m_roll * rad2deg;
 
-			a_rot.Pitch = -ftData->Pitch * rad2deg;
-			a_rot.Yaw = -ftData->Yaw * rad2deg;
-			a_rot.Roll = -ftData->Roll * rad2deg;
+		m_freeTrackFrame.m_time = SystemTime::GetInSeconds(); //this must happen for capture sync to know that the game updated it's frame
 
-			//Log::Print("Freetrack Position: X:%f, Y:%f, Z:%f, \n", a_pos.X, a_pos.Y, a_pos.Z);
-			//Log::Print("Freetrack Rotation: P:%f, Y:%f, R:%f, \n", a_rot.Pitch, a_rot.Yaw, a_rot.Roll);
+		m_wwFreeTrack->Write();
 
-		}
-		else
-		{
-			Debug::Log("NULL ftData\n");
-		}
+		//Log::Print("Freetrack Position: X:%f, Y:%f, Z:%f, \n", a_pos.X, a_pos.Y, a_pos.Z);
+		//Log::Print("Freetrack Rotation: P:%f, Y:%f, R:%f, \n", a_rot.Pitch, a_rot.Yaw, a_rot.Roll);
 	}
+	//float tickTime = SystemTime::GetInSeconds();
+	//Log::Print("_GetHeadTracking DT: %f", (tickTime - lastTickTime));
+	//lastTickTime = tickTime;
+
 }
 
 
@@ -296,8 +327,15 @@ void UE4Motion::OnDestroy()
 {
 	Debug::Log("UE4Motion::OnDestroy\n");
 
-	if (m_wwFreetrack.IsInitialized())
-		m_wwFreetrack.Destroy();
+	//if (m_wwFreetrack.IsInitialized())
+	//	m_wwFreetrack.Destroy();
+
+	if (m_wwFreeTrack != NULL)
+	{
+		m_wwFreeTrack->Destroy();
+		delete m_wwFreeTrack;
+		m_wwFreeTrack = NULL;
+	}
 
 	if (m_ipc != NULL)
 	{

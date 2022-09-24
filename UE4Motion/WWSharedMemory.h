@@ -124,7 +124,7 @@ public:
 		{
 			if (m_mutex)
 			{
-				DWORD result = WaitForSingleObject(m_mutex, 16);
+				DWORD result = WaitForSingleObject(m_mutex, INFINITE);
 				if (result == WAIT_OBJECT_0)
 				{
 					//					memcpy(m_memoryCopy, m_mappedView, m_memorySize);
@@ -141,7 +141,7 @@ public:
 		{
 			if (m_mutex)
 			{
-				DWORD result = WaitForSingleObject(m_mutex, 16);
+				DWORD result = WaitForSingleObject(m_mutex, INFINITE);
 				if (result == WAIT_OBJECT_0)
 				{
 //					memcpy(m_mappedView, m_memoryCopy, m_memorySize);
@@ -156,7 +156,7 @@ public:
 	{
 		if (m_mutex)
 		{
-			DWORD result = WaitForSingleObject(m_mutex, 16);
+			DWORD result = WaitForSingleObject(m_mutex, INFINITE);
 			if (result == WAIT_OBJECT_0)
 			{
 				//					memcpy(m_memoryCopy, m_mappedView, m_memorySize);
@@ -170,7 +170,7 @@ public:
 	{
 		if (m_mutex)
 		{
-			DWORD result = WaitForSingleObject(m_mutex, 16);
+			DWORD result = WaitForSingleObject(m_mutex, INFINITE);
 			if (result == WAIT_OBJECT_0)
 			{
 				//					memcpy(m_mappedView, m_memoryCopy, m_memorySize);

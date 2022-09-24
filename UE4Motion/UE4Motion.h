@@ -18,6 +18,20 @@ volatile struct __declspec(dllexport) OpenMotionFrameData
 #pragma pack(pop)
 
 
+#pragma pack( push, 0 )
+volatile struct __declspec(dllexport) WWFreeTrackFrameData
+{
+	float m_time = 0;
+	float m_yaw = 0;   /* positive yaw to the left */
+	float m_pitch = 0; /* positive pitch up */
+	float m_roll = 0;  /* positive roll to the left */
+	float m_x = 0;
+	float m_y = 0;
+	float m_z = 0;
+};
+#pragma pack(pop)
+
+
 class UE4Motion : public Mod
 {
 
@@ -72,8 +86,11 @@ private:
 	// If you have a BP Mod Actor, This is a straight refrence to it
 	UE4::AActor* ModActor = NULL;
 	WWSharedMemory *m_ipc = NULL;
-	WWFreetrack m_wwFreetrack;
+//	WWFreetrack m_wwFreetrack;
+	WWSharedMemory* m_wwFreeTrack = NULL;
 
 	OpenMotionFrameData m_frameData;
+
+	WWFreeTrackFrameData m_freeTrackFrame;
 };
 
