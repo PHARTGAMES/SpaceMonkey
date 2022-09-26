@@ -174,7 +174,7 @@ namespace GTPSimfeedback
 
                     if (config.receiveUDP)
                     {
-                        while (true)
+                        while (true && !isStopped)
                         {
                             if (socket.Available == 0)
                             {
@@ -191,7 +191,7 @@ namespace GTPSimfeedback
                     }
                     else
                     {
-                        while (true)
+                        while (true && !isStopped)
                         {
                             try
                             {
@@ -207,6 +207,12 @@ namespace GTPSimfeedback
                                 Thread.Sleep(1000);
                             }
                         }
+                    }
+
+                    //check here if stopped so we can exit before a read
+                    if (isStopped)
+                    {
+                        break;
                     }
 
                     if (config.receiveUDP)
