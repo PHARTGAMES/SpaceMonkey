@@ -1,0 +1,1 @@
+copy "WindowsNoEditor\MW5Mercs\Content\Paks\pakchunk69-WindowsNoEditor.pak" "D:\Program Files\Epic Games\MW5Mercs\MW5Mercs\Content\Paks\LogicMods\OpenMotion.pak"

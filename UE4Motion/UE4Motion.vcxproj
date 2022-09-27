@@ -151,7 +151,8 @@
       <EnableUAC>false</EnableUAC>
     </Link>
     <PostBuildEvent>
-      <Command>copy /Y "$(OutDir)$(TargetName)$(TargetExt)" "D:\Program Files (x86)\Steam\steamapps\common\TRAIL OUT\TrailOut\Content\CoreMods"</Command>
+      <Command>copy /Y "$(OutDir)$(TargetName)$(TargetExt)" "D:\Program Files (x86)\Steam\steamapps\common\TRAIL OUT\TrailOut\Content\CoreMods"
+copy /Y "$(OutDir)$(TargetName)$(TargetExt)" "D:\Program Files\Epic Games\MW5Mercs\MW5Mercs\Content\CoreMods"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
