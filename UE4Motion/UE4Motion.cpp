@@ -41,12 +41,13 @@ BPFUNCTION(TickMotion)
 	{
 		UE4::FVector Pos;
 		UE4::FRotator Rot;
+		float DT;
 	};
 	auto Inputs = stack->GetInputParams<InputParams>();
 
 	if (s_motionInstance != NULL)
 	{
-		s_motionInstance->_TickMotion(Inputs->Pos, Inputs->Rot);
+		s_motionInstance->_TickMotion(Inputs->Pos, Inputs->Rot, Inputs->DT);
 	}
 }
 
@@ -182,15 +183,15 @@ void UE4Motion::DrawImGui()
 
 void UE4Motion::_Cleanup()
 {
-
+	m_systemTime = 0.0f;
 }
 
-void UE4Motion::_TickMotion(UE4::FVector a_pos, UE4::FRotator a_rot)
+void UE4Motion::_TickMotion(UE4::FVector a_pos, UE4::FRotator a_rot, float a_dt)
 {
 	if (m_ipc != NULL)
 	{
-
-		m_frameData.m_time = SystemTime::GetInSeconds();
+		m_systemTime += a_dt;
+		m_frameData.m_time = m_systemTime;// SystemTime::GetInSeconds();
 		m_frameData.m_posX = a_pos.Y * 0.01f; //convert to meters
 		m_frameData.m_posY = a_pos.Z * 0.01f; //convert to meters
 		m_frameData.m_posZ = a_pos.X * 0.01f; //convert to meters

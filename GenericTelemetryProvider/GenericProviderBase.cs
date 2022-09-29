@@ -63,6 +63,8 @@ namespace GenericTelemetryProvider
         protected Matrix4x4 lastTransform = Matrix4x4.Identity;
         protected Matrix4x4 rotInv = Matrix4x4.Identity;
 
+        protected float lastDT = 0.0f;
+
         public bool IsStopped
         {
             get
@@ -162,10 +164,12 @@ namespace GenericTelemetryProvider
         public virtual bool ProcessTransform(Matrix4x4 inTransform, float inDT)
         {
             transform = inTransform;
+            lastDT = dt;
             dt = inDT;
 
             if (!ExtractFwdUpRht())
             {
+                Console.WriteLine("!ExtractFwdUpRht()");
                 droppedSampleCount = int.MaxValue;
                 return false;
             }

@@ -51,11 +51,6 @@ namespace GenericTelemetryProvider
 
             StartSending();
 
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
-
-            Stopwatch processSW = new Stopwatch();
-
 
             //wait for telemetry
             while (true)
@@ -98,12 +93,17 @@ namespace GenericTelemetryProvider
                 }
             }
 
+
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+
             //read and process
             while (!IsStopped)
             {
                 try
                 {
-                    processSW.Restart();
+                    double timeNow = sw.Elapsed.TotalSeconds;
+
                     dataMutex.WaitOne();
                     using (MemoryMappedViewStream stream = dataMMF.CreateViewStream())
                     {
@@ -116,7 +116,6 @@ namespace GenericTelemetryProvider
                     }
                     dataMutex.ReleaseMutex();
 
-                    sw.Restart();
 
                     if (frameData != null)
                     {
@@ -134,12 +133,7 @@ namespace GenericTelemetryProvider
 
                             ProcessFrameData(calcDT);
 
-                            using (var sleeper = new ManualResetEvent(false))
-                            {
-                                int processTime = (int)processSW.ElapsedMilliseconds;
-                                //sleeper.WaitOne(Math.Max(0, (int)updateDelay - processTime));
-                                sleeper.WaitOne(1);
-                            }
+                            //while ((sw.Elapsed.TotalSeconds - lastSWTime) < ((1.0/60.0))) { }
                         }
                     }
                 }
@@ -161,6 +155,7 @@ namespace GenericTelemetryProvider
         {
             if (frameData == null)
                 return;
+
             
             transform = new Matrix4x4();
             transform = Matrix4x4.CreateFromYawPitchRoll(frameData.m_rotYaw, frameData.m_rotPitch, frameData.m_rotRoll);
@@ -198,8 +193,14 @@ namespace GenericTelemetryProvider
             return base.CheckLastFrameValid();
         }
 
+        float Lerp(float from, float to, float lerp)
+        {
+            return from + ((to - from) * lerp);
+        }
+
         public override void FilterDT()
         {
+           // dt = Lerp(lastDT, dt, 0.5f);
             //if (dt <= 0)
             //    dt = 0.015f;
         }
@@ -242,6 +243,7 @@ namespace GenericTelemetryProvider
 
             //transform world velocity to local space
             Vector3 localVelocity = Vector3.Transform(worldVelocity, rotInv);
+
 
             rawData.local_velocity_x = localVelocity.X;
             rawData.local_velocity_y = localVelocity.Y;

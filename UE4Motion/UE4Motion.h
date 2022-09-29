@@ -45,6 +45,7 @@ public:
 		ModDescription = "Open Motion"; // Mod Description
 		ModAuthors = "PEZZALUCIFER"; // Mod Author
 		ModLoaderVersion = "2.2.0";
+		m_systemTime = 0.0f;
 
 		// Dont Touch The Internal Stuff
 		ModRef = this;
@@ -72,7 +73,7 @@ public:
 	//Call ImGui Here (CALLED EVERY FRAME ON DX HOOK)
 	virtual void DrawImGui() override;
 
-	void _TickMotion(UE4::FVector a_pos, UE4::FRotator a_rot);
+	void _TickMotion(UE4::FVector a_pos, UE4::FRotator a_rot, float a_dt);
 
 	void _GetHeadTracking(UE4::FVector& a_pos, UE4::FRotator& a_rot);
 
@@ -92,5 +93,6 @@ private:
 	OpenMotionFrameData m_frameData;
 
 	WWFreeTrackFrameData m_freeTrackFrame;
+	float m_systemTime;
 };
 
