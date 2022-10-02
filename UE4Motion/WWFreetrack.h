@@ -130,7 +130,7 @@ public:
 					ipc_heap->data.DataID = 0;
 				ReleaseMutex(ipc_mutex);
 
-				Debug::Log("Freetrack read data\n");
+				//Debug::Log("Freetrack read data\n");
 			}
 			else
 			{

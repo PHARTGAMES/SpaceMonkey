@@ -180,6 +180,27 @@ public:
 		}
 	}
 
+	void ReadUnsafe()
+	{
+		CopyMemory(m_memoryCopy, m_mappedView, m_memorySize);
+	}
+
+	void WriteUnsafe()
+	{
+		CopyMemory(m_mappedView, m_memoryCopy, m_memorySize);
+	}
+
+	void LockMutex()
+	{
+		DWORD result = WaitForSingleObject(m_mutex, INFINITE);
+	}
+
+	void UnlockMutex()
+	{
+		ReleaseMutex(m_mutex);
+	}
+
+
 
 	bool IsInitialized()
 	{
