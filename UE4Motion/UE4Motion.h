@@ -1,7 +1,7 @@
 #pragma once
 #include "Mod/Mod.h"
+#include "IWibbleWobbleCapture.h"
 #include "WWSharedMemory.h"
-#include "WWFreetrack.h"
 
 
 #pragma pack( push, 0 )
@@ -17,36 +17,7 @@ volatile struct __declspec(dllexport) OpenMotionFrameData
 };
 #pragma pack(pop)
 
-#pragma pack( push, 0 )
-volatile struct __declspec(dllexport) WWFreeTrackFrame
-{
-	uint64_t m_textureResource = 0UL;
-	int m_state = 0;
-	int m_framecounter = 0;
-	float m_yaw = 0;   /* positive yaw to the left */
-	float m_pitch = 0; /* positive pitch up */
-	float m_roll = 0;  /* positive roll to the left */
-	float m_x = 0;
-	float m_y = 0;
-	float m_z = 0;
-};
-#pragma pack(pop)
 
-
-#define FT_SHARED_FRAME_COUNT 2
-#pragma pack( push, 0 )
-volatile struct __declspec(dllexport) WWFreeTrackFrameData
-{
-	WWFreeTrackFrame m_frames[FT_SHARED_FRAME_COUNT];
-};
-#pragma pack(pop)
-
-enum FreetrackFrameState
-{
-	FreetrackFrameState_ReadyForServerCPU,
-	FreetrackFrameState_ReadyForServerGPUCopy,
-	FreetrackFrameState_ReadyForClientGPUCopy,
-};
 
 class UE4Motion : public Mod
 {
@@ -62,7 +33,6 @@ public:
 		ModAuthors = "PEZZALUCIFER"; // Mod Author
 		ModLoaderVersion = "2.2.0";
 		m_systemTime = 0.0f;
-		m_frameCounter = 0;
 
 		// Dont Touch The Internal Stuff
 		ModRef = this;
@@ -100,22 +70,14 @@ public:
 
 	void OnDestroy();
 
-	void InitFreetrackShared();
-
-	void UpdateFreetrackShared(WWFreeTrackFrame& a_frame);
 
 private:
 	// If you have a BP Mod Actor, This is a straight refrence to it
 	UE4::AActor* ModActor = NULL;
-	WWSharedMemory *m_ipc = NULL;
-	WWFreetrack m_wwFreetrack;
-	WWSharedMemory* m_wwFreetrackShared = NULL;
+	WWSharedMemory *m_motionIPC = NULL;
 
 	OpenMotionFrameData m_frameData;
 
-	WWFreeTrackFrameData m_freeTrackFrame;
 	float m_systemTime;
-	int m_frameCounter;
-	HANDLE m_syncMutex = 0;
 };
 

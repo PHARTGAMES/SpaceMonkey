@@ -122,36 +122,11 @@ void UE4Motion::InitializeMod()
 
 	//UseMenuButton = true; // Allows Mod Loader To Show Button
 
-	if (m_ipc == NULL)
+	if (m_motionIPC == NULL)
 	{
-		m_ipc = new WWSharedMemory("OM_FRAME", "OM_FRAME_MUTEX", WWSharedMemType::WWSharedMem_Write, (void*)&m_frameData, sizeof(m_frameData));
+		m_motionIPC = new WWSharedMemory("OM_FRAME", "OM_FRAME_MUTEX", WWSharedMemType::WWSharedMem_Write, (void*)&m_frameData, sizeof(m_frameData));
 	}
 
-	InitFreetrackShared();
-
-	if (m_wwFreetrack.Create())
-	{
-		Log::Print("Freetrack Initialized");
-	}
-	else
-	{
-		Log::Print("Freetrack Failed to initialize");
-	}
-
-
-}
-
-void UE4Motion::InitFreetrackShared()
-{
-	m_syncMutex = CreateMutexA(NULL, FALSE, "WW_RS_SYNC");
-
-	m_frameCounter = 0;
-
-	if (m_wwFreetrackShared == NULL)
-	{
-		m_wwFreetrackShared = new WWSharedMemory("WW_FT", "WW_FT_MUTEX", WWSharedMemType::WWSharedMem_Read, (void*)&m_freeTrackFrame, sizeof(m_freeTrackFrame));
-		m_wwFreetrackShared->Read();
-	}
 
 }
 
@@ -194,12 +169,11 @@ void UE4Motion::DrawImGui()
 void UE4Motion::_Cleanup()
 {
 	m_systemTime = 0.0f;
-	m_frameCounter = 0;
 }
 
 void UE4Motion::_TickMotion(UE4::FVector a_pos, UE4::FRotator a_rot, float a_dt)
 {
-	if (m_ipc != NULL)
+	if (m_motionIPC != NULL)
 	{
 		m_systemTime += a_dt;
 		m_frameData.m_time = m_systemTime;// SystemTime::GetInSeconds();
@@ -211,7 +185,7 @@ void UE4Motion::_TickMotion(UE4::FVector a_pos, UE4::FRotator a_rot, float a_dt)
 		m_frameData.m_rotY = a_rot.Yaw * deg2rad;
 		m_frameData.m_rotR = -a_rot.Roll * deg2rad;
 
-		m_ipc->Write();
+		m_motionIPC->Write();
 
 		//Log::Print("Position: X:%f, Y:%f, Z:%f, \n", position.X, position.Y, position.Z);
 		//Log::Print("Rotation: P:%f, Y:%f, R:%f, \n", rotation.Pitch, rotation.Yaw, rotation.Roll);
@@ -219,122 +193,26 @@ void UE4Motion::_TickMotion(UE4::FVector a_pos, UE4::FRotator a_rot, float a_dt)
 		
 }
 
-void UE4Motion::UpdateFreetrackShared(WWFreeTrackFrame& a_frame)
-{
-	if (m_wwFreetrackShared == NULL)
-		return;
-
-	m_wwFreetrackShared->LockMutex();
-	m_wwFreetrackShared->ReadUnsafe();
-
-	int oldestFrameCount = INT_MAX;
-	int oldestFrameIdx = -1;
-	for (int i = 0; i < FT_SHARED_FRAME_COUNT; ++i)
-	{
-		Debug::Log("Server CPU: FrameCounter: %d\n", m_freeTrackFrame.m_frames[i].m_framecounter);
-		Debug::Log("Server CPU: Read texture resource: %x\n", m_freeTrackFrame.m_frames[i].m_textureResource);
-		Debug::Log("Server CPU: Read state: %d\n", m_freeTrackFrame.m_frames[i].m_state);
-		if (m_freeTrackFrame.m_frames[i].m_framecounter < oldestFrameCount && m_freeTrackFrame.m_frames[i].m_state == (int)FreetrackFrameState_ReadyForServerCPU)
-		{
-			oldestFrameCount = m_freeTrackFrame.m_frames[i].m_framecounter;
-			oldestFrameIdx = i;
-		}
-	}
-
-	if (oldestFrameIdx != -1)
-	{
-		Debug::Log("Server CPU: NEW FrameCounter: %d\n", a_frame.m_framecounter);
-		Debug::Log("Server CPU: Oldest frame counter: %d\n", m_freeTrackFrame.m_frames[oldestFrameIdx].m_framecounter);
-		Debug::Log("Server CPU: Oldest frame state: %d\n", m_freeTrackFrame.m_frames[oldestFrameIdx].m_state);
-
-		a_frame.m_state = (int)FreetrackFrameState_ReadyForServerGPUCopy; //written by cpu
-		a_frame.m_textureResource = m_freeTrackFrame.m_frames[oldestFrameIdx].m_textureResource;
-		m_freeTrackFrame.m_frames[oldestFrameIdx] = a_frame;
-	}
-
-	//m_freeTrackFrame.m_frames[0] = a_frame;
-
-	m_wwFreetrackShared->WriteUnsafe();
-	m_wwFreetrackShared->UnlockMutex();
-
-}
-
 
 void UE4Motion::_GetHeadTracking(UE4::FVector& a_pos, UE4::FRotator& a_rot)
 {
-
 	a_pos.X = a_pos.Y = a_pos.Z = 0.0f;
 	a_rot.Pitch = a_rot.Yaw = a_rot.Roll = 0.0f;
 
-	if (m_wwFreetrackShared == NULL)
-		return;
-
-	if (m_wwFreetrack.IsInitialized())
+	WWCaptureHeadTrackData trackingData;
+	if (WWTickHeadTracking(trackingData))
 	{
-		//wait for final copy to happen in client
-		//while (true)
-		//{
-		//	m_wwFreetrackShared->Read();
-		//	if (m_freeTrackFrame.m_stage == 0)
-		//		break;
-		//	Sleep(0);
-		//}
+		a_pos.X = trackingData.m_z;
+		a_pos.Y = trackingData.m_x;
+		a_pos.Z = trackingData.m_y;
 
-		WWFreetrack::FTData* ftData = m_wwFreetrack.GetFTData();
-
-		if (ftData != NULL)
-		{
-			a_pos.X = ftData->Z;
-			a_pos.Y = ftData->X;
-			a_pos.Z = ftData->Y;
-
-			a_rot.Pitch = -ftData->Pitch * rad2deg;
-			a_rot.Yaw = -ftData->Yaw * rad2deg;
-			a_rot.Roll = -ftData->Roll * rad2deg;
-
-			WWFreeTrackFrame newFrame;
-			newFrame.m_x = ftData->X;
-			newFrame.m_y = ftData->Y;
-			newFrame.m_z = ftData->Z;
-
-			newFrame.m_pitch = ftData->Pitch;
-			newFrame.m_yaw = ftData->Yaw;
-			newFrame.m_roll = ftData->Roll;
-
-			newFrame.m_framecounter = m_frameCounter++;
-			UpdateFreetrackShared(newFrame);
-		}
-		else
-		{
-			Debug::Log("NULL ftData\n");
-		}
-
+		a_rot.Pitch = -trackingData.m_pitch * rad2deg;
+		a_rot.Yaw = -trackingData.m_yaw * rad2deg;
+		a_rot.Roll = -trackingData.m_roll * rad2deg;
 	}
 
 	//Log::Print("Freetrack Position: X:%f, Y:%f, Z:%f, \n", a_pos.X, a_pos.Y, a_pos.Z);
 	//Log::Print("Freetrack Rotation: P:%f, Y:%f, R:%f, \n", a_rot.Pitch, a_rot.Yaw, a_rot.Roll);
-	
-
-	//if (m_wwFreetrackShared != NULL)
-	//{
-	//	m_wwFreetrackShared->Read();
-	//	
-	//	a_pos.X = m_freeTrackFrame.m_z;
-	//	a_pos.Y = m_freeTrackFrame.m_x;
-	//	a_pos.Z = m_freeTrackFrame.m_y;
-
-	//	a_rot.Pitch = -m_freeTrackFrame.m_pitch * rad2deg;
-	//	a_rot.Yaw = -m_freeTrackFrame.m_yaw * rad2deg;
-	//	a_rot.Roll = -m_freeTrackFrame.m_roll * rad2deg;
-
-	//	m_freeTrackFrame.m_readtime = SystemTime::GetInSeconds(); //this must happen for capture sync to know that the game updated it's frame
-
-	//	m_wwFreetrackShared->Write(); //write back readtime value
-
-	//	//Log::Print("Freetrack Position: X:%f, Y:%f, Z:%f, \n", a_pos.X, a_pos.Y, a_pos.Z);
-	//	//Log::Print("Freetrack Rotation: P:%f, Y:%f, R:%f, \n", a_rot.Pitch, a_rot.Yaw, a_rot.Roll);
-	//}
-
 }
 
 
@@ -404,21 +282,13 @@ void UE4Motion::OnDestroy()
 {
 	Debug::Log("UE4Motion::OnDestroy\n");
 
-	if (m_wwFreetrack.IsInitialized())
-		m_wwFreetrack.Destroy();
+	WWCleanupHeadTracking();
 
-	if (m_wwFreetrackShared != NULL)
+	if (m_motionIPC != NULL)
 	{
-		m_wwFreetrackShared->Destroy();
-		delete m_wwFreetrackShared;
-		m_wwFreetrackShared = NULL;
-	}
-
-	if (m_ipc != NULL)
-	{
-		m_ipc->Destroy();
-		delete m_ipc;
-		m_ipc = NULL;
+		m_motionIPC->Destroy();
+		delete m_motionIPC;
+		m_motionIPC = NULL;
 	}
 }
 

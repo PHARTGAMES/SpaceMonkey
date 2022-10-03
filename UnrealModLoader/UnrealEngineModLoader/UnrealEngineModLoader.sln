@@ -12,6 +12,11 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LoaderAutoInjector", "..\LoaderAutoInjector\LoaderAutoInjector.vcxproj", "{ACD937DA-925A-4640-9AD0-39A381D323EA}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UE4Motion", "..\..\UE4Motion\UE4Motion.vcxproj", "{2B421069-1B7D-4BFB-84E4-EAD95638DC63}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9BF07E96-045B-4F3E-8096-98A0667105BC} = {9BF07E96-045B-4F3E-8096-98A0667105BC}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WibbleWobbleCapture", "..\..\..\..\WibbleWobble\trunk\WibbleWobbleCapture\WibbleWobbleCapture\WibbleWobbleCapture.vcxproj", "{9BF07E96-045B-4F3E-8096-98A0667105BC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -60,6 +65,14 @@ Global
 		{2B421069-1B7D-4BFB-84E4-EAD95638DC63}.Release|x64.Build.0 = Release|x64
 		{2B421069-1B7D-4BFB-84E4-EAD95638DC63}.Release|x86.ActiveCfg = Release|Win32
 		{2B421069-1B7D-4BFB-84E4-EAD95638DC63}.Release|x86.Build.0 = Release|Win32
+		{9BF07E96-045B-4F3E-8096-98A0667105BC}.Debug|x64.ActiveCfg = Debug|x64
+		{9BF07E96-045B-4F3E-8096-98A0667105BC}.Debug|x64.Build.0 = Debug|x64
+		{9BF07E96-045B-4F3E-8096-98A0667105BC}.Debug|x86.ActiveCfg = Debug|Win32
+		{9BF07E96-045B-4F3E-8096-98A0667105BC}.Debug|x86.Build.0 = Debug|Win32
+		{9BF07E96-045B-4F3E-8096-98A0667105BC}.Release|x64.ActiveCfg = Release|x64
+		{9BF07E96-045B-4F3E-8096-98A0667105BC}.Release|x64.Build.0 = Release|x64
+		{9BF07E96-045B-4F3E-8096-98A0667105BC}.Release|x86.ActiveCfg = Release|Win32
+		{9BF07E96-045B-4F3E-8096-98A0667105BC}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

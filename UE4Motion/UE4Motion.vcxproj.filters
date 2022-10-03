@@ -24,9 +24,6 @@
     <ClInclude Include="UE4Motion.h">
       <Filter>Mod</Filter>
     </ClInclude>
-    <ClInclude Include="WWSharedMemory.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Debug.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -39,9 +36,6 @@
     <ClInclude Include="..\UnrealModLoader\UnrealEngineModLoader\UE4\Ue4.hpp">
       <Filter>UE4</Filter>
     </ClInclude>
-    <ClInclude Include="WWFreetrack.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -49,9 +43,6 @@
     </ClCompile>
     <ClCompile Include="UE4Motion.cpp">
       <Filter>Mod</Filter>
-    </ClCompile>
-    <ClCompile Include="WWSharedMemory.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Debug.cpp">
       <Filter>Source Files</Filter>
@@ -64,9 +55,6 @@
     </ClCompile>
     <ClCompile Include="..\UnrealModLoader\UnrealEngineModLoader\UE4\CoreUObject_functions.cpp">
       <Filter>UE4</Filter>
-    </ClCompile>
-    <ClCompile Include="WWFreetrack.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
