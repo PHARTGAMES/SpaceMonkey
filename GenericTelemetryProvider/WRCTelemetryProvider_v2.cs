@@ -381,16 +381,6 @@ namespace GenericTelemetryProvider
             return true;
         }
 
-        public override bool ExtractFwdUpRht()
-        {
-            return true;
-        }
-
-        public override bool CheckLastFrameValid()
-        {
-            return base.CheckLastFrameValid();
-        }
-
         public override void FilterDT()
         {
             if (dt <= 0)
@@ -419,7 +409,7 @@ namespace GenericTelemetryProvider
 
         int errorCount = 0;
         
-        public override bool CalcPosition()
+        public override void CalcPosition()
         {
 
             Vector3 currRawPos = new Vector3(transform.M41, transform.M42, transform.M43);
@@ -438,8 +428,8 @@ namespace GenericTelemetryProvider
 //            if(lastTransform == transform)
             {
                 errorCount = Math.Min(maxErrors, errorCount + 1);
-                updateDelay = Math.Max(minUpdateDelay, Math.Min(updateDelay + updateDelayOffs, maxUpdateDelay)); 
-                return false;
+                updateDelay = Math.Max(minUpdateDelay, Math.Min(updateDelay + updateDelayOffs, maxUpdateDelay));
+                throw new Exception("CalcPosition: VelMag == 0");
             }
 
             transform = LerpRotTransform(lastTransform, transform, Math.Min(1.0f, 3.0f * dt));
@@ -453,14 +443,11 @@ namespace GenericTelemetryProvider
             rawData.position_y = currRawPos.Y;
             rawData.position_z = currRawPos.Z;
 
-            lastRawPos = currRawPos;
-
             //filter position
             FilterModuleCustom.Instance.Filter(rawData, ref filteredData, posKeyMask, true);
 
             worldPosition = new Vector3((float)filteredData.position_x, (float)filteredData.position_y, (float)filteredData.position_z);
 
-            return true;
         }
         
 

@@ -117,8 +117,16 @@ namespace GenericTelemetryProvider
 
         public override bool ProcessTransform(Matrix4x4 newTransform, float inDT)
         {
-            if (!base.ProcessTransform(newTransform, inDT))
-                return false;
+            try
+            {
+                base.ProcessTransform(newTransform, inDT);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("ProcessTransform: " + e);
+            }
+
+
 
 
             ui.DebugTextChanged(JsonConvert.SerializeObject(filteredData, Formatting.Indented) + "\n dt: " + dt + "\n steer: " + InputModule.Instance.controller.leftThumb.X + "\n accel: " + InputModule.Instance.controller.rightTrigger + "\n brake: " + InputModule.Instance.controller.leftTrigger + "\n yaw: " + telemetryData.yaw + "\n pitch: " + telemetryData.pitch + "\n roll: " + telemetryData.roll + "\n rht.x: " + rht.X + "\n rht.y: " + rht.Y + "\n rht.z: " + rht.Z + "\n rht.mag: " + rht.Length());
@@ -128,16 +136,7 @@ namespace GenericTelemetryProvider
             return true;
         }
 
-        public override bool ExtractFwdUpRht()
-        {            
-            return base.ExtractFwdUpRht();
 
-        }
-
-        public override bool CheckLastFrameValid()
-        {
-            return base.CheckLastFrameValid();
-        }
 
         public override void FilterDT()
         {
@@ -147,7 +146,7 @@ namespace GenericTelemetryProvider
 
         }
 
-        public override bool CalcPosition()
+        public override void CalcPosition()
         {
             //            return base.CalcPosition();
 
@@ -157,16 +156,11 @@ namespace GenericTelemetryProvider
             rawData.position_y = currRawPos.Y;
             rawData.position_z = currRawPos.Z;
 
-            lastRawPos = currRawPos;
-
             //filter position
             FilterModuleCustom.Instance.Filter(rawData, ref filteredData, posKeyMask, true);
 
             //assign
             worldPosition = new Vector3((float)filteredData.position_x, (float)filteredData.position_y, (float)filteredData.position_z);
-
-            return true;
-
         }
 
         public override void CalcVelocity()

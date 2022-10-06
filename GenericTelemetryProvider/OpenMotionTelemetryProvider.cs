@@ -182,46 +182,26 @@ namespace GenericTelemetryProvider
             return true;
         }
 
-        public override bool ExtractFwdUpRht()
-        {            
-            return base.ExtractFwdUpRht();
-
-        }
-
-        public override bool CheckLastFrameValid()
-        {
-            return base.CheckLastFrameValid();
-        }
 
         float Lerp(float from, float to, float lerp)
         {
             return from + ((to - from) * lerp);
         }
 
-        public override void FilterDT()
-        {
-           // dt = Lerp(lastDT, dt, 0.5f);
-            //if (dt <= 0)
-            //    dt = 0.015f;
-        }
 
-        public override bool CalcPosition()
+        public override void CalcPosition()
         {
-            Vector3 currRawPos = new Vector3(transform.M41, transform.M42, transform.M43);
+            currRawPos = new Vector3(transform.M41, transform.M42, transform.M43);
 
             rawData.position_x = currRawPos.X;
             rawData.position_y = currRawPos.Y;
             rawData.position_z = currRawPos.Z;
-
-            lastRawPos = currRawPos;
 
             //filter position
             FilterModuleCustom.Instance.Filter(rawData, ref filteredData, posKeyMask, true);
 
             //assign
             worldPosition = new Vector3((float)filteredData.position_x, (float)filteredData.position_y, (float)filteredData.position_z);
-
-            return true;
         }
 
         public override void CalcVelocity()
@@ -243,7 +223,6 @@ namespace GenericTelemetryProvider
 
             //transform world velocity to local space
             Vector3 localVelocity = Vector3.Transform(worldVelocity, rotInv);
-
 
             rawData.local_velocity_x = localVelocity.X;
             rawData.local_velocity_y = localVelocity.Y;
@@ -316,13 +295,13 @@ namespace GenericTelemetryProvider
             Vector3 localFwd = new Vector3(0.0f, 0.0f, 1.0f);
 
             //angle * direction
-            float yawVel = (float)Math.Acos((double)Vector3.Dot(fwdProjY, localFwd)) * Math.Sign(Vector3.Dot(lastFwd, localRht));
-            float pitchVel = (float)Math.Acos((double)Vector3.Dot(fwdProjX, localFwd)) * Math.Sign(Vector3.Dot(lastUp, localFwd));
-            float rollVel = (float)Math.Acos((double)Vector3.Dot(rhtProjZ, localRht)) * Math.Sign(Vector3.Dot(lastUp, localRht));
+            float yawVel = (float)Math.Acos((double)Vector3.Dot(fwdProjY, localFwd)) * Math.Sign(Vector3.Dot(lastFwd, localRht)) / dt;
+            float pitchVel = (float)Math.Acos((double)Vector3.Dot(fwdProjX, localFwd)) * Math.Sign(Vector3.Dot(lastUp, localFwd)) / dt;
+            float rollVel = (float)Math.Acos((double)Vector3.Dot(rhtProjZ, localRht)) * Math.Sign(Vector3.Dot(lastUp, localRht)) / dt;
 
-            rawData.yaw_velocity = yawVel / dt;
-            rawData.pitch_velocity = pitchVel / dt;
-            rawData.roll_velocity = rollVel / dt;
+            rawData.yaw_velocity = yawVel;
+            rawData.pitch_velocity = pitchVel;
+            rawData.roll_velocity = rollVel;
 
             FilterModuleCustom.Instance.Filter(rawData, ref filteredData, angVelKeyMask, false);
 

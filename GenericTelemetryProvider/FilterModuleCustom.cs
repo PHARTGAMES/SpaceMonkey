@@ -289,6 +289,29 @@ namespace GenericTelemetryProvider
             mutex.ReleaseMutex();
         }
 
+        public void AddFilteredData(CMCustomUDPData data)
+        {
+            mutex.WaitOne();
+
+            filteredData.Add(data);
+
+            mutex.ReleaseMutex();
+        }
+
+        public void ReplaceLatestFilteredHistory(CMCustomUDPData data)
+        {
+            mutex.WaitOne();
+
+            CMCustomUDPData newData = new CMCustomUDPData();
+            newData.Copy(data);
+            if (filteredData.Count != 0)
+            {
+                filteredData[filteredData.Count-1] = newData;
+            }
+
+            mutex.ReleaseMutex();
+        }
+
         public void DeleteFilter(FilterBase filter, CMCustomUDPData.DataKey key)
         {
             filters[(int)key].Remove(filter);

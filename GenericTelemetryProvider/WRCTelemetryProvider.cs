@@ -147,17 +147,6 @@ namespace GenericTelemetryProvider
             return true;
         }
 
-        public override bool ExtractFwdUpRht()
-        {
-            //            return base.ExtractFwdUpRht();
-
-            return true;
-        }
-
-        public override bool CheckLastFrameValid()
-        {
-            return base.CheckLastFrameValid();
-        }
 
         public override void FilterDT()
         {
@@ -165,56 +154,12 @@ namespace GenericTelemetryProvider
                 dt = 0.015f;
         }
 
-        public override bool CalcPosition()
-        {
-            /*
-            Vector3 currRawPos = new Vector3(transform.M41, transform.M42, transform.M43);
-
-            rawData.position_x = currRawPos.X;
-            rawData.position_y = currRawPos.Y;
-            rawData.position_z = currRawPos.Z;
-
-            lastRawPos = currRawPos;
-
-            //filter position
-            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, posKeyMask, true);
-
-            worldPosition = new Vector3((float)filteredData.position_x, (float)filteredData.position_y, (float)filteredData.position_z);
-            */
-            return true;
-        }
 
         public override void CalcVelocity()
         {
-            /*
-            Vector3 worldVelocity = (worldPosition - lastPosition) / dt;
-            lastWorldVelocity = worldVelocity;
-
-            lastPosition = transform.Translation = worldPosition;
-
-            Matrix4x4 rotation = new Matrix4x4();
-            rotation = transform;
-            rotation.M41 = 0.0f;
-            rotation.M42 = 0.0f;
-            rotation.M43 = 0.0f;
-            rotation.M44 = 1.0f;
-
-            Matrix4x4 rotInv = new Matrix4x4();
-            Matrix4x4.Invert(rotation, out rotInv);
-
-            //transform world velocity to local space
-            Vector3 localVelocity = Vector3.Transform(worldVelocity, rotInv);
-
-//            localVelocity.X = -localVelocity.X;
-
-            rawData.local_velocity_x = localVelocity.X;
-            rawData.local_velocity_y = localVelocity.Y;
-            rawData.local_velocity_z = localVelocity.Z;
-*/
             rawData.local_velocity_x = data.velocityX;
             rawData.local_velocity_y = data.velocityY;
             rawData.local_velocity_z = data.velocityZ;
-
         }
 
         public override void FilterVelocity()

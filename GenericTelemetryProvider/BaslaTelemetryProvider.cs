@@ -120,8 +120,16 @@ namespace GenericTelemetryProvider
 
         public override bool ProcessTransform(Matrix4x4 newTransform, float inDT)
         {
-            if (!base.ProcessTransform(newTransform, inDT))
-                return false;
+            try
+            {
+                base.ProcessTransform(newTransform, inDT);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("ProcessTransform: " + e);
+            }
+
+
 
             ui.DebugTextChanged("dt: " + inDT + "\n" + JsonConvert.SerializeObject(filteredData, Formatting.Indented) + "\n steer: " + InputModule.Instance.controller.leftThumb.X + "\n accel: " + InputModule.Instance.controller.rightTrigger + "\n brake: " + InputModule.Instance.controller.leftTrigger);
 
@@ -130,16 +138,6 @@ namespace GenericTelemetryProvider
             return true;
         }
 
-        public override bool ExtractFwdUpRht()
-        {
-            return true;
-
-        }
-
-        public override bool CheckLastFrameValid()
-        {
-            return base.CheckLastFrameValid();
-        }
 
         public override void FilterDT()
         {
@@ -147,7 +145,7 @@ namespace GenericTelemetryProvider
                 dt = 0.01f;
         }
 
-        public override bool CalcPosition()
+        public override void CalcPosition()
         {
             rawData.position_x = data.posX * worldScale;
             rawData.position_y = data.posY * worldScale;
@@ -157,8 +155,6 @@ namespace GenericTelemetryProvider
             FilterModuleCustom.Instance.Filter(rawData, ref filteredData, posKeyMask, true);
 
             worldPosition = new Vector3((float)filteredData.position_x, (float)filteredData.position_y, (float)filteredData.position_z);
-
-            return true;
         }
 
         public override void CalcVelocity()

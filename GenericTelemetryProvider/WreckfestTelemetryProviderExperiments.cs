@@ -272,7 +272,7 @@ namespace GenericTelemetryProvider
             t.Start();
         }
 
-        public override bool CalcPosition()
+        public override void CalcPosition()
         {
             /*
             Vector3 rawVel = (currRawPos - lastRawPos) / dt;
@@ -289,7 +289,7 @@ namespace GenericTelemetryProvider
             //If the remote game code hasn't updated, nwait for the next tick
             if (transform == lastTransform)
             {
-                return false;//vehicle hasn't moved at all
+                throw new Exception("CalcPosition: Matching transforms");
             }
 
             Vector3 currRawPos = new Vector3(transform.M41, transform.M42, transform.M43);
@@ -301,18 +301,14 @@ namespace GenericTelemetryProvider
             //Position MUST have changed (transform == last will proceed if the position is the same, but the orientation has changed)
             if (lastRawPos == currRawPos)
             {
-                return false;//vehicle hasn't moved(but MAY have updated it's orientiation - this is the closest we'll get to an atomic read)
+                throw new Exception("CalcPosition: Matching positions");
             }
-
-            lastRawPos = currRawPos;
 
             //filter position
             FilterModuleCustom.Instance.Filter(rawData, ref filteredData, posKeyMask, true);
 
             //assign
             worldPosition = new Vector3((float)filteredData.position_x, (float)filteredData.position_y, (float)filteredData.position_z);
-
-            return true;
         }
 
         public override void CalcAngles()

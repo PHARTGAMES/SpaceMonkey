@@ -436,7 +436,7 @@ namespace CMCustomUDP
         }
 
 
-        public void LerpAllFromZero(float lerp)
+        public void LerpAll(float lerp)
         {
 
             yaw = Lerp(0.0f, (float)yaw, lerp);
@@ -478,18 +478,57 @@ namespace CMCustomUDP
             tyre_pressure_br = Lerp(0.0f, (float)tyre_pressure_br, lerp);
             tyre_pressure_fl = Lerp(0.0f, (float)tyre_pressure_fl, lerp);
             tyre_pressure_fr = Lerp(0.0f, (float)tyre_pressure_fr, lerp);
-
         }
+
+        public void LerpAllFrom(CMCustomUDPData from, float lerp)
+        {
+            yaw = Lerp((float)from.yaw, (float)yaw, lerp);
+            pitch = Lerp((float)from.pitch, (float)pitch, lerp);
+            roll = Lerp((float)from.roll, (float)roll, lerp);
+            yaw_velocity = Lerp((float)from.yaw_velocity, (float)yaw_velocity, lerp);
+            pitch_velocity = Lerp((float)from.pitch_velocity, (float)pitch_velocity, lerp);
+            roll_velocity = Lerp((float)from.roll_velocity, (float)roll_velocity, lerp);
+            yaw_acceleration = Lerp((float)from.yaw_acceleration, (float)yaw_acceleration, lerp);
+            pitch_acceleration = Lerp((float)from.pitch_acceleration, (float)pitch_acceleration, lerp);
+            roll_acceleration = Lerp((float)from.roll_acceleration, (float)roll_acceleration, lerp);
+            local_velocity_x = Lerp((float)from.local_velocity_x, (float)local_velocity_x, lerp);
+            local_velocity_y = Lerp((float)from.local_velocity_y, (float)local_velocity_y, lerp);
+            local_velocity_z = Lerp((float)from.local_velocity_z, (float)local_velocity_z, lerp);
+            gforce_lateral = Lerp((float)from.gforce_lateral, (float)gforce_lateral, lerp);
+            gforce_longitudinal = Lerp((float)from.gforce_longitudinal, (float)gforce_longitudinal, lerp);
+            gforce_vertical = Lerp((float)from.gforce_vertical, (float)gforce_vertical, lerp);
+            suspension_position_bl = Lerp((float)from.suspension_position_bl, (float)suspension_position_bl, lerp);
+            suspension_position_br = Lerp((float)from.suspension_position_br, (float)suspension_position_br, lerp);
+            suspension_position_fl = Lerp((float)from.suspension_position_fl, (float)suspension_position_fl, lerp);
+            suspension_position_fr = Lerp((float)from.suspension_position_fr, (float)suspension_position_fr, lerp);
+            suspension_velocity_bl = Lerp((float)from.suspension_velocity_bl, (float)suspension_velocity_bl, lerp);
+            suspension_velocity_br = Lerp((float)from.suspension_velocity_br, (float)suspension_velocity_br, lerp);
+            suspension_velocity_fl = Lerp((float)from.suspension_velocity_fl, (float)suspension_velocity_fl, lerp);
+            suspension_velocity_fr = Lerp((float)from.suspension_velocity_fr, (float)suspension_velocity_fr, lerp);
+            suspension_acceleration_bl = Lerp((float)from.suspension_acceleration_bl, (float)suspension_acceleration_bl, lerp);
+            suspension_acceleration_br = Lerp((float)from.suspension_acceleration_br, (float)suspension_acceleration_br, lerp);
+            suspension_acceleration_fl = Lerp((float)from.suspension_acceleration_fl, (float)suspension_acceleration_fl, lerp);
+            suspension_acceleration_fr = Lerp((float)from.suspension_acceleration_fr, (float)suspension_acceleration_fr, lerp);
+            wheel_patch_speed_bl = Lerp((float)from.wheel_patch_speed_bl, (float)wheel_patch_speed_bl, lerp);
+            wheel_patch_speed_br = Lerp((float)from.wheel_patch_speed_br, (float)wheel_patch_speed_br, lerp);
+            wheel_patch_speed_fl = Lerp((float)from.wheel_patch_speed_fl, (float)wheel_patch_speed_fl, lerp);
+            wheel_patch_speed_fr = Lerp((float)from.wheel_patch_speed_fr, (float)wheel_patch_speed_fr, lerp);
+            throttle_input = Lerp((float)from.throttle_input, (float)throttle_input, lerp);
+            steering_input = Lerp((float)from.steering_input, (float)steering_input, lerp);
+            brake_input = Lerp((float)from.brake_input, (float)brake_input, lerp);
+            clutch_input = Lerp((float)from.clutch_input, (float)clutch_input, lerp);
+            tyre_pressure_bl = Lerp((float)from.tyre_pressure_bl, (float)tyre_pressure_bl, lerp);
+            tyre_pressure_br = Lerp((float)from.tyre_pressure_br, (float)tyre_pressure_br, lerp);
+            tyre_pressure_fl = Lerp((float)from.tyre_pressure_fl, (float)tyre_pressure_fl, lerp);
+            tyre_pressure_fr = Lerp((float)from.tyre_pressure_fr, (float)tyre_pressure_fr, lerp);
+        }
+
 
         float Lerp(float from, float to, float lerp)
         {
             return from + ((to-from) * lerp);
         }
-
     }
-
-
-
 
 
     public class CMChannelMap

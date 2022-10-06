@@ -138,8 +138,16 @@ namespace GenericTelemetryProvider
 
         public override bool ProcessTransform(Matrix4x4 newTransform, float inDT)
         {
-            if (!base.ProcessTransform(newTransform, inDT))
-                return false;
+            try
+            {
+                base.ProcessTransform(newTransform, inDT);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("ProcessTransform: " + e);
+            }
+
+
 
 
             ui.DebugTextChanged(JsonConvert.SerializeObject(filteredData, Formatting.Indented) + "\n dt: " + dt + "\n steer: " + InputModule.Instance.controller.leftThumb.X + "\n accel: " + InputModule.Instance.controller.rightTrigger + "\n brake: " + InputModule.Instance.controller.leftTrigger);

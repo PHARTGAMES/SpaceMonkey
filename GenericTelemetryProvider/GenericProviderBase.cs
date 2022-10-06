@@ -22,6 +22,7 @@ namespace GenericTelemetryProvider
         protected CMCustomUDPData lastFilteredData;
         protected CMCustomUDPData filteredData;
         protected CMCustomUDPData rawData;
+        protected CMCustomUDPData teleportData;
         protected bool lastFrameValid = false;
         protected Vector3 lastVelocity = Vector3.Zero;
         protected Vector3 lastPosition = Vector3.Zero;
@@ -57,6 +58,7 @@ namespace GenericTelemetryProvider
         public Form gameUI;
         public double updateDelay = 10;
         protected int droppedSampleCount = 0;
+        protected Vector3 currRawPos = Vector3.Zero;
 
         bool isStopped = false;
         Mutex isStoppedMutex = new Mutex(false);
@@ -64,6 +66,21 @@ namespace GenericTelemetryProvider
         protected Matrix4x4 rotInv = Matrix4x4.Identity;
 
         protected float lastDT = 0.0f;
+
+        protected float maxPosVelocityDelta = 500.0f;
+        protected float maxRotVelocityDelta = 180.0f;
+
+        protected float systemDT;
+        protected Stopwatch systemSW;
+        enum TeleportState
+        {
+            In,
+            Out,
+            Off
+        }
+        TeleportState teleportState = TeleportState.Off;
+        float teleportTimer = 0.0f;
+        float teleportTime = 1.0f;
 
         public bool IsStopped
         {
@@ -89,6 +106,10 @@ namespace GenericTelemetryProvider
             mutex = new Mutex(false, "GenericTelemetryProviderMutex");
 
             filteredMMF = MemoryMappedFile.CreateOrOpen("GenericTelemetryProviderFiltered", 10000);
+
+            systemSW = new Stopwatch();
+            systemSW.Start();
+            systemDT = 0.01f;
 
             if (MainConfig.Instance.configData.hotkey.enabled)
             {
@@ -163,47 +184,33 @@ namespace GenericTelemetryProvider
 
         public virtual bool ProcessTransform(Matrix4x4 inTransform, float inDT)
         {
+            systemDT = systemSW.ElapsedMilliseconds / 1000.0f;
+            systemSW.Restart();
             transform = inTransform;
             lastDT = dt;
             dt = inDT;
 
-            if (!ExtractFwdUpRht())
+            try
             {
-                Console.WriteLine("!ExtractFwdUpRht()");
-                droppedSampleCount = int.MaxValue;
-                return false;
-            }
+                ProcessFwdUpRht();
 
-            if (!CheckLastFrameValid())
-                return true;
+                CheckLastFrameValid();
 
-            FilterDT();
+                FilterDT();
 
-            if (CalcPosition())
-            {
-                droppedSampleCount = 0;
+                CalcPosition();
+
+                CalcAngles();
+
+                CalcAngularVelocityAndAccel();
+
+                ProcessTeleportBegin();
+
                 CalcVelocity();
 
                 FilterVelocity();
 
                 CalcAcceleration();
-
-                CalcAngles();
-
-                /*
-                 //debug
-                using (MemoryMappedViewStream stream = mmf.CreateViewStream())
-                {
-                    BinaryReader reader = new BinaryReader(stream);
-                    byte[] readBuffer = reader.ReadBytes((int)stream.Length);
-
-                    var alloc = GCHandle.Alloc(readBuffer, GCHandleType.Pinned);
-                    GenericProviderData readTelemetry = (GenericProviderData)Marshal.PtrToStructure(alloc.AddrOfPinnedObject(), typeof(GenericProviderData));
-                    alloc.Free();
-                }
-                */
-
-                CalcAngularVelocityAndAccel();
 
                 SimulateSuspension();
 
@@ -211,26 +218,27 @@ namespace GenericTelemetryProvider
 
                 ProcessInputs();
 
-                //Filter everything besides position, velocity, angular velocity, suspension velocity
+                //Filter everything besides position, velocity, angular velocity, suspension velocity, etc..
                 FilterModuleCustom.Instance.Filter(rawData, ref filteredData, int.MaxValue & ~(posKeyMask | velKeyMask | angVelKeyMask | suspVelKeyMask | accelKeyMask), false);
 
-                HandleTelemetryPaused();
+                ProcessTeleportEnd();
 
+                HandleTelemetryPaused();
             }
-            else
+            catch (Exception e)
             {
+                Console.WriteLine("BaseProcessTransform: " + e);
                 droppedSampleCount++;
                 filteredData.Copy(lastFilteredData);
-            }
+            };
 
             lastTransform = transform;
-
 
             return true;
         }
 
 
-        public virtual bool ExtractFwdUpRht()
+        public virtual void ProcessFwdUpRht()
         {
             rht = new Vector3(transform.M11, transform.M12, transform.M13);
             up = new Vector3(transform.M21, transform.M22, transform.M23);
@@ -243,28 +251,27 @@ namespace GenericTelemetryProvider
             //reading garbage
             if (rhtMag < 0.9f || upMag < 0.9f || fwdMag < 0.9f)
             {
-                return false;
+                droppedSampleCount = int.MaxValue;
+                throw new Exception("ExtractFwdUpRht: !ExtractFwdUpRht()");
             }
-
-            return true;
 
         }
 
-        public virtual bool CheckLastFrameValid()
+        public virtual void CheckLastFrameValid()
         {
             if (!lastFrameValid)
             {
                 lastFilteredData = new CMCustomUDPData();
+                lastFilteredData.Init();
                 lastPosition = transform.Translation;
                 lastTransform = transform;
                 lastFrameValid = true;
                 lastVelocity = Vector3.Zero;
                 lastWorldVelocity = Vector3.Zero;
                 lastRawPos = Vector3.Zero;
-                return false;
-            }
 
-            return true;
+                throw new Exception("CheckLastFrameValid: last frame invalid");
+            }
         }
 
         public virtual void FilterDT()
@@ -276,32 +283,19 @@ namespace GenericTelemetryProvider
 
         }
 
-        public virtual bool CalcPosition()
+        public virtual void CalcPosition()
         {
-            /*
-            Vector3 rawVel = (currRawPos - lastRawPos) / dt;
-            float rawVelMag = rawVel.Length();
-            float lastVelMag = lastWorldVelocity.Length();
-
-            if (rawVelMag <= lastVelMag * 0.25f && (lastVelMag < rawVelMag * 10000.0f || rawVelMag <= float.Epsilon))
-            {
-                return false;
-            }
-            
-             */
 
             if (transform == lastTransform)
             {
-                return false;
+                throw new Exception("CalcPosition: Matching transforms");
             }
 
-            Vector3 currRawPos = new Vector3(transform.M41, transform.M42, transform.M43);
+            currRawPos = new Vector3(transform.M41, transform.M42, transform.M43);
 
             rawData.position_x = currRawPos.X;
             rawData.position_y = currRawPos.Y;
             rawData.position_z = currRawPos.Z;
-
-            lastRawPos = currRawPos;
 
             //filter position
             FilterModuleCustom.Instance.Filter(rawData, ref filteredData, posKeyMask, true);
@@ -309,7 +303,7 @@ namespace GenericTelemetryProvider
             //assign
             worldPosition = new Vector3((float)filteredData.position_x, (float)filteredData.position_y, (float)filteredData.position_z);
 
-            return true;
+            droppedSampleCount = 0;
         }
 
         public virtual void CalcVelocity()
@@ -586,7 +580,7 @@ namespace GenericTelemetryProvider
                 telemetryPausedTimer = Math.Max(0.0f, telemetryPausedTimer - dt);
 
                 float lerp = telemetryPausedTimer / telemetryPausedTime;
-                filteredData.LerpAllFromZero(telemetryPaused ? lerp : 1.0f - lerp);
+                filteredData.LerpAll(telemetryPaused ? lerp : 1.0f - lerp);
             }
         }
 
@@ -594,6 +588,120 @@ namespace GenericTelemetryProvider
         {
             IsStopped = true;
 
+        }
+
+
+
+        protected virtual void ProcessTeleportBegin()
+        {
+
+            switch(teleportState)
+            {
+                case TeleportState.Off:
+                    {
+
+                        bool failure = false;
+                        string failureMessage = "";
+                        //moved huge distance, don't want dis
+                        float posVel = ((currRawPos - lastRawPos).Length() / dt);
+                        lastRawPos = currRawPos;
+                        if (posVel > maxPosVelocityDelta)
+                        {
+                            failure = true;
+                            failureMessage = "HandleTeleport: maxPosVelocityDelta exceeded " + "PosVel: " + posVel;
+                        }
+
+                        //rotated huge distance, don't want dis
+                        if (Math.Abs((float)rawData.yaw_velocity) > maxRotVelocityDelta ||
+                            Math.Abs((float)rawData.pitch_velocity) > maxRotVelocityDelta ||
+                            Math.Abs((float)rawData.roll_velocity) > maxRotVelocityDelta)
+                        {
+                            failure = true;
+                            failureMessage = "HandleTeleport: maxRotVelocityDelta exceeded " + "YawVel: " + (float)rawData.yaw_velocity + "PitchVel: " + (float)rawData.pitch_velocity + "RollVel: " + (float)rawData.roll_velocity;
+                        }
+
+                        if (failure)
+                        {
+                            teleportData = new CMCustomUDPData();
+                            teleportData.Copy(lastFilteredData);
+                            teleportState = TeleportState.In;
+                            teleportTimer = teleportTime;
+                            CMCustomUDPData filteredCopy = new CMCustomUDPData();
+                            filteredCopy.Copy(lastFilteredData);
+                            FilterModuleCustom.Instance.AddFilteredData(filteredCopy);
+                            throw new Exception(failureMessage);
+                        }
+
+
+                        break;
+                    }
+                case TeleportState.In:
+                    {
+                        lastRawPos = currRawPos;
+
+                        if (teleportTimer > 0.0f)
+                        {
+                            teleportTimer -= systemDT;
+
+                            if(teleportTimer <= 0.0f)
+                            {
+                                teleportTimer = teleportTime;
+                                teleportState = TeleportState.Out;
+
+                                teleportData = new CMCustomUDPData();
+                                teleportData.Copy(lastFilteredData);
+                            }
+                        }
+                        break;
+                    }
+                case TeleportState.Out:
+                    {
+                        lastRawPos = currRawPos;
+
+                        if (teleportTimer > 0.0f)
+                        {
+                            teleportTimer -= systemDT;
+
+                            if (teleportTimer <= 0.0f)
+                            {
+                                teleportTimer = 0.0f;
+                                teleportState = TeleportState.Off;
+                            }
+                        }
+                        break;
+                    }
+            }
+
+
+        }
+
+        protected virtual void ProcessTeleportEnd()
+        {
+            switch (teleportState)
+            {
+                case TeleportState.Off:
+                    {
+                        break;
+                    }
+                case TeleportState.In:
+                    {
+                        filteredData.Copy(teleportData);
+                       
+                        float lerp = (float)(1.0 - Math.Pow(1.0 - Math.Pow((double)(teleportTimer / teleportTime), 2.0), 2.0));
+                        filteredData.LerpAll(lerp);
+
+                        FilterModuleCustom.Instance.ReplaceLatestFilteredHistory(filteredData);
+                        break;
+                    }
+                case TeleportState.Out:
+                    {
+                        float lerp = (float)Math.Pow(1.0 - Math.Pow((double)(teleportTimer / teleportTime), 2.0), 2.0);
+                        filteredData.LerpAllFrom(teleportData, lerp);
+
+                        FilterModuleCustom.Instance.ReplaceLatestFilteredHistory(filteredData);
+                        break;
+                    }
+            }
         }
     }
 }

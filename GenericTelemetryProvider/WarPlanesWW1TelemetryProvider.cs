@@ -166,36 +166,12 @@ namespace GenericTelemetryProvider
             return true;
         }
 
-        public override bool ExtractFwdUpRht()
-        {
-            return base.ExtractFwdUpRht();
-
-        }
-
-        public override bool CheckLastFrameValid()
-        {
-            return base.CheckLastFrameValid();
-        }
 
         public override void FilterDT()
         {
             if (dt <= 0)
                 dt = 0.01f;
         }
-
-        /*
-        public override bool CalcPosition()
-        {
-
-
-            //filter position
-            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, posKeyMask, true);
-
-            worldPosition = new Vector3((float)filteredData.position_x, (float)filteredData.position_y, (float)filteredData.position_z);
-
-            return true;
-        }
-        */
 
         
         public override void CalcVelocity()

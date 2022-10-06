@@ -167,48 +167,12 @@ namespace GenericTelemetryProvider
             return true;
         }
 
-        public override bool ExtractFwdUpRht()
-        {
-            return base.ExtractFwdUpRht();
-
-        }
-
-        public override bool CheckLastFrameValid()
-        {
-            return base.CheckLastFrameValid();
-        }
 
         public override void FilterDT()
         {
             if (dt <= 0)
                 dt = 0.01f;
         }
-
-        /*
-        public override bool CalcPosition()
-        {
-            if((float)rawData.gforce_lateral == data.accelX && (float)rawData.local_velocity_y == data.accelY && (float)rawData.local_velocity_z == data.accelZ)
-            {
-                return false;
-            }
-
-            Vector3 currRawPos = new Vector3(transform.M41, transform.M42, transform.M43);
-
-            rawData.position_x = currRawPos.X;
-            rawData.position_y = currRawPos.Y;
-            rawData.position_z = currRawPos.Z;
-
-            lastRawPos = currRawPos;
-
-            //filter position
-            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, posKeyMask, true);
-
-            //assign
-            worldPosition = new Vector3((float)filteredData.position_x, (float)filteredData.position_y, (float)filteredData.position_z);
-
-            return true;
-        }
-        */
 
         
         public override void CalcVelocity()
