@@ -62,9 +62,8 @@ public:
 
 	void _TickMotion(UE4::FVector a_pos, UE4::FRotator a_rot, float a_dt);
 
-	void _GetHeadTracking(UE4::FVector& a_pos, UE4::FRotator& a_rot);
+	void _GetHeadTracking(UE4::FVector& a_pos, UE4::FRotator& a_rot, float& a_hFov, float& a_worldScale);
 
-	void _GetHeadTrackingConstants(float& a_vfov, float& a_worldScale, float& a_aspectRatio);
 
 	void _Cleanup();
 

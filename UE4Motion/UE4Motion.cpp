@@ -13,8 +13,7 @@
 
 static UE4Motion* s_motionInstance = NULL;
 
-float rad2deg = (180.0f / 3.14159265359f);
-float deg2rad = (3.14159265359f / 180.0f);
+
 
 
 //BPFUNCTION(WriteToFile)
@@ -66,43 +65,23 @@ BPFUNCTION(GetHeadTracking)
 	
 	UE4::FVector pos;
 	UE4::FRotator rot;
+	float hFov;
+	float worldScale;
+	UE4::FVector constants;
 
-	s_motionInstance->_GetHeadTracking(pos, rot);
+
+	s_motionInstance->_GetHeadTracking(pos, rot, hFov, worldScale);
+
+	constants.X = hFov;
+	constants.Y = worldScale;
 
 	//Log::Print("Pos: %f, %f, %f ", pos.X, pos.Y, pos.Z);
 	//Log::Print("Rot: %f, %f, %f ", rot.Pitch, rot.Yaw, rot.Roll);
 
 	stack->SetOutput<UE4::FVector>("Pos", pos);
 	stack->SetOutput<UE4::FRotator>("Rot", rot);
+	stack->SetOutput<UE4::FVector>("Constants", constants);
 }
-
-
-float VerticalFOVToHorizontalFOV(float a_vFOV, float a_aspectRatio)
-{
-	float vFOVrad = a_vFOV * deg2rad;
-	float cameraHeightAt1 = tan(vFOVrad * .5f);
-	float horizontalFov = atan(cameraHeightAt1 * a_aspectRatio) * 2.0f * rad2deg;
-
-	Log::Print("Horizontal FOV calculated as: %f", horizontalFov);
-
-	return horizontalFov;
-}
-
-BPFUNCTION(GetHeadTrackingConstants)
-{
-	if (s_motionInstance != NULL)
-	{
-		float hFOV;
-		float worldScale;
-		float aspectRatio;
-
-		s_motionInstance->_GetHeadTrackingConstants(hFOV, worldScale, aspectRatio);
-
-		stack->SetOutput<float>("HFOV", VerticalFOVToHorizontalFOV(hFOV, aspectRatio));
-		stack->SetOutput<float>("WorldScale", worldScale);
-	}
-}
-
 
 // Only Called Once, if you need to hook shit, declare some global non changing values
 void UE4Motion::InitializeMod()
@@ -115,8 +94,6 @@ void UE4Motion::InitializeMod()
 	REGISTER_FUNCTION(TickMotion);
 
 	REGISTER_FUNCTION(GetHeadTracking);
-
-	REGISTER_FUNCTION(GetHeadTrackingConstants);
 
 	//MinHook::Init(); //Uncomment if you plan to do hooks
 
@@ -194,10 +171,12 @@ void UE4Motion::_TickMotion(UE4::FVector a_pos, UE4::FRotator a_rot, float a_dt)
 }
 
 
-void UE4Motion::_GetHeadTracking(UE4::FVector& a_pos, UE4::FRotator& a_rot)
+void UE4Motion::_GetHeadTracking(UE4::FVector& a_pos, UE4::FRotator& a_rot, float &a_hFov, float &a_worldScale)
 {
 	a_pos.X = a_pos.Y = a_pos.Z = 0.0f;
 	a_rot.Pitch = a_rot.Yaw = a_rot.Roll = 0.0f;
+	a_hFov = 120.0f;
+	a_worldScale = 1.0f;
 
 	WWCaptureHeadTrackData trackingData;
 	if (WWTickHeadTracking(trackingData))
@@ -209,72 +188,16 @@ void UE4Motion::_GetHeadTracking(UE4::FVector& a_pos, UE4::FRotator& a_rot)
 		a_rot.Pitch = -trackingData.m_pitch * rad2deg;
 		a_rot.Yaw = -trackingData.m_yaw * rad2deg;
 		a_rot.Roll = -trackingData.m_roll * rad2deg;
+
+		a_hFov = trackingData.m_hFov;
+		a_worldScale = trackingData.m_worldScale;
+
+	//	Log::Print("_GetHeadTracking:hFov :%f \n", a_hFov);
+	//	Log::Print("_GetHeadTracking:worldScale :%f \n", a_worldScale);
 	}
 
 	//Log::Print("Freetrack Position: X:%f, Y:%f, Z:%f, \n", a_pos.X, a_pos.Y, a_pos.Z);
 	//Log::Print("Freetrack Rotation: P:%f, Y:%f, R:%f, \n", a_rot.Pitch, a_rot.Yaw, a_rot.Roll);
-}
-
-
-void UE4Motion::_GetHeadTrackingConstants(float& a_vfov, float& a_worldScale, float& a_aspectRatio)
-{
-
-	std::ifstream inFile("UE4TrackConstants.txt");
-
-	if (!inFile.is_open())
-	{
-		Log::Print("Failed to open UE4TrackConstants.txt");
-		return;
-	}
-
-	std::vector<std::string> lines;
-
-	while (true)
-	{
-		std::string line;
-		if (!std::getline(inFile, line, '\n'))
-			break;
-
-		lines.push_back(line);
-	}
-
-	//Log::Print("UE4TrackConstants:: read %d lines", lines.size());
-
-	for (std::string entry : lines)
-	{
-		if (entry.empty())
-			break;
-
-		std::stringstream ss(entry);
-
-		//Log::Print("UE4TrackConstants:: read line: %s", entry.c_str());
-
-		std::string variable;
-		std::getline(ss, variable , ':');
-
-		std::string value;
-		std::getline(ss, value);
-
-		if (variable.compare("vfov") == 0)
-		{
-			a_vfov = std::stof(value);
-			Log::Print("UE4TrackConstants::%s:%f", variable.c_str(), a_vfov);
-		}
-
-		if (variable.compare("worldscale") == 0)
-		{
-			a_worldScale = std::stof(value);
-			Log::Print("UE4TrackConstants::%s:%f", variable.c_str(), a_worldScale);
-		}
-
-		if (variable.compare("aspectratio") == 0)
-		{
-			a_aspectRatio = std::stof(value);
-			Log::Print("UE4TrackConstants::%s:%f", variable.c_str(), a_aspectRatio);
-		}
-	}
-
-	inFile.close();
 }
 
 
