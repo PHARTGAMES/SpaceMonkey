@@ -63,7 +63,6 @@ namespace GenericTelemetryProvider
 
         }
 
-        Matrix4x4 lastEntryTransform = new Matrix4x4();
         void ScanComplete()
         {
             ProcessMemoryReader reader = new ProcessMemoryReader();
@@ -74,11 +73,7 @@ namespace GenericTelemetryProvider
             byte[] lastReadBuffer = new byte[readSize];
             reader.OpenProcess();
 
-            Stopwatch processSW = new Stopwatch();
-            processSW.Start();
-            double lastTime = 0.0;
-            double lastFrameTimeMS = 0.0;
-            double frameRateMS = 1000.0 / 70.0;
+            float frameRateSecs = 1.0f / 60.0f;
 
             Stopwatch sw = new Stopwatch();
             sw.Start();
@@ -89,19 +84,12 @@ namespace GenericTelemetryProvider
             {
                 try
                 {
-                    int readWait = 10;
                     Matrix4x4 transform = Matrix4x4.Identity;
                     Int64 byteReadSize;
-//                    double frameTimeMS = processSW.Elapsed.TotalMilliseconds;
                     bool different = false;
                     do
                     {
-                        //                        double frameRateMS = 1000.0 / 60.0;
-                        //                        double sleepTime = Math.Max(0, frameRateMS - (frameTimeMS- lastFrameTimeMS));
-                        //                        lastFrameTimeMS = frameTimeMS;
-                        //                        Thread.Sleep((int)sleepTime);
-                        Thread.Sleep(0);
-
+                        //read
                         reader.ReadProcessMemory((IntPtr)memoryAddress, readSize, out byteReadSize, readBuffer);
 
                         if (byteReadSize == 0)
@@ -109,6 +97,7 @@ namespace GenericTelemetryProvider
                             continue;
                         }
 
+                        //check if different
                         for (int i = 0; i < (int)readSize; ++i)
                         {
                             if (readBuffer[i] != lastReadBuffer[i])
@@ -118,17 +107,12 @@ namespace GenericTelemetryProvider
                             }
                         }
 
+                        //sleep until the end of the frame
+                        if(different)
+                            Thread.Sleep(1);
+
                     } while (!different);
 
-                    double elapsed = sw.ElapsedMilliseconds;
-
-                    readWait = 1;// Math.Max(0, (int)frameRateMS - (int)elapsed);
-
-                    //wait before reading
-                    Thread.Sleep(readWait);
-
-                    //restart just before read
-                    sw.Restart();
                     
                     //read transform
                     reader.ReadProcessMemory((IntPtr)memoryAddress, readSize, out byteReadSize, readBuffer);
@@ -145,19 +129,12 @@ namespace GenericTelemetryProvider
 
                     Buffer.BlockCopy(readBuffer, 0, floats, 0, readBuffer.Length);
 
-                    transform = new Matrix4x4(floats[0], floats[1], floats[2], floats[3]
+                    Matrix4x4 newTransform = new Matrix4x4(floats[0], floats[1], floats[2], floats[3]
                                 , floats[4], floats[5], floats[6], floats[7]
                                 , floats[8], floats[9], floats[10], floats[11]
                                 , floats[12], floats[13], floats[14], floats[15]);
 
-
-                    double timeNow = processSW.Elapsed.TotalSeconds;
-                    double frameDt = timeNow - lastTime;
-                    lastTime = timeNow;
-
-
-                    //ProcessTransform(transform, (float)frameDt);
-                    ProcessTransform(transform, 1.0f / 60.0f);// (float)frameDt);
+                    ProcessTransform(newTransform, frameRateSecs);
 
                 }
                 catch (Exception e)
@@ -179,7 +156,7 @@ namespace GenericTelemetryProvider
             if (!base.ProcessTransform(newTransform, inDT))
                 return false;
 
-            ui.DebugTextChanged(JsonConvert.SerializeObject(filteredData, Formatting.Indented) + "\n dt: " + dt + "\n steer: " + InputModule.Instance.controller.leftThumb.X + "\n accel: " + InputModule.Instance.controller.rightTrigger + "\n brake: " + InputModule.Instance.controller.leftTrigger);
+            ui.DebugTextChanged(JsonConvert.SerializeObject(filteredData, Formatting.Indented) + "\n dt: " + dt + "\n steer: " + InputModule.Instance.controller.leftThumb.X + "\n accel: " + InputModule.Instance.controller.rightTrigger + "\n brake: " + InputModule.Instance.controller.leftTrigger + ", " + "\n rht: " + rht.X + ", " + rht.Y + ", " + rht.Z + "\n up: " + up.X + ", " + up.Y + ", " + up.Z + "\n fwd: " + fwd.X + ", " + fwd.Y + ", " + fwd.Z);
 
             SendFilteredData();
 
@@ -218,21 +195,21 @@ namespace GenericTelemetryProvider
             t.Start();
         }
 
-        public override void CalcAngles()
-        {
-            base.CalcAngles();
+        //public override void CalcAngles()
+        //{
+        //    base.CalcAngles();
 
-            rawData.roll = -(float)rawData.roll;
-            rawData.yaw = -(float)rawData.yaw;
-        }
+        //    rawData.roll = -(float)rawData.roll;
+        //    rawData.yaw = -(float)rawData.yaw;
+        //}
 
-        public override void CalcVelocity()
-        {
-            base.CalcVelocity();
 
-            rawData.local_velocity_x = -(float)rawData.local_velocity_x;
+        //public override void CalcVelocity()
+        //{
+        //    base.CalcVelocity();
 
-        }
+        //    rawData.local_velocity_x = -(float)rawData.local_velocity_x;
+        //}
 
         public override void StopAllThreads()
         {

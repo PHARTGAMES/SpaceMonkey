@@ -276,20 +276,11 @@ namespace GenericTelemetryProvider
 
         public virtual void FilterDT()
         {
-            //dt = dtFilter.Filter(dt);
-
-            if (dt <= 0)
-                dt = 0.015f;
 
         }
 
         public virtual void CalcPosition()
         {
-
-            //if (transform == lastTransform)
-            //{
-            //    throw new Exception("CalcPosition: Matching transforms");
-            //}
 
             currRawPos = new Vector3(transform.M41, transform.M42, transform.M43);
 
@@ -303,7 +294,6 @@ namespace GenericTelemetryProvider
             //assign
             worldPosition = new Vector3((float)filteredData.position_x, (float)filteredData.position_y, (float)filteredData.position_z);
 
-            droppedSampleCount = 0;
         }
 
         public virtual void CalcVelocity()
@@ -325,8 +315,6 @@ namespace GenericTelemetryProvider
 
             //transform world velocity to local space
             Vector3 localVelocity = Vector3.Transform(worldVelocity, rotInv);
-
-            localVelocity.X = -localVelocity.X;
 
             rawData.local_velocity_x = localVelocity.X;
             rawData.local_velocity_y = localVelocity.Y;
@@ -366,8 +354,8 @@ namespace GenericTelemetryProvider
 
             Vector3 pyr = Utils.GetPYRFromQuaternion(quat);
 
-            rawData.pitch = pyr.X;
-            rawData.yaw = pyr.Y;
+            rawData.pitch = -pyr.X;
+            rawData.yaw = -pyr.Y;
             rawData.roll = Utils.LoopAngleRad(-pyr.Z, (float)Math.PI * 0.5f);
         }
 
@@ -473,7 +461,7 @@ namespace GenericTelemetryProvider
 
         public virtual void CalcAngularVelocityAndAccel()
         {
-            
+
             //local non gimbal locked version
             Matrix4x4 lastTransformLocal = Matrix4x4.Multiply(lastTransform, rotInv);
 
@@ -490,13 +478,13 @@ namespace GenericTelemetryProvider
             Vector3 localFwd = new Vector3(0.0f, 0.0f, 1.0f);
 
             //angle * direction
-            float yawVel = (float)Math.Acos((double)Vector3.Dot(fwdProjY, localFwd)) * Math.Sign(Vector3.Dot(lastFwd, localRht));
-            float pitchVel = (float)Math.Acos((double)Vector3.Dot(fwdProjX, localFwd)) * Math.Sign(Vector3.Dot(lastUp, localFwd));
-            float rollVel = (float)Math.Acos((double)Vector3.Dot(rhtProjZ, localRht)) * Math.Sign(Vector3.Dot(lastUp, localRht));
+            float yawVel = (float)Math.Acos((double)Vector3.Dot(fwdProjY, localFwd)) * Math.Sign(Vector3.Dot(lastFwd, localRht)) / dt;
+            float pitchVel = (float)Math.Acos((double)Vector3.Dot(fwdProjX, localFwd)) * Math.Sign(Vector3.Dot(lastUp, localFwd)) / dt;
+            float rollVel = (float)Math.Acos((double)Vector3.Dot(rhtProjZ, localRht)) * Math.Sign(Vector3.Dot(lastUp, localRht)) / dt;
 
-            rawData.yaw_velocity = yawVel / dt;
-            rawData.pitch_velocity = pitchVel / dt;
-            rawData.roll_velocity = rollVel / dt;
+            rawData.yaw_velocity = yawVel;
+            rawData.pitch_velocity = pitchVel;
+            rawData.roll_velocity = rollVel;
 
             FilterModuleCustom.Instance.Filter(rawData, ref filteredData, angVelKeyMask, false);
 
@@ -504,7 +492,8 @@ namespace GenericTelemetryProvider
             rawData.pitch_acceleration = ((float)filteredData.pitch_velocity - (float)lastFilteredData.pitch_velocity) / dt;
             rawData.roll_acceleration = ((float)filteredData.roll_velocity - (float)lastFilteredData.roll_velocity) / dt;
 
-            
+
+
             //world gimbal locked version
             /*
                         rawData.yaw_velocity = Utils.CalculateAngularChange((float) lastFilteredData.yaw, (float) filteredData.yaw) / dt;
@@ -517,7 +506,7 @@ namespace GenericTelemetryProvider
                         rawData.pitch_acceleration = ((float) filteredData.pitch_velocity - (float) lastFilteredData.pitch_velocity) / dt;
                         rawData.roll_acceleration = ((float) filteredData.roll_velocity - (float) lastFilteredData.roll_velocity) / dt;
             */
-            
+
         }
 
         public virtual void SimulateEngine()
