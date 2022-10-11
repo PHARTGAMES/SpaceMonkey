@@ -47,13 +47,13 @@ namespace GenericTelemetryProvider
             }
 
 
-            //For current WF builds we can start at //1400000000 safely. This is set in the UI
-
+            //For current WF builds we can start at //1400000000 safely. 
             long lStart = 1400000000;
             lStart -= 1000000;//skip a meg back
             if (lStart < 0) lStart = 0;
 
-            RegularMemoryScan scan = new RegularMemoryScan(mainProcess, lStart, 34359720776);// 140737488355327); //32gig            scan.ScanProgressChanged += new RegularMemoryScan.ScanProgressedEventHandler(scan_ScanProgressChanged);
+            RegularMemoryScan scan = new RegularMemoryScan(mainProcess, lStart, 140737488355327); //32gig            scan.ScanProgressChanged += new RegularMemoryScan.ScanProgressedEventHandler(scan_ScanProgressChanged);
+            scan.ScanProgressChanged += new RegularMemoryScan.ScanProgressedEventHandler(scan_ScanProgressChanged);
             scan.ScanCompleted += new RegularMemoryScan.ScanCompletedEventHandler(scan_ScanCompleted);
             scan.ScanCanceled += new RegularMemoryScan.ScanCanceledEventHandler(scan_ScanCanceled);
 
@@ -63,7 +63,7 @@ namespace GenericTelemetryProvider
 
         }
 
-
+        Matrix4x4 lastEntryTransform = new Matrix4x4();
         void ScanComplete()
         {
             ProcessMemoryReader reader = new ProcessMemoryReader();
@@ -71,8 +71,14 @@ namespace GenericTelemetryProvider
             reader.ReadProcess = mainProcess;
             UInt64 readSize = 4 * 4 * 4;
             byte[] readBuffer = new byte[readSize];
+            byte[] lastReadBuffer = new byte[readSize];
             reader.OpenProcess();
 
+            Stopwatch processSW = new Stopwatch();
+            processSW.Start();
+            double lastTime = 0.0;
+            double lastFrameTimeMS = 0.0;
+            double frameRateMS = 1000.0 / 70.0;
 
             Stopwatch sw = new Stopwatch();
             sw.Start();
@@ -83,34 +89,76 @@ namespace GenericTelemetryProvider
             {
                 try
                 {
-
-                    double frameDT = 0;
-                    while (true)
-                    {
-                        frameDT = sw.Elapsed.TotalSeconds;
-                        if (frameDT >= (updateDelay / 1000.0f))
-                            break;
-                    }
-                    sw.Restart();
-
+                    int readWait = 10;
+                    Matrix4x4 transform = Matrix4x4.Identity;
                     Int64 byteReadSize;
+//                    double frameTimeMS = processSW.Elapsed.TotalMilliseconds;
+                    bool different = false;
+                    do
+                    {
+                        //                        double frameRateMS = 1000.0 / 60.0;
+                        //                        double sleepTime = Math.Max(0, frameRateMS - (frameTimeMS- lastFrameTimeMS));
+                        //                        lastFrameTimeMS = frameTimeMS;
+                        //                        Thread.Sleep((int)sleepTime);
+                        Thread.Sleep(0);
+
+                        reader.ReadProcessMemory((IntPtr)memoryAddress, readSize, out byteReadSize, readBuffer);
+
+                        if (byteReadSize == 0)
+                        {
+                            continue;
+                        }
+
+                        for (int i = 0; i < (int)readSize; ++i)
+                        {
+                            if (readBuffer[i] != lastReadBuffer[i])
+                            {
+                                different = true;
+                                break;
+                            }
+                        }
+
+                    } while (!different);
+
+                    double elapsed = sw.ElapsedMilliseconds;
+
+                    readWait = 1;// Math.Max(0, (int)frameRateMS - (int)elapsed);
+
+                    //wait before reading
+                    Thread.Sleep(readWait);
+
+                    //restart just before read
+                    sw.Restart();
+                    
+                    //read transform
                     reader.ReadProcessMemory((IntPtr)memoryAddress, readSize, out byteReadSize, readBuffer);
 
                     if (byteReadSize == 0)
                     {
+                        Console.WriteLine("REEAAALLY DONT WANT THIS TO HAPPEN");
                         continue;
                     }
+
+                    Buffer.BlockCopy(readBuffer, 0, lastReadBuffer, 0, readBuffer.Length);
 
                     float[] floats = new float[4 * 4];
 
                     Buffer.BlockCopy(readBuffer, 0, floats, 0, readBuffer.Length);
 
-                    Matrix4x4 transform = new Matrix4x4(floats[0], floats[1], floats[2], floats[3]
+                    transform = new Matrix4x4(floats[0], floats[1], floats[2], floats[3]
                                 , floats[4], floats[5], floats[6], floats[7]
                                 , floats[8], floats[9], floats[10], floats[11]
                                 , floats[12], floats[13], floats[14], floats[15]);
 
-                    ProcessTransform(transform, (float)frameDT);
+
+                    double timeNow = processSW.Elapsed.TotalSeconds;
+                    double frameDt = timeNow - lastTime;
+                    lastTime = timeNow;
+
+
+                    //ProcessTransform(transform, (float)frameDt);
+                    ProcessTransform(transform, 1.0f / 60.0f);// (float)frameDt);
+
                 }
                 catch (Exception e)
                 {
@@ -159,7 +207,9 @@ namespace GenericTelemetryProvider
                 return;
             }
 
-            memoryAddress = e.MemoryAddresses[0] - ((4 * 4 * 4) + 4); //offset backwards from found address to start of matrix
+//            memoryAddress = e.MemoryAddresses[0] - ((4 * 4 * 4) + 4); //offset backwards from found address to start of matrix
+//            memoryAddress = e.MemoryAddresses[0] - ((4 * 4 * 4) + 8); //offset backwards from found address to start of matrix
+            memoryAddress = e.MemoryAddresses[0] - (((4 * 4 * 4) * 2) + 8); //offset backwards from found address to start of matrix
 
             ui.StatusTextChanged("Success");
 

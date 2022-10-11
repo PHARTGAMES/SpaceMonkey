@@ -1,1 +1,1 @@
-Configs\OpenMotionConfig.txt
+Configs\WreckfestConfig.txt

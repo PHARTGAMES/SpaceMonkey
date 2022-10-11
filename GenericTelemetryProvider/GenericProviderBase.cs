@@ -252,7 +252,7 @@ namespace GenericTelemetryProvider
             if (rhtMag < 0.9f || upMag < 0.9f || fwdMag < 0.9f)
             {
                 droppedSampleCount = int.MaxValue;
-                throw new Exception("ExtractFwdUpRht: !ExtractFwdUpRht()");
+                throw new Exception("ProcessFwdUpRht: !ProcessFwdUpRht()");
             }
 
         }
@@ -286,10 +286,10 @@ namespace GenericTelemetryProvider
         public virtual void CalcPosition()
         {
 
-            if (transform == lastTransform)
-            {
-                throw new Exception("CalcPosition: Matching transforms");
-            }
+            //if (transform == lastTransform)
+            //{
+            //    throw new Exception("CalcPosition: Matching transforms");
+            //}
 
             currRawPos = new Vector3(transform.M41, transform.M42, transform.M43);
 
