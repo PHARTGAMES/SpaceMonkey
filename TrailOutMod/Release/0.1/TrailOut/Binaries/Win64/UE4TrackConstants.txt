@@ -1,3 +1,0 @@
-vfov:120
-worldscale:1
-aspectratio:1.7777
