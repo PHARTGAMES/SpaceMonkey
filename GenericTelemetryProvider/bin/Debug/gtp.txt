@@ -1,1 +1,1 @@
-Configs\WreckfestConfig.txt
+Configs\WRCGenerationsConfig.txt

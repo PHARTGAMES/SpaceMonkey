@@ -37,6 +37,7 @@ namespace GenericTelemetryProvider
         OverloadUI overloadUI;
         BalsaUI balsaUI;
         OpenMotionUI openMotionUI;
+        WRCGenUI wrcGenUI;
         FilterUI filterUI;
         public static GenericTelemetryProvider Instance;
         public string versionString = "v1.0.5";
@@ -672,6 +673,21 @@ namespace GenericTelemetryProvider
             Thread x = new Thread(new ParameterizedThreadStart((form) => ((OpenMotionUI)form).ShowDialog()));
             x.IsBackground = true;
             x.Start(openMotionUI);
+        }
+
+        private void wrcGenBtn_Click(object sender, EventArgs e)
+        {
+            if (wrcGenUI != null && !wrcGenUI.IsDisposed)
+            {
+                wrcGenUI.Dispose();
+                wrcGenUI = null;
+            }
+
+            wrcGenUI = new WRCGenUI();
+
+            Thread x = new Thread(new ParameterizedThreadStart((form) => ((WRCGenUI)form).ShowDialog()));
+            x.IsBackground = true;
+            x.Start(wrcGenUI);
         }
 
     }

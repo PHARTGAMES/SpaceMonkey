@@ -477,6 +477,8 @@ namespace GenericTelemetryProvider
             Vector3 localUp = new Vector3(0.0f, 1.0f, 0.0f);
             Vector3 localFwd = new Vector3(0.0f, 0.0f, 1.0f);
 
+            //Console.WriteLine("" + ((double)Vector3.Dot(lastFwd, localFwd) * Math.Sign(Vector3.Dot(lastFwd, localRht))) / dt);
+
             //angle * direction
             float yawVel = (float)Math.Acos((double)Vector3.Dot(fwdProjY, localFwd)) * Math.Sign(Vector3.Dot(lastFwd, localRht)) / dt;
             float pitchVel = (float)Math.Acos((double)Vector3.Dot(fwdProjX, localFwd)) * Math.Sign(Vector3.Dot(lastUp, localFwd)) / dt;

@@ -70,12 +70,13 @@
             this.overloadButton = new System.Windows.Forms.Button();
             this.balsaButton = new System.Windows.Forms.Button();
             this.OpenMotionBtn = new System.Windows.Forms.Button();
+            this.WRCGenBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // Dirt5Button
             // 
             this.Dirt5Button.Location = new System.Drawing.Point(16, 14);
-            this.Dirt5Button.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Dirt5Button.Margin = new System.Windows.Forms.Padding(4);
             this.Dirt5Button.Name = "Dirt5Button";
             this.Dirt5Button.Size = new System.Drawing.Size(197, 56);
             this.Dirt5Button.TabIndex = 0;
@@ -86,7 +87,7 @@
             // Filters
             // 
             this.Filters.Location = new System.Drawing.Point(456, 506);
-            this.Filters.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Filters.Margin = new System.Windows.Forms.Padding(4);
             this.Filters.Name = "Filters";
             this.Filters.Size = new System.Drawing.Size(248, 54);
             this.Filters.TabIndex = 1;
@@ -98,7 +99,7 @@
             // 
             this.fillMMFCheckbox.AutoSize = true;
             this.fillMMFCheckbox.Location = new System.Drawing.Point(457, 66);
-            this.fillMMFCheckbox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.fillMMFCheckbox.Margin = new System.Windows.Forms.Padding(4);
             this.fillMMFCheckbox.Name = "fillMMFCheckbox";
             this.fillMMFCheckbox.Size = new System.Drawing.Size(81, 21);
             this.fillMMFCheckbox.TabIndex = 3;
@@ -110,7 +111,7 @@
             // 
             this.udpCheckBox.AutoSize = true;
             this.udpCheckBox.Location = new System.Drawing.Point(457, 94);
-            this.udpCheckBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.udpCheckBox.Margin = new System.Windows.Forms.Padding(4);
             this.udpCheckBox.Name = "udpCheckBox";
             this.udpCheckBox.Size = new System.Drawing.Size(96, 21);
             this.udpCheckBox.TabIndex = 4;
@@ -131,7 +132,7 @@
             // udpIPTextBox
             // 
             this.udpIPTextBox.Location = new System.Drawing.Point(457, 138);
-            this.udpIPTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.udpIPTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.udpIPTextBox.Name = "udpIPTextBox";
             this.udpIPTextBox.Size = new System.Drawing.Size(166, 22);
             this.udpIPTextBox.TabIndex = 6;
@@ -141,7 +142,7 @@
             // portTextBox
             // 
             this.portTextBox.Location = new System.Drawing.Point(635, 138);
-            this.portTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.portTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.portTextBox.Name = "portTextBox";
             this.portTextBox.Size = new System.Drawing.Size(70, 22);
             this.portTextBox.TabIndex = 7;
@@ -170,7 +171,7 @@
             // destinationFindButton
             // 
             this.destinationFindButton.Location = new System.Drawing.Point(672, 244);
-            this.destinationFindButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.destinationFindButton.Margin = new System.Windows.Forms.Padding(4);
             this.destinationFindButton.Name = "destinationFindButton";
             this.destinationFindButton.Size = new System.Drawing.Size(34, 30);
             this.destinationFindButton.TabIndex = 11;
@@ -182,7 +183,7 @@
             // 
             this.formatDestinationsBox.FormattingEnabled = true;
             this.formatDestinationsBox.Location = new System.Drawing.Point(457, 263);
-            this.formatDestinationsBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.formatDestinationsBox.Margin = new System.Windows.Forms.Padding(4);
             this.formatDestinationsBox.Name = "formatDestinationsBox";
             this.formatDestinationsBox.Size = new System.Drawing.Size(203, 24);
             this.formatDestinationsBox.TabIndex = 12;
@@ -192,7 +193,7 @@
             // deleteDestinationButton
             // 
             this.deleteDestinationButton.Location = new System.Drawing.Point(674, 282);
-            this.deleteDestinationButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.deleteDestinationButton.Margin = new System.Windows.Forms.Padding(4);
             this.deleteDestinationButton.Name = "deleteDestinationButton";
             this.deleteDestinationButton.Size = new System.Drawing.Size(34, 30);
             this.deleteDestinationButton.TabIndex = 13;
@@ -204,7 +205,7 @@
             // 
             this.configComboBox.FormattingEnabled = true;
             this.configComboBox.Location = new System.Drawing.Point(457, 33);
-            this.configComboBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.configComboBox.Margin = new System.Windows.Forms.Padding(4);
             this.configComboBox.Name = "configComboBox";
             this.configComboBox.Size = new System.Drawing.Size(208, 24);
             this.configComboBox.TabIndex = 14;
@@ -223,7 +224,7 @@
             // addConfigButton
             // 
             this.addConfigButton.Location = new System.Drawing.Point(674, 30);
-            this.addConfigButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.addConfigButton.Margin = new System.Windows.Forms.Padding(4);
             this.addConfigButton.Name = "addConfigButton";
             this.addConfigButton.Size = new System.Drawing.Size(34, 30);
             this.addConfigButton.TabIndex = 16;
@@ -235,7 +236,7 @@
             // 
             this.packetFormatComboBox.FormattingEnabled = true;
             this.packetFormatComboBox.Location = new System.Drawing.Point(457, 199);
-            this.packetFormatComboBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.packetFormatComboBox.Margin = new System.Windows.Forms.Padding(4);
             this.packetFormatComboBox.Name = "packetFormatComboBox";
             this.packetFormatComboBox.Size = new System.Drawing.Size(244, 24);
             this.packetFormatComboBox.TabIndex = 17;
@@ -255,7 +256,7 @@
             // 
             this.filtersComboBox.FormattingEnabled = true;
             this.filtersComboBox.Location = new System.Drawing.Point(457, 334);
-            this.filtersComboBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.filtersComboBox.Margin = new System.Windows.Forms.Padding(4);
             this.filtersComboBox.Name = "filtersComboBox";
             this.filtersComboBox.Size = new System.Drawing.Size(249, 24);
             this.filtersComboBox.TabIndex = 19;
@@ -275,7 +276,7 @@
             // 
             this.hkComboBox.FormattingEnabled = true;
             this.hkComboBox.Location = new System.Drawing.Point(457, 393);
-            this.hkComboBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.hkComboBox.Margin = new System.Windows.Forms.Padding(4);
             this.hkComboBox.Name = "hkComboBox";
             this.hkComboBox.Size = new System.Drawing.Size(150, 24);
             this.hkComboBox.TabIndex = 21;
@@ -295,7 +296,7 @@
             // 
             this.hkWindowsCheckbox.AutoSize = true;
             this.hkWindowsCheckbox.Location = new System.Drawing.Point(457, 426);
-            this.hkWindowsCheckbox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.hkWindowsCheckbox.Margin = new System.Windows.Forms.Padding(4);
             this.hkWindowsCheckbox.Name = "hkWindowsCheckbox";
             this.hkWindowsCheckbox.Size = new System.Drawing.Size(98, 21);
             this.hkWindowsCheckbox.TabIndex = 23;
@@ -307,7 +308,7 @@
             // 
             this.hkAltCheckbox.AutoSize = true;
             this.hkAltCheckbox.Location = new System.Drawing.Point(457, 457);
-            this.hkAltCheckbox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.hkAltCheckbox.Margin = new System.Windows.Forms.Padding(4);
             this.hkAltCheckbox.Name = "hkAltCheckbox";
             this.hkAltCheckbox.Size = new System.Drawing.Size(58, 21);
             this.hkAltCheckbox.TabIndex = 24;
@@ -319,7 +320,7 @@
             // 
             this.hkShiftCheckBox.AutoSize = true;
             this.hkShiftCheckBox.Location = new System.Drawing.Point(572, 426);
-            this.hkShiftCheckBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.hkShiftCheckBox.Margin = new System.Windows.Forms.Padding(4);
             this.hkShiftCheckBox.Name = "hkShiftCheckBox";
             this.hkShiftCheckBox.Size = new System.Drawing.Size(70, 21);
             this.hkShiftCheckBox.TabIndex = 25;
@@ -331,7 +332,7 @@
             // 
             this.hkCtrlCheckbox.AutoSize = true;
             this.hkCtrlCheckbox.Location = new System.Drawing.Point(572, 457);
-            this.hkCtrlCheckbox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.hkCtrlCheckbox.Margin = new System.Windows.Forms.Padding(4);
             this.hkCtrlCheckbox.Name = "hkCtrlCheckbox";
             this.hkCtrlCheckbox.Size = new System.Drawing.Size(63, 21);
             this.hkCtrlCheckbox.TabIndex = 26;
@@ -343,7 +344,7 @@
             // 
             this.hkEnabledCheckbox.AutoSize = true;
             this.hkEnabledCheckbox.Location = new System.Drawing.Point(620, 394);
-            this.hkEnabledCheckbox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.hkEnabledCheckbox.Margin = new System.Windows.Forms.Padding(4);
             this.hkEnabledCheckbox.Name = "hkEnabledCheckbox";
             this.hkEnabledCheckbox.Size = new System.Drawing.Size(82, 21);
             this.hkEnabledCheckbox.TabIndex = 27;
@@ -354,7 +355,7 @@
             // wreckfestButton
             // 
             this.wreckfestButton.Location = new System.Drawing.Point(18, 78);
-            this.wreckfestButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.wreckfestButton.Margin = new System.Windows.Forms.Padding(4);
             this.wreckfestButton.Name = "wreckfestButton";
             this.wreckfestButton.Size = new System.Drawing.Size(197, 56);
             this.wreckfestButton.TabIndex = 28;
@@ -365,7 +366,7 @@
             // beamNGButton
             // 
             this.beamNGButton.Location = new System.Drawing.Point(18, 140);
-            this.beamNGButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.beamNGButton.Margin = new System.Windows.Forms.Padding(4);
             this.beamNGButton.Name = "beamNGButton";
             this.beamNGButton.Size = new System.Drawing.Size(197, 56);
             this.beamNGButton.TabIndex = 29;
@@ -376,7 +377,7 @@
             // gtavButton
             // 
             this.gtavButton.Location = new System.Drawing.Point(18, 204);
-            this.gtavButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.gtavButton.Margin = new System.Windows.Forms.Padding(4);
             this.gtavButton.Name = "gtavButton";
             this.gtavButton.Size = new System.Drawing.Size(197, 56);
             this.gtavButton.TabIndex = 30;
@@ -387,7 +388,7 @@
             // dcsButton
             // 
             this.dcsButton.Location = new System.Drawing.Point(18, 267);
-            this.dcsButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dcsButton.Margin = new System.Windows.Forms.Padding(4);
             this.dcsButton.Name = "dcsButton";
             this.dcsButton.Size = new System.Drawing.Size(197, 56);
             this.dcsButton.TabIndex = 31;
@@ -475,7 +476,7 @@
             // wreckfestExperimentsButton
             // 
             this.wreckfestExperimentsButton.Location = new System.Drawing.Point(18, 514);
-            this.wreckfestExperimentsButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.wreckfestExperimentsButton.Margin = new System.Windows.Forms.Padding(4);
             this.wreckfestExperimentsButton.Name = "wreckfestExperimentsButton";
             this.wreckfestExperimentsButton.Size = new System.Drawing.Size(197, 56);
             this.wreckfestExperimentsButton.TabIndex = 39;
@@ -516,11 +517,23 @@
             this.OpenMotionBtn.UseVisualStyleBackColor = true;
             this.OpenMotionBtn.Click += new System.EventHandler(this.openMotionBtn_Click);
             // 
+            // WRCGenBtn
+            // 
+            this.WRCGenBtn.Location = new System.Drawing.Point(219, 452);
+            this.WRCGenBtn.Margin = new System.Windows.Forms.Padding(2);
+            this.WRCGenBtn.Name = "WRCGenBtn";
+            this.WRCGenBtn.Size = new System.Drawing.Size(197, 56);
+            this.WRCGenBtn.TabIndex = 43;
+            this.WRCGenBtn.Text = "WRC Generations";
+            this.WRCGenBtn.UseVisualStyleBackColor = true;
+            this.WRCGenBtn.Click += new System.EventHandler(this.wrcGenBtn_Click);            
+            // 
             // GenericTelemetryProvider
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(724, 581);
+            this.Controls.Add(this.WRCGenBtn);
             this.Controls.Add(this.OpenMotionBtn);
             this.Controls.Add(this.balsaButton);
             this.Controls.Add(this.overloadButton);
@@ -563,7 +576,7 @@
             this.Controls.Add(this.Filters);
             this.Controls.Add(this.Dirt5Button);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "GenericTelemetryProvider";
             this.Text = "SpaceMonkey";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
@@ -616,6 +629,7 @@
         private System.Windows.Forms.Button overloadButton;
         private System.Windows.Forms.Button balsaButton;
         private System.Windows.Forms.Button OpenMotionBtn;
+        private System.Windows.Forms.Button WRCGenBtn;
     }
 }
 

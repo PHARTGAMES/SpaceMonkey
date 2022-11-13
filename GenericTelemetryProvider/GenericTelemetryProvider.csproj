@@ -59,6 +59,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="WRCGenTelemetryProvider.cs" />
+    <Compile Include="WRCGenUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WRCGenUI.Designer.cs">
+      <DependentUpon>WRCGenUI.cs</DependentUpon>
+    </Compile>
     <Compile Include="OpenMotionTelemetryProvider.cs" />
     <Compile Include="OpenMotionUI.cs">
       <SubType>Form</SubType>
@@ -247,6 +254,9 @@
     <Compile Include="Utils.cs" />
     <Compile Include="WreckfestTelemetryProvider.cs" />
     <Compile Include="XInputController.cs" />
+    <EmbeddedResource Include="WRCGenUI.resx">
+      <DependentUpon>WRCGenUI.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="OpenMotionUI.resx">
       <DependentUpon>OpenMotionUI.cs</DependentUpon>
     </EmbeddedResource>
@@ -374,6 +384,10 @@
     <ProjectReference Include="..\WarplanesWW1API\WarplanesWW1API.csproj">
       <Project>{d171d832-8c04-433d-8674-bcd70d3e32ce}</Project>
       <Name>WarplanesWW1API</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WRCGenAPI\WRCGenAPI.csproj">
+      <Project>{9595027c-2c95-4ae0-93f0-19fc54a15483}</Project>
+      <Name>WRCGenAPI</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
