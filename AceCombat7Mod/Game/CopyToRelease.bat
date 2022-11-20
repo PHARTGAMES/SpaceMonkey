@@ -1,0 +1,1 @@
+copy "WindowsNoEditor\Game\Content\Paks\pakchunk69-WindowsNoEditor.pak" "D:\Program Files (x86)\Steam\steamapps\common\ACE COMBAT 7\Game\Content\Paks\LogicMods\OpenMotion.pak"
