@@ -71,6 +71,7 @@
             this.balsaButton = new System.Windows.Forms.Button();
             this.OpenMotionBtn = new System.Windows.Forms.Button();
             this.WRCGenBtn = new System.Windows.Forms.Button();
+            this.tinyCombatArenaButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // Dirt5Button
@@ -526,13 +527,25 @@
             this.WRCGenBtn.TabIndex = 43;
             this.WRCGenBtn.Text = "WRC Generations";
             this.WRCGenBtn.UseVisualStyleBackColor = true;
-            this.WRCGenBtn.Click += new System.EventHandler(this.wrcGenBtn_Click);            
+            this.WRCGenBtn.Click += new System.EventHandler(this.wrcGenBtn_Click);
+            // 
+            // tinyCombatArenaButton
+            // 
+            this.tinyCombatArenaButton.Location = new System.Drawing.Point(222, 514);
+            this.tinyCombatArenaButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tinyCombatArenaButton.Name = "tinyCombatArenaButton";
+            this.tinyCombatArenaButton.Size = new System.Drawing.Size(197, 56);
+            this.tinyCombatArenaButton.TabIndex = 44;
+            this.tinyCombatArenaButton.Text = "Tiny Combat Arena";
+            this.tinyCombatArenaButton.UseVisualStyleBackColor = true;
+            this.tinyCombatArenaButton.Click += new System.EventHandler(this.tinyCombatArenaButton_Click);
             // 
             // GenericTelemetryProvider
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(724, 581);
+            this.Controls.Add(this.tinyCombatArenaButton);
             this.Controls.Add(this.WRCGenBtn);
             this.Controls.Add(this.OpenMotionBtn);
             this.Controls.Add(this.balsaButton);
@@ -630,6 +643,7 @@
         private System.Windows.Forms.Button balsaButton;
         private System.Windows.Forms.Button OpenMotionBtn;
         private System.Windows.Forms.Button WRCGenBtn;
+        private System.Windows.Forms.Button tinyCombatArenaButton;
     }
 }
 

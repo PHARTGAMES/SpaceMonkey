@@ -93,6 +93,16 @@ namespace GenericTelemetryProvider.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] TCATelemetry {
+            get {
+                object obj = ResourceManager.GetObject("TCATelemetry", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] VTOLVRTelemetry {
             get {
                 object obj = ResourceManager.GetObject("VTOLVRTelemetry", resourceCulture);

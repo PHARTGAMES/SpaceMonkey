@@ -38,6 +38,7 @@ namespace GenericTelemetryProvider
         BalsaUI balsaUI;
         OpenMotionUI openMotionUI;
         WRCGenUI wrcGenUI;
+        TinyCombatArenaUI tcaUI;
         FilterUI filterUI;
         public static GenericTelemetryProvider Instance;
         public string versionString = "v1.0.5";
@@ -689,6 +690,24 @@ namespace GenericTelemetryProvider
             x.IsBackground = true;
             x.Start(wrcGenUI);
         }
+
+        private void tinyCombatArenaButton_Click(object sender, EventArgs e)
+        {
+            if (tcaUI != null && !tcaUI.IsDisposed)
+            {
+                tcaUI.Dispose();
+                tcaUI = null;
+            }
+
+            tcaUI = new TinyCombatArenaUI();
+
+            Thread x = new Thread(new ParameterizedThreadStart((form) => ((TinyCombatArenaUI)form).ShowDialog()));
+            x.IsBackground = true;
+            x.Start(tcaUI);
+        }
+
+
+        
 
     }
 }

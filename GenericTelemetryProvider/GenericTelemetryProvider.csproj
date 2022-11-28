@@ -59,6 +59,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TinyCombatArenaTelemetryProvider.cs" />
+    <Compile Include="TinyCombatArenaUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TinyCombatArenaUI.Designer.cs">
+      <DependentUpon>TinyCombatArenaUI.cs</DependentUpon>
+    </Compile>
     <Compile Include="WRCGenTelemetryProvider.cs" />
     <Compile Include="WRCGenUI.cs">
       <SubType>Form</SubType>
@@ -254,6 +261,9 @@
     <Compile Include="Utils.cs" />
     <Compile Include="WreckfestTelemetryProvider.cs" />
     <Compile Include="XInputController.cs" />
+    <EmbeddedResource Include="TinyCombatArenaUI.resx">
+      <DependentUpon>TinyCombatArenaUI.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="WRCGenUI.resx">
       <DependentUpon>WRCGenUI.cs</DependentUpon>
     </EmbeddedResource>
@@ -377,6 +387,10 @@
       <Project>{d113346d-947f-4f82-8014-e63e863308d1}</Project>
       <Name>OverloadTelemetry</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TCAAPI\TCAAPI.csproj">
+      <Project>{ba2c6b52-5ea7-4e5b-862e-632e1152693e}</Project>
+      <Name>TCAAPI</Name>
+    </ProjectReference>
     <ProjectReference Include="..\VTOLVRAPI\VTOLVRAPI.csproj">
       <Project>{1ece0c19-57d7-41be-88d5-2fec3011a321}</Project>
       <Name>VTOLVRAPI</Name>
@@ -398,6 +412,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\OverloadTelemetry.dll" />
+    <None Include="Resources\TCATelemetry.dll" />
     <Content Include="Resources\VTOLVRTelemetry.dll" />
     <Content Include="Resources\WarplanesWW1Telemetry.dll" />
   </ItemGroup>

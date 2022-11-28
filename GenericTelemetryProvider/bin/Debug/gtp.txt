@@ -1,1 +1,1 @@
-Configs\WRCGenerationsConfig.txt
+Configs\TinyCombatArenaConfig.txt
