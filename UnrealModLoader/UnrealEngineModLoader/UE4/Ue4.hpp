@@ -29,6 +29,7 @@ namespace UE4
 		GWorldObjects = (DWORD64)(GameProfile::SelectedGameProfile.GWorld);
 		UWorld::GWorld = (UWorld**)GWorldObjects;
 
+
 		#ifdef UNREALENGINEMODLOADER_EXPORTS //Stops dumb errors from the ExampleMod shit
 		if (GameProfile::SelectedGameProfile.IsUObjectMissing)
 		{
@@ -48,6 +49,8 @@ namespace UE4
 			ClassDefFinder::FindUObjectDefs(CoreUobjectObject, UEObject);
 			GameProfile::SelectedGameProfile.IsUObjectMissing = false;
 		}
+
+
 
 		if (GameProfile::SelectedGameProfile.IsUFieldMissing)
 		{

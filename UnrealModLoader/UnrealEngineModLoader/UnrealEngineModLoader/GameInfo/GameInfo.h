@@ -49,7 +49,7 @@ public:
 	bool IsUsingDeferedSpawn = false;
 	bool IsUsingFChunkedFixedUObjectArray = false;
 	bool IsUsing4_22 = false;
-
+	bool ExeAtRoot = false;
 	bool IsFunctionPatterns = false;
 	DWORD64 ProcessEvent = 0x0;
 	DWORD64 CreateDefaultObject = 0x0;

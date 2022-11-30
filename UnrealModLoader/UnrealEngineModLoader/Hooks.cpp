@@ -74,6 +74,7 @@ namespace Hooks
 			if (GameStateClassInitNotRan)
 			{
 				UE4::InitSDK();
+
 				Log::Info("Engine Classes Loaded");
 				if (Global::GetGlobals()->CoreMods.size() > 0)
 				{

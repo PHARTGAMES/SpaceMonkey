@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnrealEngineModLoader", "UnrealEngineModLoader.vcxproj", "{DE3BC2AD-2683-4D76-AD72-95D98164E9C7}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnrealEngineModLauncher", "..\UnrealEngineModLauncher\UnrealEngineModLauncher.vcxproj", "{5BF2489F-778A-4781-8666-853F6685931E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DE3BC2AD-2683-4D76-AD72-95D98164E9C7} = {DE3BC2AD-2683-4D76-AD72-95D98164E9C7}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ExampleMod", "..\ExampleMod\ExampleMod.vcxproj", "{A1BBEE5E-6F8A-46A1-A489-75AA621E1B5A}"
 EndProject

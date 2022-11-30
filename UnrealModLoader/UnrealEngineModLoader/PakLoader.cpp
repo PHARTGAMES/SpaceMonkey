@@ -11,10 +11,18 @@ namespace PakLoader
 		char path_c[MAX_PATH];
 		GetModuleFileNameA(NULL, path_c, MAX_PATH);
 		std::string path = std::string(path_c);
-		path = path.substr(0, path.find_last_of("/\\"));
-		path = path.substr(0, path.find_last_of("/\\"));
-		path = path.substr(0, path.find_last_of("/\\"));
-		path = path + "\\Content\\Paks\\LogicMods\\";
+		if (!GameProfile::SelectedGameProfile.ExeAtRoot)
+		{
+			path = path.substr(0, path.find_last_of("/\\"));
+			path = path.substr(0, path.find_last_of("/\\"));
+			path = path.substr(0, path.find_last_of("/\\"));
+			path = path + "\\Content\\Paks\\LogicMods\\";
+		}
+		else
+		{
+			path = path.substr(0, path.find_last_of("/\\"));
+			path = path + "\\Game\\Content\\Paks\\LogicMods\\";
+		}
 		if (!std::filesystem::exists(path))
 		{
 			std::filesystem::create_directory(path);

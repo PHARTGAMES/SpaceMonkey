@@ -3,7 +3,9 @@
 #include <windows.h>
 #include <filesystem>
 #include "Utilities/Logger.h"
+#include "GameInfo/GameInfo.h"
 namespace fs = std::filesystem;
+
 namespace CoreModLoader
 {
 	void InjectDLL(std::string path)
@@ -30,10 +32,18 @@ namespace CoreModLoader
 		char path_c[MAX_PATH];
 		GetModuleFileNameA(NULL, path_c, MAX_PATH);
 		std::string path = std::string(path_c);
-		path = path.substr(0, path.find_last_of("/\\"));
-		path = path.substr(0, path.find_last_of("/\\"));
-		path = path.substr(0, path.find_last_of("/\\"));
-		path = path + "\\Content\\CoreMods\\";
+		if (!GameProfile::SelectedGameProfile.ExeAtRoot)
+		{
+			path = path.substr(0, path.find_last_of("/\\"));
+			path = path.substr(0, path.find_last_of("/\\"));
+			path = path.substr(0, path.find_last_of("/\\"));
+			path = path + "\\Content\\CoreMods\\";
+		}
+		else
+		{
+			path = path.substr(0, path.find_last_of("/\\"));
+			path = path + "\\Game\\Content\\CoreMods\\";
+		}
 		if (!std::filesystem::exists(path))
 		{
 			std::filesystem::create_directory(path);

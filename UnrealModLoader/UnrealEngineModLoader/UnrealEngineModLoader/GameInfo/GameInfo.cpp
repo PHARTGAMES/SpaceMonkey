@@ -68,7 +68,8 @@ void SetupProfile(std::string Path)
 		GameProfile::SelectedGameProfile.IsUsing4_22 = GameInfo.getAs<int>("GameInfo", "IsUsing4_22", 0);
 		GameProfile::SelectedGameProfile.bIsDefaultObjectArrayed = GameInfo.getAs<int>("GameInfo", "IsDefaultObjectArrayed", 0);
 		GameProfile::SelectedGameProfile.bDelayGUISpawn = GameInfo.getAs<int>("GameInfo", "DelayGUISpawn", 0);
-
+		GameProfile::SelectedGameProfile.ExeAtRoot = GameInfo.getAs<int>("GameInfo", "ExeAtRoot", 0);
+		
 		if (GameInfo.get("GameInfo", "BeginPlayOverwrite", "") != "")
 		{
 			GameProfile::SelectedGameProfile.BeginPlayOverwrite = GameInfo.get("GameInfo", "BeginPlayOverwrite", "");
