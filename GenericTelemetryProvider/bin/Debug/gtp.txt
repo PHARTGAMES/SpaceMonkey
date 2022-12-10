@@ -1,1 +1,1 @@
-Configs\TinyCombatArenaConfig.txt
+Configs\BeamNGConfig.txt

@@ -4,8 +4,6 @@
 
 local M = {}
 
-local settings = require("simplesettings")
-
 local ffi = require("ffi")
 
 local ip = nil
@@ -44,6 +42,8 @@ local function sendDataPaketV1(dt)
 
   local o = ffi.new("motionSim_t")
   o.magic = "BNG2"
+  
+  o.dt = dt
 
   o.posX, o.posY, o.posZ = obj:getPositionXYZ()
 
@@ -185,7 +185,7 @@ local function updateV1(dt)
   accZ = accelerationSmoothingZ > 0 and accZSmoother:get(accZRaw) or accZRaw
 
   if updateTimer >= updateTime then
-    sendDataPaketV1(dt)
+    sendDataPaketV1(updateTimer)
     updateTimer = 0
   end
 end
@@ -281,6 +281,8 @@ local function initV1()
       float suspension_acceleration_br;
       float suspension_acceleration_fl;
       float suspension_acceleration_fr;
+	  
+	  float dt;
 
     } motionSim_t;
     ]]
