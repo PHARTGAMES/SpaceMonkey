@@ -98,7 +98,7 @@ namespace GenericTelemetryProvider
         public float suspension_acceleration_fl;
         public float suspension_acceleration_fr;
 
-        public float dt;
+        public float timeStamp;
 
 
         public void CopyFields(BNGAPI other)
@@ -154,7 +154,7 @@ namespace GenericTelemetryProvider
             suspension_acceleration_fl = other.suspension_acceleration_fl;
             suspension_acceleration_fr = other.suspension_acceleration_fr;
 
-            dt = other.dt;
+            timeStamp = other.timeStamp;
 
         }
 
@@ -211,7 +211,7 @@ namespace GenericTelemetryProvider
             suspension_acceleration_fl = 0;
             suspension_acceleration_fr = 0;
 
-            dt = 0;
+            timeStamp = 0;
 
         }
 

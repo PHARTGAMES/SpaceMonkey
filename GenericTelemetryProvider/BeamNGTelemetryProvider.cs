@@ -19,6 +19,7 @@ namespace GenericTelemetryProvider
         public int readPort;
         private IPEndPoint senderIP;                   // IP address of the sender for the udp connection used by the worker thread
         BNGAPI telemetryData;
+        BNGAPI lastTelemetryData = new BNGAPI();
 
         public override void Run()
         {
@@ -71,7 +72,8 @@ namespace GenericTelemetryProvider
                         && telemetryData.magic[3] == '2')
                     {
                         sw.Restart();
-                        ProcessBNGAPI(telemetryData.dt);
+                        ProcessBNGAPI(telemetryData.timeStamp - lastTelemetryData.timeStamp);
+                        lastTelemetryData.CopyFields(telemetryData);
                     }
 
                 }
@@ -110,8 +112,6 @@ namespace GenericTelemetryProvider
             {
                 Console.WriteLine("ProcessTransform: " + e);
             }
-
-
 
 
             ui.DebugTextChanged(JsonConvert.SerializeObject(filteredData, Formatting.Indented) + "\n dt: " + dt + "\n steer: " + InputModule.Instance.controller.leftThumb.X + "\n accel: " + InputModule.Instance.controller.rightTrigger + "\n brake: " + InputModule.Instance.controller.leftTrigger + "\n yaw: " + telemetryData.yawPos + "\n pitch: " + telemetryData.pitchPos + "\n roll: " + telemetryData.rollPos + "\n rht.x: " + rht.X + "\n rht.y: " + rht.Y + "\n rht.z: " + rht.Z + "\n rht.mag: " + rht.Length());

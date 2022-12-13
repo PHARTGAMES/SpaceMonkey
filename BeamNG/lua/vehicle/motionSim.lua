@@ -11,6 +11,7 @@ local port = nil
 
 local updateTime = 0
 local updateTimer = 0
+local timeStamp = 0
 
 local lastFrameData = nil
 local udpSocket = nil
@@ -43,7 +44,9 @@ local function sendDataPaketV1(dt)
   local o = ffi.new("motionSim_t")
   o.magic = "BNG2"
   
-  o.dt = dt
+  timeStamp = timeStamp + dt
+  
+  o.timeStamp = timeStamp
 
   o.posX, o.posY, o.posZ = obj:getPositionXYZ()
 
@@ -282,7 +285,7 @@ local function initV1()
       float suspension_acceleration_fl;
       float suspension_acceleration_fr;
 	  
-	  float dt;
+	  float timeStamp;
 
     } motionSim_t;
     ]]
