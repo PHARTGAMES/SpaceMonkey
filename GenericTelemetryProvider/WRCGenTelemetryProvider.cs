@@ -91,24 +91,13 @@ namespace GenericTelemetryProvider
                     telemetryData = (WRCGenData)Marshal.PtrToStructure(alloc.AddrOfPinnedObject(), typeof(WRCGenData));
                     alloc.Free();
 
-                    //float frameTime = (telemetryData.m_time - lastTime);
-                    //if (frameTime <= updateRate / 2)
-                    //{
-                    //    Console.WriteLine("drop frame: " + frameTime);
-                    //    lastTime = telemetryData.m_time;
-                    //    droppedFrameCounter++;
-                    //    continue;
-                    //}
+                    if(telemetryData.m_lapTime > 0)
+                    {
+                        ProcessTelemetryData(updateRate);
+                        droppedFrameCounter = 0;
 
-                    //lastTime = telemetryData.m_time;
-                    //ProcessTelemetryData((float)(droppedFrameCounter + 1) * updateRate);
-                    //droppedFrameCounter = 0;
-
-                    ProcessTelemetryData(updateRate);
-                    droppedFrameCounter = 0;
-
-                    sw.Restart();
-
+                        sw.Restart();
+                    }
                 }
                 catch (Exception e)
                 {

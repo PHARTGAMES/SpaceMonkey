@@ -41,7 +41,7 @@ namespace GenericTelemetryProvider
         TinyCombatArenaUI tcaUI;
         FilterUI filterUI;
         public static GenericTelemetryProvider Instance;
-        public string versionString = "v1.0.5";
+        public string versionString = "v1.0.6";
 
         bool ignoreConfigChanges = false;
 

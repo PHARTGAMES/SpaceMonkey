@@ -476,7 +476,7 @@
             // 
             // wreckfestExperimentsButton
             // 
-            this.wreckfestExperimentsButton.Location = new System.Drawing.Point(18, 514);
+            this.wreckfestExperimentsButton.Location = new System.Drawing.Point(18, 519);
             this.wreckfestExperimentsButton.Margin = new System.Windows.Forms.Padding(4);
             this.wreckfestExperimentsButton.Name = "wreckfestExperimentsButton";
             this.wreckfestExperimentsButton.Size = new System.Drawing.Size(197, 56);
@@ -498,18 +498,19 @@
             // 
             // balsaButton
             // 
-            this.balsaButton.Location = new System.Drawing.Point(219, 393);
+            this.balsaButton.Location = new System.Drawing.Point(221, 519);
             this.balsaButton.Margin = new System.Windows.Forms.Padding(2);
             this.balsaButton.Name = "balsaButton";
             this.balsaButton.Size = new System.Drawing.Size(197, 56);
             this.balsaButton.TabIndex = 41;
             this.balsaButton.Text = "Balsa";
             this.balsaButton.UseVisualStyleBackColor = true;
+            this.balsaButton.Visible = false;
             this.balsaButton.Click += new System.EventHandler(this.balsaButton_Click);
             // 
             // OpenMotionBtn
             // 
-            this.OpenMotionBtn.Location = new System.Drawing.Point(18, 452);
+            this.OpenMotionBtn.Location = new System.Drawing.Point(18, 457);
             this.OpenMotionBtn.Margin = new System.Windows.Forms.Padding(2);
             this.OpenMotionBtn.Name = "OpenMotionBtn";
             this.OpenMotionBtn.Size = new System.Drawing.Size(197, 56);
@@ -520,7 +521,7 @@
             // 
             // WRCGenBtn
             // 
-            this.WRCGenBtn.Location = new System.Drawing.Point(219, 452);
+            this.WRCGenBtn.Location = new System.Drawing.Point(221, 393);
             this.WRCGenBtn.Margin = new System.Windows.Forms.Padding(2);
             this.WRCGenBtn.Name = "WRCGenBtn";
             this.WRCGenBtn.Size = new System.Drawing.Size(197, 56);
@@ -531,7 +532,7 @@
             // 
             // tinyCombatArenaButton
             // 
-            this.tinyCombatArenaButton.Location = new System.Drawing.Point(222, 514);
+            this.tinyCombatArenaButton.Location = new System.Drawing.Point(220, 457);
             this.tinyCombatArenaButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tinyCombatArenaButton.Name = "tinyCombatArenaButton";
             this.tinyCombatArenaButton.Size = new System.Drawing.Size(197, 56);
