@@ -491,6 +491,7 @@ https://github.com/PHARTGAMES/SpaceMonkey/issues
 # Support
 
 Enter an issue here https://github.com/PHARTGAMES/SpaceMonkey/issues
+
 Discord: https://discord.gg/2bJ9J39J
 
 ---
