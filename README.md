@@ -27,16 +27,21 @@ SpaceMonkey has been tested with Sim Racing Studio (motion, wind, shakers and le
 - Sprint Car Racing (MonsterGames)
 - WRC 7/8/9
 - Richard Burns Rally (NGP 6)
-- STAR WARS: Squadrons
+- STAR WARS: Squadrons (Note: broken; requires pointer change)
 - Warplanes: WW1
 - VTOL VR
 - IL-2 Sturmovik
 - Overload
+- Trail Out
+- Mechwarrior 5 Mercenaries
+- Dakar Desert Rally
+- WRC Generations
+- Tiny Combat Arena
 
 
 ## Installation
 
-The latest installer for SpaceMonkey is here (v1.0.5)
+The latest installer for SpaceMonkey is here (v1.0.6)
 
 https://github.com/PHARTGAMES/SpaceMonkey/raw/main/GenericTelemetryProvider/Installer/SpaceMonkeyTP-SetupFiles/SpaceMonkeyTP.msi
 
@@ -77,7 +82,7 @@ All changes to config options are saved as they are changed.
 
 ### Usage
 
-1. Load Wreckfest in 32 bit mode.
+1. Load Wreckfest in 64 bit mode.
 2. Setup a session and get to the stage where you have the start race option on the left and the selected vehicle in the centre of the screen.
 3. Go to the main interface of Space Monkey and select a main config for Wreckfest.
 4. Go to the main interface of Space Monkey and press the Wreckfest button.
@@ -296,6 +301,114 @@ Some people may find better results with "decimation = 2".
 5. Space Monkey will now be outputting telemetry. Load any other software at this point.
 
 ---
+## WRC Generations
+
+### Warning
+
+WRC Generations telemetry is still WIP, the game outputs telemetry at a non deterministic rate and some of the parameters are giving incorrect values; because of this you should follow the instructions 100% for the best experience and
+be aware that you may experience some glitches.
+
+### Setup
+
+1. In explorer, navigate to C:\Users\<USERNAME>\Documents\My Games\WRCG
+2. Open UserSettings.cfg in a text editor
+3. Find the following lines and edit to match. (TelemetryRate must be 60 to match the internal update rate of SpaceMonkey and the update rate of the game.)
+
+WRC.Telemetry.TelemetryRate = 60;
+
+WRC.Telemetry.TelemetryAdress = "127.0.0.1";
+
+WRC.Telemetry.EnableTelemetry = true;
+
+WRC.Telemetry.TelemetryPort = 20777;
+
+
+
+4. Launch WRC Generations
+5. Navigate to Options / Video
+6. Turn on v-sync. (with this set to false the telemetry will be very noisy).
+7. Set Physics simulation synchronisation to High. (with this setting set to low the telemetry will be very noisy).
+8. Close WRC Generations before proceeding to the Usage steps.
+
+
+
+### Usage
+
+1. Go to the main interface of Space Monkey and select a main config for WRC Generations.
+2. Go to the main interface of Space Monkey and press the WRC Generations button.
+3. Press the Initialize! button.
+4. Space Monkey will now wait for a connection from WRC Generations and output telemetry automatically. You can launch WRC Generations and any other software at this point.
+
+---
+## Trail Out
+
+### Setup
+
+1. Navigate to the TrailOut sub folder inside the Space Monkey install folder.
+2. Extract the contents of TrailOut_0.1.zip into where you installed your Trail Out game.
+
+
+### Usage
+
+1. Go to the main interface of Space Monkey and select a main config for Open Motion.
+2. Go to the main interface of Space Monkey and press the Open Motion button.
+3. Press the Initialize! button.
+4. Space Monkey will now wait for a connection from Open Motion and output telemetry automatically. 
+5. Navigate to the UnrealModLoader_V2.2.1 sub fodler inside the Space Monkey install folder.
+6. Launch UnrealEngineModLauncher.exe
+7. Launch Trail Out
+
+---
+## Mech Warrior 5 Mercenaries
+
+### Setup
+
+1. Navigate to the MW5 sub folder inside the Space Monkey install folder.
+2. Extract the contents of MW5Mercs_0.1.zip into where you installed your MW5 game.
+
+
+### Usage
+
+1. Go to the main interface of Space Monkey and select a main config for Open Motion.
+2. Go to the main interface of Space Monkey and press the Open Motion button.
+3. Press the Initialize! button.
+4. Space Monkey will now wait for a connection from Open Motion and output telemetry automatically. 
+5. Navigate to the UnrealModLoader_V2.2.1 sub fodler inside the Space Monkey install folder.
+6. Launch UnrealEngineModLauncher.exe
+7. Launch MW5
+
+---
+## Dakar Desert Rally
+
+### Setup
+
+1. Navigate to the Dakar2 sub folder inside the Space Monkey install folder.
+2. Extract the contents of Dakar2Mod_0.1.zip into where you installed your Dakar Desert Rally game.
+
+
+### Usage
+
+1. Go to the main interface of Space Monkey and select a main config for Open Motion.
+2. Go to the main interface of Space Monkey and press the Open Motion button.
+3. Press the Initialize! button.
+4. Space Monkey will now wait for a connection from Open Motion and output telemetry automatically. 
+5. Navigate to the UnrealModLoader_V2.2.1 sub fodler inside the Space Monkey install folder.
+6. Launch UnrealEngineModLauncher.exe
+7. Launch Dakar Desert Rally
+
+---
+
+## Tiny Combat Arena
+
+### Usage
+
+1. Load the game.
+2. Go to the main interface of Space Monkey and select a main config for Tiny Combat Arena..
+3. Go to the main interface of Space Monkey and press the Tiny Combat Arena button which will load the Tiny Combat Arena UI.
+4. In the Tiny Combat Arena UI, click the Initialize button and wait for a message box to appear in the top left corner of the game window stating that SpaceMonkey is injected.
+5. Space Monkey will now be outputting telemetry. Load any other software at this point.
+
+---
 
 # Sim Racing Studio
 
@@ -351,7 +464,23 @@ Release v1.0.5
 5. Fixes for timer accuracy.
 6. Fixes for app not closing threads correctly at shutdown.
 
+
+Release v1.0.6
+
+1. Added WRC Generations support
+2. Added Trail Out support
+3. Added MechWarrior 5 Mercenaries support
+4. Added Dakar Desert Rally support
+5. Added Tiny Combat Arena support
+6. Wreckfest telemetry improvments (fixed noise, 64bit support)
+7. GTAV updated to support latest scripthook.net
+8. General rework and cleanup to start moving providers toward Open Motion.
+
+
 ---
+
+
+
 
 # Known Issues
 
