@@ -23,6 +23,7 @@ namespace GenericTelemetryProvider
         float lastTime = 0.0f;
         public float updateRate = 1.0f / 60.0f;
         int droppedFrameCounter = 0;
+        float extraTime = 0.0f;
 
         public override void Run()
         {
@@ -87,13 +88,39 @@ namespace GenericTelemetryProvider
 
                     Byte[] received = socket.Receive(ref senderIP);
 
+                    if (socket.Available != 0)
+                    {
+                        Console.WriteLine("-------------------------------ExtraRead--------------------------------");
+                        continue;
+                    }
+
                     var alloc = GCHandle.Alloc(received, GCHandleType.Pinned);
                     telemetryData = (WRCGenData)Marshal.PtrToStructure(alloc.AddrOfPinnedObject(), typeof(WRCGenData));
                     alloc.Free();
 
                     if(telemetryData.m_lapTime > 0)
                     {
-                        ProcessTelemetryData(updateRate);
+                        float finalDT = updateRate;
+                        float calcDT = telemetryData.m_time - lastTime;
+
+                        if (calcDT < 0.01f)
+                        {
+//                            finalDT = calcDT;
+//                            lastTime = telemetryData.m_time;
+                            Console.WriteLine("short frame: " + calcDT);
+                            continue;
+                        }
+
+                        if(calcDT > 0.02f)
+                        {
+                            Console.WriteLine("ExtraTime: " + calcDT);
+                            finalDT = updateRate * 2;
+                        }
+
+
+                        ProcessTelemetryData(finalDT);
+                        extraTime = 0.0f;
+                        lastTime = telemetryData.m_time;
                         droppedFrameCounter = 0;
 
                         sw.Restart();
