@@ -44,6 +44,11 @@ BPFUNCTION(TickMotion)
 	};
 	auto Inputs = stack->GetInputParams<InputParams>();
 
+	//Log::Print("TickMotion");
+	//Log::Print("Pos: %f, %f, %f ", Inputs->Pos.X, Inputs->Pos.Y, Inputs->Pos.Z);
+	//Log::Print("Rot: %f, %f, %f ", Inputs->Rot.Pitch, Inputs->Rot.Yaw, Inputs->Rot.Roll);
+	//Log::Print("DT: %f ", Inputs->DT);
+
 	if (s_motionInstance != NULL)
 	{
 		s_motionInstance->_TickMotion(Inputs->Pos, Inputs->Rot, Inputs->DT);

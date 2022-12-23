@@ -152,7 +152,10 @@
     </Link>
     <PostBuildEvent>
       <Command>copy /Y "$(OutDir)$(TargetName)$(TargetExt)" "D:\Program Files (x86)\Steam\steamapps\common\TRAIL OUT\TrailOut\Content\CoreMods"
-copy /Y "$(OutDir)$(TargetName)$(TargetExt)" "D:\Program Files\Epic Games\MW5Mercs\MW5Mercs\Content\CoreMods"</Command>
+copy /Y "$(OutDir)$(TargetName).pdb" "D:\Program Files (x86)\Steam\steamapps\common\TRAIL OUT\TrailOut\Content\CoreMods"
+copy /Y "$(OutDir)$(TargetName)$(TargetExt)" "D:\Program Files\Epic Games\MW5Mercs\MW5Mercs\Content\CoreMods"
+copy /Y "$(OutDir)$(TargetName)$(TargetExt)" "D:\Program Files (x86)\Steam\steamapps\common\Dakar Desert Rally\Dakar2Game\Content\CoreMods"
+copy /Y "$(OutDir)$(TargetName)$(TargetExt)" "D:\Program Files (x86)\Steam\steamapps\common\ACE COMBAT 7\Game\Content\CoreMods"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
