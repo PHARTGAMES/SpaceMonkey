@@ -3,5 +3,7 @@
   <PropertyGroup />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <NXTargetName>Default</NXTargetName>
+    <LocalDebuggerWorkingDirectory>D:\Personal\UE4 Modding\UnrealModLoader_V2.2.1</LocalDebuggerWorkingDirectory>
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
 </Project>

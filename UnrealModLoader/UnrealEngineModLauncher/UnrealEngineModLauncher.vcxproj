@@ -138,6 +138,9 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PostBuildEvent>
+      <Command>copy /Y "$(OutDir)$(TargetName)$(TargetExt)" "D:\Personal\projects\SpaceMonkey\trunk\UnrealModLoader\Release\2.2.1\UnrealModLoader_V2.2.1"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="UnrealEngineModLauncher.cpp" />

@@ -1,0 +1,3 @@
+This tool is for people who don't want to have to open the exe everytime they want to launch UML. Copy and paste the contents of this folder (Minus the readme) into your games win64 folder, example (E:\Games\SteamLibary\steamapps\common\UNDEFEATED\UNDEFEATED\Binaries\Win64)
+
+Also open the .ini in this folder and change the path to where you have the mod loader.dll stored. Example: (C:\Users\Russell\Desktop\UnrealModLoader\UnrealEngineModLoader.dll)

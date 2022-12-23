@@ -205,6 +205,9 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
     </Link>
+    <PostBuildEvent>
+      <Command>copy /Y "$(OutDir)$(TargetName)$(TargetExt)" "D:\Personal\projects\SpaceMonkey\trunk\UnrealModLoader\Release\2.2.1\UnrealModLoader_V2.2.1"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
