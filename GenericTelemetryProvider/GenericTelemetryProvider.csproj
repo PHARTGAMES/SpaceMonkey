@@ -59,6 +59,28 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="OutputUDPControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="OutputUDPControl.Designer.cs">
+      <DependentUpon>OutputUDPControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OutputMMFControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="OutputMMFControl.Designer.cs">
+      <DependentUpon>OutputMMFControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OutputModule.cs" />
+    <Compile Include="OutputUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OutputUI.Designer.cs">
+      <DependentUpon>OutputUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TelemetryOutput.cs" />
+    <Compile Include="TelemetryOutputMMF.cs" />
+    <Compile Include="TelemetryOutputUDP.cs" />
     <Compile Include="TinyCombatArenaTelemetryProvider.cs" />
     <Compile Include="TinyCombatArenaUI.cs">
       <SubType>Form</SubType>
@@ -261,6 +283,15 @@
     <Compile Include="Utils.cs" />
     <Compile Include="WreckfestTelemetryProvider.cs" />
     <Compile Include="XInputController.cs" />
+    <EmbeddedResource Include="OutputUDPControl.resx">
+      <DependentUpon>OutputUDPControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OutputMMFControl.resx">
+      <DependentUpon>OutputMMFControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OutputUI.resx">
+      <DependentUpon>OutputUI.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TinyCombatArenaUI.resx">
       <DependentUpon>TinyCombatArenaUI.cs</DependentUpon>
     </EmbeddedResource>

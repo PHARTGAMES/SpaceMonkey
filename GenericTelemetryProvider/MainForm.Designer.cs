@@ -31,21 +31,9 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GenericTelemetryProvider));
             this.Dirt5Button = new System.Windows.Forms.Button();
             this.Filters = new System.Windows.Forms.Button();
-            this.fillMMFCheckbox = new System.Windows.Forms.CheckBox();
-            this.udpCheckBox = new System.Windows.Forms.CheckBox();
-            this.ipLabel = new System.Windows.Forms.Label();
-            this.udpIPTextBox = new System.Windows.Forms.TextBox();
-            this.portTextBox = new System.Windows.Forms.TextBox();
-            this.udpLabel = new System.Windows.Forms.Label();
-            this.destinationsLabel = new System.Windows.Forms.Label();
-            this.destinationFindButton = new System.Windows.Forms.Button();
-            this.formatDestinationsBox = new System.Windows.Forms.ComboBox();
-            this.deleteDestinationButton = new System.Windows.Forms.Button();
             this.configComboBox = new System.Windows.Forms.ComboBox();
             this.configLabel = new System.Windows.Forms.Label();
             this.addConfigButton = new System.Windows.Forms.Button();
-            this.packetFormatComboBox = new System.Windows.Forms.ComboBox();
-            this.packetFormatLabel = new System.Windows.Forms.Label();
             this.filtersComboBox = new System.Windows.Forms.ComboBox();
             this.filterConfigLabel = new System.Windows.Forms.Label();
             this.hkComboBox = new System.Windows.Forms.ComboBox();
@@ -72,6 +60,9 @@
             this.OpenMotionBtn = new System.Windows.Forms.Button();
             this.WRCGenBtn = new System.Windows.Forms.Button();
             this.tinyCombatArenaButton = new System.Windows.Forms.Button();
+            this.outputConfigLabel = new System.Windows.Forms.Label();
+            this.outputsComboBox = new System.Windows.Forms.ComboBox();
+            this.OutputsBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // Dirt5Button
@@ -87,7 +78,7 @@
             // 
             // Filters
             // 
-            this.Filters.Location = new System.Drawing.Point(456, 506);
+            this.Filters.Location = new System.Drawing.Point(455, 519);
             this.Filters.Margin = new System.Windows.Forms.Padding(4);
             this.Filters.Name = "Filters";
             this.Filters.Size = new System.Drawing.Size(248, 54);
@@ -95,112 +86,6 @@
             this.Filters.Text = "Filters";
             this.Filters.UseVisualStyleBackColor = true;
             this.Filters.Click += new System.EventHandler(this.Filters_Click);
-            // 
-            // fillMMFCheckbox
-            // 
-            this.fillMMFCheckbox.AutoSize = true;
-            this.fillMMFCheckbox.Location = new System.Drawing.Point(457, 66);
-            this.fillMMFCheckbox.Margin = new System.Windows.Forms.Padding(4);
-            this.fillMMFCheckbox.Name = "fillMMFCheckbox";
-            this.fillMMFCheckbox.Size = new System.Drawing.Size(81, 21);
-            this.fillMMFCheckbox.TabIndex = 3;
-            this.fillMMFCheckbox.Text = "Fill MMF";
-            this.fillMMFCheckbox.UseVisualStyleBackColor = true;
-            this.fillMMFCheckbox.CheckedChanged += new System.EventHandler(this.fillMMFCheckbox_CheckedChanged);
-            // 
-            // udpCheckBox
-            // 
-            this.udpCheckBox.AutoSize = true;
-            this.udpCheckBox.Location = new System.Drawing.Point(457, 94);
-            this.udpCheckBox.Margin = new System.Windows.Forms.Padding(4);
-            this.udpCheckBox.Name = "udpCheckBox";
-            this.udpCheckBox.Size = new System.Drawing.Size(96, 21);
-            this.udpCheckBox.TabIndex = 4;
-            this.udpCheckBox.Text = "Send UDP";
-            this.udpCheckBox.UseVisualStyleBackColor = true;
-            this.udpCheckBox.CheckedChanged += new System.EventHandler(this.udpCheckBox_CheckedChanged);
-            // 
-            // ipLabel
-            // 
-            this.ipLabel.AutoSize = true;
-            this.ipLabel.Location = new System.Drawing.Point(452, 119);
-            this.ipLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.ipLabel.Name = "ipLabel";
-            this.ipLabel.Size = new System.Drawing.Size(53, 17);
-            this.ipLabel.TabIndex = 5;
-            this.ipLabel.Text = "UDP IP";
-            // 
-            // udpIPTextBox
-            // 
-            this.udpIPTextBox.Location = new System.Drawing.Point(457, 138);
-            this.udpIPTextBox.Margin = new System.Windows.Forms.Padding(4);
-            this.udpIPTextBox.Name = "udpIPTextBox";
-            this.udpIPTextBox.Size = new System.Drawing.Size(166, 22);
-            this.udpIPTextBox.TabIndex = 6;
-            this.udpIPTextBox.Text = "127.0.0.1";
-            this.udpIPTextBox.TextChanged += new System.EventHandler(this.udpIPTextBox_TextChanged);
-            // 
-            // portTextBox
-            // 
-            this.portTextBox.Location = new System.Drawing.Point(635, 138);
-            this.portTextBox.Margin = new System.Windows.Forms.Padding(4);
-            this.portTextBox.Name = "portTextBox";
-            this.portTextBox.Size = new System.Drawing.Size(70, 22);
-            this.portTextBox.TabIndex = 7;
-            this.portTextBox.TextChanged += new System.EventHandler(this.portTextBox_TextChanged);
-            // 
-            // udpLabel
-            // 
-            this.udpLabel.AutoSize = true;
-            this.udpLabel.Location = new System.Drawing.Point(631, 119);
-            this.udpLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.udpLabel.Name = "udpLabel";
-            this.udpLabel.Size = new System.Drawing.Size(34, 17);
-            this.udpLabel.TabIndex = 8;
-            this.udpLabel.Text = "Port";
-            // 
-            // destinationsLabel
-            // 
-            this.destinationsLabel.AutoSize = true;
-            this.destinationsLabel.Location = new System.Drawing.Point(452, 244);
-            this.destinationsLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.destinationsLabel.Name = "destinationsLabel";
-            this.destinationsLabel.Size = new System.Drawing.Size(181, 17);
-            this.destinationsLabel.TabIndex = 10;
-            this.destinationsLabel.Text = "Packet Format Destinations";
-            // 
-            // destinationFindButton
-            // 
-            this.destinationFindButton.Location = new System.Drawing.Point(672, 244);
-            this.destinationFindButton.Margin = new System.Windows.Forms.Padding(4);
-            this.destinationFindButton.Name = "destinationFindButton";
-            this.destinationFindButton.Size = new System.Drawing.Size(34, 30);
-            this.destinationFindButton.TabIndex = 11;
-            this.destinationFindButton.Text = "...";
-            this.destinationFindButton.UseVisualStyleBackColor = true;
-            this.destinationFindButton.Click += new System.EventHandler(this.destinationFindButton_Click);
-            // 
-            // formatDestinationsBox
-            // 
-            this.formatDestinationsBox.FormattingEnabled = true;
-            this.formatDestinationsBox.Location = new System.Drawing.Point(457, 263);
-            this.formatDestinationsBox.Margin = new System.Windows.Forms.Padding(4);
-            this.formatDestinationsBox.Name = "formatDestinationsBox";
-            this.formatDestinationsBox.Size = new System.Drawing.Size(203, 24);
-            this.formatDestinationsBox.TabIndex = 12;
-            this.formatDestinationsBox.DropDown += new System.EventHandler(this.AdjustWidthComboBox_DropDown);
-            this.formatDestinationsBox.SelectedIndexChanged += new System.EventHandler(this.formatDestinationsBox_SelectedIndexChanged);
-            // 
-            // deleteDestinationButton
-            // 
-            this.deleteDestinationButton.Location = new System.Drawing.Point(674, 282);
-            this.deleteDestinationButton.Margin = new System.Windows.Forms.Padding(4);
-            this.deleteDestinationButton.Name = "deleteDestinationButton";
-            this.deleteDestinationButton.Size = new System.Drawing.Size(34, 30);
-            this.deleteDestinationButton.TabIndex = 13;
-            this.deleteDestinationButton.Text = "-";
-            this.deleteDestinationButton.UseVisualStyleBackColor = true;
-            this.deleteDestinationButton.Click += new System.EventHandler(this.deleteDestinationButton_Click);
             // 
             // configComboBox
             // 
@@ -233,30 +118,10 @@
             this.addConfigButton.UseVisualStyleBackColor = true;
             this.addConfigButton.Click += new System.EventHandler(this.addConfigButton_Click);
             // 
-            // packetFormatComboBox
-            // 
-            this.packetFormatComboBox.FormattingEnabled = true;
-            this.packetFormatComboBox.Location = new System.Drawing.Point(457, 199);
-            this.packetFormatComboBox.Margin = new System.Windows.Forms.Padding(4);
-            this.packetFormatComboBox.Name = "packetFormatComboBox";
-            this.packetFormatComboBox.Size = new System.Drawing.Size(244, 24);
-            this.packetFormatComboBox.TabIndex = 17;
-            this.packetFormatComboBox.SelectedIndexChanged += new System.EventHandler(this.packetFormatComboBox_SelectedIndexChanged);
-            // 
-            // packetFormatLabel
-            // 
-            this.packetFormatLabel.AutoSize = true;
-            this.packetFormatLabel.Location = new System.Drawing.Point(452, 180);
-            this.packetFormatLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.packetFormatLabel.Name = "packetFormatLabel";
-            this.packetFormatLabel.Size = new System.Drawing.Size(99, 17);
-            this.packetFormatLabel.TabIndex = 18;
-            this.packetFormatLabel.Text = "Packet Format";
-            // 
             // filtersComboBox
             // 
             this.filtersComboBox.FormattingEnabled = true;
-            this.filtersComboBox.Location = new System.Drawing.Point(457, 334);
+            this.filtersComboBox.Location = new System.Drawing.Point(457, 85);
             this.filtersComboBox.Margin = new System.Windows.Forms.Padding(4);
             this.filtersComboBox.Name = "filtersComboBox";
             this.filtersComboBox.Size = new System.Drawing.Size(249, 24);
@@ -266,7 +131,7 @@
             // filterConfigLabel
             // 
             this.filterConfigLabel.AutoSize = true;
-            this.filterConfigLabel.Location = new System.Drawing.Point(452, 314);
+            this.filterConfigLabel.Location = new System.Drawing.Point(452, 65);
             this.filterConfigLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.filterConfigLabel.Name = "filterConfigLabel";
             this.filterConfigLabel.Size = new System.Drawing.Size(83, 17);
@@ -276,7 +141,7 @@
             // hkComboBox
             // 
             this.hkComboBox.FormattingEnabled = true;
-            this.hkComboBox.Location = new System.Drawing.Point(457, 393);
+            this.hkComboBox.Location = new System.Drawing.Point(458, 204);
             this.hkComboBox.Margin = new System.Windows.Forms.Padding(4);
             this.hkComboBox.Name = "hkComboBox";
             this.hkComboBox.Size = new System.Drawing.Size(150, 24);
@@ -286,7 +151,7 @@
             // hotkeyLabel
             // 
             this.hotkeyLabel.AutoSize = true;
-            this.hotkeyLabel.Location = new System.Drawing.Point(452, 373);
+            this.hotkeyLabel.Location = new System.Drawing.Point(453, 184);
             this.hotkeyLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.hotkeyLabel.Name = "hotkeyLabel";
             this.hotkeyLabel.Size = new System.Drawing.Size(106, 17);
@@ -296,7 +161,7 @@
             // hkWindowsCheckbox
             // 
             this.hkWindowsCheckbox.AutoSize = true;
-            this.hkWindowsCheckbox.Location = new System.Drawing.Point(457, 426);
+            this.hkWindowsCheckbox.Location = new System.Drawing.Point(458, 237);
             this.hkWindowsCheckbox.Margin = new System.Windows.Forms.Padding(4);
             this.hkWindowsCheckbox.Name = "hkWindowsCheckbox";
             this.hkWindowsCheckbox.Size = new System.Drawing.Size(98, 21);
@@ -308,7 +173,7 @@
             // hkAltCheckbox
             // 
             this.hkAltCheckbox.AutoSize = true;
-            this.hkAltCheckbox.Location = new System.Drawing.Point(457, 457);
+            this.hkAltCheckbox.Location = new System.Drawing.Point(458, 268);
             this.hkAltCheckbox.Margin = new System.Windows.Forms.Padding(4);
             this.hkAltCheckbox.Name = "hkAltCheckbox";
             this.hkAltCheckbox.Size = new System.Drawing.Size(58, 21);
@@ -320,7 +185,7 @@
             // hkShiftCheckBox
             // 
             this.hkShiftCheckBox.AutoSize = true;
-            this.hkShiftCheckBox.Location = new System.Drawing.Point(572, 426);
+            this.hkShiftCheckBox.Location = new System.Drawing.Point(573, 237);
             this.hkShiftCheckBox.Margin = new System.Windows.Forms.Padding(4);
             this.hkShiftCheckBox.Name = "hkShiftCheckBox";
             this.hkShiftCheckBox.Size = new System.Drawing.Size(70, 21);
@@ -332,7 +197,7 @@
             // hkCtrlCheckbox
             // 
             this.hkCtrlCheckbox.AutoSize = true;
-            this.hkCtrlCheckbox.Location = new System.Drawing.Point(572, 457);
+            this.hkCtrlCheckbox.Location = new System.Drawing.Point(573, 268);
             this.hkCtrlCheckbox.Margin = new System.Windows.Forms.Padding(4);
             this.hkCtrlCheckbox.Name = "hkCtrlCheckbox";
             this.hkCtrlCheckbox.Size = new System.Drawing.Size(63, 21);
@@ -344,7 +209,7 @@
             // hkEnabledCheckbox
             // 
             this.hkEnabledCheckbox.AutoSize = true;
-            this.hkEnabledCheckbox.Location = new System.Drawing.Point(620, 394);
+            this.hkEnabledCheckbox.Location = new System.Drawing.Point(621, 205);
             this.hkEnabledCheckbox.Margin = new System.Windows.Forms.Padding(4);
             this.hkEnabledCheckbox.Name = "hkEnabledCheckbox";
             this.hkEnabledCheckbox.Size = new System.Drawing.Size(82, 21);
@@ -541,11 +406,45 @@
             this.tinyCombatArenaButton.UseVisualStyleBackColor = true;
             this.tinyCombatArenaButton.Click += new System.EventHandler(this.tinyCombatArenaButton_Click);
             // 
+            // outputConfigLabel
+            // 
+            this.outputConfigLabel.AutoSize = true;
+            this.outputConfigLabel.Location = new System.Drawing.Point(453, 123);
+            this.outputConfigLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.outputConfigLabel.Name = "outputConfigLabel";
+            this.outputConfigLabel.Size = new System.Drawing.Size(95, 17);
+            this.outputConfigLabel.TabIndex = 46;
+            this.outputConfigLabel.Text = "Output Config";
+            // 
+            // outputsComboBox
+            // 
+            this.outputsComboBox.FormattingEnabled = true;
+            this.outputsComboBox.Location = new System.Drawing.Point(458, 143);
+            this.outputsComboBox.Margin = new System.Windows.Forms.Padding(4);
+            this.outputsComboBox.Name = "outputsComboBox";
+            this.outputsComboBox.Size = new System.Drawing.Size(249, 24);
+            this.outputsComboBox.TabIndex = 45;
+            this.outputsComboBox.SelectedIndexChanged += new System.EventHandler(this.outputsComboBox_SelectedIndexChanged);
+            // 
+            // OutputsBtn
+            // 
+            this.OutputsBtn.Location = new System.Drawing.Point(455, 457);
+            this.OutputsBtn.Margin = new System.Windows.Forms.Padding(4);
+            this.OutputsBtn.Name = "OutputsBtn";
+            this.OutputsBtn.Size = new System.Drawing.Size(248, 54);
+            this.OutputsBtn.TabIndex = 47;
+            this.OutputsBtn.Text = "Outputs";
+            this.OutputsBtn.UseVisualStyleBackColor = true;
+            this.OutputsBtn.Click += new System.EventHandler(this.OutputsBtn_Click);
+            // 
             // GenericTelemetryProvider
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(724, 581);
+            this.ClientSize = new System.Drawing.Size(730, 581);
+            this.Controls.Add(this.OutputsBtn);
+            this.Controls.Add(this.outputConfigLabel);
+            this.Controls.Add(this.outputsComboBox);
             this.Controls.Add(this.tinyCombatArenaButton);
             this.Controls.Add(this.WRCGenBtn);
             this.Controls.Add(this.OpenMotionBtn);
@@ -572,21 +471,9 @@
             this.Controls.Add(this.hkComboBox);
             this.Controls.Add(this.filterConfigLabel);
             this.Controls.Add(this.filtersComboBox);
-            this.Controls.Add(this.packetFormatLabel);
-            this.Controls.Add(this.packetFormatComboBox);
             this.Controls.Add(this.addConfigButton);
             this.Controls.Add(this.configLabel);
             this.Controls.Add(this.configComboBox);
-            this.Controls.Add(this.deleteDestinationButton);
-            this.Controls.Add(this.formatDestinationsBox);
-            this.Controls.Add(this.destinationFindButton);
-            this.Controls.Add(this.destinationsLabel);
-            this.Controls.Add(this.udpLabel);
-            this.Controls.Add(this.portTextBox);
-            this.Controls.Add(this.udpIPTextBox);
-            this.Controls.Add(this.ipLabel);
-            this.Controls.Add(this.udpCheckBox);
-            this.Controls.Add(this.fillMMFCheckbox);
             this.Controls.Add(this.Filters);
             this.Controls.Add(this.Dirt5Button);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -604,21 +491,9 @@
 
         private System.Windows.Forms.Button Dirt5Button;
         private System.Windows.Forms.Button Filters;
-        private System.Windows.Forms.CheckBox fillMMFCheckbox;
-        private System.Windows.Forms.CheckBox udpCheckBox;
-        private System.Windows.Forms.Label ipLabel;
-        private System.Windows.Forms.TextBox udpIPTextBox;
-        private System.Windows.Forms.TextBox portTextBox;
-        private System.Windows.Forms.Label udpLabel;
-        private System.Windows.Forms.Label destinationsLabel;
-        private System.Windows.Forms.Button destinationFindButton;
-        private System.Windows.Forms.ComboBox formatDestinationsBox;
-        private System.Windows.Forms.Button deleteDestinationButton;
         private System.Windows.Forms.ComboBox configComboBox;
         private System.Windows.Forms.Label configLabel;
         private System.Windows.Forms.Button addConfigButton;
-        private System.Windows.Forms.ComboBox packetFormatComboBox;
-        private System.Windows.Forms.Label packetFormatLabel;
         private System.Windows.Forms.ComboBox filtersComboBox;
         private System.Windows.Forms.Label filterConfigLabel;
         private System.Windows.Forms.ComboBox hkComboBox;
@@ -645,6 +520,9 @@
         private System.Windows.Forms.Button OpenMotionBtn;
         private System.Windows.Forms.Button WRCGenBtn;
         private System.Windows.Forms.Button tinyCombatArenaButton;
+        private System.Windows.Forms.Label outputConfigLabel;
+        private System.Windows.Forms.ComboBox outputsComboBox;
+        private System.Windows.Forms.Button OutputsBtn;
     }
 }
 

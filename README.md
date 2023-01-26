@@ -472,7 +472,7 @@ Release v1.0.6
 3. Added MechWarrior 5 Mercenaries support
 4. Added Dakar Desert Rally support
 5. Added Tiny Combat Arena support
-6. Wreckfest telemetry improvments (fixed noise, 64bit support)
+6. Wreckfest telemetry improvements (fixed noise, 64bit support)
 7. GTAV updated to support latest scripthook.net
 8. General rework and cleanup to start moving providers toward Open Motion.
 

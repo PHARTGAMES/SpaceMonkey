@@ -40,8 +40,9 @@ namespace GenericTelemetryProvider
         WRCGenUI wrcGenUI;
         TinyCombatArenaUI tcaUI;
         FilterUI filterUI;
+        OutputUI outputUI;
         public static GenericTelemetryProvider Instance;
-        public string versionString = "v1.0.6";
+        public string versionString = "v1.0.7";
 
         bool ignoreConfigChanges = false;
 
@@ -58,7 +59,6 @@ namespace GenericTelemetryProvider
             Utils.TimeBeginPeriod(1);
 
             this.Text = "SpaceMonkey " + versionString;
-            CMCustomUDPData.formatFilename = "PacketFormats\\defaultFormat.xml";
             if(Directory.Exists("Configs"))
             {
                 LoadConfig();
@@ -80,20 +80,6 @@ namespace GenericTelemetryProvider
             }
         }
 
-        void RefreshPacketFormats()
-        {
-            string selectedItem = Path.GetFileNameWithoutExtension(MainConfig.Instance.configData.packetFormat);
-            packetFormatComboBox.Items.Clear();
-            string[] files = Directory.GetFiles("PacketFormats");
-            foreach (string file in files)
-            {
-                string filename = Path.GetFileNameWithoutExtension(file);
-                packetFormatComboBox.Items.Add(filename);
-
-                if (string.Compare(filename, selectedItem) == 0)
-                    packetFormatComboBox.SelectedItem = filename;
-            }
-        }
 
         void RefreshFilters()
         {
@@ -110,22 +96,26 @@ namespace GenericTelemetryProvider
             }
         }
 
+
+        void RefreshOutputs()
+        {
+            string selectedItem = Path.GetFileNameWithoutExtension(MainConfig.Instance.configData.outputConfig);
+            outputsComboBox.Items.Clear();
+            string[] files = Directory.GetFiles("Outputs");
+            foreach (string file in files)
+            {
+                string filename = Path.GetFileNameWithoutExtension(file);
+                outputsComboBox.Items.Add(filename);
+
+                if (string.Compare(filename, selectedItem) == 0)
+                    outputsComboBox.SelectedItem = filename;
+            }
+        }
+
         void RefreshOtherSettings()
         {
-            udpCheckBox.Checked = MainConfig.Instance.configData.sendUDP;
-            fillMMFCheckbox.Checked = MainConfig.Instance.configData.fillMMF;
-            udpIPTextBox.Text = MainConfig.Instance.configData.udpIP;
-            portTextBox.Text = "" + MainConfig.Instance.configData.udpPort;
+            
 
-            if (MainConfig.Instance.configData.copyFormatDestinations != null)
-            {
-                formatDestinationsBox.Items.Clear();
-                foreach (string entry in MainConfig.Instance.configData.copyFormatDestinations)
-                    formatDestinationsBox.Items.Add(entry);
-            }
-
-            if (!string.IsNullOrEmpty(MainConfig.Instance.configData.packetFormat))
-                CMCustomUDPData.formatFilename = MainConfig.Instance.configData.packetFormat;
 
         }
 
@@ -159,8 +149,8 @@ namespace GenericTelemetryProvider
 
             ignoreConfigChanges = true;
             RefreshConfigs();
-            RefreshPacketFormats();
             RefreshFilters();
+            RefreshOutputs();
             RefreshHotkey();
             RefreshOtherSettings();
             ignoreConfigChanges = false;
@@ -216,80 +206,6 @@ namespace GenericTelemetryProvider
             x.Start(filterUI);
         }
 
-        private void udpIPTextBox_TextChanged(object sender, EventArgs e)
-        {
-            if (ignoreConfigChanges)
-                return;
-
-            MainConfig.Instance.configData.udpIP = udpIPTextBox.Text;
-            MainConfig.Instance.Save();
-        }
-
-        private void portTextBox_TextChanged(object sender, EventArgs e)
-        {
-            if (ignoreConfigChanges)
-                return;
-
-            int.TryParse(portTextBox.Text, out MainConfig.Instance.configData.udpPort);
-            MainConfig.Instance.Save();
-        }
-
-        private void udpCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (ignoreConfigChanges)
-                return;
-
-            MainConfig.Instance.configData.sendUDP = udpCheckBox.Checked;
-            MainConfig.Instance.Save();
-        }
-
-        private void fillMMFCheckbox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (ignoreConfigChanges)
-                return;
-
-            MainConfig.Instance.configData.fillMMF = fillMMFCheckbox.Checked;
-            MainConfig.Instance.Save();
-
-        }
-
-        private void destinationFindButton_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                MTAOpenFileDialog dialog = new MTAOpenFileDialog();
-                dialog.OnComplete = (obj, args) =>
-                {
-                    string result = (args as MTAOpenFileDialogEventArgs).FileName;
-
-                    MainConfig.Instance.configData.AddFormatDestination(result);
-                    MainConfig.Instance.Save();
-                    Utils.AddComboBoxEntryThreadSafe(formatDestinationsBox, result);
-                };
-                dialog.ShowDialog("CMCustomUDPFormat.xml");
-            }
-            catch (Exception exc)
-            {
-            }
-
-        }
-
-        private void deleteDestinationButton_Click(object sender, EventArgs e)
-        {
-            if(formatDestinationsBox.SelectedItem != null)
-            {
-                MainConfig.Instance.configData.RemoveFormatDestination((string)formatDestinationsBox.SelectedItem);
-                MainConfig.Instance.Save();
-
-                formatDestinationsBox.Items.RemoveAt(formatDestinationsBox.SelectedIndex);
-                formatDestinationsBox.SelectedIndex = -1;
-            }
-        }
-
-        private void formatDestinationsBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
 
         private void AdjustWidthComboBox_DropDown(object sender, EventArgs e)
         {
@@ -366,17 +282,6 @@ namespace GenericTelemetryProvider
             LoadConfig();
         }
 
-        private void packetFormatComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (ignoreConfigChanges)
-                return;
-
-            if (packetFormatComboBox.SelectedItem == null)
-                return;
-
-            CMCustomUDPData.formatFilename = MainConfig.Instance.configData.packetFormat = "PacketFormats\\" + (string)packetFormatComboBox.SelectedItem + ".xml";
-            MainConfig.Instance.Save();
-        }
 
         private void filtersComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -706,8 +611,34 @@ namespace GenericTelemetryProvider
             x.Start(tcaUI);
         }
 
+        private void OutputsBtn_Click(object sender, EventArgs e)
+        {
+            if (outputUI != null && !outputUI.IsDisposed)
+            {
+                outputUI.Dispose();
+                outputUI = null;
+            }
 
-        
+            outputUI = new OutputUI();
 
+            Thread x = new Thread(new ParameterizedThreadStart((form) =>
+            {
+                ((OutputUI)form).ShowDialog();
+            }));
+            x.IsBackground = true;
+            x.Start(outputUI);
+        }
+
+        private void outputsComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ignoreConfigChanges)
+                return;
+
+            if (outputsComboBox.SelectedItem == null)
+                return;
+
+            MainConfig.Instance.configData.outputConfig = "Outputs\\" + (string)outputsComboBox.SelectedItem + ".txt";
+            MainConfig.Instance.Save();
+        }
     }
 }

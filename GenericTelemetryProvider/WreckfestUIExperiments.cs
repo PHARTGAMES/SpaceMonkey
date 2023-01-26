@@ -102,6 +102,7 @@ namespace GenericTelemetryProvider
             provider.gameUI = provider.ui = this;
 
             FilterModuleCustom.Instance.InitFromConfig(MainConfig.Instance.configData.filterConfig);
+            OutputModule.Instance.InitFromConfig(MainConfig.Instance.configData.outputConfig);
 
             //reset the boxes to the default values! (can WinForms do an UpdateOnStart thing?)
             GForceClip.Text = GForceMaxClip.ToString();
@@ -112,8 +113,6 @@ namespace GenericTelemetryProvider
 
         public void ScanButtonClicked(object sender, EventArgs e)
         {
-            MainConfig.Instance.configData.CopyFileToDestinations(MainConfig.Instance.configData.packetFormat);
-
             initializeButton.Enabled = false;
             statusLabel.Text = "Please Wait";
             progressBar1.Value = 0;

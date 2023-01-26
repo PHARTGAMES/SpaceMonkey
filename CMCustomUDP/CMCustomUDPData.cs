@@ -11,8 +11,8 @@ namespace CMCustomUDP
 {
     public class CMCustomUDPData
     {
-
-        public static string formatFilename;
+        [System.NonSerialized]
+        public string formatFilename = "PacketFormats\\defaultPacketFormat.xml";
 
         Dictionary<DataKey, CMChannelMap> channels = new Dictionary<DataKey, CMChannelMap>();
         byte[] packet;
@@ -222,8 +222,13 @@ namespace CMCustomUDP
             idle_rpm = 0.0f;
         }
 
-        public void Init()
+        public void Init(string _formatFilename = null)
         {
+
+            if (!string.IsNullOrEmpty(_formatFilename))
+            {
+                formatFilename = _formatFilename;
+            }
 
             CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
 
@@ -234,14 +239,14 @@ namespace CMCustomUDP
 
             int offset = 0;
 
-            foreach(XmlNode channel in root.ChildNodes)
+            foreach (XmlNode channel in root.ChildNodes)
             {
                 string type = channel.Name;
                 string name = channel.Attributes["channel"]?.InnerText;
                 float scale = float.Parse(channel.Attributes["scale"]?.InnerText);
 
                 Type sysType = typeof(float);
-                switch(type.ToLower())
+                switch (type.ToLower())
                 {
                     case "uint32":
                         {
@@ -273,7 +278,6 @@ namespace CMCustomUDP
             }
 
             packet = new byte[offset];
-
         }
 
         public byte[] GetBytes()

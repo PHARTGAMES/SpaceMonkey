@@ -36,7 +36,6 @@ namespace GenericTelemetryProvider
         public static string saveFilename = "Configs\\defaultConfig.txt";
         public bool blockSave = false;
 
-
         public void Load()
         {
 
@@ -68,15 +67,9 @@ namespace GenericTelemetryProvider
 
     public class MainConfigData
     {
-        public bool sendUDP;
-        public string udpIP;
-        public int udpPort;
+        public string filterConfig = "Filters\\defaultFilters.txt";
 
-        public bool fillMMF;
-
-        public List<string> copyFormatDestinations;
-        public string packetFormat;
-        public string filterConfig;
+        public string outputConfig = "Outputs\\default_MMF_UDP.txt";
 
         public class HotkeyConfig
         {
@@ -87,53 +80,9 @@ namespace GenericTelemetryProvider
             public bool ctrl;
             public bool shift;
         }
+
         public HotkeyConfig hotkey = new HotkeyConfig();
 
-        public void AddFormatDestination(string text)
-        {
-            if (copyFormatDestinations == null)
-                copyFormatDestinations = new List<string>();
-
-            copyFormatDestinations.Add(text);
-        }
-
-        public void RemoveFormatDestination(string text)
-        {
-            if (copyFormatDestinations == null)
-                return;
-
-            for(int i = 0; i < copyFormatDestinations.Count; ++i)
-            {
-                if(string.Compare(copyFormatDestinations[i], text) == 0)
-                {
-                    copyFormatDestinations.RemoveAt(i);
-                    break;
-                }
-            }    
-        }
-
-        public void CopyFileToDestinations(string from)
-        {
-            if (copyFormatDestinations == null)
-                return;
-
-            if (!File.Exists(from))
-            {
-                Console.WriteLine(from + " does not exist");
-                return;
-            }
-
-            foreach (string dest in copyFormatDestinations)
-            {
-                try
-                {
-                    File.Copy(from, dest, true);
-                }
-                catch(Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                }
-            }
-        }
     }
+
 }

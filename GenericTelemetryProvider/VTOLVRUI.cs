@@ -84,8 +84,6 @@ namespace GenericTelemetryProvider
 
         private void initializeButton_Click(object sender, EventArgs e)
         {
-            MainConfig.Instance.configData.CopyFileToDestinations(MainConfig.Instance.configData.packetFormat);
-
             initializeButton.Enabled = false;
             statusLabel.Text = "Waiting For VTOL VR";
 

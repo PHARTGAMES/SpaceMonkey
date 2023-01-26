@@ -17,8 +17,6 @@ namespace GenericTelemetryProvider
 {
     public class GenericProviderBase
     {
-        protected Mutex mutex;
-        protected MemoryMappedFile filteredMMF;
         protected CMCustomUDPData lastFilteredData;
         protected CMCustomUDPData filteredData;
         protected CMCustomUDPData rawData;
@@ -28,10 +26,6 @@ namespace GenericTelemetryProvider
         protected Vector3 lastPosition = Vector3.Zero;
         protected Vector3 lastWorldVelocity = Vector3.Zero;
         protected Vector3 lastRawPos = Vector3.Zero;
-
-        protected TelemetrySender telemetrySender = new TelemetrySender();
-        protected bool sendUDP = false;
-        protected bool fillMMF = false;
 
         protected NestedSmooth dtFilter = new NestedSmooth(0, 60, 100000.0f);
 
@@ -103,10 +97,6 @@ namespace GenericTelemetryProvider
 
         public virtual void Run()
         {
-            mutex = new Mutex(false, "GenericTelemetryProviderMutex");
-
-            filteredMMF = MemoryMappedFile.CreateOrOpen("GenericTelemetryProviderFiltered", 10000);
-
             systemSW = new Stopwatch();
             systemSW.Start();
             systemDT = 0.01f;
@@ -153,13 +143,9 @@ namespace GenericTelemetryProvider
             rawData = new CMCustomUDPData();
             rawData.Init();
 
-            fillMMF = MainConfig.Instance.configData.fillMMF;
-            sendUDP = MainConfig.Instance.configData.sendUDP;
+            OutputModule.Instance.InitFromConfig(MainConfig.Instance.configData.outputConfig);
+            OutputModule.Instance.StartSending();
 
-            if (sendUDP)
-            {
-                telemetrySender.StartSending(MainConfig.Instance.configData.udpIP, MainConfig.Instance.configData.udpPort);
-            }
 
             IsStopped = false;
 
@@ -167,19 +153,13 @@ namespace GenericTelemetryProvider
 
         public virtual void StopSending()
         {
-            if (sendUDP)
-                telemetrySender.StopSending();
+            OutputModule.Instance.StopSending();
         }
 
         public virtual void Stop()
         {
-            if (filteredMMF != null)
-                filteredMMF.Dispose();
-            filteredMMF = null;
-
             if (hotkey != null && hotkey.Registered)
                 hotkey.Unregister(); 
-
         }
 
         public virtual bool ProcessTransform(Matrix4x4 inTransform, float inDT)
@@ -536,27 +516,9 @@ namespace GenericTelemetryProvider
 
         public virtual void SendFilteredData()
         {
-
-            byte[] bytes = filteredData.GetBytes();
-
-            mutex.WaitOne();
-
-            if (fillMMF)
-            {
-                using (MemoryMappedViewStream stream = filteredMMF.CreateViewStream())
-                {
-                    BinaryWriter writer = new BinaryWriter(stream);
-                    writer.Write(bytes);
-                }
-            }
-
-            if (sendUDP)
-                telemetrySender.SendAsync(bytes);
+            OutputModule.Instance.SendData(filteredData);
 
             lastFilteredData.Copy(filteredData);
-
-            mutex.ReleaseMutex();
-
         }
 
         public virtual void HandleTelemetryPaused()
