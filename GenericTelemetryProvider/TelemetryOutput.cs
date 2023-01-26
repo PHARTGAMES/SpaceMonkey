@@ -30,7 +30,7 @@ namespace GenericTelemetryProvider
 
         public virtual void SendData(CMCustomUDPData _data)
         {
-            data.Copy(_data);
+            data.Copy(_data, false);
         }
 
         public virtual OutputConfigTypeData GetConfigTypeData()

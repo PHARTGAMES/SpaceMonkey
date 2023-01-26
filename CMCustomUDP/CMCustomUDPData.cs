@@ -84,6 +84,33 @@ namespace CMCustomUDP
             last_lap_time,
             max_rpm,
             idle_rpm,
+
+            //added for codemasters extradata=3
+            total_distance,
+            world_velocity_x,
+            world_velocity_y,
+            world_velocity_z,
+            world_dir_rht_x,
+            world_dir_rht_y,
+            world_dir_rht_z,
+            world_dir_fwd_x,
+            world_dir_fwd_y,
+            world_dir_fwd_z,
+            sli_pro_native_support,
+            kers_level,
+            kers_max,
+            drs,
+            traction_control,
+            anti_lock_brakes,
+            fuel_in_tank,
+            fuel_capacity,
+            in_pits,
+            team_info,
+            session_type,
+            drs_allowed,
+            track_number,
+            vehicle_fia_flags,
+
             Max
         }
 
@@ -153,6 +180,32 @@ namespace CMCustomUDP
         public object max_rpm;
         public object idle_rpm;
 
+        //added for codemasters extradata=3
+        public object total_distance;
+        public object world_velocity_x;
+        public object world_velocity_y;
+        public object world_velocity_z;
+        public object world_dir_rht_x;
+        public object world_dir_rht_y;
+        public object world_dir_rht_z;
+        public object world_dir_fwd_x;
+        public object world_dir_fwd_y;
+        public object world_dir_fwd_z;
+        public object sli_pro_native_support;
+        public object kers_level;
+        public object kers_max;
+        public object drs;
+        public object traction_control;
+        public object anti_lock_brakes;
+        public object fuel_in_tank;
+        public object fuel_capacity;
+        public object in_pits;
+        public object team_info;
+        public object session_type;
+        public object drs_allowed;
+        public object track_number;
+        public object vehicle_fia_flags;
+
         public CMCustomUDPData()
         {
             total_time = 0.0f;
@@ -220,6 +273,33 @@ namespace CMCustomUDP
             last_lap_time = 0.0f;
             max_rpm = 0.0f;
             idle_rpm = 0.0f;
+
+            //added for codemasters extradata=3
+            total_distance = 0.0f;
+            world_velocity_x = 0.0f;
+            world_velocity_y = 0.0f;
+            world_velocity_z = 0.0f;
+            world_dir_rht_x = 0.0f;
+            world_dir_rht_y = 0.0f;
+            world_dir_rht_z = 0.0f;
+            world_dir_fwd_x = 0.0f;
+            world_dir_fwd_y = 0.0f;
+            world_dir_fwd_z = 0.0f;
+            sli_pro_native_support = 0.0f;
+            kers_level = 0.0f;
+            kers_max = 0.0f;
+            drs = 0.0f;
+            traction_control = 0.0f;
+            anti_lock_brakes = 0.0f;
+            fuel_in_tank = 0.0f;
+            fuel_capacity = 0.0f;
+            in_pits = 0.0f;
+            team_info = 0.0f;
+            session_type = 0.0f;
+            drs_allowed = 0.0f;
+            track_number = 0.0f;
+            vehicle_fia_flags = 0.0f;
+
         }
 
         public void Init(string _formatFilename = null)
@@ -241,6 +321,10 @@ namespace CMCustomUDP
 
             foreach (XmlNode channel in root.ChildNodes)
             {
+                //ignore comments
+                if (channel.NodeType == XmlNodeType.Comment)
+                    continue;
+
                 string type = channel.Name;
                 string name = channel.Attributes["channel"]?.InnerText;
                 float scale = float.Parse(channel.Attributes["scale"]?.InnerText);
@@ -317,7 +401,7 @@ namespace CMCustomUDP
             return channels.ContainsKey(key);
         }
 
-        public void Copy(CMCustomUDPData other)
+        public void Copy(CMCustomUDPData other, bool copyChannels = true)
         {
             total_time = other.total_time;
             paused = other.paused;
@@ -385,7 +469,34 @@ namespace CMCustomUDP
             max_rpm = other.max_rpm;
             idle_rpm = other.idle_rpm;
 
-            channels = other.channels;
+            //added for codemasters extradata=3
+            total_distance = other.total_distance;
+            world_velocity_x = other.world_velocity_x;
+            world_velocity_y = other.world_velocity_y;
+            world_velocity_z = other.world_velocity_z;
+            world_dir_rht_x = other.world_dir_rht_x;
+            world_dir_rht_y = other.world_dir_rht_y;
+            world_dir_rht_z = other.world_dir_rht_z;
+            world_dir_fwd_x = other.world_dir_fwd_x;
+            world_dir_fwd_y = other.world_dir_fwd_y;
+            world_dir_fwd_z = other.world_dir_fwd_z;
+            sli_pro_native_support = other.sli_pro_native_support;
+            kers_level = other.kers_level;
+            kers_max = other.kers_max;
+            drs = other.drs;
+            traction_control = other.traction_control;
+            anti_lock_brakes = other.anti_lock_brakes;
+            fuel_in_tank = other.fuel_in_tank;
+            fuel_capacity = other.fuel_capacity;
+            in_pits = other.in_pits;
+            team_info = other.team_info;
+            session_type = other.session_type;
+            drs_allowed = other.drs_allowed;
+            track_number = other.track_number;
+            vehicle_fia_flags = other.vehicle_fia_flags;
+
+            if(copyChannels)
+                channels = other.channels;
         }
 
         public static int GetKeyMask(params DataKey[] list)
@@ -482,6 +593,34 @@ namespace CMCustomUDP
             tyre_pressure_br = Lerp(0.0f, (float)tyre_pressure_br, lerp);
             tyre_pressure_fl = Lerp(0.0f, (float)tyre_pressure_fl, lerp);
             tyre_pressure_fr = Lerp(0.0f, (float)tyre_pressure_fr, lerp);
+
+            //added for codemasters extradata=3
+            total_distance = Lerp(0.0f, (float)total_distance, lerp);
+            world_velocity_x = Lerp(0.0f, (float)world_velocity_x, lerp);
+            world_velocity_y = Lerp(0.0f, (float)world_velocity_y, lerp);
+            world_velocity_z = Lerp(0.0f, (float)world_velocity_z, lerp);
+            world_dir_rht_x = Lerp(0.0f, (float)world_dir_rht_x, lerp);
+            world_dir_rht_y = Lerp(0.0f, (float)world_dir_rht_y, lerp);
+            world_dir_rht_z = Lerp(0.0f, (float)world_dir_rht_z, lerp);
+            world_dir_fwd_x = Lerp(0.0f, (float)world_dir_fwd_x, lerp);
+            world_dir_fwd_y = Lerp(0.0f, (float)world_dir_fwd_y, lerp);
+            world_dir_fwd_z = Lerp(0.0f, (float)world_dir_fwd_z, lerp);
+            sli_pro_native_support = Lerp(0.0f, (float)sli_pro_native_support, lerp);
+            kers_level = Lerp(0.0f, (float)kers_level, lerp);
+            kers_max = Lerp(0.0f, (float)kers_max, lerp);
+            drs = Lerp(0.0f, (float)drs, lerp);
+            traction_control = Lerp(0.0f, (float)traction_control, lerp);
+            anti_lock_brakes = Lerp(0.0f, (float)anti_lock_brakes, lerp);
+            fuel_in_tank = Lerp(0.0f, (float)fuel_in_tank, lerp);
+            fuel_capacity = Lerp(0.0f, (float)fuel_capacity, lerp);
+            in_pits = Lerp(0.0f, (float)in_pits, lerp);
+            team_info = Lerp(0.0f, (float)team_info, lerp);
+            session_type = Lerp(0.0f, (float)session_type, lerp);
+            drs_allowed = Lerp(0.0f, (float)drs_allowed, lerp);
+            track_number = Lerp(0.0f, (float)track_number, lerp);
+            vehicle_fia_flags = Lerp(0.0f, (float)vehicle_fia_flags, lerp);
+
+
         }
 
         public void LerpAllFrom(CMCustomUDPData from, float lerp)
@@ -525,6 +664,33 @@ namespace CMCustomUDP
             tyre_pressure_br = Lerp((float)from.tyre_pressure_br, (float)tyre_pressure_br, lerp);
             tyre_pressure_fl = Lerp((float)from.tyre_pressure_fl, (float)tyre_pressure_fl, lerp);
             tyre_pressure_fr = Lerp((float)from.tyre_pressure_fr, (float)tyre_pressure_fr, lerp);
+
+
+            //added for codemasters extradata=3
+            total_distance = Lerp((float)from.total_distance, (float)total_distance, lerp);
+            world_velocity_x = Lerp((float)from.world_velocity_x, (float)world_velocity_x, lerp);
+            world_velocity_y = Lerp((float)from.world_velocity_y, (float)world_velocity_y, lerp);
+            world_velocity_z = Lerp((float)from.world_velocity_z, (float)world_velocity_z, lerp);
+            world_dir_rht_x = Lerp((float)from.world_dir_rht_x, (float)world_dir_rht_x, lerp);
+            world_dir_rht_y = Lerp((float)from.world_dir_rht_y, (float)world_dir_rht_y, lerp);
+            world_dir_rht_z = Lerp((float)from.world_dir_rht_z, (float)world_dir_rht_z, lerp);
+            world_dir_fwd_x = Lerp((float)from.world_dir_fwd_x, (float)world_dir_fwd_x, lerp);
+            world_dir_fwd_y = Lerp((float)from.world_dir_fwd_y, (float)world_dir_fwd_y, lerp);
+            world_dir_fwd_z = Lerp((float)from.world_dir_fwd_z, (float)world_dir_fwd_z, lerp);
+            sli_pro_native_support = Lerp((float)from.sli_pro_native_support, (float)sli_pro_native_support, lerp);
+            kers_level = Lerp((float)from.kers_level, (float)kers_level, lerp);
+            kers_max = Lerp((float)from.kers_max, (float)kers_max, lerp);
+            drs = Lerp((float)from.drs, (float)drs, lerp);
+            traction_control = Lerp((float)from.traction_control, (float)traction_control, lerp);
+            anti_lock_brakes = Lerp((float)from.anti_lock_brakes, (float)anti_lock_brakes, lerp);
+            fuel_in_tank = Lerp((float)from.fuel_in_tank, (float)fuel_in_tank, lerp);
+            fuel_capacity = Lerp((float)from.fuel_capacity, (float)fuel_capacity, lerp);
+            in_pits = Lerp((float)from.in_pits, (float)in_pits, lerp);
+            team_info = Lerp((float)from.team_info, (float)team_info, lerp);
+            session_type = Lerp((float)from.session_type, (float)session_type, lerp);
+            drs_allowed = Lerp((float)from.drs_allowed, (float)drs_allowed, lerp);
+            track_number = Lerp((float)from.track_number, (float)track_number, lerp);
+            vehicle_fia_flags = Lerp((float)from.vehicle_fia_flags, (float)vehicle_fia_flags, lerp);
         }
 
 

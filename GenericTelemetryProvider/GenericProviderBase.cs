@@ -196,6 +196,8 @@ namespace GenericTelemetryProvider
 
                 SimulateEngine();
 
+                CalcCMExtraData3();
+
                 ProcessInputs();
 
                 //Filter everything besides position, velocity, angular velocity, suspension velocity, etc..
@@ -519,6 +521,55 @@ namespace GenericTelemetryProvider
             OutputModule.Instance.SendData(filteredData);
 
             lastFilteredData.Copy(filteredData);
+        }
+
+        public virtual void CalcCMExtraData3()
+        {
+            filteredData.total_time = rawData.total_time = (float)lastFilteredData.total_time + dt;
+            filteredData.total_distance = rawData.total_distance = 1000.0f;
+
+            Matrix4x4 rotation = new Matrix4x4();
+            rotation = transform;
+            rotation.M41 = 0.0f;
+            rotation.M42 = 0.0f;
+            rotation.M43 = 0.0f;
+            rotation.M44 = 1.0f;
+
+            Vector3 localVelocity = new Vector3((float)filteredData.local_velocity_x, (float)filteredData.local_velocity_y, (float)filteredData.local_velocity_z);
+
+            Vector3 worldVelocity = Vector3.Transform(localVelocity, rotation);
+
+            filteredData.world_velocity_x = rawData.world_velocity_x = worldVelocity.X;
+            filteredData.world_velocity_y = rawData.world_velocity_y = worldVelocity.Y;
+            filteredData.world_velocity_z = rawData.world_velocity_z = worldVelocity.Z;
+
+            filteredData.world_dir_rht_x = rawData.world_dir_rht_x = rht.X;
+            filteredData.world_dir_rht_y = rawData.world_dir_rht_y = rht.Y;
+            filteredData.world_dir_rht_z = rawData.world_dir_rht_z = rht.Z;
+
+            filteredData.world_dir_fwd_x = rawData.world_dir_fwd_x = fwd.X;
+            filteredData.world_dir_fwd_y = rawData.world_dir_fwd_y = fwd.Y;
+            filteredData.world_dir_fwd_z = rawData.world_dir_fwd_z = fwd.Z;
+
+            filteredData.sli_pro_native_support = rawData.sli_pro_native_support = 0.0f;
+            filteredData.kers_level = rawData.kers_level = 0.0f;
+            filteredData.kers_max = rawData.kers_max = 0.0f;
+            filteredData.drs = rawData.drs = 0.0f;
+            filteredData.traction_control = rawData.traction_control = 0.0f;
+            filteredData.anti_lock_brakes = rawData.anti_lock_brakes = 0.0f;
+            filteredData.fuel_in_tank = rawData.fuel_in_tank = 100.0f;
+            filteredData.fuel_capacity = rawData.fuel_capacity = 100.0f;
+            filteredData.in_pits = rawData.in_pits = 0.0f;
+            filteredData.team_info = rawData.team_info = 1.0f;
+            filteredData.session_type = rawData.session_type = 0.0f;
+            filteredData.drs_allowed = rawData.drs_allowed = -1.0f;
+            filteredData.track_number = rawData.track_number = -1.0f;
+            filteredData.vehicle_fia_flags = rawData.vehicle_fia_flags = -1.0f;
+
+            if((float)filteredData.lap_time == 0.0f)
+            {
+                filteredData.lap_time = rawData.lap_time = 1.0f;
+            }
         }
 
         public virtual void HandleTelemetryPaused()
