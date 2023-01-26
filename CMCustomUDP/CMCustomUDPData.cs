@@ -110,6 +110,9 @@ namespace CMCustomUDP
             drs_allowed,
             track_number,
             vehicle_fia_flags,
+            engine_rate_div10,
+            max_rpm_div10,
+            idle_rpm_div10,
 
             Max
         }
@@ -205,6 +208,9 @@ namespace CMCustomUDP
         public object drs_allowed;
         public object track_number;
         public object vehicle_fia_flags;
+        public object engine_rate_div10;
+        public object max_rpm_div10;
+        public object idle_rpm_div10;
 
         public CMCustomUDPData()
         {
@@ -299,10 +305,14 @@ namespace CMCustomUDP
             drs_allowed = 0.0f;
             track_number = 0.0f;
             vehicle_fia_flags = 0.0f;
+            engine_rate_div10 = 0.0f;
+            max_rpm_div10 = 0.0f;
+            idle_rpm_div10 = 0.0f;
 
-        }
 
-        public void Init(string _formatFilename = null)
+    }
+
+    public void Init(string _formatFilename = null)
         {
 
             if (!string.IsNullOrEmpty(_formatFilename))
@@ -494,8 +504,11 @@ namespace CMCustomUDP
             drs_allowed = other.drs_allowed;
             track_number = other.track_number;
             vehicle_fia_flags = other.vehicle_fia_flags;
+            engine_rate_div10 = other.engine_rate_div10;
+            max_rpm_div10 = other.max_rpm_div10;
+            idle_rpm_div10 = other.idle_rpm_div10;
 
-            if(copyChannels)
+            if (copyChannels)
                 channels = other.channels;
         }
 
@@ -619,6 +632,9 @@ namespace CMCustomUDP
             drs_allowed = Lerp(0.0f, (float)drs_allowed, lerp);
             track_number = Lerp(0.0f, (float)track_number, lerp);
             vehicle_fia_flags = Lerp(0.0f, (float)vehicle_fia_flags, lerp);
+            engine_rate_div10 = Lerp(0.0f, (float)engine_rate_div10, lerp);
+            max_rpm_div10 = Lerp(0.0f, (float)max_rpm_div10, lerp);
+            idle_rpm_div10 = Lerp(0.0f, (float)idle_rpm_div10, lerp);
 
 
         }
@@ -691,6 +707,9 @@ namespace CMCustomUDP
             drs_allowed = Lerp((float)from.drs_allowed, (float)drs_allowed, lerp);
             track_number = Lerp((float)from.track_number, (float)track_number, lerp);
             vehicle_fia_flags = Lerp((float)from.vehicle_fia_flags, (float)vehicle_fia_flags, lerp);
+            engine_rate_div10 = Lerp((float)from.engine_rate_div10, (float)engine_rate_div10, lerp);
+            max_rpm_div10 = Lerp((float)from.max_rpm_div10, (float)max_rpm_div10, lerp);
+            idle_rpm_div10 = Lerp((float)from.idle_rpm_div10, (float)idle_rpm_div10, lerp);
         }
 
 

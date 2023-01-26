@@ -36,7 +36,7 @@
   <float scale="1.0" channel="gforce_lateral" />
   <float scale="1.0" channel="gforce_longitudinal" />
   <float scale="1.0" channel="lap" />
-  <float scale="1.0" channel="engine_rate" />
+  <float scale="1.0" channel="engine_rate_div10" />
   <float scale="1.0" channel="sli_pro_native_support" /> <!--sli_pro_native_support-->
   <float scale="1.0" channel="race_position" />
   <float scale="1.0" channel="kers_level" /> <!--kers_level-->
@@ -62,8 +62,8 @@
   <float scale="1.0" channel="total_laps" />
   <float scale="1.0" channel="track_length" />
   <float scale="1.0" channel="last_lap_time" />
-  <float scale="1.0" channel="max_rpm" />
-  <float scale="1.0" channel="idle_rpm" />
+  <float scale="1.0" channel="max_rpm_div10" />
+  <float scale="1.0" channel="idle_rpm_div10" />
   <float scale="1.0" channel="max_gears" />
   <float scale="1.0" channel="session_type" /><!--session_type-->
   <float scale="1.0" channel="drs_allowed" /><!--drs_allowed-->

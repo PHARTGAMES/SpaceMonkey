@@ -565,8 +565,11 @@ namespace GenericTelemetryProvider
             filteredData.drs_allowed = rawData.drs_allowed = -1.0f;
             filteredData.track_number = rawData.track_number = -1.0f;
             filteredData.vehicle_fia_flags = rawData.vehicle_fia_flags = -1.0f;
+            filteredData.engine_rate_div10 = rawData.engine_rate_div10 = (float)filteredData.engine_rate / 10.0f;
+            filteredData.max_rpm_div10 = rawData.max_rpm_div10 = (float)filteredData.max_rpm / 10.0f;
+            filteredData.idle_rpm_div10 = rawData.idle_rpm_div10 = (float)filteredData.idle_rpm / 10.0f;
 
-            if((float)filteredData.lap_time == 0.0f)
+            if ((float)filteredData.lap_time == 0.0f)
             {
                 filteredData.lap_time = rawData.lap_time = 1.0f;
             }
