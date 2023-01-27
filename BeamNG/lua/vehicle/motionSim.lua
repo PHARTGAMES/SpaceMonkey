@@ -4,6 +4,8 @@
 
 local M = {}
 
+local abs = math.abs
+
 local ffi = require("ffi")
 
 local ip = nil
@@ -141,6 +143,12 @@ local function sendDataPaketV1(dt)
   o.suspension_acceleration_fl = (o.suspension_velocity_fl - lastFrameData.suspension_velocity_fl ) / dt
   o.suspension_acceleration_fr = (o.suspension_velocity_fr - lastFrameData.suspension_velocity_fr ) / dt
 
+  o.wheel_speed_bl = abs(wheelAccess.rearLeft.angularVelocity * wheelAccess.rearLeft.radius);
+  o.wheel_speed_br = abs(wheelAccess.rearRight.angularVelocity * wheelAccess.rearRight.radius);
+  o.wheel_speed_fl = abs(wheelAccess.frontLeft.angularVelocity * wheelAccess.frontLeft.radius);
+  o.wheel_speed_fr = abs(wheelAccess.frontRight.angularVelocity * wheelAccess.frontRight.radius);
+
+
   lastFrameData.suspension_position_bl = o.suspension_position_bl;
   lastFrameData.suspension_position_br = o.suspension_position_br;
   lastFrameData.suspension_position_fl = o.suspension_position_fl;
@@ -151,6 +159,10 @@ local function sendDataPaketV1(dt)
   lastFrameData.suspension_velocity_fl = o.suspension_velocity_fl;
   lastFrameData.suspension_velocity_fr = o.suspension_velocity_fr;
 
+  lastFrameData.wheel_speed_bl = o.wheel_speed_bl;
+  lastFrameData.wheel_speed_br = o.wheel_speed_br;
+  lastFrameData.wheel_speed_fl = o.wheel_speed_fl;
+  lastFrameData.wheel_speed_fr = o.wheel_speed_fr;
 
   -- if streams.willSend("profilingData") then
   --   gui.send(
@@ -205,8 +217,11 @@ local function resetV1()
     suspension_velocity_bl = 0,
     suspension_velocity_br = 0,
     suspension_velocity_fl = 0,
-    suspension_velocity_fr = 0
-
+    suspension_velocity_fr = 0,
+	wheel_speed_bl = 0,
+	wheel_speed_br = 0,
+	wheel_speed_fl = 0,
+	wheel_speed_fr = 0
   }
 
   accXSmoother:reset()
@@ -285,6 +300,11 @@ local function initV1()
       float suspension_acceleration_fl;
       float suspension_acceleration_fr;
 	  
+	  float wheel_speed_bl;
+	  float wheel_speed_br;
+	  float wheel_speed_fl;
+	  float wheel_speed_fr;
+
 	  float timeStamp;
 
     } motionSim_t;
@@ -303,7 +323,11 @@ local function initV1()
     suspension_velocity_bl = 0,
     suspension_velocity_br = 0,
     suspension_velocity_fl = 0,
-    suspension_velocity_fr = 0
+    suspension_velocity_fr = 0,
+	wheel_speed_bl = 0,
+	wheel_speed_br = 0,
+	wheel_speed_fl = 0,
+	wheel_speed_fr = 0
   }
 
   ip = settings.getValue("motionSimIP") or "127.0.0.1"

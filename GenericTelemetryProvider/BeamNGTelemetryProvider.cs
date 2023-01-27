@@ -148,7 +148,6 @@ namespace GenericTelemetryProvider
 
         public override void SimulateSuspension()
         {
-
             rawData.suspension_position_bl = telemetryData.suspension_position_bl;
             rawData.suspension_position_br = telemetryData.suspension_position_br;
             rawData.suspension_position_fl = telemetryData.suspension_position_fl;
@@ -166,11 +165,10 @@ namespace GenericTelemetryProvider
             rawData.suspension_acceleration_fl = telemetryData.suspension_acceleration_fl;
             rawData.suspension_acceleration_fr = telemetryData.suspension_acceleration_fr;
 
-            //calc wheel patch speed.
-            rawData.wheel_patch_speed_bl = filteredData.local_velocity_z;
-            rawData.wheel_patch_speed_br = filteredData.local_velocity_z;
-            rawData.wheel_patch_speed_fl = filteredData.local_velocity_z;
-            rawData.wheel_patch_speed_fr = filteredData.local_velocity_z;
+            rawData.wheel_patch_speed_bl = telemetryData.wheel_speed_bl;
+            rawData.wheel_patch_speed_br = telemetryData.wheel_speed_br;
+            rawData.wheel_patch_speed_fl = telemetryData.wheel_speed_fl;
+            rawData.wheel_patch_speed_fr = telemetryData.wheel_speed_fr;
         }
 
     }

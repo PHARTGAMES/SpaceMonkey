@@ -98,8 +98,12 @@ namespace GenericTelemetryProvider
         public float suspension_acceleration_fl;
         public float suspension_acceleration_fr;
 
-        public float timeStamp;
+        public float wheel_speed_bl;
+        public float wheel_speed_br;
+        public float wheel_speed_fl;
+        public float wheel_speed_fr;
 
+        public float timeStamp;
 
         public void CopyFields(BNGAPI other)
         {
@@ -154,9 +158,13 @@ namespace GenericTelemetryProvider
             suspension_acceleration_fl = other.suspension_acceleration_fl;
             suspension_acceleration_fr = other.suspension_acceleration_fr;
 
-            timeStamp = other.timeStamp;
+            wheel_speed_bl = other.wheel_speed_bl;
+            wheel_speed_br = other.wheel_speed_br;
+            wheel_speed_fl = other.wheel_speed_fl;
+            wheel_speed_fr = other.wheel_speed_fr;
 
-        }
+            timeStamp = other.timeStamp;
+    }
 
         public void Reset()
         {
@@ -211,8 +219,12 @@ namespace GenericTelemetryProvider
             suspension_acceleration_fl = 0;
             suspension_acceleration_fr = 0;
 
-            timeStamp = 0;
+            wheel_speed_bl = 0;
+            wheel_speed_br = 0;
+            wheel_speed_fl = 0;
+            wheel_speed_fr = 0;
 
+            timeStamp = 0;
         }
 
         public float PitchAngle
