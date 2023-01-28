@@ -144,13 +144,11 @@ namespace GTPSimfeedback
             startWaitTimer = startWaitTime;
 
             CMCustomUDPData telemetryData = new CMCustomUDPData();
-            CMCustomUDPData.formatFilename = "CMCustomUDP/CMCustomUDPFormat.xml";
-            telemetryData.Init();
+            telemetryData.Init("CMCustomUDP/CMCustomUDPFormat.xml");
             Stopwatch sw = new Stopwatch();
             sw.Start();
 
             Stopwatch processSW = new Stopwatch();
-
 
             int readSize = telemetryData.GetSize();
             byte[] readBuffer;
@@ -241,7 +239,7 @@ namespace GTPSimfeedback
                     if(startWaitTimer > 0.0f)
                     {
                         startWaitTimer -= dt;
-                        telemetryToSend.LerpAllFromZero(0.0f);
+                        telemetryToSend.LerpAll(0.0f);
                         //done, so smooth in
                         if(startWaitTimer <= 0.0f)
                         {
@@ -254,7 +252,7 @@ namespace GTPSimfeedback
                     {
                         float lerp = 1.0f-(smoothInTimer / smoothInTime);
                         smoothInTimer -= dt;
-                        telemetryToSend.LerpAllFromZero(lerp);
+                        telemetryToSend.LerpAll(lerp);
                     }    
                     
                     IsConnected = true;

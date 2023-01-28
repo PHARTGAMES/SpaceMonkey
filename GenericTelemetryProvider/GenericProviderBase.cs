@@ -158,8 +158,7 @@ namespace GenericTelemetryProvider
 
         public virtual void Stop()
         {
-            if (hotkey != null && hotkey.Registered)
-                hotkey.Unregister(); 
+            hotkey = null;
         }
 
         public virtual bool ProcessTransform(Matrix4x4 inTransform, float inDT)
@@ -319,6 +318,7 @@ namespace GenericTelemetryProvider
 
             //calculate local acceleration
             Vector3 localAcceleration = ((localVelocity - lastVelocity) / dt) * 0.10197162129779283f; //convert to g accel
+
             lastVelocity = localVelocity;
 
             rawData.gforce_lateral = localAcceleration.X;

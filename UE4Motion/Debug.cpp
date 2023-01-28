@@ -18,7 +18,7 @@ void Debug::Log(const char* szFormat, ...)
 
     s_logFileMutex.lock();
     FILE* file;
-    fopen_s(&file, "WWLOG.txt", debugCTR++ == 0 ? "w" : "a+");
+    fopen_s(&file, "d:\\WWLOG.txt", /*debugCTR++ == 0 ? "w" :*/ "a+");
     if (file != NULL)
     {
         fprintf(file, szBuff);

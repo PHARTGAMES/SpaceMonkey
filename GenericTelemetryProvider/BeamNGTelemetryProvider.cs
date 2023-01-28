@@ -55,11 +55,11 @@ namespace GenericTelemetryProvider
 
         void ReceiveCallback(IAsyncResult ar)
         {
-            IPEndPoint remoteEP = (IPEndPoint)ar.AsyncState;
-            byte[] received = socket.EndReceive(ar, ref remoteEP);
-
             try
             {
+                IPEndPoint remoteEP = (IPEndPoint)ar.AsyncState;
+                byte[] received = socket.EndReceive(ar, ref remoteEP);
+
                 var alloc = GCHandle.Alloc(received, GCHandleType.Pinned);
                 telemetryData = (BNGAPI)Marshal.PtrToStructure(alloc.AddrOfPinnedObject(), typeof(BNGAPI));
                 alloc.Free();
@@ -73,13 +73,13 @@ namespace GenericTelemetryProvider
                     lastTelemetryData.CopyFields(telemetryData);
                 }
 
+                socket.BeginReceive(new AsyncCallback(ReceiveCallback), remoteEP);
             }
             catch (Exception e)
             {
                 Thread.Sleep(1000);
             }
 
-            socket.BeginReceive(new AsyncCallback(ReceiveCallback), remoteEP);
         }
 
         void ProcessBNGAPI(float dt)
