@@ -81,16 +81,16 @@ namespace GenericTelemetryProvider
             get
             {
                 bool rval = false;
-                isStoppedMutex.WaitOne();
+//                isStoppedMutex.WaitOne();
                 rval = isStopped;
-                isStoppedMutex.ReleaseMutex();
+//                isStoppedMutex.ReleaseMutex();
                 return rval;
             }
             set
             {
-                isStoppedMutex.WaitOne();
+//                isStoppedMutex.WaitOne();
                 isStopped = value;
-                isStoppedMutex.ReleaseMutex();
+//                isStoppedMutex.ReleaseMutex();
             }
         }
 
@@ -182,8 +182,6 @@ namespace GenericTelemetryProvider
 
                 CalcAngles();
 
-                CalcAngularVelocityAndAccel();
-
                 ProcessTeleportBegin();
 
                 CalcVelocity();
@@ -191,6 +189,8 @@ namespace GenericTelemetryProvider
                 FilterVelocity();
 
                 CalcAcceleration();
+
+                CalcAngularVelocityAndAccel();
 
                 SimulateSuspension();
 

@@ -20,75 +20,66 @@ namespace GenericTelemetryProvider
         private IPEndPoint senderIP;                   // IP address of the sender for the udp connection used by the worker thread
         BNGAPI telemetryData;
         BNGAPI lastTelemetryData = new BNGAPI();
+        UdpClient socket;
 
         public override void Run()
         {
             base.Run();
 
-            t = new Thread(ReadTelemetry);
+            t = new Thread(MonitorThread);
             t.IsBackground = true;
             t.Start();
+
+            socket = new UdpClient();
+            socket.ExclusiveAddressUse = false;
+            IPEndPoint remoteEP = new IPEndPoint(IPAddress.Any, readPort);
+            socket.Client.Bind(remoteEP);
+
+            socket.BeginReceive(new AsyncCallback(ReceiveCallback), remoteEP);
         }
 
-        void ReadTelemetry()
+        void MonitorThread()
         {
-
-            UdpClient socket = new UdpClient();
-            socket.ExclusiveAddressUse = false;
-            socket.Client.Bind(new IPEndPoint(IPAddress.Any, readPort));
-
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
-
             StartSending();
-
-
             while (!IsStopped)
             {
-                try
-                {
-                    //wait for telemetry
-                    if (socket.Available == 0)
-                    {
-                        if (sw.ElapsedMilliseconds > 500)
-                        {
-                            Thread.Sleep(1000);
-                        }
-                        continue;
-                    }
-
-                    Byte[] received = socket.Receive(ref senderIP);
-
-                    if (socket.Available != 0)
-                        continue;
-
-                    var alloc = GCHandle.Alloc(received, GCHandleType.Pinned);
-                    telemetryData = (BNGAPI)Marshal.PtrToStructure(alloc.AddrOfPinnedObject(), typeof(BNGAPI));
-                    alloc.Free();
-
-                    if (telemetryData.magic[0] == 'B'
-                        && telemetryData.magic[1] == 'N'
-                        && telemetryData.magic[2] == 'G'
-                        && telemetryData.magic[3] == '2')
-                    {
-                        sw.Restart();
-                        ProcessBNGAPI(telemetryData.timeStamp - lastTelemetryData.timeStamp);
-                        lastTelemetryData.CopyFields(telemetryData);
-                    }
-
-                }
-                catch (Exception e)
-                {
-                    Thread.Sleep(1000);
-                }
-
+                Thread.Sleep(1000);
             }
 
             StopSending();
             socket.Close();
 
             Thread.CurrentThread.Join();
+        }
 
+
+        void ReceiveCallback(IAsyncResult ar)
+        {
+            IPEndPoint remoteEP = (IPEndPoint)ar.AsyncState;
+            byte[] received = socket.EndReceive(ar, ref remoteEP);
+
+            try
+            {
+                var alloc = GCHandle.Alloc(received, GCHandleType.Pinned);
+                telemetryData = (BNGAPI)Marshal.PtrToStructure(alloc.AddrOfPinnedObject(), typeof(BNGAPI));
+                alloc.Free();
+
+                if (telemetryData.magic[0] == 'B'
+                    && telemetryData.magic[1] == 'N'
+                    && telemetryData.magic[2] == 'G'
+                    && telemetryData.magic[3] == '2')
+                {
+                    ProcessBNGAPI(telemetryData.timeStamp - lastTelemetryData.timeStamp);
+                    lastTelemetryData.CopyFields(telemetryData);
+                }
+
+            }
+            catch (Exception e)
+            {
+                Thread.Sleep(1000);
+            }
+
+            socket.BeginReceive(new AsyncCallback(ReceiveCallback), remoteEP);
         }
 
         void ProcessBNGAPI(float dt)
