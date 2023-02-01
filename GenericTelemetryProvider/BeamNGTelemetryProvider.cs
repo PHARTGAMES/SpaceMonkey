@@ -124,8 +124,8 @@ namespace GenericTelemetryProvider
         public override void SimulateEngine()
         {
             rawData.max_rpm = telemetryData.max_rpm;
-            rawData.max_gears = telemetryData.max_gears;
-            rawData.gear = telemetryData.gear;
+            rawData.max_gears = (float)telemetryData.max_gears;
+            rawData.gear = (float)telemetryData.gear;
             rawData.idle_rpm = telemetryData.idle_rpm;
             rawData.engine_rate = telemetryData.engine_rate;
 

@@ -186,10 +186,10 @@ namespace GenericTelemetryProvider
 
         public override void SimulateEngine()
         {
-            rawData.max_rpm = data.engine_max_rpm;
-            rawData.max_gears = 6;
-            rawData.gear = data.gear;
-            rawData.idle_rpm = data.engine_idle_rpm;
+            rawData.max_rpm = (float)data.engine_max_rpm;
+            rawData.max_gears = 6.0f;
+            rawData.gear = (float)data.gear;
+            rawData.idle_rpm = (float)data.engine_idle_rpm;
 
             Vector3 localVelocity = new Vector3((float)filteredData.local_velocity_x, (float)filteredData.local_velocity_y, (float)filteredData.local_velocity_z);
 
@@ -200,7 +200,7 @@ namespace GenericTelemetryProvider
         {
             base.ProcessInputs();
 
-            filteredData.engine_rate = Math.Max(700, Math.Min(6000, 700 + (data.engine_rpm * (6000-700))));
+            filteredData.engine_rate = (float)Math.Max(700, Math.Min(6000, 700 + (data.engine_rpm * (6000-700))));
         }
     }
 }

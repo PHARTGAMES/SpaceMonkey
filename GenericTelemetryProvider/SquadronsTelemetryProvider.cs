@@ -438,7 +438,7 @@ namespace GenericTelemetryProvider
         {
             base.ProcessInputs();
 
-  //          filteredData.engine_rate = Math.Max(700, Math.Min(6000, 700 + (data.engine_rpm * (6000-700))));
+  //          filteredData.engine_rate = (float)Math.Max(700, Math.Min(6000, 700 + (data.engine_rpm * (6000-700))));
         }
 
         /*

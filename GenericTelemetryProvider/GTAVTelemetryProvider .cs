@@ -249,10 +249,10 @@ namespace GenericTelemetryProvider
 
         public override void SimulateEngine()
         {
-            rawData.max_rpm = 6000;
-            rawData.max_gears = gtaData.gears;
-            rawData.gear = gtaData.gear;
-            rawData.idle_rpm = 700;
+            rawData.max_rpm = 6000.0f;
+            rawData.max_gears = (float)gtaData.gears;
+            rawData.gear = (float)gtaData.gear;
+            rawData.idle_rpm = 700.0f;
 
             Vector3 localVelocity = new Vector3((float)filteredData.local_velocity_x, (float)filteredData.local_velocity_y, (float)filteredData.local_velocity_z);
 

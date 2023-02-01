@@ -495,10 +495,10 @@ namespace GenericTelemetryProvider
 
         public virtual void SimulateEngine()
         {
-            rawData.max_rpm = 6000;
-            rawData.max_gears = 6;
-            rawData.gear = 1;
-            rawData.idle_rpm = 700;
+            rawData.max_rpm = 6000.0f;
+            rawData.max_gears = 6.0f;
+            rawData.gear = 1.0f;
+            rawData.idle_rpm = 700.0f;
 
             Vector3 localVelocity = new Vector3((float)filteredData.local_velocity_x, (float)filteredData.local_velocity_y, (float)filteredData.local_velocity_z);
 
@@ -510,7 +510,7 @@ namespace GenericTelemetryProvider
         {
             InputModule.Instance.Update();
 
-            filteredData.engine_rate = (InputModule.Instance.controller.rightTrigger * 5500) + 700;
+            filteredData.engine_rate = (float)((InputModule.Instance.controller.rightTrigger * 5500) + 700);
             filteredData.steering_input = InputModule.Instance.controller.leftThumb.X;
             filteredData.throttle_input = InputModule.Instance.controller.rightTrigger;
             filteredData.brake_input = InputModule.Instance.controller.leftTrigger;

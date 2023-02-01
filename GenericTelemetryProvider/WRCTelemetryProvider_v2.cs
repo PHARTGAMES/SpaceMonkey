@@ -504,10 +504,10 @@ namespace GenericTelemetryProvider
                         rawData.idle_rpm = data.engine_idle_rpm;
             */
 
-            rawData.max_rpm = 6000;
-            rawData.max_gears = 6;
-            rawData.gear = 1;
-            rawData.idle_rpm = 700;
+            rawData.max_rpm = 6000.0f;
+            rawData.max_gears = 6.0f;
+            rawData.gear = 1.0f;
+            rawData.idle_rpm = 700.0f;
 
 
             Vector3 localVelocity = new Vector3((float)filteredData.local_velocity_x, (float)filteredData.local_velocity_y, (float)filteredData.local_velocity_z);
@@ -520,7 +520,7 @@ namespace GenericTelemetryProvider
         {
             base.ProcessInputs();
 
-  //          filteredData.engine_rate = Math.Max(700, Math.Min(6000, 700 + (data.engine_rpm * (6000-700))));
+  //          filteredData.engine_rate = (float)Math.Max(700, Math.Min(6000, 700 + (data.engine_rpm * (6000-700))));
         }
     }
 
