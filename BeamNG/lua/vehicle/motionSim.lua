@@ -4,6 +4,7 @@
 
 local M = {}
 
+
 local abs = math.abs
 
 local ffi = require("ffi")
@@ -39,6 +40,7 @@ M.wheelAccess = {
   rearRight = nil,
   rearLeft = nil
 }
+
 
 local function sendDataPaketV1(dt)
   --log('D', 'motionSim', 'sendDataPaketV1: '..tostring(ip) .. ':' .. tostring(port))
@@ -230,7 +232,7 @@ local function resetV1()
 end
 
 local function settingsChanged()
-  M.init()
+  M.onExtensionLoaded()
 end
 
 local function initV1()
@@ -351,7 +353,7 @@ local function initV1()
   M.reset = resetV1
 end
 
-local function init(jbeamData)
+local function onExtensionLoaded(jbeamData)
   M.reset = nop
   M.updateGFX = nop
   M.update = nop
@@ -372,12 +374,12 @@ local function init(jbeamData)
   isMotionSimEnabled = settings.getValue("motionSimEnabled") or false
   if isMotionSimEnabled then
     local motionSimVersion = settings.getValue("motionSimVersion") or 1
-    log("I", "motionSim.init", "Trying to load SpaceMonkey motionSim with version: " .. motionSimVersion)
+    log("I", "motionSim.onExtensionLoaded", "Trying to load SpaceMonkey motionSim with version: " .. motionSimVersion)
     if motionSimVersion == 1 then
-      log("D", "motionSim.init", "SpaceMonkey motionSim active!" .. motionSimVersion)
+      log("D", "motionSim.onExtensionLoaded", "SpaceMonkey motionSim active!" .. motionSimVersion)
       initV1()
     else
-      log("E", "motionSim.init", "Unknown SpaceMonkey motionSim version: " .. motionSimVersion)
+      log("E", "motionSim.onExtensionLoaded", "Unknown SpaceMonkey motionSim version: " .. motionSimVersion)
     end
   end
 end
@@ -386,7 +388,7 @@ local function isPhysicsStepUsed()
   return isMotionSimEnabled
 end
 
-M.init = init
+M.onExtensionLoaded = onExtensionLoaded
 M.reset = nop
 M.settingsChanged = settingsChanged
 
