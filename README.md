@@ -99,7 +99,7 @@ All changes to config options are saved as they are changed.
 ### Setup
 
 1. Backup your motionSim.lua file in the lua/vehicle subfolder of BeamNG.drive.
-2. Run the SpaceMonkey BeamNG.Drive plugin.msi installer in the BeamNG subfolder of Space Monkey to install the BeamNG.Drive telemetry provider into BeamNG.Drive.
+2. Run the SpaceMonkey BeamNG.Drive plugin.msi installer in the BeamNG subfolder of Space Monkey to install the BeamNG.Drive telemetry provider into BeamNG.Drive. NOTE: installer in 1.0.6 is broken, please use this one https://github.com/PHARTGAMES/SpaceMonkey/blob/main/BeamNG/Installer/SpaceMonkey%20BeamNG.Drive%20plugin-SetupFiles/SpaceMonkey%20BeamNG.Drive%20plugin.msi
 3. Within BeamNG.drive 'Options > OTHER', set the following options:
 
 - MotionSim enabled [x]
