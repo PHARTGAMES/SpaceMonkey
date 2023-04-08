@@ -59,6 +59,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HighPassFilter.cs" />
     <Compile Include="OutputUDPControl.cs">
       <SubType>UserControl</SubType>
     </Compile>

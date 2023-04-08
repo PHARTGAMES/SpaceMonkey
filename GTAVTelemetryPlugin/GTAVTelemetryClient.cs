@@ -52,7 +52,7 @@ namespace GTAVTelemetryPlugin
                 vel = vehicle.Velocity;
                 gtaData.engineRPM = vehicle.CurrentRPM;
                 gtaData.gear = vehicle.CurrentGear;
-                gtaData.gears = vehicle.Gears;
+                gtaData.gears = vehicle.HighGear;
             }
             else //walkies
             {

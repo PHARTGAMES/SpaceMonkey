@@ -56,21 +56,6 @@
     <Reference Include="ShapesRuntime">
       <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\TinyCombatArena\Arena_Data\Managed\ShapesRuntime.dll</HintPath>
     </Reference>
-    <Reference Include="Sirenix.OdinInspector.Attributes">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\TinyCombatArena\Arena_Data\Managed\Sirenix.OdinInspector.Attributes.dll</HintPath>
-    </Reference>
-    <Reference Include="Sirenix.OdinInspector.CompatibilityLayer">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\TinyCombatArena\Arena_Data\Managed\Sirenix.OdinInspector.CompatibilityLayer.dll</HintPath>
-    </Reference>
-    <Reference Include="Sirenix.Serialization">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\TinyCombatArena\Arena_Data\Managed\Sirenix.Serialization.dll</HintPath>
-    </Reference>
-    <Reference Include="Sirenix.Serialization.Config">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\TinyCombatArena\Arena_Data\Managed\Sirenix.Serialization.Config.dll</HintPath>
-    </Reference>
-    <Reference Include="Sirenix.Utilities">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\TinyCombatArena\Arena_Data\Managed\Sirenix.Utilities.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />

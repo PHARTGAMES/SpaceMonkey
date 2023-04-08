@@ -424,7 +424,7 @@ namespace GenericTelemetryProvider
         {
 /*
             rawData.max_rpm = data.engine_max_rpm;
-            rawData.max_gears = 6;
+            rawData.max_gears = 6.0f;
             rawData.gear = data.gear;
             rawData.idle_rpm = data.engine_idle_rpm;
 */

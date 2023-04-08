@@ -1695,6 +1695,11 @@
             <param name="other">Object to make the comparison with.</param>
             <returns><see langword="true" /> if the current instance is equal to the specified object; <see langword="false" /> otherwise.</returns>
         </member>
+        <member name="T:GTA.EulerRotationOrder">
+            <summary>
+            Enums for the order in which to apply rotations in local space, just like how Rockstar Games define <c>EULER_ROT_ORDER</c>.
+            </summary>
+        </member>
         <member name="T:GTA.Native.InputArgument">
             <summary>
             An input argument passed to a script function.
@@ -16726,6 +16731,80 @@
             An enumeration of fonts the game supports.
             </summary>
         </member>
+        <member name="F:GTA.UI.Font.ChaletLondon">
+            <summary>
+            <para>This font is for the standard font.</para>
+            <para>
+            Chalet London 1960 from House Industries will be used when the game language is set to a non-CJK language.
+            The alternative standard font that contains appropriate CJK characters will be used when the game language is set to a CJK language.
+            </para>
+            </summary>
+        </member>
+        <member name="F:GTA.UI.Font.HouseScript">
+            <summary>
+            <para>This font is for the cursive font.</para>
+            <para>
+            Sign Painter House Brush from House Industries will be used when the game language is set to a non-CJK language.
+            The standard font, which is the same as <see cref="F:GTA.UI.Font.ChaletLondon"/>, will be used when the game language is set to a CJK language unless the player have custom font files installed.
+            </para>
+            </summary>
+        </member>
+        <member name="F:GTA.UI.Font.Monospace">
+            <summary>
+            <para>This font contains upper ASCII characters and some other shapes such as ones for tags.</para>
+            <para>This font style specifies the same font unless the player have custom font files installed.</para>
+            </summary>
+        </member>
+        <member name="F:GTA.UI.Font.Leaderboard">
+            <summary>
+            <para>This font contains only Chevron arrows, some shield symbols, and hexagons.</para>
+            <para>This font style specifies the same font unless the player have custom font files installed.</para>
+            </summary>
+        </member>
+        <member name="F:GTA.UI.Font.ChaletComprimeCologne">
+            <summary>
+            <para>
+            This font is for the condensed font for gamer tags or the distance info on the radar.
+            You should use <see cref="F:GTA.UI.Font.ChaletComprimeCologneNotGamerName"/> if you want to draw strings with condensed font if possible but strings can contain some CJK characters (e.g. localized strings from gxt files).
+            </para>
+            <para>
+            The native functions for text drawing will use the condensed font Chalet Comprim? Cologne 1960 regardness of the game language setting.
+            The natives will draw strings that contain only non-CJK characters without any trouble,
+            but without having custom font files installed, the natives will draw rectangles (a.k.a. tofus) instead of CJK characters because Chalet Comprim? Cologne 1960 doesn't contain any CJK characters.
+            </para>
+            <para>This font style specifies the same font unless the player have custom font files installed.</para>
+            </summary>
+        </member>
+        <member name="F:GTA.UI.Font.FixedWidthNumbersStyle">
+            <summary>
+            <para>This font contains only glyphs of numbers (0 to 9), dollar sign, asterisk, plus sign, colon, semicolon, equals sign, slash, and backslash in ASCII.</para>
+            <para>This font style specifies the same font unless the player have custom font files installed.</para>
+            </summary>
+        </member>
+        <member name="F:GTA.UI.Font.ChaletComprimeCologneNotGamerName">
+            <summary>
+            <para>
+            This font is for the condensed font for generic uses.
+            Consider using <see cref="F:GTA.UI.Font.ChaletComprimeCologne"/> instead when the texts you want to draw only contain only non-CJK characters.
+            </para>
+            <para>
+            The native functions for text drawing will use the condensed font Chalet Comprim? Cologne 1960 when the game language is set to a non-CJK language,
+            but they will use the standard font, which is the same as <see cref="F:GTA.UI.Font.ChaletLondon"/>, when the game language is set to a CJK language (unless the player have custom font files installed).
+            </para>
+            </summary>
+        </member>
+        <member name="F:GTA.UI.Font.Pricedown">
+            <summary>
+            Pricedown will be used when the game language is set to a non-CJK language.
+            The standard font, which is the same as <see cref="F:GTA.UI.Font.ChaletLondon"/>, will be used when the game language is set to a CJK language unless the player have custom font files installed.
+            </summary>
+        </member>
+        <member name="F:GTA.UI.Font.Taxi">
+            <summary>
+            The font for taxi will be used when the game language is set to a non-CJK language. The font does contain invisible glyphs for lower characters.
+            The standard font, which is the same as <see cref="F:GTA.UI.Font.ChaletLondon"/>, will be used when the game language is set to a CJK language unless the player have custom font files installed.
+            </summary>
+        </member>
         <member name="T:GTA.UI.Hud">
             <summary>
             Methods to manipulate the HUD (heads-up-display) of the game.
@@ -17808,10 +17887,7 @@
         <member name="F:GTA.BlipCategoryType.OtherPlayers">
             <summary>
             <para>Blips will show under the "Other Players" category listing in the map legend, regardless of name. Also shows distance in the map legend.</para>
-            <para>
-            When the game language is set to a non-CJK language, the blip name will show with <see cref="F:GTA.UI.Font.ChaletComprimeCologne"/>.
-            When the game language is set to a CJK language and the vanilla font files are used, the blip name will show with the default CJK font used for the current language.
-            </para>
+            <para>the blip name will show with <see cref="F:GTA.UI.Font.ChaletComprimeCologneNotGamerName"/>.</para>
             </summary>
         </member>
         <member name="F:GTA.BlipCategoryType.Property">
@@ -19033,6 +19109,22 @@
             <para>The corresponding name in vehicles.meta for this value is <c>VEHICLE_TYPE_TRAIN</c>.</para>
             <para>The internal class in memory is <c>CSubmarine</c></para>
             </remarks>
+        </member>
+        <member name="F:GTA.ShapeTestStatus.NonExistent">
+            <summary>
+            Shapetest requests are discarded if they are ignored for a frame or as soon as the results are returned.
+            </summary>
+        </member>
+        <member name="F:GTA.ShapeTestStatus.NotReady">
+            <summary>
+            Not ready yet; try again next frame.
+            </summary>
+        </member>
+        <member name="F:GTA.ShapeTestStatus.Ready">
+            <summary>
+            The result is ready and the results have been returned to you.
+            The shape test request has also just been destroyed.
+            </summary>
         </member>
         <member name="M:GTA.Entity.FromHandle(System.Int32)">
             <summary>
@@ -20390,6 +20482,342 @@
             Tells the game we have finished using this <see cref="T:GTA.Model"/> and it can be freed from memory.
             </summary>
         </member>
+        <member name="F:GTA.AnimationFlags.Loop">
+            <summary>
+            Repeat the animation.
+            </summary>
+        </member>
+        <member name="F:GTA.AnimationFlags.StayInEndFrame">
+            <summary>
+            Hold on the last frame of the animation.
+            </summary>
+        </member>
+        <member name="F:GTA.AnimationFlags.RepositionWhenFinished">
+            <summary>
+            When the animation finishes pop the peds physical reprsentation position to match the visual representations position.
+            Note that the animator of the animation must not unwind the animation and must have an independent mover node.
+            </summary>
+        </member>
+        <member name="F:GTA.AnimationFlags.NotInterruptable">
+            <summary>
+            The task cannot be interupted by extenal events.
+            </summary>
+        </member>
+        <member name="F:GTA.AnimationFlags.UpperBodyOnly">
+            <summary>
+            Only plays the upper body part of the animation.
+            Dampens any motion caused by the lower body animation.Note that the animation should include the root node.
+            </summary>
+        </member>
+        <member name="F:GTA.AnimationFlags.Secondary">
+            <summary>
+            The task will run in the secondary task slot. This means it can be used aswell as a movement task (for instance).
+            </summary>
+        </member>
+        <member name="F:GTA.AnimationFlags.ReorientWhenFinished">
+            <summary>
+            When the animation finishes pop the peds physical reprsentation direction to match the visual representations direction.
+            Note that the animator of the animation must not unwind the animation and must have an independent mover node.
+            </summary>
+        </member>
+        <member name="F:GTA.AnimationFlags.AbortOnPedMovement">
+            <summary>
+            Ends the animation early if the ped attemps to move e.g. if the player tries to move using the controller.
+            Can also be used to blend out automatically when an AI ped starts moving by combining it with the <see cref="F:GTA.AnimationFlags.Secondary"/> flag.
+            </summary>
+        </member>
+        <member name="F:GTA.AnimationFlags.Additive">
+            <summary>
+            Play back the animation additively. Note that this will only produce sensible results on specifically authored additive animations.
+            </summary>
+        </member>
+        <member name="F:GTA.AnimationFlags.TurnOffCollision">
+            <summary>
+            Do not react to collision detection whilst this anim is playing.
+            </summary>
+        </member>
+        <member name="F:GTA.AnimationFlags.OverridePhysics">
+            <summary>
+            Do not apply any physics forces whilst the anim is playing.
+            Automatically turns off collision, extracts any initial offset provided in the clip and uses per frame mover extraction.
+            </summary>
+        </member>
+        <member name="F:GTA.AnimationFlags.IgnoreGravity">
+            <summary>
+            Do not apply gravity while the anim is playing.
+            </summary>
+        </member>
+        <member name="F:GTA.AnimationFlags.ExtractInitialOffset">
+            <summary>
+            Extract an initial offset from the playback position authored by the animator.
+            Use this flag when playing back anims on different peds which have been authored to sync with each other.
+            </summary>
+        </member>
+        <member name="F:GTA.AnimationFlags.ExitAfterInterrupted">
+            <summary>
+            Exit the animation task if it is interrupted by another task (ie Natural Motion).
+            Without this flag bing set looped animations will restart ofter the NM task
+            </summary>
+        </member>
+        <member name="F:GTA.AnimationFlags.TagSyncIn">
+            <summary>
+            Sync the anim whilst blending in (use for seamless transitions from walk / run into a full body anim).
+            </summary>
+            <remarks>Tag synchronizer flags are for syncing the anim against ped movement (walking / running / etc).</remarks>
+        </member>
+        <member name="F:GTA.AnimationFlags.TagSyncOut">
+            <summary>
+            Sync the anim whilst blending out (use for seamless transitions from a full body anim into walking / running behaviour).
+            </summary>
+            <remarks>Tag synchronizer flags are for syncing the anim against ped movement (walking / running / etc).</remarks>
+        </member>
+        <member name="F:GTA.AnimationFlags.TagSyncContinuous">
+            <summary>
+            Sync all the time (Only usefull to synchronize a partial anim e.g. an upper body).
+            </summary>
+            <remarks>Tag synchronizer flags are for syncing the anim against ped movement (walking / running / etc).</remarks>
+        </member>
+        <member name="F:GTA.AnimationFlags.ForceStart">
+            <summary>
+            Force the anim task to start even if the ped is falling / ragdolling / etc.
+            Can fix issues with peds not playing their anims immediately after a warp / etc.
+            </summary>
+        </member>
+        <member name="F:GTA.AnimationFlags.UseKinematicPhysics">
+            <summary>
+            Use the kinematic physics mode on the entity for the duration of the anim (it should push other entities out of the way, and not be pushed around by players / etc).
+            </summary>
+        </member>
+        <member name="F:GTA.AnimationFlags.UseMoverExtraction">
+            <summary>
+            Updates the peds capsule position every frame based on the animation.
+            Use in conjunction with <see cref="F:GTA.AnimationFlags.UseKinematicPhysics"/> to create characters that cannot be pushed off course by other entities / geometry / etc whilst playing the anim.
+            </summary>
+        </member>
+        <member name="F:GTA.AnimationFlags.HideWeapon">
+            <summary>
+            Indicates that the ped's weapon should be hidden while this animation is playing.
+            </summary>
+        </member>
+        <member name="F:GTA.AnimationFlags.EndsInDeadPose">
+            <summary>
+            When the anim ends, kill the ped and use the currently playing anim as the dead pose.
+            </summary>
+        </member>
+        <member name="F:GTA.AnimationFlags.RagdollOnCollision">
+            <summary>
+            If the peds ragdoll bounds make contact with something physical (that isn't flat ground) activate the ragdoll and fall over.
+            </summary>
+        </member>
+        <member name="F:GTA.AnimationFlags.DontExitOnDeath">
+            <summary>
+            Currently used only on secondary anim tasks. Secondary anim tasks will end automatically when the ped dies. Setting this flag stops that from happening.
+            </summary>
+        </member>
+        <member name="F:GTA.AnimationFlags.AbortOnWeaponDamage">
+            <summary>
+            Allow aborting from damage events (including non-ragdoll damage events) even when blocking other ai events using <see cref="F:GTA.AnimationFlags.NotInterruptable"/>.
+            </summary>
+        </member>
+        <member name="F:GTA.AnimationFlags.DisableForcedPhysicsUpdate">
+            <summary>
+            Prevent adjusting the capsule on the enter state (useful if script is doing a sequence of scripted anims and they are known to more or less stand still).
+            </summary>
+        </member>
+        <member name="F:GTA.AnimationFlags.ProcessAttachmentsOnStart">
+            <summary>
+            Force the attachments to be processed at the start of the clip.
+            </summary>
+        </member>
+        <member name="F:GTA.AnimationFlags.ExpandPedCapsuleFromSkeleton">
+            <summary>
+            Expands the capsule to the extents of the skeleton.
+            </summary>
+        </member>
+        <member name="F:GTA.AnimationFlags.UseAlternativeFirstPersonAnim">
+            <summary>
+            Plays an alternative first person version of the clip on the player when in first person mode.
+            The first person clip must be in the same dictionary, and be named the same as the anim you're playing, but with <c>_FP</c> appended on the end.
+            </summary>
+        </member>
+        <member name="F:GTA.AnimationFlags.BlendOutWRTLastFrame">
+            <summary>
+            Start blending out the anim early, so that the blend out duration completes at the end of the animation.
+            </summary>
+        </member>
+        <member name="F:GTA.AnimationFlags.UseFullBlending">
+            <summary>
+            Use full blending for this anim and override the heading/position adjustment in CTaskScriptedAnimation::CheckIfClonePlayerNeedsHeadingPositionAdjust(),
+            so that the game doesn't correct errors (special case such as scrip-side implemented AI tasks, i.e. diving)
+            </summary>
+        </member>
+        <member name="T:GTA.EnterVehicleFlags">
+            <summary>
+            Set of flags to define the behaviour of the enter and exit vehicle tasks.
+            Shares the same flags with <see cref="T:GTA.LeaveVehicleFlags"/>.
+            </summary>
+        </member>
+        <member name="F:GTA.EnterVehicleFlags.ResumeIfInterupted">
+            <summary>
+            Resume the enter vehicle task even if the task is interupted (bumped, shot).
+            </summary>
+        </member>
+        <member name="F:GTA.EnterVehicleFlags.WarpToDoor">
+            <summary>
+            Warp the <see cref="T:GTA.Ped"/> to entry point ready to open the door/enter seat.
+            </summary>
+        </member>
+        <member name="F:GTA.EnterVehicleFlags.JackAnyone">
+            <summary>
+            Allow the <see cref="T:GTA.Ped"/> to jack regardless of relationship status if they have to jack someone to complete the enter vehicle task.
+            Without this flag, the <see cref="T:GTA.Ped"/> won't jack those they respect or like where the relationship is set to <see cref="F:GTA.Relationship.Companion"/> or <see cref="F:GTA.Relationship.Respect"/> towards them,
+            but may jack those they don't respect or like.
+            Without this flag, the <see cref="T:GTA.Ped"/> will abort the enter vehicle task if they have to jack one of those who respect or like to complete the enter vehicle task.
+            </summary>
+        </member>
+        <member name="F:GTA.EnterVehicleFlags.WarpIn">
+            <summary>
+            Warp the <see cref="T:GTA.Ped"/> onto the <see cref="T:GTA.Vehicle"/>.
+            </summary>
+        </member>
+        <member name="F:GTA.EnterVehicleFlags.DontCloseDoor">
+            <summary>
+            Dont close the vehicle door.
+            </summary>
+        </member>
+        <member name="F:GTA.EnterVehicleFlags.WarpIfDoorIsBlocked">
+            <summary>
+            Allow ped to warp to the seat if entry is blocked.
+            If the shuffle link to that seat is blocked by someone but the entry point for the shuffle link is not directly blocked, the <see cref="T:GTA.Ped"/> won't warp.
+            Consider using <see cref="F:GTA.EnterVehicleFlags.WarpIfShuffleLinkIsBlocked"/> if you want the <see cref="T:GTA.Ped"/> to warp when the direct door and the shuffle link to that seat is blocked by someone.
+            </summary>
+        </member>
+        <member name="F:GTA.EnterVehicleFlags.UseLeftEntry">
+            <summary>
+            Use entry/exit point on the left hand side.
+            </summary>
+        </member>
+        <member name="F:GTA.EnterVehicleFlags.UseRightEntry">
+            <summary>
+            Use entry/exit point on the right hand side.
+            </summary>
+        </member>
+        <member name="F:GTA.EnterVehicleFlags.JustPullPedOut">
+            <summary>
+            When jacking just open the door and/or pull the ped out, but don't get in.
+            </summary>
+        </member>
+        <member name="F:GTA.EnterVehicleFlags.BlockSeatShuffling">
+            <summary>
+            Disable shuffling, forcing ped to use direct door only.
+            </summary>
+        </member>
+        <member name="F:GTA.EnterVehicleFlags.WarpIfShuffleLinkIsBlocked">
+            <summary>
+            Allow ped to warp if the direct door is blocked and the shuffle link to that seat is blocked by someone.
+            Unlike <see cref="F:GTA.EnterVehicleFlags.WarpIfDoorIsBlocked"/>, this flag allows the the <see cref="T:GTA.Ped"/> to warp when the direct door and the shuffle link to that seat is blocked by someone (regardless of whether the door linked to the shuffle link is directly blocked).
+            </summary>
+        </member>
+        <member name="F:GTA.EnterVehicleFlags.DontJackAnyone">
+            <summary>
+            Never jack anyone when entering/exiting.
+            This flag takes precedence over <see cref="F:GTA.EnterVehicleFlags.AllowJacking"/>.
+            </summary>
+        </member>
+        <member name="F:GTA.Formation.Loose">
+            <summary>
+            The default value.
+            </summary>
+        </member>
+        <member name="T:GTA.LeaveVehicleFlags">
+            <summary>
+            Set of flags to define the behaviour of the enter and exit vehicle tasks.
+            Shares the same flags with <see cref="T:GTA.EnterVehicleFlags"/>.
+            </summary>
+        </member>
+        <member name="F:GTA.LeaveVehicleFlags.WarpOut">
+            <summary>
+            Warp the ped out of the vehicle.
+            </summary>
+        </member>
+        <member name="F:GTA.LeaveVehicleFlags.DontWaitForVehicleToStop">
+            <summary>
+            Don't wait for the vehicle to stop before exiting.
+            </summary>
+        </member>
+        <member name="F:GTA.LeaveVehicleFlags.LeaveDoorOpen">
+            <summary>
+            Dont close the vehicle door.
+            </summary>
+        </member>
+        <member name="F:GTA.LeaveVehicleFlags.WarpIfDoorIsBlocked">
+            <summary>
+            Allow ped to warp to the seat if entry is blocked. The player <see cref="T:GTA.Ped"/> will warp out of the vehicle without any flags if the entry is blocked.
+            If the shuffle link to that seat is blocked by someone but the entry point for the shuffle link is not directly blocked, the <see cref="T:GTA.Ped"/> won't warp.
+            Consider using <see cref="F:GTA.LeaveVehicleFlags.WarpIfShuffleLinkIsBlocked"/> if you want the <see cref="T:GTA.Ped"/> to warp when the direct door and the shuffle link to that seat is blocked by someone.
+            </summary>
+        </member>
+        <member name="F:GTA.LeaveVehicleFlags.BailOut">
+            <summary>
+            Jump out of the vehicle regardness of its speed.
+            </summary>
+        </member>
+        <member name="F:GTA.LeaveVehicleFlags.DontDefaultWarpIfDoorBlocked">
+            <summary>
+            <see cref="M:GTA.TaskInvoker.LeaveVehicle(GTA.LeaveVehicleFlags)"/> (or <c>TASK_LEAVE_ANY_VEHICLE</c>) auto defaults the <see cref="F:GTA.LeaveVehicleFlags.WarpIfDoorIsBlocked"/>, set this flag to not set that.
+            </summary>
+        </member>
+        <member name="F:GTA.LeaveVehicleFlags.FromLeftSide">
+            <summary>
+            Use entry/exit point on the left hand side.
+            </summary>
+        </member>
+        <member name="F:GTA.LeaveVehicleFlags.FromRightSide">
+            <summary>
+            Use entry/exit point on the right hand side.
+            </summary>
+        </member>
+        <member name="F:GTA.LeaveVehicleFlags.BlockSeatShuffling">
+            <summary>
+            Disable shuffling, forcing ped to use direct door only.
+            </summary>
+        </member>
+        <member name="F:GTA.LeaveVehicleFlags.WarpIfShuffleLinkIsBlocked">
+            <summary>
+            Allow ped to warp if the direct door is blocked and the shuffle link to that seat is blocked by someone. The player <see cref="T:GTA.Ped"/> will warp out of the vehicle without any flags if the entry is blocked.
+            Unlike <see cref="F:GTA.LeaveVehicleFlags.WarpIfDoorIsBlocked"/>, this flag allows the the <see cref="T:GTA.Ped"/> to warp when the direct door and the shuffle link to that seat is blocked by someone (regardless of whether the door linked to the shuffle link is directly blocked).
+            </summary>
+        </member>
+        <member name="F:GTA.LeaveVehicleFlags.DontJackAnyone">
+            <summary>
+            Never jack anyone when entering/exiting.
+            </summary>
+        </member>
+        <member name="F:GTA.LeaveVehicleFlags.WaitForEntryPointToBeClear">
+            <summary>
+            Wait for our entry point to be clear of peds before exiting.
+            </summary>
+        </member>
+        <member name="F:GTA.ParachuteLandingType.Invalid">
+            <summary>
+            Ped is not in a valid parachute landing state.
+            </summary>
+        </member>
+        <member name="F:GTA.ParachuteLandingType.Regular">
+            <summary>
+            Ped is landing at regular speed (they are stumbling).
+            </summary>
+        </member>
+        <member name="F:GTA.ParachuteLandingType.Fast">
+            <summary>
+            Ped is landing at fast speed (they are rolling).
+            </summary>
+        </member>
+        <member name="F:GTA.ParachuteLandingType.Crashing">
+            <summary>
+            Ped is crashing (ragdolling).
+            </summary>
+        </member>
         <member name="M:GTA.Ped.Clone(System.Single)">
             <summary>
             Spawn an identical clone of this <see cref="T:GTA.Ped"/>.
@@ -20490,10 +20918,29 @@
             Gets a collection of the <see cref="T:GTA.PedBone"/>s in this <see cref="T:GTA.Ped"/>.
             </summary>
         </member>
+        <member name="P:GTA.Ped.AlwaysKeepTask">
+            <summary>
+            <para>
+            Sets whether this <see cref="T:GTA.Ped"/> keeps their tasks when they are marked as no longer needed by <see cref="M:GTA.Entity.MarkAsNoLongerNeeded"/> or gets cleaned up by the mission script.
+            Despite the property name, this property does not determine whether permanent events can interrupt the <see cref="T:GTA.Ped"/>'s tasks (e.g. seeing hated peds or getting shot at).
+            </para>
+            <para>
+            If set to <see langword="false" />, this <see cref="T:GTA.Ped"/>'s task will be immediately cleared and start some ambient tasks (most likely start wandering) when they are marked as no longer needed.
+            </para>
+            <para>
+            If set to <see langword="true" />, this <see cref="T:GTA.Ped"/> will keep their task until they have nothing to do (where their task stacks only contains <c>CTaskDoNothing</c>).
+            Once this <see cref="T:GTA.Ped"/> has nothing to do, their task will clear and they'll start some ambient tasks (one-time-only).
+            </para>
+            </summary>
+        </member>
         <member name="P:GTA.Ped.BlockPermanentEvents">
             <summary>
             Sets whether permanent events are blocked for this <see cref="T:GTA.Ped"/>.
-             If permanent events are blocked, this <see cref="T:GTA.Ped"/> will only do as it's told, and won't flee when shot at, etc.
+            <para>
+            If set to <see langword="true" />, this <see cref="T:GTA.Ped"/> will no longer react to permanent events and will only do as they're told.
+            For example, the <see cref="T:GTA.Ped"/> will not flee when get shot at and they will not begin combat even if the decision maker specifies that seeing a hated ped should.
+            However, the <see cref="T:GTA.Ped"/> will still respond to temporary events like walking around other peds or vehicles even if this property is set to <see langword="true" />.
+            </para>
             </summary>
             <value>
               <see langword="true" /> if permanent events are blocked; otherwise, <see langword="false" />.
@@ -20889,6 +21336,37 @@
             <see cref="T:GTA.Ped"/>s will try to balance.
             </summary>
         </member>
+        <member name="F:GTA.Relationship.Companion">
+            <summary>
+            The correct relationship name for this enum would be <c>Respect</c>.
+            </summary>
+        </member>
+        <member name="F:GTA.Relationship.Respect">
+            <summary>
+            The correct relationship name for this enum would be <c>Like</c>.
+            </summary>
+        </member>
+        <member name="F:GTA.Relationship.Like">
+            <summary>
+            The correct relationship name for this enum would be <c>Ignore</c>.
+            </summary>
+        </member>
+        <member name="F:GTA.Relationship.Neutral">
+            <summary>
+            The correct relationship name for this enum would be <c>Dislike</c>.
+            </summary>
+        </member>
+        <member name="F:GTA.Relationship.Dislike">
+            <summary>
+            The correct relationship name for this enum would be <c>Wanted</c>.
+            Will be used for cops towards the player relationship group when the player is wanted.
+            </summary>
+        </member>
+        <member name="F:GTA.Relationship.Pedestrians">
+            <summary>
+            The correct relationship name for this enum would be <c>None</c>.
+            </summary>
+        </member>
         <member name="P:GTA.RelationshipGroup.Hash">
             <summary>
             Gets the hash for this <see cref="T:GTA.RelationshipGroup"/>.
@@ -20898,6 +21376,233 @@
             <summary>
             Gets the native representation of this <see cref="T:GTA.RelationshipGroup"/>.
             </summary>
+        </member>
+        <member name="M:GTA.TaskInvoker.StartVehicleMission(GTA.Vehicle,GTA.Vehicle,GTA.VehicleMissionType,System.Single,GTA.VehicleDrivingFlags,System.Single,System.Single,System.Boolean)">
+            <summary>Tells the <see cref="T:GTA.Ped"/> to perform a task when in a <see cref="T:GTA.Vehicle"/> against another <see cref="T:GTA.Vehicle"/>.</summary>
+            <param name="vehicle">The <see cref="T:GTA.Vehicle"/> to use to achieve the task.</param>
+            <param name="target">The target <see cref="T:GTA.Vehicle"/>.</param>
+            <param name="missionType">The vehicle mission type.</param>
+            <param name="cruiseSpeed">The cruise speed for the task.</param>
+            <param name="drivingFlags">The driving flags for the task.</param>
+            <param name="targetReachedDist">The distance at which the AI thinks the target has been reached and the car stops. To pick default value, the parameter can be passed in as <c>-1</c>.</param>
+            <param name="straightLineDist">The distance at which the AI switches to heading for the target directly instead of following the nodes. To pick default value, the parameter can be passed in as <c>-1</c>.</param>
+            <param name="driveAgainstTraffic">if set to <see langword="true" />, allows the car to drive on the opposite side of the road into incoming traffic.</param>
+        </member>
+        <member name="M:GTA.TaskInvoker.StartVehicleMission(GTA.Vehicle,GTA.Ped,GTA.VehicleMissionType,System.Single,GTA.VehicleDrivingFlags,System.Single,System.Single,System.Boolean)">
+            <summary>Tells the <see cref="T:GTA.Ped"/> to target another ped with a vehicle.</summary>
+            <param name="vehicle">The <see cref="T:GTA.Vehicle"/> to use to achieve the task.</param>
+            <param name="target">The target <see cref="T:GTA.Ped"/>.</param>
+            <param name="missionType">The vehicle mission type.</param>
+            <param name="cruiseSpeed">The cruise speed for the task.</param>
+            <param name="drivingFlags">The driving flags for the task.</param>
+            <param name="targetReachedDist">The distance at which the AI thinks the target has been reached and the car stops. To pick default value, the parameter can be passed in as <c>-1</c>.</param>
+            <param name="straightLineDist">The distance at which the AI switches to heading for the target directly instead of following the nodes. To pick default value, the parameter can be passed in as <c>-1</c>.</param>
+            <param name="driveAgainstTraffic">if set to <see langword="true" />, allows the car to drive on the opposite side of the road into incoming traffic.</param>
+        </member>
+        <member name="M:GTA.TaskInvoker.StartVehicleMission(GTA.Vehicle,GTA.Math.Vector3,GTA.VehicleMissionType,System.Single,GTA.VehicleDrivingFlags,System.Single,System.Single,System.Boolean)">
+            <summary>Tells the <see cref="T:GTA.Ped"/> to target a coord with a <see cref="T:GTA.Vehicle"/>.</summary>
+            <param name="vehicle">The <see cref="T:GTA.Vehicle"/> to use to achieve the task.</param>
+            <param name="target">The target coordinates.</param>
+            <param name="missionType">The vehicle mission type.</param>
+            <param name="cruiseSpeed">The cruise speed for the task.</param>
+            <param name="drivingFlags">The driving flags for the task.</param>
+            <param name="targetReachedDist">The distance at which the AI thinks the target has been reached and the car stops. To pick default value, the parameter can be passed in as <c>-1</c>.</param>
+            <param name="straightLineDist">The distance at which the AI switches to heading for the target directly instead of following the nodes. To pick default value, the parameter can be passed in as <c>-1</c>.</param>
+            <param name="driveAgainstTraffic">if set to <see langword="true" />, allows the car to drive on the opposite side of the road into incoming traffic.</param>
+        </member>
+        <member name="M:GTA.TaskInvoker.StartHeliMission(GTA.Vehicle,GTA.Vehicle,GTA.VehicleMissionType,System.Single,System.Single,System.Int32,System.Int32,System.Single,System.Single,GTA.HeliMissionFlags)">
+            <summary>Gives the helicopter a mission.</summary>
+            <param name="heli">The helicopter.</param>
+            <param name="target">The target <see cref="T:GTA.Vehicle"/>.</param>
+            <param name="missionType">The vehicle mission type.</param>
+            <param name="cruiseSpeed">The cruise speed for the task.</param>
+            <param name="targetReachedDist">distance (in meters) at which heli thinks it's arrived. Also used as the hover distance for <see cref="F:GTA.VehicleMissionType.Attack"/> and <see cref="F:GTA.VehicleMissionType.Circle"/></param>
+            <param name="flightHeight">The Z coordinate the heli tries to maintain (i.e. 30 == 30 meters above sea level).</param>
+            <param name="minHeightAboveTerrain">The height in meters that the heli will try to stay above terrain (ie 20 == always tries to stay at least 20 meters above ground).</param>
+            <param name="heliOrientation">The orientation the heli tries to be in (<c>0f</c> to <c>360f</c>). Use <c>-1f</c> if not bothered. <c>-1f</c> Should be used in 99% of the times.</param>
+            <param name="slowDownDistance">In general, get more control with big number and more dynamic with smaller. Setting to <c>-1</c> means use default tuning(<c>100</c>).</param>
+            <param name="missionFlags">The heli mission flags for the task.</param>
+        </member>
+        <member name="M:GTA.TaskInvoker.StartHeliMission(GTA.Vehicle,GTA.Ped,GTA.VehicleMissionType,System.Single,System.Single,System.Int32,System.Int32,System.Single,System.Single,GTA.HeliMissionFlags)">
+            <summary>Gives the helicopter a mission.</summary>
+            <param name="heli">The helicopter.</param>
+            <param name="target">The target <see cref="T:GTA.Ped"/>.</param>
+            <param name="missionType">The vehicle mission type.</param>
+            <param name="cruiseSpeed">The cruise speed for the task.</param>
+            <param name="targetReachedDist">distance (in meters) at which heli thinks it's arrived. Also used as the hover distance for <see cref="F:GTA.VehicleMissionType.Attack"/> and <see cref="F:GTA.VehicleMissionType.Circle"/></param>
+            <param name="flightHeight">The Z coordinate the heli tries to maintain (i.e. 30 == 30 meters above sea level).</param>
+            <param name="minHeightAboveTerrain">The height in meters that the heli will try to stay above terrain (ie 20 == always tries to stay at least 20 meters above ground).</param>
+            <param name="heliOrientation">The orientation the heli tries to be in (<c>0f</c> to <c>360f</c>). Use <c>-1f</c> if not bothered. <c>-1f</c> Should be used in 99% of the times.</param>
+            <param name="slowDownDistance">In general, get more control with big number and more dynamic with smaller. Setting to <c>-1</c> means use default tuning(<c>100</c>).</param>
+            <param name="missionFlags">The heli mission flags for the task.</param>
+        </member>
+        <member name="M:GTA.TaskInvoker.StartHeliMission(GTA.Vehicle,GTA.Math.Vector3,GTA.VehicleMissionType,System.Single,System.Single,System.Int32,System.Int32,System.Single,System.Single,GTA.HeliMissionFlags)">
+            <summary>Gives the helicopter a mission.</summary>
+            <param name="heli">The helicopter.</param>
+            <param name="target">The target coodinate.</param>
+            <param name="missionType">The vehicle mission type.</param>
+            <param name="cruiseSpeed">The cruise speed for the task.</param>
+            <param name="targetReachedDist">distance (in meters) at which heli thinks it's arrived. Also used as the hover distance for <see cref="F:GTA.VehicleMissionType.Attack"/> and <see cref="F:GTA.VehicleMissionType.Circle"/></param>
+            <param name="flightHeight">The Z coordinate the heli tries to maintain (i.e. 30 == 30 meters above sea level).</param>
+            <param name="minHeightAboveTerrain">The height in meters that the heli will try to stay above terrain (ie 20 == always tries to stay at least 20 meters above ground).</param>
+            <param name="heliOrientation">The orientation the heli tries to be in (<c>0f</c> to <c>360f</c>). Use <c>-1f</c> if not bothered. <c>-1f</c> Should be used in 99% of the times.</param>
+            <param name="slowDownDistance">In general, get more control with big number and more dynamic with smaller. Setting to <c>-1</c> means use default tuning(<c>100</c>).</param>
+            <param name="missionFlags">The heli mission flags for the task.</param>
+        </member>
+        <member name="M:GTA.TaskInvoker.StartPlaneMission(GTA.Vehicle,GTA.Vehicle,GTA.VehicleMissionType,System.Single,System.Single,System.Int32,System.Int32,System.Single,System.Boolean)">
+            <summary>Gives the plane a mission.</summary>
+            <param name="plane">The helicopter.</param>
+            <param name="target">The target <see cref="T:GTA.Vehicle"/>.</param>
+            <param name="missionType">The vehicle mission type.</param>
+            <param name="cruiseSpeed">The cruise speed for the task.</param>
+            <param name="targetReachedDist">distance (in meters) at which heli thinks it's arrived. Also used as the hover distance for <see cref="F:GTA.VehicleMissionType.Attack"/> and <see cref="F:GTA.VehicleMissionType.Circle"/></param>
+            <param name="flightHeight">The Z coordinate the heli tries to maintain (i.e. 30 == 30 meters above sea level).</param>
+            <param name="minHeightAboveTerrain">The height in meters that the heli will try to stay above terrain (ie 20 == always tries to stay at least 20 meters above ground).</param>
+            <param name="planeOrientation">The orientation the plane tries to be in (<c>0f</c> to <c>360f</c>). Use <c>-1f</c> if not bothered. <c>-1f</c> Should be used in 99% of the times.</param>
+        </member>
+        <member name="M:GTA.TaskInvoker.StartPlaneMission(GTA.Vehicle,GTA.Ped,GTA.VehicleMissionType,System.Single,System.Single,System.Int32,System.Int32,System.Single,System.Boolean)">
+            <summary>Gives the plane a mission.</summary>
+            <param name="plane">The helicopter.</param>
+            <param name="target">The target <see cref="T:GTA.Ped"/>.</param>
+            <param name="missionType">The vehicle mission type.</param>
+            <param name="cruiseSpeed">The cruise speed for the task.</param>
+            <param name="targetReachedDist">distance (in meters) at which heli thinks it's arrived. Also used as the hover distance for <see cref="F:GTA.VehicleMissionType.Attack"/> and <see cref="F:GTA.VehicleMissionType.Circle"/></param>
+            <param name="flightHeight">The Z coordinate the heli tries to maintain (i.e. 30 == 30 meters above sea level).</param>
+            <param name="minHeightAboveTerrain">The height in meters that the heli will try to stay above terrain (ie 20 == always tries to stay at least 20 meters above ground).</param>
+            <param name="planeOrientation">The orientation the plane tries to be in (<c>0f</c> to <c>360f</c>). Use <c>-1f</c> if not bothered. <c>-1f</c> Should be used in 99% of the times.</param>
+        </member>
+        <member name="M:GTA.TaskInvoker.StartPlaneMission(GTA.Vehicle,GTA.Math.Vector3,GTA.VehicleMissionType,System.Single,System.Single,System.Int32,System.Int32,System.Single,System.Boolean)">
+            <summary>Gives the plane a mission.</summary>
+            <param name="plane">The plane.</param>
+            <param name="target">The target coodinate.</param>
+            <param name="missionType">The vehicle mission type.</param>
+            <param name="cruiseSpeed">The cruise speed for the task.</param>
+            <param name="targetReachedDist">distance (in meters) at which heli thinks it's arrived. Also used as the hover distance for <see cref="F:GTA.VehicleMissionType.Attack"/> and <see cref="F:GTA.VehicleMissionType.Circle"/></param>
+            <param name="flightHeight">The Z coordinate the heli tries to maintain (i.e. 30 == 30 meters above sea level).</param>
+            <param name="minHeightAboveTerrain">The height in meters that the heli will try to stay above terrain (ie 20 == always tries to stay at least 20 meters above ground).</param>
+            <param name="planeOrientation">The orientation the plane tries to be in (<c>0f</c> to <c>360f</c>). Use <c>-1f</c> if not bothered. <c>-1f</c> Should be used in 99% of the times.</param>
+        </member>
+        <member name="M:GTA.TaskInvoker.StartBoatMission(GTA.Vehicle,GTA.Vehicle,GTA.VehicleMissionType,System.Single,GTA.VehicleDrivingFlags,System.Single,GTA.BoatMissionFlags)">
+            <summary>Gives the boat a mission.</summary>
+            <param name="boat">The boat.</param>
+            <param name="target">The target <see cref="T:GTA.Vehicle"/>.</param>
+            <param name="missionType">The vehicle mission type.</param>
+            <param name="cruiseSpeed">The cruise speed for the task.</param>
+            <param name="drivingFlags">The driving flags for the task.</param>
+            <param name="targetReachedDist">distance (in meters) at which boat thinks it's arrived. Also used as the hover distance for <see cref="F:GTA.VehicleMissionType.Attack"/> and <see cref="F:GTA.VehicleMissionType.Circle"/></param>
+            <param name="missionFlags">The boat mission flags for the task.</param>
+        </member>
+        <member name="M:GTA.TaskInvoker.StartBoatMission(GTA.Vehicle,GTA.Ped,GTA.VehicleMissionType,System.Single,GTA.VehicleDrivingFlags,System.Single,GTA.BoatMissionFlags)">
+            <summary>Gives the boat a mission.</summary>
+            <param name="boat">The boat.</param>
+            <param name="target">The target <see cref="T:GTA.Ped"/>.</param>
+            <param name="missionType">The vehicle mission type.</param>
+            <param name="cruiseSpeed">The cruise speed for the task.</param>
+            <param name="drivingFlags">The driving flags for the task.</param>
+            <param name="targetReachedDist">distance (in meters) at which boat thinks it's arrived. Also used as the hover distance for <see cref="F:GTA.VehicleMissionType.Attack"/> and <see cref="F:GTA.VehicleMissionType.Circle"/></param>
+            <param name="missionFlags">The boat mission flags for the task.</param>
+        </member>
+        <member name="M:GTA.TaskInvoker.StartBoatMission(GTA.Vehicle,GTA.Math.Vector3,GTA.VehicleMissionType,System.Single,GTA.VehicleDrivingFlags,System.Single,GTA.BoatMissionFlags)">
+            <summary>Gives the boat a mission.</summary>
+            <param name="boat">The boat.</param>
+            <param name="target">The target coordinate.</param>
+            <param name="missionType">The vehicle mission type.</param>
+            <param name="cruiseSpeed">The cruise speed for the task.</param>
+            <param name="drivingFlags">The driving flags for the task.</param>
+            <param name="targetReachedDist">distance (in meters) at which boat thinks it's arrived. Also used as the hover distance for <see cref="F:GTA.VehicleMissionType.Attack"/> and <see cref="F:GTA.VehicleMissionType.Circle"/></param>
+            <param name="missionFlags">The boat mission flags for the task.</param>
+        </member>
+        <member name="F:GTA.VehicleDrivingFlags.DontSteerAroundPlayerPed">
+            <summary>Don't steer around the player ped even if <see cref="F:GTA.VehicleDrivingFlags.SteerAroundPeds"/> is set.</summary>
+        </member>
+        <member name="F:GTA.VehicleDrivingFlags.GoOffRoadWhenAvoiding">
+            <summary>
+            Make the <see cref="T:GTA.Ped"/> prefer to go off the road rather than enter oncoming lanes when avoiding (steering around) obstacles if the correct lanes are full.
+            Even if this value is set, the <see cref="T:GTA.Ped"/> will try to steer around obstacles by entering other correct lanes if the correct lanes are not full. 
+            </summary>
+        </member>
+        <member name="F:GTA.VehicleDrivingFlags.AllowGoingWrongWay">
+            <summary>
+            Allow the <see cref="T:GTA.Ped"/> to drive into the oncoming traffic if the correct lanes are full.
+            Even if this value is set, the <see cref="T:GTA.Ped"/> will try to reach the correct lanes again as soon as possible. 
+            </summary>
+        </member>
+        <member name="F:GTA.VehicleDrivingFlags.UseWanderFallbackInsteadOfStraightLine">
+            <summary>
+            If pathfinding fails, cruise randomly instead of going on a straight line.
+            </summary>
+        </member>
+        <member name="F:GTA.VehicleDrivingFlags.PreventBackgroundPathfinding">
+            <summary>
+            Only works when the car mission is set to MISSION_CRUISE.
+            </summary>
+        </member>
+        <member name="F:GTA.VehicleDrivingFlags.AdjustCruiseSpeedBasedOnRoadSpeed">
+            <summary>
+            Limit the speed based on the road speed if the max cruise speed for driving tasks exceeds the road speed. Only works when the car mission is set to MISSION_CRUISE.
+            </summary>
+        </member>
+        <member name="F:GTA.VehicleDrivingFlags.UseShortCutLinks">
+            <summary>
+            Allow the <see cref="T:GTA.Ped"/> to use short cut links (e.g. the 180? turns on the highways without the direction sign).
+            </summary>
+        </member>
+        <member name="F:GTA.VehicleDrivingFlags.ChangeLanesAroundObstructions">
+            <summary>
+            Make the driver change lanes around obstructions.
+            Without this flag, even small obstacles make the driver completely change lanes.
+            </summary>
+        </member>
+        <member name="F:GTA.VehicleDrivingFlags.UseSwitchedOffNodes">
+            <summary>
+            Allow the <see cref="T:GTA.Ped"/> to drive on switched off nodes, which are usually located at paths whose colors on the map are darker than roads for driving (e.g. some dirt roads), and on parking lots.
+            You can check if some nodes are marked as switched off with <c>GET_VEHICLE_NODE_IS_SWITCHED_OFF</c>.
+            </summary>
+        </member>
+        <member name="F:GTA.VehicleDrivingFlags.PreferNavmeshRoute">
+            <summary>
+            Make <see cref="T:GTA.Ped"/> prefer navigation mesh routes rather than vehicle nodes.
+            Can be useful if you're going to be primarily driving off road.
+            </summary>
+        </member>
+        <member name="F:GTA.VehicleDrivingFlags.PlaneTaxiMode">
+            <summary>
+            Only works for planes using <c>MISSION_GOTO</c>, will cause them to drive along the ground instead of fly.
+            </summary>
+        </member>
+        <member name="F:GTA.VehicleDrivingFlags.ForceStraightLine">
+            <summary>
+            Force to go to the target directly instead of following the nodes regardless of the distance config for driving or vehicle mission tasks at which the ai switches to heading for the target directly.
+            </summary>
+        </member>
+        <member name="F:GTA.VehicleDrivingFlags.TryToAvoidHighways">
+            <summary>
+            Avoid the highway unless the <see cref="T:GTA.Ped"/> has to drive on it to achieve the vehicle task.
+            </summary>
+        </member>
+        <member name="F:GTA.VehicleDrivingFlags.DrivingModeStopForVehicles">
+            <summary>Standard driving mode. stops for cars, peds, and lights, goes around stationary obstructions, and obey lights.</summary>
+        </member>
+        <member name="F:GTA.VehicleDrivingFlags.DrivingModeStopForVehiclesStrict">
+            <summary>Like <see cref="F:GTA.VehicleDrivingFlags.DrivingModeStopForVehicles"/>, but doesn't steer around anything in its way - will only wait instead (doesn't deviate an inch).</summary>
+        </member>
+        <member name="F:GTA.VehicleDrivingFlags.DrivingModeAvoidVehicles">
+            <summary>Default "alerted" driving mode. Drives around everything, doesn't obey lights.</summary>
+        </member>
+        <member name="F:GTA.VehicleDrivingFlags.DrivingModeAvoidVehiclesReckless">
+            <summary>Very erratic driving. difference between this and <see cref="F:GTA.VehicleDrivingFlags.DrivingModeAvoidVehicles"/> is that it doesn't use the brakes at ALL to help with steering.</summary>
+        </member>
+        <member name="F:GTA.VehicleDrivingFlags.DrivingModePloughThrough">
+            <summary>Smashes through everything.</summary>
+        </member>
+        <member name="F:GTA.VehicleDrivingFlags.DrivingModeStopForVehiclesIgnoreLights">
+            <summary>Drives normally except for the fact that it ignores lights.</summary>
+        </member>
+        <member name="F:GTA.VehicleDrivingFlags.DrivingModeAvoidVehiclesObeyLights">
+            <summary>Try to swerve around everything, but stop for lights if necessary.</summary>
+        </member>
+        <member name="F:GTA.VehicleDrivingFlags.DrivingModeAvoidVehiclesStopForPedsObeyLights">
+            <summary>Swerve around cars, be careful around peds, and stop for lights.</summary>
         </member>
         <member name="P:GTA.Projectile.Owner">
             <summary>
@@ -20919,6 +21624,13 @@
             <summary>
             Explodes this <see cref="T:GTA.Projectile"/>. Note that calling this method does not necessarily delete this <see cref="T:GTA.Projectile"/> due to the weapon configuration.
             </summary>
+        </member>
+        <member name="M:GTA.Projectile.FromHandle(System.Int32)">
+            <summary>
+            Get a <see cref="T:GTA.Projectile"/> instance by its handle
+            </summary>
+            <param name="handle"></param>
+            <returns>Null if not found or the entity is not a <see cref="T:GTA.Prop"/>, otherwise, a <see cref="T:GTA.Projectile"/></returns>
         </member>
         <member name="M:GTA.Prop.Exists">
             <summary>
@@ -21754,6 +22466,38 @@
               <see langword="true" /> if this <see cref="T:GTA.Vehicle"/> has forks; otherwise, <see langword="false" />.
             </value>
         </member>
+        <member name="P:GTA.Vehicle.IsBeingBroughtToHalt">
+            <summary>
+            Checks if this <see cref="T:GTA.Vehicle"/> is being brought to a halt.
+            </summary>
+        </member>
+        <member name="M:GTA.Vehicle.BringToHalt(System.Single,System.Int32,System.Boolean)">
+            <summary>
+            Starts the task to decelerate this <see cref="T:GTA.Vehicle"/> until it comes to rest, possibly in an unphysically short distance.
+            </summary>
+            <param name="stoppingDistance">The distance from the initial coords at which the vehicle should come to rest.</param>
+            <param name="timeToStopFor">The length of time in seconds to hold the car at rest after stopping.</param>
+            <param name="controlVerticalVelocity">
+            If <see langword="false" />, the task allows gravity to act normally in the Z direction.
+            If <see langword="true" />,  the task will also arrest the car's vertical velocity.
+            </param>
+        </member>
+        <member name="M:GTA.Vehicle.StopBringingToHalt">
+            <summary>
+            Stops bringing this <see cref="T:GTA.Vehicle"/> to a halt.
+            </summary>
+        </member>
+        <member name="M:GTA.Vehicle.GetActiveMissionType">
+            <summary>
+            Gets active vehicle mission type.
+            </summary>
+        </member>
+        <member name="M:GTA.Vehicle.StartParachuting(System.Boolean)">
+            <summary>
+            Open the vehicle's parachute (if any)
+            </summary>
+            <param name="allowPlayerToCancel">Whether to allow the player to cancel parachuting before the vehicle lands</param>
+        </member>
         <member name="M:GTA.Vehicle.GetAllLoadedModelsAppropriateForAmbientVehicles">
             <summary>
             Gets an <c>array</c> of all loaded <see cref="T:GTA.VehicleHash"/>s that is appropriate to spawn as ambient vehicles.
@@ -22447,6 +23191,21 @@
         <member name="F:GTA.GameVersion.v1_0_2372_0_NoSteam">
             <summary>
             This value also represents the exe version 1.0.2372.2 for non-Steam version. 1.0.2372.2 basically works in the same way as 1.0.2372.0 but with bug fixes.
+            </summary>
+        </member>
+        <member name="F:GTA.IntersectFlags.PedCapsules">
+            <summary>
+            Detect <see cref="T:GTA.Ped"/> who are not ragdolled (not running any NM tasks) by detecting the simple capsule shape of <see cref="T:GTA.Ped"/>.
+            </summary>
+        </member>
+        <member name="F:GTA.IntersectFlags.Ragdolls">
+            <summary>
+            Detect <see cref="T:GTA.Ped"/>'s ragdoll. Can detect those who are not ragdolled.
+            </summary>
+        </member>
+        <member name="F:GTA.IntersectFlags.Foliage">
+            <summary>
+            Detect foliage, which can be affected by the wind or contacts of <see cref="T:GTA.Entity"/>.
             </summary>
         </member>
         <member name="F:GTA.Language.Chinese">
@@ -23485,6 +24244,226 @@
             </summary>
             <param name="section">The section where the value is.</param>
             <param name="name">The name of the key the values are saved at.</param>
+        </member>
+        <member name="M:GTA.ShapeTest.StartTestLOSProbe(GTA.Math.Vector3,GTA.Math.Vector3,GTA.IntersectFlags,GTA.Entity,GTA.ShapeTestOptions)">
+            <summary>
+            Start a line-of-sight world probe shape test between 2 points.
+            </summary>
+            <param name="startPosition">The positon where the shape test starts.</param>
+            <param name="endPosition">The positon where the shape test ends.</param>
+            <param name="intersectFlags">What type of objects the shape test should intersect with.</param>
+            <param name="excludeEntity">Specify an <see cref="T:GTA.Entity"/> that the shape test should exclude, leave null for no entities ignored.</param>
+            <param name="options">Specify options for the spape test.</param>
+            <value>
+            The shape test handle.
+            If this method fails to create the shape test request because there are too many ongoing requests, <see cref="P:GTA.ShapeTestHandle.IsRequestFailed"/> will return <see langword="true" /> on the handle struct.
+            </value>
+        </member>
+        <member name="M:GTA.ShapeTest.StartExpensiveSyncTestLOSProbe(GTA.Math.Vector3,GTA.Math.Vector3,GTA.IntersectFlags,GTA.Entity,GTA.ShapeTestOptions)">
+            <summary>
+            Start a expensive synchronous line-of-sight world probe shape test between 2 points and blocks the game until the shape test completes.
+            </summary>
+            <param name="startPosition">The positon where the shape test starts.</param>
+            <param name="endPosition">The positon where the shape test ends.</param>
+            <param name="intersectFlags">What type of objects the shape test should intersect with.</param>
+            <param name="excludeEntity">Specify an <see cref="T:GTA.Entity"/> that the shape test should exclude, leave null for no entities ignored.</param>
+            <param name="options">Specify options for the spape test.</param>
+            <remarks>This method is much more expensive than the asynchronous version (<see cref="M:GTA.ShapeTest.StartTestLOSProbe(GTA.Math.Vector3,GTA.Math.Vector3,GTA.IntersectFlags,GTA.Entity,GTA.ShapeTestOptions)"/>).</remarks>
+            <value>
+            The shape test handle.
+            If this method fails to create the shape test request because there are too many ongoing requests, <see cref="P:GTA.ShapeTestHandle.IsRequestFailed"/> will return <see langword="true" /> on the handle struct.
+            </value>
+        </member>
+        <member name="M:GTA.ShapeTest.StartTestBoundingBox(GTA.Entity,GTA.IntersectFlags,GTA.ShapeTestOptions)">
+            <summary>
+            Start a shape test against the <see cref="T:GTA.Entity"/>'s bounding box.
+            </summary>
+            <param name="entity">The entity to inspect.</param>
+            <param name="intersectFlags">What type of objects the shape test should intersect with.</param>
+            <param name="options">Specify options for the spape test.</param>
+            <value>
+            The shape test handle.
+            If this method fails to create the shape test request because there are too many ongoing requests, <see cref="P:GTA.ShapeTestHandle.IsRequestFailed"/> will return <see langword="true" /> on the handle struct.
+            </value>
+        </member>
+        <member name="M:GTA.ShapeTest.StartTestBox(GTA.Math.Vector3,GTA.Math.Vector3,GTA.Math.Vector3,GTA.EulerRotationOrder,GTA.IntersectFlags,GTA.Entity,GTA.ShapeTestOptions)">
+            <summary>
+            Start a shape test against the <see cref="T:GTA.Entity"/>'s bound where the entity can collide.
+            </summary>
+            <param name="sourcePosition">The source position.</param>
+            <param name="dimension">The dimensions how much the shape test will search from the source position.</param>
+            <param name="rotationAngles">The rotations in degree how much the dimension will be rotated before the shape test starts.</param>
+            <param name="rotationOrder">The rotation order in local space the dimentions will be rotated in.</param>
+            <param name="intersectFlags">What type of objects the shape test should intersect with.</param>
+            <param name="excludeEntity">Specify an <see cref="T:GTA.Entity"/> that the shape test should exclude, leave null for no entities ignored.</param>
+            <param name="options">Specify options for the spape test.</param>
+            <value>
+            The shape test handle.
+            If this method fails to create the shape test request because there are too many ongoing requests, <see cref="P:GTA.ShapeTestHandle.IsRequestFailed"/> will return <see langword="true" /> on the handle struct.
+            </value>
+        </member>
+        <member name="M:GTA.ShapeTest.StartTestBound(GTA.Entity,GTA.IntersectFlags,GTA.ShapeTestOptions)">
+            <summary>
+            Start a shape test against the <see cref="T:GTA.Entity"/>'s bound where the entity can collide.
+            </summary>
+            <param name="entity">The entity to inspect.</param>
+            <param name="intersectFlags">What type of objects the shape test should intersect with.</param>
+            <param name="options">Specify options for the spape test.</param>
+            <value>
+            The shape test handle.
+            If this method fails to create the shape test request because there are too many ongoing requests, <see cref="P:GTA.ShapeTestHandle.IsRequestFailed"/> will return <see langword="true" /> on the handle struct.
+            </value>
+        </member>
+        <member name="M:GTA.ShapeTest.StartTestCapsule(GTA.Math.Vector3,GTA.Math.Vector3,System.Single,GTA.IntersectFlags,GTA.Entity,GTA.ShapeTestOptions)">
+            <summary>
+            Start a shape test against the area where shape test capsule covers.
+            </summary>
+            <param name="startPosition">The positon where the shape test starts.</param>
+            <param name="endPosition">The positon where the shape test ends.</param>
+            <param name="radius">The radius of the shape test capsule.</param>
+            <param name="intersectFlags">What type of objects the shape test should intersect with.</param>
+            <param name="excludeEntity">Specify an <see cref="T:GTA.Entity"/> that the shape test should exclude, leave null for no entities ignored.</param>
+            <param name="options">Specify options for the spape test.</param>
+            <value>
+            The shape test handle.
+            If this method fails to create the shape test request because there are too many ongoing requests, <see cref="P:GTA.ShapeTestHandle.IsRequestFailed"/> will return <see langword="true" /> on the handle struct.
+            </value>
+        </member>
+        <member name="M:GTA.ShapeTest.StartTestSweptSphere(GTA.Math.Vector3,GTA.Math.Vector3,System.Single,GTA.IntersectFlags,GTA.Entity,GTA.ShapeTestOptions)">
+            <summary>
+            Start a shape test against the area where swept sphere (ellipsoid) for shape test covers.
+            </summary>
+            <param name="startPosition">The positon where the shape test starts.</param>
+            <param name="endPosition">The positon where the shape test ends.</param>
+            <param name="radius">The radius of the swept sphere.</param>
+            <param name="intersectFlags">What type of objects the shape test should intersect with.</param>
+            <param name="excludeEntity">Specify an <see cref="T:GTA.Entity"/> that the shape test should exclude, leave null for no entities ignored.</param>
+            <param name="options">Specify options for the spape test.</param>
+            <value>
+            The shape test handle.
+            If this method fails to create the shape test request because there are too many ongoing requests, <see cref="P:GTA.ShapeTestHandle.IsRequestFailed"/> will return <see langword="true" /> on the handle struct.
+            </value>
+        </member>
+        <member name="M:GTA.ShapeTest.StartTestMouseCursorLOSProbe(GTA.Math.Vector3@,GTA.Math.Vector3@,GTA.IntersectFlags,GTA.Entity,GTA.ShapeTestOptions)">
+            <summary>
+            Start a line-of-sight world probe shape test between 2 points calculated based on the mouse cursor position.
+            Works just like <see cref="M:GTA.ShapeTest.StartTestLOSProbe(GTA.Math.Vector3,GTA.Math.Vector3,GTA.IntersectFlags,GTA.Entity,GTA.ShapeTestOptions)"/> only the start and end points of the probe are calculated based on the mouse cursor position projected into the world.
+            </summary>
+            <param name="probeStartPosition">The returned start position of the probe in world space.</param>
+            <param name="probeEndPosition">The returned end position of the probe in world space.</param>
+            <param name="intersectFlags">What type of objects the shape test should intersect with.</param>
+            <param name="excludeEntity">Specify an <see cref="T:GTA.Entity"/> that the shape test should exclude, leave null for no entities ignored.</param>
+            <param name="options">Specify options for the spape test.</param>
+            <value>
+            The shape test handle.
+            If this method fails to create the shape test request because there are too many ongoing requests, <see cref="P:GTA.ShapeTestHandle.IsRequestFailed"/> will return <see langword="true" /> on the handle struct.
+            </value>
+        </member>
+        <member name="M:GTA.ShapeTest.StartTestMouseCursorLOSProbe(GTA.IntersectFlags,GTA.Entity,GTA.ShapeTestOptions)">
+            <summary>
+            Start a shape test between 2 points calculated based on the mouse cursor position.
+            Works just like <see cref="M:GTA.ShapeTest.StartTestLOSProbe(GTA.Math.Vector3,GTA.Math.Vector3,GTA.IntersectFlags,GTA.Entity,GTA.ShapeTestOptions)"/> only the start and end points of the probe are calculated based on the mouse cursor position projected into the world.
+            </summary>
+            <param name="intersectFlags">What type of objects the shape test should intersect with.</param>
+            <param name="excludeEntity">Specify an <see cref="T:GTA.Entity"/> that the shape test should exclude, leave null for no entities ignored.</param>
+            <param name="options">Specify options for the spape test.</param>
+            <value>
+            The shape test handle and the start and end points of the probe are calculated based on the mouse cursor position projected into the world.
+            If this method fails to create the shape test request because there are too many ongoing requests, <see cref="P:GTA.ShapeTestHandle.IsRequestFailed"/> will return <see langword="true" /> on the handle struct.
+            </value>
+        </member>
+        <member name="T:GTA.ShapeTestHandle">
+            <summary>
+            Represents a shape test handle.
+            You need to call <see cref="O:GetResult"/> or <see cref="O:GetResultIncludingMaterial"/> every frame until one of the methods returns <see cref="F:GTA.ShapeTestStatus.Ready"/>.
+            </summary>
+        </member>
+        <member name="P:GTA.ShapeTestHandle.Handle">
+            <summary>
+            Gets the shape test handle.
+            </summary>
+        </member>
+        <member name="P:GTA.ShapeTestHandle.NativeValue">
+            <summary>
+            Gets the native representation of this <see cref="T:GTA.Model"/>.
+            </summary>
+        </member>
+        <member name="P:GTA.ShapeTestHandle.IsRequestFailed">
+            <summary>
+            Gets if the request of <see cref="T:GTA.ShapeTestHandle"/> is failed.
+            There is a limit to the number that can be in the system. Therefore, native functions for shape tests may fail to create the shapetest requests.
+            </summary>
+            <value>
+              <see langword="true" /> if the request is failed; otherwise, <see langword="false" />.
+            </value>
+        </member>
+        <member name="M:GTA.ShapeTestHandle.GetResult(GTA.ShapeTestResult@)">
+            <summary>
+            If status returned is <see cref="F:GTA.ShapeTestStatus.Ready"/>, then returns whether something was hit, and if so nearest hit position and normal.
+            You need to call this method until the result is ready since the shape test result may not be finished in the same frame you start the shape test.
+            </summary>
+            <remarks>
+            The shape test request is destroyed by this call if <see cref="F:GTA.ShapeTestStatus.Ready"/> is returned.
+            If this is not called every frame then the request will be destroyed.
+            </remarks>
+        </member>
+        <member name="M:GTA.ShapeTestHandle.GetResult">
+            <summary>
+            If status returned is <see cref="F:GTA.ShapeTestStatus.Ready"/>, then returns whether something was hit, and if so nearest hit position and normal.
+            You need to call this method until the result is ready since the shape test result may not be finished in the same frame you start the shape test.
+            </summary>
+            <remarks>
+            The shape test request is destroyed by this call if <see cref="F:GTA.ShapeTestStatus.Ready"/> is returned.
+            If this is not called every frame then the request will be destroyed.
+            </remarks>
+        </member>
+        <member name="M:GTA.ShapeTestHandle.GetResultIncludingMaterial(GTA.ShapeTestResult@,GTA.MaterialHash@)">
+            <summary>
+            If status returned is <see cref="F:GTA.ShapeTestStatus.Ready"/>, then returns whether something was hit, and if so nearest hit position, normal, and a hash of the material name.
+            You need to call this method until the result is ready since the shape test result may not be finished in the same frame you start the shape test.
+            </summary>
+            <remarks>
+            The shape test request is destroyed by this call if <see cref="F:GTA.ShapeTestStatus.Ready"/> is returned.
+            If this is not called every frame then the request will be destroyed.
+            </remarks>
+        </member>
+        <member name="M:GTA.ShapeTestHandle.GetResultIncludingMaterial">
+            <summary>
+            If status returned is <see cref="F:GTA.ShapeTestStatus.Ready"/>, then returns whether something was hit, and if so nearest hit position, normal, and a hash of the material name.
+            You need to call this method until the result is ready since the shape test result may not be finished in the same frame you start the shape test.
+            </summary>
+            <remarks>
+            The shape test request is destroyed by this call if <see cref="F:GTA.ShapeTestStatus.Ready"/> is returned.
+            If this is not called every frame then the request will be destroyed.
+            </remarks>
+        </member>
+        <member name="T:GTA.ShapeTestResult">
+            <summary>
+            Represents a shape test result.
+            </summary>
+        </member>
+        <member name="P:GTA.ShapeTestResult.DidHit">
+            <summary>
+            Gets a value indicating whether this shape test collided with anything.
+            </summary>
+        </member>
+        <member name="M:GTA.ShapeTestResult.TryGetHitEntity(GTA.Entity@)">
+            <summary>
+            Try to get the <see cref="T:GTA.Entity" /> this shape test hit.
+            <remarks>Returns <see langword="false" /> if the shape test didn't hit or what was hit wasn't a <see cref="T:GTA.Entity" />.</remarks>
+            </summary>
+        </member>
+        <member name="P:GTA.ShapeTestResult.HitPosition">
+            <summary>
+            Gets the world coordinates where this shape test hit.
+            <remarks>Returns <see cref="P:GTA.Math.Vector3.Zero"/> if the shape test didn't hit anything.</remarks>
+            </summary>
+        </member>
+        <member name="P:GTA.ShapeTestResult.SurfaceNormal">
+            <summary>
+            Gets the normal of the surface where this shape test hit.
+            <remarks>Returns <see cref="P:GTA.Math.Vector3.Zero"/> if the shape test didn't hit anything.</remarks>
+            </summary>
         </member>
         <member name="F:GTA.WeaponAttachmentPoint.Flash">
             <summary> Used for <see cref="F:GTA.WeaponHash.Flashlight"/>. </summary>
