@@ -63,8 +63,8 @@ local function sendDataPaketV1(dt)
   o.accY = accY
   o.accZ = accZ
 
-  local upVector = vec3(obj:getDirectionVectorUp())
-  local vectorForward = vec3(obj:getDirectionVector())
+  local upVector = obj:getDirectionVectorUp()
+  local vectorForward = obj:getDirectionVector()
 
   local quat = quatFromDir(vectorForward, upVector)
   local euler = quat:toEulerYXZ()
@@ -168,7 +168,7 @@ local function sendDataPaketV1(dt)
 
   -- if streams.willSend("profilingData") then
   --   gui.send(
-  --     "profilingData",
+  --     "genericGraphAdvanced",
   --     {
   --       --
   --       accX = {title = "Acc X", color = getContrastColorStringRGB(1), unit = "", value = o.accX},
@@ -232,7 +232,7 @@ local function resetV1()
 end
 
 local function settingsChanged()
-  M.onExtensionLoaded()
+  M.init()
 end
 
 local function initV1()
@@ -353,7 +353,7 @@ local function initV1()
   M.reset = resetV1
 end
 
-local function onExtensionLoaded(jbeamData)
+local function init()
   M.reset = nop
   M.updateGFX = nop
   M.update = nop
@@ -388,7 +388,7 @@ local function isPhysicsStepUsed()
   return isMotionSimEnabled
 end
 
-M.onExtensionLoaded = onExtensionLoaded
+M.init = init
 M.reset = nop
 M.settingsChanged = settingsChanged
 
