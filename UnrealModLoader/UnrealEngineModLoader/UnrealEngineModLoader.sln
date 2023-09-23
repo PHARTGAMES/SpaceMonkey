@@ -21,6 +21,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UE4Motion", "..\..\UE4Motio
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WibbleWobbleCapture", "..\..\..\..\WibbleWobble\trunk\WibbleWobbleCapture\WibbleWobbleCapture\WibbleWobbleCapture.vcxproj", "{9BF07E96-045B-4F3E-8096-98A0667105BC}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WibbleWobbleCommon", "..\..\..\..\WibbleWobble\trunk\WibbleWobbleCommon\WibbleWobbleCommon\WibbleWobbleCommon.vcxproj", "{57DCF1C7-C208-4139-9DDC-5A091E11F47B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WibbleWobbleTrack", "..\..\..\..\WibbleWobble\trunk\WibbleWobbleTrack\WibbleWobbleTrack\WibbleWobbleTrack.vcxproj", "{33338A13-A1C5-4BB9-B3CB-77CDB38751FC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -76,6 +80,22 @@ Global
 		{9BF07E96-045B-4F3E-8096-98A0667105BC}.Release|x64.Build.0 = Release|x64
 		{9BF07E96-045B-4F3E-8096-98A0667105BC}.Release|x86.ActiveCfg = Release|Win32
 		{9BF07E96-045B-4F3E-8096-98A0667105BC}.Release|x86.Build.0 = Release|Win32
+		{57DCF1C7-C208-4139-9DDC-5A091E11F47B}.Debug|x64.ActiveCfg = Debug|x64
+		{57DCF1C7-C208-4139-9DDC-5A091E11F47B}.Debug|x64.Build.0 = Debug|x64
+		{57DCF1C7-C208-4139-9DDC-5A091E11F47B}.Debug|x86.ActiveCfg = Debug|Win32
+		{57DCF1C7-C208-4139-9DDC-5A091E11F47B}.Debug|x86.Build.0 = Debug|Win32
+		{57DCF1C7-C208-4139-9DDC-5A091E11F47B}.Release|x64.ActiveCfg = Release|x64
+		{57DCF1C7-C208-4139-9DDC-5A091E11F47B}.Release|x64.Build.0 = Release|x64
+		{57DCF1C7-C208-4139-9DDC-5A091E11F47B}.Release|x86.ActiveCfg = Release|Win32
+		{57DCF1C7-C208-4139-9DDC-5A091E11F47B}.Release|x86.Build.0 = Release|Win32
+		{33338A13-A1C5-4BB9-B3CB-77CDB38751FC}.Debug|x64.ActiveCfg = Debug|x64
+		{33338A13-A1C5-4BB9-B3CB-77CDB38751FC}.Debug|x64.Build.0 = Debug|x64
+		{33338A13-A1C5-4BB9-B3CB-77CDB38751FC}.Debug|x86.ActiveCfg = Debug|Win32
+		{33338A13-A1C5-4BB9-B3CB-77CDB38751FC}.Debug|x86.Build.0 = Debug|Win32
+		{33338A13-A1C5-4BB9-B3CB-77CDB38751FC}.Release|x64.ActiveCfg = Release|x64
+		{33338A13-A1C5-4BB9-B3CB-77CDB38751FC}.Release|x64.Build.0 = Release|x64
+		{33338A13-A1C5-4BB9-B3CB-77CDB38751FC}.Release|x86.ActiveCfg = Release|Win32
+		{33338A13-A1C5-4BB9-B3CB-77CDB38751FC}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

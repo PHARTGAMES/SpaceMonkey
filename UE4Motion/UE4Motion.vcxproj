@@ -124,6 +124,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(SolutionDir)\MinHook\;$(SolutionDir)\UE4;$(SolutionDir)\UnrealEngineModLoader;$(SolutionDir)\UnrealEngineModLoader\Utilities;D:\Personal\projects\WibbleWobble\trunk\WibbleWobbleCapture\WibbleWobbleCapture;D:\Personal\projects\WibbleWobble\trunk\WibbleWobbleCommon\WibbleWobbleCommon;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -141,7 +142,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)\MinHook\;$(SolutionDir)\UE4;$(SolutionDir)\UnrealEngineModLoader;$(SolutionDir)\UnrealEngineModLoader\Utilities;D:\Personal\projects\WibbleWobble\trunk\WibbleWobbleCapture\WibbleWobbleCapture;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\MinHook\;$(SolutionDir)\UE4;$(SolutionDir)\UnrealEngineModLoader;$(SolutionDir)\UnrealEngineModLoader\Utilities;D:\Personal\projects\WibbleWobble\trunk\WibbleWobbleCapture\WibbleWobbleCapture;D:\Personal\projects\WibbleWobble\trunk\WibbleWobbleCommon\WibbleWobbleCommon;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -176,6 +177,9 @@ copy /Y "$(OutDir)$(TargetName)$(TargetExt)" "D:\Program Files (x86)\Steam\steam
   <ItemGroup>
     <ProjectReference Include="..\..\..\WibbleWobble\trunk\WibbleWobbleCapture\WibbleWobbleCapture\WibbleWobbleCapture.vcxproj">
       <Project>{9bf07e96-045b-4f3e-8096-98a0667105bc}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\WibbleWobble\trunk\WibbleWobbleCommon\WibbleWobbleCommon\WibbleWobbleCommon.vcxproj">
+      <Project>{57dcf1c7-c208-4139-9ddc-5a091e11f47b}</Project>
     </ProjectReference>
     <ProjectReference Include="..\UnrealModLoader\UnrealEngineModLoader\UnrealEngineModLoader.vcxproj">
       <Project>{de3bc2ad-2683-4d76-ad72-95d98164e9c7}</Project>

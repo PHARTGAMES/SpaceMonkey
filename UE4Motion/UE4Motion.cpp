@@ -10,6 +10,7 @@
 #include <sstream>
 #include <fstream>
 #include <vector>
+#include "WWMath.h"
 
 static UE4Motion* s_motionInstance = NULL;
 
@@ -155,6 +156,8 @@ void UE4Motion::_Cleanup()
 
 void UE4Motion::_TickMotion(UE4::FVector a_pos, UE4::FRotator a_rot, float a_dt)
 {
+	//Log::Print("_TickMotion\n");
+
 	if (m_motionIPC != NULL)
 	{
 		m_systemTime += a_dt;
@@ -167,6 +170,10 @@ void UE4Motion::_TickMotion(UE4::FVector a_pos, UE4::FRotator a_rot, float a_dt)
 		m_frameData.m_rotY = a_rot.Yaw * deg2rad;
 		m_frameData.m_rotR = -a_rot.Roll * deg2rad;
 
+
+		//Log::Print("_TickMotion internal\n");
+
+
 		m_motionIPC->Write();
 
 		//Log::Print("Position: X:%f, Y:%f, Z:%f, \n", a_pos.X, a_pos.Y, a_pos.Z);
@@ -178,24 +185,31 @@ void UE4Motion::_TickMotion(UE4::FVector a_pos, UE4::FRotator a_rot, float a_dt)
 
 void UE4Motion::_GetHeadTracking(UE4::FVector& a_pos, UE4::FRotator& a_rot, float &a_hFov, float &a_worldScale)
 {
+	Log::Print("_GetHeadTracking\n");
 	a_pos.X = a_pos.Y = a_pos.Z = 0.0f;
 	a_rot.Pitch = a_rot.Yaw = a_rot.Roll = 0.0f;
 	a_hFov = 120.0f;
 	a_worldScale = 1.0f;
 
-	WWCaptureHeadTrackData trackingData;
+	WWCaptureTrackData trackingData;
 	if (WWTickHeadTracking(trackingData))
 	{
-		a_pos.X = trackingData.m_z;
-		a_pos.Y = trackingData.m_x;
-		a_pos.Z = trackingData.m_y;
+		Log::Print("_GetHeadTracking tick\n");
 
-		a_rot.Pitch = -trackingData.m_pitch * rad2deg;
-		a_rot.Yaw = -trackingData.m_yaw * rad2deg;
-		a_rot.Roll = -trackingData.m_roll * rad2deg;
+		float ry, rp, rr, px, py, pz = 0;
+		M34ToYPRXYZ(ry, rp, rr, px, py, pz, trackingData.m_headVehicle);
+
+		a_pos.X = pz;
+		a_pos.Y = px;
+		a_pos.Z = py;
+
+		a_rot.Pitch = -rp * rad2deg;
+		a_rot.Yaw = -ry * rad2deg;
+		a_rot.Roll = -pz * rad2deg;
 
 		a_hFov = trackingData.m_hFov;
 		a_worldScale = trackingData.m_worldScale;
+
 
 	//	Log::Print("_GetHeadTracking:hFov :%f \n", a_hFov);
 	//	Log::Print("_GetHeadTracking:worldScale :%f \n", a_worldScale);
