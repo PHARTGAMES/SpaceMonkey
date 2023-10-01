@@ -14,11 +14,13 @@ using System.IO;
 using System.IO.MemoryMappedFiles;
 using CMCustomUDP;
 using System.Globalization;
+using System.Runtime.InteropServices;
+using System.Reflection;
 
 namespace GenericTelemetryProvider
 {
 
-    public partial class GenericTelemetryProvider : Form
+    public partial class MainForm : Form
     {
 
         public Dirt5UI dirt5UI;
@@ -41,35 +43,48 @@ namespace GenericTelemetryProvider
         TinyCombatArenaUI tcaUI;
         FilterUI filterUI;
         OutputUI outputUI;
-        public static GenericTelemetryProvider Instance;
+        public static MainForm Instance;
         public string versionString = "v1.0.7";
 
         bool ignoreConfigChanges = false;
+        public bool integrated = false;
 
-        public GenericTelemetryProvider()
+        const uint LOAD_LIBRARY_SEARCH_DEFAULT_DIRS = 0x00001000;
+
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        static extern bool SetDefaultDllDirectories(uint DirectoryFlags);
+
+        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+        static extern int AddDllDirectory(string NewDirectory);
+
+        Action<bool> loadCallback;
+
+        public MainForm(Action<bool> _loadCallback = null)
         {
+            loadCallback = _loadCallback;
+            Instance = this;
+
+
             CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
             InitializeComponent();
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            Instance = this;
-
             Utils.TimeBeginPeriod(1);
 
             this.Text = "SpaceMonkey " + versionString;
-            if(Directory.Exists("Configs"))
-            {
-                LoadConfig();
-            }
+
+            LoadConfig();
+
+            loadCallback?.Invoke(true);
         }
 
         void RefreshConfigs()
         {
             string selectedItem = Path.GetFileNameWithoutExtension(MainConfig.saveFilename);
             configComboBox.Items.Clear();
-            string[] files = Directory.GetFiles("Configs");
+            string[] files = Directory.GetFiles(MainConfig.installPath + "Configs");
             foreach (string file in files)
             {
                 string filename = Path.GetFileNameWithoutExtension(file);
@@ -85,7 +100,7 @@ namespace GenericTelemetryProvider
         {
             string selectedItem = Path.GetFileNameWithoutExtension(MainConfig.Instance.configData.filterConfig);
             filtersComboBox.Items.Clear();
-            string[] files = Directory.GetFiles("Filters");
+            string[] files = Directory.GetFiles(MainConfig.installPath + "Filters");
             foreach (string file in files)
             {
                 string filename = Path.GetFileNameWithoutExtension(file);
@@ -101,7 +116,7 @@ namespace GenericTelemetryProvider
         {
             string selectedItem = Path.GetFileNameWithoutExtension(MainConfig.Instance.configData.outputConfig);
             outputsComboBox.Items.Clear();
-            string[] files = Directory.GetFiles("Outputs");
+            string[] files = Directory.GetFiles(MainConfig.installPath + "Outputs");
             foreach (string file in files)
             {
                 string filename = Path.GetFileNameWithoutExtension(file);
@@ -147,6 +162,24 @@ namespace GenericTelemetryProvider
         { 
             MainConfig.Instance.Load();
 
+            try
+            {
+                AppDomain currentDomain = AppDomain.CurrentDomain;
+
+                AppDomain.CurrentDomain.AssemblyResolve += (object sender, ResolveEventArgs args) => 
+                {
+                    string assemblyName = args.Name.Split(',')[0];
+
+                    Assembly ass = Assembly.LoadFrom(MainConfig.installPath + assemblyName + ".dll");
+
+                    return ass;
+                };
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine("Failed to load assembly: " + e.Message);
+            }
+
             ignoreConfigChanges = true;
             RefreshConfigs();
             RefreshFilters();
@@ -154,22 +187,24 @@ namespace GenericTelemetryProvider
             RefreshHotkey();
             RefreshOtherSettings();
             ignoreConfigChanges = false;
-
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             Utils.TimeEndPeriod(1);
 
-            try
+            //for standalone only
+            if (!integrated)
             {
-                Application.Exit();
-            }
-            catch
-            {
+                try
+                {
+                    Application.Exit();
+                }
+                catch
+                {
 
+                }
             }
-
         }
 
         private void Dirt5Button_Click(object sender, EventArgs e)
@@ -254,9 +289,9 @@ namespace GenericTelemetryProvider
                     s += "(Copy)";
                 }
 
-                File.Copy("Configs\\" + selectedItem + ".txt", "Configs\\" + s + ".txt", true);
+                File.Copy(MainConfig.installPath + "Configs\\" + selectedItem + ".txt", MainConfig.installPath + "Configs\\" + s + ".txt", true);
 
-                File.WriteAllText("gtp.txt", "Configs\\" + s + ".txt");
+                File.WriteAllText(MainConfig.installPath + "gtp.txt", "Configs\\" + s + ".txt");
 
                 LoadConfig();
             };
@@ -277,7 +312,7 @@ namespace GenericTelemetryProvider
             if (configComboBox.SelectedItem == null)
                 return;
 
-            File.WriteAllText("gtp.txt", "Configs\\" + configComboBox.SelectedItem + ".txt");
+            File.WriteAllText(MainConfig.installPath + "gtp.txt", "Configs\\" + configComboBox.SelectedItem + ".txt");
 
             LoadConfig();
         }
@@ -368,7 +403,7 @@ namespace GenericTelemetryProvider
 
         private void wreckfestExperimentsButton_Click(object sender, EventArgs e)
         {
-
+            return;
             if (wreckfestUIExperiments != null && !wreckfestUIExperiments.IsDisposed)
             {
                 wreckfestUIExperiments.Dispose();
@@ -393,10 +428,13 @@ namespace GenericTelemetryProvider
             }
 
             beamNGUI = new BeamNGUI();
-
-            Thread x = new Thread(new ParameterizedThreadStart((form) => ((BeamNGUI)form).ShowDialog()));
+            Thread x = new Thread(new ParameterizedThreadStart((form) =>
+            {
+                ((BeamNGUI)form).ShowDialog();
+            }));
             x.IsBackground = true;
             x.Start(beamNGUI);
+
         }
 
         private void gtavButton_Click(object sender, EventArgs e)
@@ -639,6 +677,18 @@ namespace GenericTelemetryProvider
 
             MainConfig.Instance.configData.outputConfig = "Outputs\\" + (string)outputsComboBox.SelectedItem + ".txt";
             MainConfig.Instance.Save();
+        }
+
+        public void RegisterTelemetryCallback(Action<CMCustomUDPData> callback)
+        {
+            integrated = true;
+
+            TelemetryOutputCallback callbackOutput = (TelemetryOutputCallback)OutputModule.Instance.AddOutput(OutputModule.OutputType.Callback, false);
+
+            if(callbackOutput != null)
+            {
+                callbackOutput.RegisterCallback(callback);
+            }
         }
     }
 }

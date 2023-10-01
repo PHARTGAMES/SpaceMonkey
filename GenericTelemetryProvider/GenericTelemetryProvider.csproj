@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{EDC46C3A-20D4-4EE4-AC8A-C33A053D11DA}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Library</OutputType>
     <RootNamespace>GenericTelemetryProvider</RootNamespace>
     <AssemblyName>SpaceMonkeyTP</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
@@ -14,7 +14,7 @@
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>x64</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -35,8 +35,13 @@
   <PropertyGroup>
     <ApplicationIcon>GTPIcon.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL" />
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\GTPSimfeedback\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="SharpMonoInjector, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\SharpMonoInjector\trunk\build\debug\netstandard2.0\SharpMonoInjector.dll</HintPath>
@@ -79,7 +84,9 @@
     <Compile Include="OutputUI.Designer.cs">
       <DependentUpon>OutputUI.cs</DependentUpon>
     </Compile>
+    <Compile Include="SMClient.cs" />
     <Compile Include="TelemetryOutput.cs" />
+    <Compile Include="TelemetryOutputCallback.cs" />
     <Compile Include="TelemetryOutputMMF.cs" />
     <Compile Include="TelemetryOutputUDP.cs" />
     <Compile Include="TinyCombatArenaTelemetryProvider.cs" />
@@ -381,6 +388,7 @@
     <EmbeddedResource Include="SmoothFilterControl.resx">
       <DependentUpon>SmoothFilterControl.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -450,7 +458,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>copy /Y "$(TargetPath)" "D:\Personal\Simfeedback\SpaceMonkeyTP"</PostBuildEvent>
   </PropertyGroup>
 </Project>

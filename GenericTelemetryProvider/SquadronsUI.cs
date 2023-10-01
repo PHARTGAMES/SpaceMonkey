@@ -41,9 +41,9 @@ namespace GenericTelemetryProvider
         void LoadConfig()
         {
             return;
-            if (File.Exists(saveFilename))
+            if (File.Exists(MainConfig.installPath + saveFilename))
             {
-                string text = File.ReadAllText(saveFilename);
+                string text = File.ReadAllText(MainConfig.installPath + saveFilename);
 
                 SquadronsConfig config = JsonConvert.DeserializeObject<SquadronsConfig>(text);
 
@@ -57,7 +57,7 @@ namespace GenericTelemetryProvider
 
             string output = JsonConvert.SerializeObject(save, Formatting.Indented);
 
-            File.WriteAllText(saveFilename, output);
+            File.WriteAllText(MainConfig.installPath + saveFilename, output);
         }
 
 
@@ -110,7 +110,9 @@ namespace GenericTelemetryProvider
             provider.StopAllThreads();
             provider.Stop();
             if (!IsDisposed)
-                BeginInvoke(new Action<Form>((s) => { s.Dispose(); }), this);
+            {
+                Dispose();
+            }
 
             Application.ExitThread();
         }

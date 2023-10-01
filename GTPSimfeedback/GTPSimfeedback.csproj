@@ -33,8 +33,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -72,6 +72,10 @@
       <Project>{5cd4d965-fb7f-41e9-af9a-86ebf9ea15a3}</Project>
       <Name>CMCustomUDP</Name>
     </ProjectReference>
+    <ProjectReference Include="..\GenericTelemetryProvider\GenericTelemetryProvider.csproj">
+      <Project>{edc46c3a-20d4-4ee4-ac8a-c33a053d11da}</Project>
+      <Name>GenericTelemetryProvider</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -80,11 +84,12 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>copy /Y "$(TargetPath)" "D:\Personal\Simfeedback\provider"
+</PostBuildEvent>
   </PropertyGroup>
 </Project>

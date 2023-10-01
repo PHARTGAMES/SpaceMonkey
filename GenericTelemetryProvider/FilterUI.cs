@@ -279,7 +279,9 @@ namespace GenericTelemetryProvider
         private void OnFormClosing(object sender, FormClosingEventArgs e)
         {
             if (!IsDisposed)
-                BeginInvoke(new Action<Form>((s) => { s.Dispose(); }), this);
+            {
+                Dispose();
+            }
             Application.ExitThread();
         }
     }

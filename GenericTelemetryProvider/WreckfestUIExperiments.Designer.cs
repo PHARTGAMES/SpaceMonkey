@@ -284,7 +284,7 @@
             this.Controls.Add(this.initializeButton);
             this.Controls.Add(this.statusLabel);
             this.Controls.Add(this.vehicleSelector);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Icon = GenericTelemetryProvider.Properties.Resources.GTPIcon;
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "WreckfestUIExperiments";
             this.Text = "WreckfestUIExperiments";

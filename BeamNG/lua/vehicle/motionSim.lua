@@ -145,10 +145,12 @@ local function sendDataPaketV1(dt)
   o.suspension_acceleration_fl = (o.suspension_velocity_fl - lastFrameData.suspension_velocity_fl ) / dt
   o.suspension_acceleration_fr = (o.suspension_velocity_fr - lastFrameData.suspension_velocity_fr ) / dt
 
-  o.wheel_speed_bl = abs(wheelAccess.rearLeft.angularVelocity * wheelAccess.rearLeft.radius);
-  o.wheel_speed_br = abs(wheelAccess.rearRight.angularVelocity * wheelAccess.rearRight.radius);
-  o.wheel_speed_fl = abs(wheelAccess.frontLeft.angularVelocity * wheelAccess.frontLeft.radius);
-  o.wheel_speed_fr = abs(wheelAccess.frontRight.angularVelocity * wheelAccess.frontRight.radius);
+  if wheelAccess.rearLeft ~= nil and wheelAccess.rearRight ~= nil and wheelAccess.frontLeft  ~= nil and wheelAccess.frontRight ~= nil then
+	  o.wheel_speed_bl = abs(wheelAccess.rearLeft.angularVelocity * wheelAccess.rearLeft.radius);
+	  o.wheel_speed_br = abs(wheelAccess.rearRight.angularVelocity * wheelAccess.rearRight.radius);
+	  o.wheel_speed_fl = abs(wheelAccess.frontLeft.angularVelocity * wheelAccess.frontLeft.radius);
+	  o.wheel_speed_fr = abs(wheelAccess.frontRight.angularVelocity * wheelAccess.frontRight.radius);
+  end
 
 
   lastFrameData.suspension_position_bl = o.suspension_position_bl;
@@ -232,7 +234,7 @@ local function resetV1()
 end
 
 local function settingsChanged()
-  M.init()
+  M.onExtensionLoaded()
 end
 
 local function initV1()
@@ -353,7 +355,7 @@ local function initV1()
   M.reset = resetV1
 end
 
-local function init()
+local function onExtensionLoaded()
   M.reset = nop
   M.updateGFX = nop
   M.update = nop
@@ -388,7 +390,7 @@ local function isPhysicsStepUsed()
   return isMotionSimEnabled
 end
 
-M.init = init
+M.onExtensionLoaded = onExtensionLoaded
 M.reset = nop
 M.settingsChanged = settingsChanged
 

@@ -1,6 +1,6 @@
 ﻿namespace GenericTelemetryProvider
 {
-    partial class GenericTelemetryProvider
+    partial class MainForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GenericTelemetryProvider));
             this.Dirt5Button = new System.Windows.Forms.Button();
             this.Filters = new System.Windows.Forms.Button();
             this.configComboBox = new System.Windows.Forms.ComboBox();
@@ -344,10 +343,11 @@
             this.wreckfestExperimentsButton.Location = new System.Drawing.Point(18, 519);
             this.wreckfestExperimentsButton.Margin = new System.Windows.Forms.Padding(4);
             this.wreckfestExperimentsButton.Name = "wreckfestExperimentsButton";
-            this.wreckfestExperimentsButton.Size = new System.Drawing.Size(197, 56);
+            this.wreckfestExperimentsButton.Size = new System.Drawing.Size(195, 56);
             this.wreckfestExperimentsButton.TabIndex = 39;
             this.wreckfestExperimentsButton.Text = "Wreckfest\r\nExperimental";
             this.wreckfestExperimentsButton.UseVisualStyleBackColor = true;
+            this.wreckfestExperimentsButton.Visible = false;
             this.wreckfestExperimentsButton.Click += new System.EventHandler(this.wreckfestExperimentsButton_Click);
             // 
             // overloadButton
@@ -437,7 +437,7 @@
             this.OutputsBtn.UseVisualStyleBackColor = true;
             this.OutputsBtn.Click += new System.EventHandler(this.OutputsBtn_Click);
             // 
-            // GenericTelemetryProvider
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -476,9 +476,9 @@
             this.Controls.Add(this.configComboBox);
             this.Controls.Add(this.Filters);
             this.Controls.Add(this.Dirt5Button);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Icon = global::GenericTelemetryProvider.Properties.Resources.GTPIcon;
             this.Margin = new System.Windows.Forms.Padding(4);
-            this.Name = "GenericTelemetryProvider";
+            this.Name = "MainForm";
             this.Text = "SpaceMonkey";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);

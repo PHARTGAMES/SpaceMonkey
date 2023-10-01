@@ -59,7 +59,7 @@
             this.ClientSize = new System.Drawing.Size(300, 101);
             this.Controls.Add(this.okButton);
             this.Controls.Add(this.filterComboBox);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Icon = GenericTelemetryProvider.Properties.Resources.GTPIcon;
             this.Name = "FilterPicker";
             this.Text = "FilterPicker";
             this.ResumeLayout(false);

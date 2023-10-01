@@ -51,15 +51,15 @@ namespace GenericTelemetryProvider
 
         void LoadConfig()
         {
-            string[] vehicles = System.IO.File.ReadAllLines("Dirt5\\Dirt5Vehicles.txt");
+            string[] vehicles = System.IO.File.ReadAllLines(MainConfig.installPath + "Dirt5\\Dirt5Vehicles.txt");
 
             vehicleSelector.Items.AddRange(vehicles);
 
 
-            if (File.Exists(saveFilename))
+            if (File.Exists(MainConfig.installPath + saveFilename))
             {
 
-                string text = File.ReadAllText(saveFilename);
+                string text = File.ReadAllText(MainConfig.installPath + saveFilename);
 
                 Dirt5Config config = JsonConvert.DeserializeObject<Dirt5Config>(text);
 
@@ -83,7 +83,7 @@ namespace GenericTelemetryProvider
 
             string output = JsonConvert.SerializeObject(save, Formatting.Indented);
 
-            File.WriteAllText(saveFilename, output);
+            File.WriteAllText(MainConfig.installPath + saveFilename, output);
         }
 
         public void ProgressBarChanged(int progress)
@@ -139,8 +139,10 @@ namespace GenericTelemetryProvider
             provider.Stop();
 
             if (!IsDisposed)
-                BeginInvoke(new Action<Form>((s) => { s.Dispose(); }), this);
-            
+            {
+                Dispose();
+            }
+
             Application.ExitThread();
         }
 

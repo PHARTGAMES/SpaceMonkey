@@ -53,7 +53,7 @@ namespace GenericTelemetryProvider
 
 
             //wait for telemetry
-            while (true)
+            while (!IsStopped)
             {
                 try
                 {
@@ -73,7 +73,7 @@ namespace GenericTelemetryProvider
             }
 
             //wait for mutex
-            while (true)
+            while (!IsStopped)
             {
                 try
                 {

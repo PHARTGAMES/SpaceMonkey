@@ -41,9 +41,9 @@ namespace GenericTelemetryProvider
                     formatDestinationsBox.Items.Add(entry);
             }
 
-            string selectedItem = Path.GetFileNameWithoutExtension(outputConfig.packetFormat);
+            string selectedItem = Path.GetFileNameWithoutExtension(MainConfig.installPath + outputConfig.packetFormat);
             packetFormatComboBox.Items.Clear();
-            string[] files = Directory.GetFiles("PacketFormats");
+            string[] files = Directory.GetFiles(MainConfig.installPath + "PacketFormats");
             foreach (string file in files)
             {
                 string filename = Path.GetFileNameWithoutExtension(file);

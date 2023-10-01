@@ -15,7 +15,7 @@ namespace GenericTelemetryProvider
         public virtual void Init(OutputConfigTypeData _outputConfig)
         {
             outputConfig = _outputConfig;
-            data.Init(_outputConfig.packetFormat);
+            data.Init(MainConfig.installPath + _outputConfig.packetFormat);
         }
 
         public virtual void StartSending()

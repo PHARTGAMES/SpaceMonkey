@@ -46,18 +46,22 @@ namespace GenericTelemetryProvider
         {
             base.SendData(_data);
 
-            byte[] bytes = data.GetBytes();
-
-            mutex.WaitOne();
-
-            using (MemoryMappedViewStream stream = outputMMF.CreateViewStream())
+            if (outputMMF != null)
             {
-                BinaryWriter writer = new BinaryWriter(stream);
-                writer.Write(bytes);
-            }
+                byte[] bytes = data.GetBytes();
 
-            mutex.ReleaseMutex();
+                mutex.WaitOne();
+
+                using (MemoryMappedViewStream stream = outputMMF.CreateViewStream())
+                {
+                    BinaryWriter writer = new BinaryWriter(stream);
+                    writer.Write(bytes);
+                }
+
+                mutex.ReleaseMutex();
+            }
         }
+
 
         public override OutputConfigTypeData GetConfigTypeData()
         {

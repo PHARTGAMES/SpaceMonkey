@@ -80,7 +80,7 @@
             this.Controls.Add(this.addOutputBtn);
             this.Controls.Add(this.outputTypesComboBox);
             this.Controls.Add(this.flowLayoutPanelOutputs);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Icon = GenericTelemetryProvider.Properties.Resources.GTPIcon;
             this.Name = "OutputUI";
             this.Text = "OutputUI";
             this.Load += new System.EventHandler(this.OutputUI_Load);

@@ -72,7 +72,7 @@
             this.Controls.Add(this.initializeButton);
             this.Controls.Add(this.matrixBox);
             this.Controls.Add(this.statusLabel);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Icon = GenericTelemetryProvider.Properties.Resources.GTPIcon;
             this.Name = "OpenMotionUI";
             this.Text = "OpenMotionUI";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OnFormClosing);

@@ -128,7 +128,7 @@
             this.Controls.Add(this.initializeButton);
             this.Controls.Add(this.statusLabel);
             this.Controls.Add(this.vehicleSelector);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Icon = GenericTelemetryProvider.Properties.Resources.GTPIcon;
             this.Name = "WreckfestUI";
             this.Text = "WreckfestUI";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OnFormClosing);

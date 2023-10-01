@@ -36,21 +36,46 @@ namespace GenericTelemetryProvider
         public static string saveFilename = "Configs\\defaultConfig.txt";
         public bool blockSave = false;
 
+        public static string installPath = null;
+
+        private void ResolveInstallDirectory()
+        {
+            if (installPath != null)
+                return;
+
+            string[] files = Directory.GetFiles(Environment.CurrentDirectory, "gtp.txt", SearchOption.AllDirectories);
+
+            if (files.Length > 0)
+            {
+                
+                installPath = Path.GetDirectoryName(files[0]) + "\\";
+                Console.WriteLine("Found install path at " + installPath);
+            }
+            else
+            {
+                Console.WriteLine("Could not find gtp.txt");
+            }
+
+        }
+
         public void Load()
         {
+            ResolveInstallDirectory();
+            if (string.IsNullOrEmpty(installPath))
+                return;
 
-            if (File.Exists("gtp.txt"))
+            if (File.Exists(MainConfig.installPath + "gtp.txt"))
             {
-                string configFilename = File.ReadAllText("gtp.txt");
-                if(File.Exists(configFilename))
+                string configFilename = File.ReadAllText(MainConfig.installPath + "gtp.txt");
+                if(File.Exists(MainConfig.installPath + configFilename))
                 {
                     saveFilename = configFilename;
                 }
             }
 
-            if (File.Exists(saveFilename))
+            if (File.Exists(MainConfig.installPath + saveFilename))
             {
-                string text = File.ReadAllText(saveFilename);
+                string text = File.ReadAllText(MainConfig.installPath + saveFilename);
 
                 configData = JsonConvert.DeserializeObject<MainConfigData>(text);
             }
@@ -60,7 +85,7 @@ namespace GenericTelemetryProvider
         {
             string output = JsonConvert.SerializeObject(configData, Formatting.Indented);
 
-            File.WriteAllText(saveFilename, output);
+            File.WriteAllText(MainConfig.installPath + saveFilename, output);
         }
 
     }

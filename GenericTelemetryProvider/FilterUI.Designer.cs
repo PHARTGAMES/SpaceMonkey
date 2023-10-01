@@ -102,7 +102,7 @@
             this.Controls.Add(this.flowLayoutFilters);
             this.Controls.Add(this.keyComboBox);
             this.Controls.Add(this.filterChart);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Icon = GenericTelemetryProvider.Properties.Resources.GTPIcon;
             this.Name = "FilterUI";
             this.Text = "FilterUI";
             this.Load += new System.EventHandler(this.FilterUI_Load);

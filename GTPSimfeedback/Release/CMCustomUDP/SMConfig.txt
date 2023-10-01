@@ -1,4 +1,6 @@
 {
 	"udpPort":10001,
-	"receiveUDP":false
+	"receiveUDP":false,
+	"receiveMMF":false,
+	"integrated":true
 }

@@ -64,10 +64,10 @@ namespace GenericTelemetryProvider
         {
             configFilename = filename;
 
-            if (!File.Exists(configFilename))
+            if (!File.Exists(MainConfig.installPath + configFilename))
                 return;
 
-            configData = JsonConvert.DeserializeObject<FilterConfigData>(File.ReadAllText(configFilename), new JsonSerializerSettings
+            configData = JsonConvert.DeserializeObject<FilterConfigData>(File.ReadAllText(MainConfig.installPath + configFilename), new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.Auto
             });
@@ -192,7 +192,7 @@ namespace GenericTelemetryProvider
             });
 
 
-            File.WriteAllText(configFilename, outputString);
+            File.WriteAllText(MainConfig.installPath + configFilename, outputString);
 
         }
 

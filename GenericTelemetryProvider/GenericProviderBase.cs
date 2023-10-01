@@ -139,9 +139,9 @@ namespace GenericTelemetryProvider
             lastRawPos = Vector3.Zero;
 
             filteredData = new CMCustomUDPData();
-            filteredData.Init();
+            filteredData.Init(MainConfig.installPath + "PacketFormats\\defaultPacketFormat.xml");
             rawData = new CMCustomUDPData();
-            rawData.Init();
+            rawData.Init(MainConfig.installPath + "PacketFormats\\defaultPacketFormat.xml");
 
             OutputModule.Instance.InitFromConfig(MainConfig.Instance.configData.outputConfig);
             OutputModule.Instance.StartSending();
@@ -243,7 +243,7 @@ namespace GenericTelemetryProvider
             if (!lastFrameValid)
             {
                 lastFilteredData = new CMCustomUDPData();
-                lastFilteredData.Init();
+                lastFilteredData.Init(MainConfig.installPath + "PacketFormats\\defaultPacketFormat.xml");
                 lastPosition = transform.Translation;
                 lastTransform = transform;
                 lastFrameValid = true;

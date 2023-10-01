@@ -15,6 +15,7 @@ namespace GenericTelemetryProvider
         {
             MMF,
             UDP,
+            Callback,
             Max
         }
 
@@ -55,13 +56,18 @@ namespace GenericTelemetryProvider
         {
             configFilename = filename;
 
-
-            configData = JsonConvert.DeserializeObject<OutputConfigData>(File.ReadAllText(configFilename), new JsonSerializerSettings
+            configData = JsonConvert.DeserializeObject<OutputConfigData>(File.ReadAllText(MainConfig.installPath + configFilename), new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.Auto
             });
 
-            telemetryOutputs.Clear();
+            for(int i = telemetryOutputs.Count-1; i >= 0; --i)
+            {
+                if(!(telemetryOutputs[i] is TelemetryOutputCallback))
+                {
+                    telemetryOutputs.RemoveAt(i);
+                }
+            }
 
             foreach (OutputConfigTypeData outConfig in configData.outputConfigTypes)
             {
@@ -118,6 +124,10 @@ namespace GenericTelemetryProvider
 
             foreach (TelemetryOutput output in telemetryOutputs)
             {
+                //callback type is transient
+                if (output is TelemetryOutputCallback)
+                    continue;
+
                 configData.outputConfigTypes.Add(output.GetConfigTypeData());
             }
 
@@ -127,16 +137,17 @@ namespace GenericTelemetryProvider
             });
 
 
-            File.WriteAllText(configFilename, outputString);
+            File.WriteAllText(MainConfig.installPath + configFilename, outputString);
         }
 
-        public void AddOutput(OutputType outputType, bool updateUI)
+        public TelemetryOutput AddOutput(OutputType outputType, bool updateUI)
         {
-            switch(outputType)
+            TelemetryOutput newOutput = null;
+            switch (outputType)
             {
                 case OutputType.MMF:
                     {
-                        TelemetryOutputMMF newOutput = new TelemetryOutputMMF();
+                        newOutput = new TelemetryOutputMMF();
                         OutputConfigTypeDataMMF newDataType = new OutputConfigTypeDataMMF();
 
                         newOutput.Init(newDataType);
@@ -147,8 +158,33 @@ namespace GenericTelemetryProvider
                     }
                 case OutputType.UDP:
                     {
-                        TelemetryOutputUDP newOutput = new TelemetryOutputUDP();
+                        newOutput = new TelemetryOutputUDP();
                         OutputConfigTypeDataUDP newDataType = new OutputConfigTypeDataUDP();
+
+                        newOutput.Init(newDataType);
+
+                        telemetryOutputs.Add(newOutput);
+
+                        break;
+                    }
+                case OutputType.Callback:
+                    {
+                        //only one callback output allowed.. for now :)
+                        foreach(TelemetryOutput output in telemetryOutputs)
+                        {
+                            if (output is TelemetryOutputCallback)
+                            {
+                                newOutput = output;
+                                break;
+                            }
+                        }
+
+                        //already have a callback output
+                        if (newOutput != null)
+                            break;
+
+                        newOutput = new TelemetryOutputCallback();
+                        OutputConfigTypeDataCallback newDataType = new OutputConfigTypeDataCallback();
 
                         newOutput.Init(newDataType);
 
@@ -158,10 +194,12 @@ namespace GenericTelemetryProvider
                     }
             }
 
-            if(updateUI && OutputUI.Instance != null)
+            if (updateUI && OutputUI.Instance != null)
             {
                 OutputUI.Instance.RefreshUI();
             }
+
+            return newOutput;
         }
 
         public void DeleteOutput(TelemetryOutput output)
@@ -213,9 +251,9 @@ namespace GenericTelemetryProvider
             if (copyFormatDestinations == null)
                 return;
 
-            if (!File.Exists(packetFormat))
+            if (!File.Exists(MainConfig.installPath + packetFormat))
             {
-                Console.WriteLine(packetFormat + " does not exist");
+                Console.WriteLine(MainConfig.installPath + packetFormat + " does not exist");
                 return;
             }
 
@@ -223,7 +261,7 @@ namespace GenericTelemetryProvider
             {
                 try
                 {
-                    File.Copy(packetFormat, dest, true);
+                    File.Copy(MainConfig.installPath + packetFormat, dest, true);
                 }
                 catch (Exception e)
                 {
@@ -239,7 +277,6 @@ namespace GenericTelemetryProvider
     {
         public string udpIP = "127.0.0.1";
         public int udpPort = 10001;
-
     }
 
     [System.Serializable]
@@ -247,6 +284,10 @@ namespace GenericTelemetryProvider
     {
         public string mmfName = "GenericTelemetryProviderFiltered";
         public string mmfMutexName = "GenericTelemetryProviderMutex";
+    }
 
+    [System.Serializable]
+    public class OutputConfigTypeDataCallback : OutputConfigTypeData
+    {
     }
 }

@@ -52,12 +52,14 @@ namespace GenericTelemetryProvider
             Thread.CurrentThread.Join();
         }
 
-
         void ReceiveCallback(IAsyncResult ar)
         {
+            if (IsStopped)
+                return;
+
+            IPEndPoint remoteEP = (IPEndPoint)ar.AsyncState;
             try
             {
-                IPEndPoint remoteEP = (IPEndPoint)ar.AsyncState;
                 byte[] received = socket.EndReceive(ar, ref remoteEP);
 
                 var alloc = GCHandle.Alloc(received, GCHandleType.Pinned);
@@ -77,6 +79,7 @@ namespace GenericTelemetryProvider
             }
             catch (Exception e)
             {
+                socket.BeginReceive(new AsyncCallback(ReceiveCallback), remoteEP);
                 Thread.Sleep(1000);
             }
 

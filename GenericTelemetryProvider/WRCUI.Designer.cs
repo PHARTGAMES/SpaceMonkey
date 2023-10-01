@@ -84,7 +84,7 @@
             this.Controls.Add(this.initializeButton);
             this.Controls.Add(this.matrixBox);
             this.Controls.Add(this.statusLabel);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Icon = GenericTelemetryProvider.Properties.Resources.GTPIcon;
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "WRCUI";
             this.Text = "WRC UI";

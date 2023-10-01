@@ -40,9 +40,9 @@ namespace GenericTelemetryProvider
         void LoadConfig()
         {
 
-            if (File.Exists(saveFilename))
+            if (File.Exists(MainConfig.installPath + saveFilename))
             {
-                string text = File.ReadAllText(saveFilename);
+                string text = File.ReadAllText(MainConfig.installPath + saveFilename);
 
                 WRCGenConfig config = JsonConvert.DeserializeObject<WRCGenConfig>(text);
 
@@ -58,7 +58,7 @@ namespace GenericTelemetryProvider
 
             string output = JsonConvert.SerializeObject(save, Formatting.Indented);
 
-            File.WriteAllText(saveFilename, output);
+            File.WriteAllText(MainConfig.installPath + saveFilename, output);
         }
 
         public void StatusTextChanged(string text)
@@ -104,7 +104,9 @@ namespace GenericTelemetryProvider
             provider.StopAllThreads();
             provider.Stop();
             if (!IsDisposed)
-                BeginInvoke(new Action<Form>((s) => { s.Dispose(); }), this);
+            {
+                Dispose();
+            }
 
             Application.ExitThread();
         }

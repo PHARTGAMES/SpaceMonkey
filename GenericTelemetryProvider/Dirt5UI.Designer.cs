@@ -103,7 +103,7 @@
             this.Controls.Add(this.initializeButton);
             this.Controls.Add(this.statusLabel);
             this.Controls.Add(this.vehicleSelector);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Icon = GenericTelemetryProvider.Properties.Resources.GTPIcon;
             this.Name = "Dirt5UI";
             this.Text = "Dirt5UI";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OnFormClosing);

@@ -37,6 +37,7 @@ using System.IO.MemoryMappedFiles;
 using CMCustomUDP;
 using Newtonsoft.Json;
 using System.Globalization;
+using GenericTelemetryProvider;
 
 namespace GTPSimfeedback
 {
@@ -52,10 +53,14 @@ namespace GTPSimfeedback
 
         GTPConfig config;
 
-        float smoothInTime = 3.0f;
-        float smoothInTimer = 3.0f;
-        float startWaitTime = 2.0f;
-        float startWaitTimer = 2.0f;
+        double smoothInTime = 3.0f;
+        double smoothInTimer = 3.0f;
+        double startWaitTime = 2.0f;
+        double startWaitTimer = 2.0f;
+        double dt;
+        Stopwatch systemTimer;
+        double lastSystemTimerSeconds = 0;
+        
 
         /// <summary>
         /// Default constructor.
@@ -71,6 +76,9 @@ namespace GTPSimfeedback
             IconImage = @"img\SMIcon.png";  // Icon used in the tree view for the profile
             TelemetryUpdateFrequency = 100;     // the update frequency in samples per second
             LoadConfig("CMCustomUDP/SMConfig.txt");
+            systemTimer = new Stopwatch();
+            systemTimer.Start();
+            lastSystemTimerSeconds = systemTimer.Elapsed.TotalSeconds;
         }
 
         /// <summary>
@@ -83,6 +91,7 @@ namespace GTPSimfeedback
         {
             base.Init(logger);
             Log("Initializing GTPTelemetryProvider");
+
         }
 
         /// <summary>
@@ -103,11 +112,25 @@ namespace GTPSimfeedback
             {
                 LogDebug("Starting GTPTelemetryProvider");
 
-                t = new Thread(Run);
-                t.Start();
+                if (config.integrated)
+                {
+                    SMClient.Init((success) =>
+                    {
+                        SMClient.RegisterTelemetryCallback(TelemetryCallback);
+
+                        IsConnected = true;
+                        IsRunning = true;
+                    });
+                }
+
+
+                if(config.receiveUDP || config.receiveMMF)
+                {
+                    t = new Thread(Run);
+                    t.Start();
+                }
             }
         }
-
 
         /// <summary>
         /// Stop the polling thread
@@ -117,7 +140,8 @@ namespace GTPSimfeedback
             LogDebug("Stopping GTPTelemetryProvider");
             isStopped = true;
 
-            if (t != null) t.Join();
+            if (t != null) 
+                t.Join();
         }
 
         void LoadConfig(string filename)
@@ -128,9 +152,47 @@ namespace GTPSimfeedback
                 return;
 
             config = JsonConvert.DeserializeObject<GTPConfig>(File.ReadAllText(filename));
-            
         }
 
+        public void TelemetryCallback(CMCustomUDPData telemetryData)
+        {
+            double systemTimerSeconds = systemTimer.Elapsed.TotalSeconds;
+            dt = systemTimerSeconds - lastSystemTimerSeconds;
+            lastSystemTimerSeconds = systemTimerSeconds;
+
+            CMCustomUDPData telemetryToSend = new CMCustomUDPData();
+            telemetryToSend.Copy(telemetryData);
+
+            ProcessTelemetryExceptions(telemetryToSend);
+
+            TelemetryEventArgs args = new TelemetryEventArgs(new GTPTelemetryInfo(telemetryToSend));
+            RaiseEvent(OnTelemetryUpdate, args);
+        }
+
+        public void ProcessTelemetryExceptions(CMCustomUDPData telemetryToSend)
+        {
+
+            //wait for start because there is a delay between when telem starts sending and platform is updated
+            if (startWaitTimer > 0.0f)
+            {
+                startWaitTimer -= dt;
+                telemetryToSend.LerpAll(0.0f);
+                //done, so smooth in
+                if (startWaitTimer <= 0.0f)
+                {
+                    smoothInTimer = smoothInTime;
+                }
+            }
+            else
+            //smooth start transition
+            if (smoothInTimer > 0.0f)
+            {
+                double lerp = 1.0 - (smoothInTimer / smoothInTime);
+                smoothInTimer -= dt;
+                telemetryToSend.LerpAll((float)lerp);
+            }
+
+        }
 
         /// <summary>
         /// The thread funktion to poll the telemetry data and send TelemetryUpdated events.
@@ -161,14 +223,13 @@ namespace GTPSimfeedback
                 socket.Client.Bind(new IPEndPoint(IPAddress.Any, config.udpPort));
             }
 
-
             MemoryMappedFile mmf = null;
 
             while (!isStopped)
             {
                 try
                 {
-                    float dt = (float)sw.ElapsedMilliseconds / 1000.0f;
+                    dt = (float)sw.ElapsedMilliseconds / 1000.0f;
 
                     if (config.receiveUDP)
                     {
@@ -234,26 +295,8 @@ namespace GTPSimfeedback
 
                     CMCustomUDPData telemetryToSend = new CMCustomUDPData();
                     telemetryToSend.Copy(telemetryData);
-                    
-                    //wait for start because there is a delay between when telem starts sending and platform is updated
-                    if(startWaitTimer > 0.0f)
-                    {
-                        startWaitTimer -= dt;
-                        telemetryToSend.LerpAll(0.0f);
-                        //done, so smooth in
-                        if(startWaitTimer <= 0.0f)
-                        {
-                            smoothInTimer = smoothInTime;
-                        }    
-                    }
-                    else
-                    //smooth start transition
-                    if (smoothInTimer > 0.0f)
-                    {
-                        float lerp = 1.0f-(smoothInTimer / smoothInTime);
-                        smoothInTimer -= dt;
-                        telemetryToSend.LerpAll(lerp);
-                    }    
+
+                    ProcessTelemetryExceptions(telemetryToSend);
                     
                     IsConnected = true;
 
@@ -319,6 +362,8 @@ namespace GTPSimfeedback
     {
         public int udpPort = 6969;
         public bool receiveUDP = false;
+        public bool receiveMMF = false;
+        public bool integrated = true;
     }
 
 }

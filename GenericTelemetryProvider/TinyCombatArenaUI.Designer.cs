@@ -75,7 +75,7 @@
             this.Controls.Add(this.initializeButton);
             this.Controls.Add(this.matrixBox);
             this.Controls.Add(this.statusLabel);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Icon = GenericTelemetryProvider.Properties.Resources.GTPIcon;
             this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "TinyCombatArenaUI";
             this.Text = "Tiny Combat Arena UI";
