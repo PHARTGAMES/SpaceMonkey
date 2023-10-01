@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.IO;
 using System.Windows.Forms;
-
+using Microsoft.Win32;
 
 namespace GenericTelemetryProvider
 {
@@ -43,24 +43,28 @@ namespace GenericTelemetryProvider
             if (installPath != null)
                 return;
 
-            string[] files = Directory.GetFiles(Environment.CurrentDirectory, "gtp.txt", SearchOption.AllDirectories);
+            //string[] files = Directory.GetFiles(Environment.CurrentDirectory, "gtp.txt", SearchOption.AllDirectories);
 
-            if (files.Length > 0)
-            {
-                
-                installPath = Path.GetDirectoryName(files[0]) + "\\";
-                Console.WriteLine("Found install path at " + installPath);
-            }
-            else
-            {
-                Console.WriteLine("Could not find gtp.txt");
-            }
+            //if (files.Length > 0)
+            //{
+
+            //    installPath = Path.GetDirectoryName(files[0]) + "\\";
+            //    Console.WriteLine("Found install path at " + installPath);
+            //}
+            //else
+            //{
+            //    Console.WriteLine("Could not find gtp.txt");
+            //}
+
+
+            installPath = (string)Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\PHARTGAMES\\SpaceMonkeyTP", "install_path", null);
 
         }
 
         public void Load()
         {
             ResolveInstallDirectory();
+
             if (string.IsNullOrEmpty(installPath))
                 return;
 

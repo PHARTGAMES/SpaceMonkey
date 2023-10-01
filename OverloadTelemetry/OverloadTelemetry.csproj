@@ -290,4 +290,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy /Y "$(TargetPath)" "$(ProjectDir)..\GenericTelemetryProvider\Release"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

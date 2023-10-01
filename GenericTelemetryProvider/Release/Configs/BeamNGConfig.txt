@@ -1,0 +1,12 @@
+{
+  "filterConfig": "Filters\\BeamNGFilters.txt",
+  "outputConfig": "Outputs\\default_CB.txt",
+  "hotkey": {
+    "key": 56,
+    "enabled": true,
+    "windows": false,
+    "alt": true,
+    "ctrl": true,
+    "shift": false
+  }
+}

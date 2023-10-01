@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarplanesWW1API", "..\Warpl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WRCGenAPI", "..\WRCGenAPI\WRCGenAPI.csproj", "{9595027C-2C95-4AE0-93F0-19FC54A15483}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaceMonkeyTP", "..\SpaceMonkeyTP\SpaceMonkeyTP.csproj", "{1939B929-6069-4C34-B3F0-B96540B97719}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -195,6 +197,18 @@ Global
 		{9595027C-2C95-4AE0-93F0-19FC54A15483}.Release|x64.Build.0 = Release|Any CPU
 		{9595027C-2C95-4AE0-93F0-19FC54A15483}.Release|x86.ActiveCfg = Release|Any CPU
 		{9595027C-2C95-4AE0-93F0-19FC54A15483}.Release|x86.Build.0 = Release|Any CPU
+		{1939B929-6069-4C34-B3F0-B96540B97719}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1939B929-6069-4C34-B3F0-B96540B97719}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1939B929-6069-4C34-B3F0-B96540B97719}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1939B929-6069-4C34-B3F0-B96540B97719}.Debug|x64.Build.0 = Debug|Any CPU
+		{1939B929-6069-4C34-B3F0-B96540B97719}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1939B929-6069-4C34-B3F0-B96540B97719}.Debug|x86.Build.0 = Debug|Any CPU
+		{1939B929-6069-4C34-B3F0-B96540B97719}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1939B929-6069-4C34-B3F0-B96540B97719}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1939B929-6069-4C34-B3F0-B96540B97719}.Release|x64.ActiveCfg = Release|Any CPU
+		{1939B929-6069-4C34-B3F0-B96540B97719}.Release|x64.Build.0 = Release|Any CPU
+		{1939B929-6069-4C34-B3F0-B96540B97719}.Release|x86.ActiveCfg = Release|Any CPU
+		{1939B929-6069-4C34-B3F0-B96540B97719}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

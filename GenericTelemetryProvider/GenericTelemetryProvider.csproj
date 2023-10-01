@@ -458,6 +458,9 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy /Y "$(TargetPath)" "D:\Personal\Simfeedback\SpaceMonkeyTP"</PostBuildEvent>
+    <PostBuildEvent>copy /Y "$(TargetPath)" "$(ProjectDir)..\GenericTelemetryProvider\Release"
+copy /Y "$(TargetDir)Newtonsoft.Json.dll" "$(ProjectDir)..\GenericTelemetryProvider\Release"
+copy /Y "$(TargetDir)Newtonsoft.Json.xml" "$(ProjectDir)..\GenericTelemetryProvider\Release"
+</PostBuildEvent>
   </PropertyGroup>
 </Project>

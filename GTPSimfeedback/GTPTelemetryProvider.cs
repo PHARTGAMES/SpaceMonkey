@@ -38,6 +38,7 @@ using CMCustomUDP;
 using Newtonsoft.Json;
 using System.Globalization;
 using GenericTelemetryProvider;
+using Microsoft.Win32;
 
 namespace GTPSimfeedback
 {
@@ -60,7 +61,7 @@ namespace GTPSimfeedback
         double dt;
         Stopwatch systemTimer;
         double lastSystemTimerSeconds = 0;
-        
+
 
         /// <summary>
         /// Default constructor.
@@ -75,10 +76,41 @@ namespace GTPSimfeedback
             BannerImage = @"img\SMBanner.png"; // Image shown on top of the profiles tab
             IconImage = @"img\SMIcon.png";  // Icon used in the tree view for the profile
             TelemetryUpdateFrequency = 100;     // the update frequency in samples per second
-            LoadConfig("CMCustomUDP/SMConfig.txt");
             systemTimer = new Stopwatch();
             systemTimer.Start();
             lastSystemTimerSeconds = systemTimer.Elapsed.TotalSeconds;
+            
+
+            AppDomain currentDomain = AppDomain.CurrentDomain;
+
+            AppDomain.CurrentDomain.AssemblyResolve += (object sender, ResolveEventArgs args) =>
+            {
+                try
+                {
+                    string assemblyName = args.Name.Split(',')[0];
+
+                    string installPath = (string)Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\PHARTGAMES\\SpaceMonkeyTP", "install_path", null);
+                    if (string.IsNullOrEmpty(installPath))
+                    {
+                        throw new Exception("SpaceMonkey Not Installed");
+                    }
+                    else
+                    {
+                        Assembly ass = Assembly.LoadFrom(installPath + assemblyName + ".dll");
+
+                        return ass;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Failed to load assembly: " + e.Message);
+                    return null;
+                }
+            };
+
+            LoadConfig("CMCustomUDP/SMConfig.txt");
+
+
         }
 
         /// <summary>
@@ -108,6 +140,8 @@ namespace GTPSimfeedback
         /// </summary>
         public override void Start()
         {
+            
+
             if (isStopped)
             {
                 LogDebug("Starting GTPTelemetryProvider");
