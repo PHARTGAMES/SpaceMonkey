@@ -32,15 +32,17 @@ namespace GenericTelemetryProvider
 
             socket = new UdpClient();
             socket.ExclusiveAddressUse = false;
-            IPEndPoint remoteEP = new IPEndPoint(IPAddress.Any, readPort);
-            socket.Client.Bind(remoteEP);
 
-            socket.BeginReceive(new AsyncCallback(ReceiveCallback), remoteEP);
         }
 
         void MonitorThread()
         {
             StartSending();
+
+            IPEndPoint remoteEP = new IPEndPoint(IPAddress.Any, readPort);
+            socket.Client.Bind(remoteEP);
+            socket.BeginReceive(new AsyncCallback(ReceiveCallback), remoteEP);
+
             while (!IsStopped)
             {
                 Thread.Sleep(1000);
