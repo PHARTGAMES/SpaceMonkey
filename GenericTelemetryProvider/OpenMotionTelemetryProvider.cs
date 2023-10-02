@@ -155,17 +155,30 @@ namespace GenericTelemetryProvider
         {
             if (frameData == null)
                 return;
-
             
             transform = new Matrix4x4();
-            transform = Matrix4x4.CreateFromYawPitchRoll(frameData.m_rotYaw, frameData.m_rotPitch, frameData.m_rotRoll);
 
-            //transform = Matrix4x4.CreateRotationY(frameData.m_rotYaw);
-            //transform = Matrix4x4.Multiply(Matrix4x4.CreateRotationX(frameData.m_rotPitch), transform);
-            //transform = Matrix4x4.Multiply(Matrix4x4.CreateRotationZ(frameData.m_rotRoll), transform);
+            fwd = new Vector3(frameData.m_fwdX, frameData.m_fwdY, frameData.m_fwdZ);
+            up = new Vector3(frameData.m_upX, frameData.m_upY, frameData.m_upZ);
+            rht = Vector3.Cross(up, fwd);
 
-
-            transform.Translation = new Vector3(frameData.m_posX, frameData.m_posY, frameData.m_posZ);
+            transform = new Matrix4x4();
+            transform.M11 = rht.X;
+            transform.M12 = rht.Y;
+            transform.M13 = rht.Z;
+            transform.M14 = 0.0f;
+            transform.M21 = up.X;
+            transform.M22 = up.Y;
+            transform.M23 = up.Z;
+            transform.M24 = 0.0f;
+            transform.M31 = fwd.X;
+            transform.M32 = fwd.Y;
+            transform.M33 = fwd.Z;
+            transform.M34 = 0.0f;
+            transform.M41 = frameData.m_posX;
+            transform.M42 = frameData.m_posY;
+            transform.M43 = frameData.m_posZ;
+            transform.M44 = 1.0f;
 
             ProcessTransform(transform, _dt);
         }
@@ -175,7 +188,7 @@ namespace GenericTelemetryProvider
             if (!base.ProcessTransform(newTransform, inDT))
                 return false;
 
-            ui.DebugTextChanged(JsonConvert.SerializeObject(filteredData, Formatting.Indented) + "\n dt: " + dt + "\n steer: " + InputModule.Instance.controller.leftThumb.X + "\n accel: " + InputModule.Instance.controller.rightTrigger + "\n brake: " + InputModule.Instance.controller.leftTrigger + "\n frametime: " + frameData.m_time + "\n Pitch: " + frameData.m_rotPitch + ", " + "\n Yaw: " + frameData.m_rotYaw + ", " + "\n Roll: " + frameData.m_rotRoll + ", " + "\n rht: " + rht.X + ", " + rht.Y + ", " + rht.Z + "\n up: " + up.X + ", " + up.Y + ", " + up.Z + "\n fwd: " + fwd.X + ", " + fwd.Y + ", " + fwd.Z);
+            ui.DebugTextChanged(JsonConvert.SerializeObject(filteredData, Formatting.Indented) + "\n dt: " + dt + "\n steer: " + InputModule.Instance.controller.leftThumb.X + "\n accel: " + InputModule.Instance.controller.rightTrigger + "\n brake: " + InputModule.Instance.controller.leftTrigger + "\n frametime: " + frameData.m_time + "\n Pitch: " + filteredData.pitch + ", " + "\n Yaw: " + filteredData.yaw + ", " + "\n Roll: " + filteredData.roll + ", " + "\n rht: " + rht.X + ", " + rht.Y + ", " + rht.Z + "\n up: " + up.X + ", " + up.Y + ", " + up.Z + "\n fwd: " + fwd.X + ", " + fwd.Y + ", " + fwd.Z);
 
             SendFilteredData();
 

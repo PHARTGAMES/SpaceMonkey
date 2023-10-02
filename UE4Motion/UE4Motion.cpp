@@ -75,7 +75,6 @@ BPFUNCTION(GetHeadTracking)
 	float worldScale;
 	UE4::FVector constants;
 
-
 	s_motionInstance->_GetHeadTracking(pos, rot, hFov, worldScale);
 
 	constants.X = hFov;
@@ -166,13 +165,28 @@ void UE4Motion::_TickMotion(UE4::FVector a_pos, UE4::FRotator a_rot, float a_dt)
 		m_frameData.m_posY = a_pos.Z * 0.01f; //convert to meters
 		m_frameData.m_posZ = a_pos.X * 0.01f; //convert to meters
 
-		m_frameData.m_rotP = -a_rot.Pitch * deg2rad;
-		m_frameData.m_rotY = a_rot.Yaw * deg2rad;
-		m_frameData.m_rotR = -a_rot.Roll * deg2rad;
+		MatrixRotationEulerID pyr[3] = { MatrixRotationEulerID::MREID_Pitch, MatrixRotationEulerID::MREID_Yaw, MatrixRotationEulerID::MREID_Roll };
+		float eulerAngles[3] = { -a_rot.Pitch * deg2rad, a_rot.Yaw * deg2rad, a_rot.Roll * deg2rad };
+
+		float rotM34[3][4];
+		EulerXYZToM34(eulerAngles, m_frameData.m_posX, m_frameData.m_posY, m_frameData.m_posZ, rotM34, pyr);
+
+		XMFLOAT3 rht = XMFLOAT3(rotM34[0][0], rotM34[1][0], rotM34[2][0]);
+		XMFLOAT3 up = XMFLOAT3(rotM34[0][1], rotM34[1][1], rotM34[2][1]);
+		XMFLOAT3 fwd = XMFLOAT3(rotM34[0][2], rotM34[1][2], rotM34[2][2]);
+
+		Log::Print("Motion-----------------------------------------------\nMotion eul: %f, %f, %f\nMotion rht: %f, %f, %f\nMotion up: %f, %f, %f\nMotion fwd: %f, %f, %f\nMotion pos: %f, %f, %f\n", a_rot.Pitch, a_rot.Yaw, a_rot.Roll, rht.x, rht.y, rht.z, up.x, up.y, up.z, fwd.x, fwd.y, fwd.z, rotM34[0][3], rotM34[1][3], rotM34[2][3]);
+
+		m_frameData.m_fwdX = fwd.x;
+		m_frameData.m_fwdY = fwd.y;
+		m_frameData.m_fwdZ = fwd.z;
+
+		m_frameData.m_upX = up.x;
+		m_frameData.m_upY = up.y;
+		m_frameData.m_upZ = up.z;
 
 
 		//Log::Print("_TickMotion internal\n");
-
 
 		m_motionIPC->Write();
 
@@ -185,7 +199,7 @@ void UE4Motion::_TickMotion(UE4::FVector a_pos, UE4::FRotator a_rot, float a_dt)
 
 void UE4Motion::_GetHeadTracking(UE4::FVector& a_pos, UE4::FRotator& a_rot, float &a_hFov, float &a_worldScale)
 {
-	Log::Print("_GetHeadTracking\n");
+	//Log::Print("_GetHeadTracking\n");
 	a_pos.X = a_pos.Y = a_pos.Z = 0.0f;
 	a_rot.Pitch = a_rot.Yaw = a_rot.Roll = 0.0f;
 	a_hFov = 120.0f;

@@ -11,9 +11,12 @@ volatile struct __declspec(dllexport) OpenMotionFrameData
 	float m_posX = 0; //position x
 	float m_posY = 0; //position y
 	float m_posZ = 0; //position z
-	float m_rotP = 0; //pitch (radians)
-	float m_rotY = 0; //yaw (radians)
-	float m_rotR = 0; //roll (radians)
+	float m_fwdX = 0; //forward direction X, identity 0 
+	float m_fwdY = 0; //forward direction Y, identity 0
+	float m_fwdZ = 1; //forward direction Z, identity 1
+	float m_upX = 0; //up direction X, identity 0; left handed; right = up cross fwd
+	float m_upY = 1; //up direction Y, identity 1
+	float m_upZ = 0; //up direction Z, identity 0
 };
 #pragma pack(pop)
 
@@ -37,7 +40,6 @@ public:
 		// Dont Touch The Internal Stuff
 		ModRef = this;
 		CompleteModCreation();
-
 	}
 
 	//Called When Internal Mod Setup is finished
