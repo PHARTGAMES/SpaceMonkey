@@ -5,4 +5,8 @@
     <NXTargetName>Default</NXTargetName>
     <StartWorkingDirectory>D:\Personal\projects\SpaceMonkey\trunk\GenericTelemetryProvider\Release\</StartWorkingDirectory>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <NXTargetSerialNumber />
+    <NXTargetName>Default</NXTargetName>
+  </PropertyGroup>
 </Project>
