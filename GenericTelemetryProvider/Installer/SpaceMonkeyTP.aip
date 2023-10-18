@@ -30,10 +30,12 @@
     <ROW Directory="BeamNG_Dir" Directory_Parent="APPDIR" DefaultDir="BeamNG"/>
     <ROW Directory="Configs_Dir" Directory_Parent="APPDIR" DefaultDir="Configs"/>
     <ROW Directory="DCS_Dir" Directory_Parent="APPDIR" DefaultDir="DCS"/>
+    <ROW Directory="Dakar2_Dir" Directory_Parent="APPDIR" DefaultDir="Dakar2"/>
     <ROW Directory="Dirt5_Dir" Directory_Parent="APPDIR" DefaultDir="Dirt5"/>
     <ROW Directory="Filters_Dir" Directory_Parent="APPDIR" DefaultDir="Filters"/>
     <ROW Directory="GTAV_Dir" Directory_Parent="APPDIR" DefaultDir="GTAV"/>
     <ROW Directory="IL2_Dir" Directory_Parent="APPDIR" DefaultDir="IL2"/>
+    <ROW Directory="MW5_Dir" Directory_Parent="APPDIR" DefaultDir="MW5"/>
     <ROW Directory="MonsterGames_Dir" Directory_Parent="APPDIR" DefaultDir="MONSTE~1|MonsterGames"/>
     <ROW Directory="Outputs_Dir" Directory_Parent="APPDIR" DefaultDir="Outputs"/>
     <ROW Directory="PacketFormats_Dir" Directory_Parent="APPDIR" DefaultDir="PACKET~1|PacketFormats"/>
@@ -42,6 +44,7 @@
     <ROW Directory="Squadrons_Dir" Directory_Parent="APPDIR" DefaultDir="SQUADR~1|Squadrons"/>
     <ROW Directory="TARGETDIR" DefaultDir="SourceDir"/>
     <ROW Directory="Tools_Dir" Directory_Parent="UnrealModLauncher_Dir" DefaultDir="Tools"/>
+    <ROW Directory="TrailOut_Dir" Directory_Parent="APPDIR" DefaultDir="TrailOut"/>
     <ROW Directory="UnrealModLauncher_Dir" Directory_Parent="APPDIR" DefaultDir="UNREAL~1.1|UnrealModLoader_V2.2.1"/>
     <ROW Directory="WRC_Dir" Directory_Parent="APPDIR" DefaultDir="WRC"/>
     <ROW Directory="Wreckfest_Dir" Directory_Parent="APPDIR" DefaultDir="WRECKF~1|Wreckfest"/>
@@ -56,10 +59,12 @@
     <ROW Component="CMCustomUDP.dll" ComponentId="{0018E9E5-429B-4255-94A4-202076F3FEAB}" Directory_="APPDIR" Attributes="0" KeyPath="CMCustomUDP.dll"/>
     <ROW Component="CodemastersExtraData3.xml" ComponentId="{66EA42BA-F8FE-4AF9-A8E8-A65288ADD766}" Directory_="PacketFormats_Dir" Attributes="0" KeyPath="CodemastersExtraData3.xml" Type="0"/>
     <ROW Component="DCSConfig.txt" ComponentId="{7B2A3659-415C-4AB2-9F9A-DC0A958E7748}" Directory_="DCS_Dir" Attributes="0" KeyPath="DCSConfig.txt_1" Type="0"/>
+    <ROW Component="Dakar2Mod_0.2.zip" ComponentId="{6E9E91B0-BA50-455E-A1D0-A119B797C94C}" Directory_="Dakar2_Dir" Attributes="0" KeyPath="Dakar2Mod_0.2.zip" Type="0"/>
     <ROW Component="Dirt5Config.txt" ComponentId="{94777DD6-9BC5-4866-8D35-247E7D060314}" Directory_="Dirt5_Dir" Attributes="0" KeyPath="Dirt5Config.txt" Type="0"/>
     <ROW Component="GTAVAPI.dll" ComponentId="{F234A30A-365F-47CB-9025-D2D0B15AF14D}" Directory_="APPDIR" Attributes="0" KeyPath="GTAVAPI.dll"/>
     <ROW Component="GTAVConfig.txt" ComponentId="{5108559C-5610-4E23-B9CD-FA711461B7F6}" Directory_="GTAV_Dir" Attributes="0" KeyPath="GTAVConfig.txt" Type="0"/>
     <ROW Component="IL2Config.txt" ComponentId="{C24EB4FB-A31F-4B5C-87B0-577F89EC357F}" Directory_="IL2_Dir" Attributes="0" KeyPath="IL2Config.txt_1" Type="0"/>
+    <ROW Component="MW5Mercs_0.3.zip" ComponentId="{C3DEF9C8-7C72-4826-8689-A5614101CA35}" Directory_="MW5_Dir" Attributes="0" KeyPath="MW5Mercs_0.3.zip" Type="0"/>
     <ROW Component="ModLoaderInfo.ini" ComponentId="{CBBE1DE8-9065-43E2-A42E-C255AAAF33C6}" Directory_="AutoInjector_Dir" Attributes="0" KeyPath="ModLoaderInfo.ini" Type="0"/>
     <ROW Component="ModLoaderInfo.ini_1" ComponentId="{445DBB98-D755-48FD-A56A-F2BBDC20ECAF}" Directory_="UnrealModLauncher_Dir" Attributes="0" KeyPath="ModLoaderInfo.ini_1" Type="0"/>
     <ROW Component="MonsterGamesAPI.dll" ComponentId="{400BC803-1010-431B-BF9D-7FFA43DCB83A}" Directory_="APPDIR" Attributes="0" KeyPath="MonsterGamesAPI.dll"/>
@@ -72,6 +77,7 @@
     <ROW Component="SpaceMonkeyStart.exe" ComponentId="{AC863AC5-A617-464A-B585-288C9D569502}" Directory_="APPDIR" Attributes="0" KeyPath="SpaceMonkeyStart.exe"/>
     <ROW Component="SpaceMonkeyTP.dll" ComponentId="{DAAF7569-49AF-456C-9A1C-1A2632250C96}" Directory_="APPDIR" Attributes="0" KeyPath="SpaceMonkeyTP.dll"/>
     <ROW Component="TCAAPI.dll" ComponentId="{7C9EE455-A286-4C6E-B88D-A078CD48F7C7}" Directory_="APPDIR" Attributes="0" KeyPath="TCAAPI.dll"/>
+    <ROW Component="TrailOut_0.3.zip" ComponentId="{DF1A7647-F5AD-4C06-B3E4-A19940C6FAB2}" Directory_="TrailOut_Dir" Attributes="0" KeyPath="TrailOut_0.3.zip" Type="0"/>
     <ROW Component="UnrealEngineModLauncher.exe" ComponentId="{01FA80E9-EC34-49A5-AFB9-B1012AA72318}" Directory_="UnrealModLauncher_Dir" Attributes="256" KeyPath="UnrealEngineModLauncher.exe"/>
     <ROW Component="UnrealEngineModLoader.dll" ComponentId="{4050CF8C-9C34-4AED-9658-1C4E9C1C54D7}" Directory_="UnrealModLauncher_Dir" Attributes="256" KeyPath="UnrealEngineModLoader.dll"/>
     <ROW Component="VTOLVRAPI.dll" ComponentId="{A0FF104D-0762-4D56-840A-2CF8CC63C5BC}" Directory_="APPDIR" Attributes="0" KeyPath="VTOLVRAPI.dll"/>
@@ -213,6 +219,9 @@
     <ROW File="Newtonsoft.Json.xml" Component_="gtp.txt" FileName="NEWTON~1.XML|Newtonsoft.Json.xml" Attributes="0" SourcePath="..\Release\Newtonsoft.Json.xml" SelfReg="false"/>
     <ROW File="OpenMotionAPI.dll" Component_="OpenMotionAPI.dll" FileName="OPENMO~1.DLL|OpenMotionAPI.dll" Attributes="0" SourcePath="..\Release\OpenMotionAPI.dll" SelfReg="false"/>
     <ROW File="OverloadTelemetry.dll" Component_="OverloadTelemetry.dll" FileName="OVERLO~1.DLL|OverloadTelemetry.dll" Attributes="0" SourcePath="..\Release\OverloadTelemetry.dll" SelfReg="false"/>
+    <ROW File="Dakar2Mod_0.2.zip" Component_="Dakar2Mod_0.2.zip" FileName="DAKAR2~1.ZIP|Dakar2Mod_0.2.zip" Attributes="0" SourcePath="..\..\Dakar2Mod\Release\0.2\Dakar2Mod_0.2.zip" SelfReg="false"/>
+    <ROW File="MW5Mercs_0.3.zip" Component_="MW5Mercs_0.3.zip" FileName="MW5MER~1.ZIP|MW5Mercs_0.3.zip" Attributes="0" SourcePath="..\..\MW5MercsMod\Release\0.3\MW5Mercs_0.3.zip" SelfReg="false"/>
+    <ROW File="TrailOut_0.3.zip" Component_="TrailOut_0.3.zip" FileName="TRAILO~1.ZIP|TrailOut_0.3.zip" Attributes="0" SourcePath="..\..\TrailOutMod\Release\0.3\TrailOut_0.3.zip" SelfReg="false"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.BootstrOptComponent">
     <ROW BootstrOptKey="GlobalOptions" DownloadFolder="[AppDataFolder][|Manufacturer]\[|ProductName]\prerequisites" Options="2"/>
@@ -326,6 +335,9 @@
     <ROW Feature_="MainFeature" Component_="Newtonsoft.Json.dll"/>
     <ROW Feature_="MainFeature" Component_="OpenMotionAPI.dll"/>
     <ROW Feature_="MainFeature" Component_="OverloadTelemetry.dll"/>
+    <ROW Feature_="MainFeature" Component_="Dakar2Mod_0.2.zip"/>
+    <ROW Feature_="MainFeature" Component_="MW5Mercs_0.3.zip"/>
+    <ROW Feature_="MainFeature" Component_="TrailOut_0.3.zip"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiIconsComponent">
     <ROW Name="GTPIcon.exe" SourcePath="..\GTPIcon.ico" Index="0"/>

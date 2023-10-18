@@ -12,7 +12,7 @@ SpaceMonkey supports XINPUT, currently mapped to standard gamepad inputs for ste
 SpaceMonkey has been tested with Sim Racing Studio (motion, wind, shakers and led), SimCommander 4 (Accuforce v2) and SimFeedback (motion) and should work with any software that supports Dirt 4 Custom UDP.
 
 ```diff
-- Please make sure you run SpaceMonkeyTP.exe as administrator or use a user account with administrator privileges.
+- Please make sure you run SpaceMonkeyStart.exe as administrator or use a user account with administrator privileges.
 ```
 
 ### Supported Games
@@ -41,7 +41,7 @@ SpaceMonkey has been tested with Sim Racing Studio (motion, wind, shakers and le
 
 ## Installation
 
-The latest installer for SpaceMonkey is here (v1.0.6)
+The latest installer for SpaceMonkey is here (v1.0.7)
 
 https://github.com/PHARTGAMES/SpaceMonkey/raw/main/GenericTelemetryProvider/Installer/SpaceMonkeyTP-SetupFiles/SpaceMonkeyTP.msi
 
@@ -54,13 +54,35 @@ Install anywhere to your local drive.
 ![Main Interface](https://github.com/PHARTGAMES/SpaceMonkey/blob/main/Documentation/MainInterface.png?raw=true))]
 
 1. Game selection buttons; press one to load the interface for the selected game.
-2. Filters Button; press this to load the filters interface.
-3. Config selection; Choose or duplicate/rename the main configuration parameters. Configs are stored in the Configs folder. Ideally a config file will be created for each game as they often have different requirements for filtering.
-4. Telemetry Ouput; Choose how you want telemetry to be output from SpaceMonkey and configure the UDP out parameters.
-5. Packet formatting; Choose the packet format configuration file or specify "Packet Format Destinations"; these are folders that the packet format configuration file is copied to. Packet formats are specified in the PacketFormats folder and conform to the Dirt 4 Custom UDP specification. https://www.scribd.com/document/350826037/UDP-output-setup
-6. Filter Config and Hotkey. Extra filter configs can be created by copying a filter config in the Filters folder. The hotkey can be used to pause and resume telemetry globally when the app is not in focus.
+2. Config selection; Choose or duplicate/rename the main configuration parameters. Configs are stored in the Configs folder. Ideally a config file will be created for each game as they often have different requirements for filtering.
+3. Filter Config; Extra filter configs can be created by copying a filter config in the Filters folder.
+4. Telemetry Ouput; Choose how you want telemetry to be output from SpaceMonkey. These configs are modified by pressing the Outputs button (6)
+5. Hotkey;  The hotkey can be used to pause and resume telemetry globally when the app is not in focus.
+7. Filters Button; press this to load the filters interface.
+
 
 All changes to config options are saved as they are changed.
+
+
+## Outputs Interface
+
+
+![Outputs Interface](https://github.com/PHARTGAMES/SpaceMonkey/blob/main/Documentation/OutputsInterface.png?raw=true))]
+
+The outputs interface modifies the outputs config that is selected in the main interface. 
+Only load this interface while a game ui is not running.
+
+1. Change the dropdown to select an output type then press the Add Output button to add an output. Callback is a reserved type that currently only works with Simfeedback and any other software that wants to use this interface. It doesn't need to be added manually and can be ignored for now.
+2. Output MMF outputs the 'Packet Format' specified, to the Memory Mapped File with the name specified in 'MMFName', using the global mutex specified by 'MMFMutexName'. The values shown here are the defaults used by existing software.
+3. Output UDP outputs the 'Packet Format' specified, over UDP to the 'UDP IP' specified and and 'Port' specified. The example here outputs the Codemasters extradata=3 format which is what most software uses for dirt rally and dirt rally 2.
+4. 'Packet Format Destinations'; these are folders that the packet format configuration file is copied to. Packet formats are specified in the PacketFormats folder and conform to the Dirt 4 Custom UDP specification. https://www.scribd.com/document/350826037/UDP-output-setup
+
+The default output configs are as follows
+
+1. default_CB: This can be specified when you just want to output in the default format via callback. This is primarily used when SpaceMonkey is loaded as a dll from inside some other app and registers a callback to recieve telemetry that way. This is now the preferred method for SimFeedback as it has the lowest latency.
+2. default_CMED3: This config is to output to Codemasters extradata=3 format for when you want to output to software that supports this specific format for Dirt Rally 1/2 and it doesn't support custom udp. SimHub is one example. 
+3. default_MMF_UDP: This can be specified when you want to output to both MMF and UDP with the default formats as SpaceMonkey has always done by default.
+4. default_MMF_UDP_CMED3: This can be specified when you want to output to MMF with the default format, and then also output Codemasters extradata=3 over UDP to some other app such as SimHub.
 
 
 ---
@@ -453,6 +475,58 @@ Example MMF usage here https://github.com/PHARTGAMES/SpaceMonkey/blob/main/GTPSi
 
 ---
 
+# Callback Interface
+
+Actual example here https://github.com/PHARTGAMES/SpaceMonkey/blob/main/GTPSimfeedback/GTPTelemetryProvider.cs
+
+Simplified example
+```cs
+using GenericTelemetryProvider;
+using CMCustomUDP;
+
+public void TelemetryCallback(CMCustomUDPData telemetryData)
+{
+	//use telemetryData here
+}
+
+public void Init()
+{
+
+	AppDomain currentDomain = AppDomain.CurrentDomain;
+
+	AppDomain.CurrentDomain.AssemblyResolve += (object sender, ResolveEventArgs args) =>
+	{
+		try
+		{
+			string assemblyName = args.Name.Split(',')[0];
+
+			string installPath = (string)Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\PHARTGAMES\\SpaceMonkeyTP", "install_path", null);
+			if (string.IsNullOrEmpty(installPath))
+			{
+				throw new Exception("SpaceMonkey Not Installed");
+			}
+			else
+			{
+				Assembly ass = Assembly.LoadFrom(installPath + assemblyName + ".dll");
+
+				return ass;
+			}
+		}
+		catch (Exception e)
+		{
+			Console.WriteLine("Failed to load assembly: " + e.Message);
+			return null;
+		}
+	};
+
+	SMClient.Init((success) => //this will load the SpaceMonkey window
+	{	
+		SMClient.RegisterTelemetryCallback(TelemetryCallback); //this will register the callback
+	);
+}
+```
+---
+
 # ChangeLog
 
 Release v1.0.5
@@ -476,6 +550,14 @@ Release v1.0.6
 7. GTAV updated to support latest scripthook.net
 8. General rework and cleanup to start moving providers toward Open Motion.
 
+
+Release v1.0.7
+
+1. Added Codemasters extradata=3 support to allow output to more apps that don't support custom_udp such as SimHub.
+2. Added multiple output configuration support through the Outputs Interface.
+3. OpenMotion api expanded to support engine and gear telemetry as well as math rewrite.
+4. Added telemetry callback interface and restructured project to be loaded as a dll.
+5. Simfeedback plugin gets SpaceMonkey integration and callback support.
 
 ---
 
