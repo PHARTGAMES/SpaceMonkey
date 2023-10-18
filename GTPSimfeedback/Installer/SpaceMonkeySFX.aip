@@ -27,7 +27,6 @@
   <COMPONENT cid="caphyon.advinst.msicomp.MsiDirsComponent">
     <ROW Directory="APPDIR" Directory_Parent="TARGETDIR" DefaultDir="APPDIR:." IsPseudoRoot="1"/>
     <ROW Directory="CMCustomUDP_Dir" Directory_Parent="APPDIR" DefaultDir="CMCUST~1|CMCustomUDP"/>
-    <ROW Directory="Newtonsoft.Json_Dir" Directory_Parent="APPDIR" DefaultDir="NEWTON~1.JSO|Newtonsoft.Json"/>
     <ROW Directory="TARGETDIR" DefaultDir="SourceDir"/>
     <ROW Directory="img_Dir" Directory_Parent="APPDIR" DefaultDir="img"/>
     <ROW Directory="profiles_Dir" Directory_Parent="APPDIR" DefaultDir="profiles"/>
@@ -35,10 +34,7 @@
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiCompsComponent">
     <ROW Component="APPDIR" ComponentId="{0D909FDA-97CC-4E4C-8D67-B50BEE007373}" Directory_="APPDIR" Attributes="0"/>
-    <ROW Component="CMCustomUDP.dll" ComponentId="{3C2E418F-7F14-4E28-BB6B-0377B28C2972}" Directory_="CMCustomUDP_Dir" Attributes="0" KeyPath="CMCustomUDP.dll"/>
     <ROW Component="CMCustomUDPFormat.xml" ComponentId="{EFA12299-261D-4A4F-9E47-1CB76A6405DE}" Directory_="CMCustomUDP_Dir" Attributes="0" KeyPath="CMCustomUDPFormat.xml" Type="0"/>
-    <ROW Component="Newtonsoft.Json.dll" ComponentId="{0284AAE1-B7D4-493F-9B21-CAB8D6FE20E2}" Directory_="Newtonsoft.Json_Dir" Attributes="0" KeyPath="Newtonsoft.Json.dll"/>
-    <ROW Component="Newtonsoft.Json.xml" ComponentId="{0DFDF17E-BB5C-433C-84FB-7AE378A7E4C3}" Directory_="Newtonsoft.Json_Dir" Attributes="0" KeyPath="Newtonsoft.Json.xml" Type="0"/>
     <ROW Component="ProductInformation" ComponentId="{FC859001-DA67-4E49-BFBE-E8C8391BAB26}" Directory_="APPDIR" Attributes="4" KeyPath="Version"/>
     <ROW Component="SMIcon.png" ComponentId="{CF67A261-E3B2-4E1A-935F-EAF41B99823C}" Directory_="img_Dir" Attributes="0" KeyPath="SMIcon.png" Type="0"/>
     <ROW Component="SpaceMonkeySFX.dll" ComponentId="{29B62DC6-0208-48FE-8A5B-EA7736EB96FE}" Directory_="provider_Dir" Attributes="0" KeyPath="SpaceMonkeySFX.dll"/>
@@ -49,15 +45,10 @@
     <ATTRIBUTE name="CurrentFeature" value="MainFeature"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiFilesComponent">
-    <ROW File="CMCustomUDP.dll" Component_="CMCustomUDP.dll" FileName="CMCUST~1.DLL|CMCustomUDP.dll" Attributes="0" SourcePath="..\Release\CMCustomUDP\CMCustomUDP.dll" SelfReg="false"/>
-    <ROW File="CMCustomUDP.pdb" Component_="CMCustomUDP.dll" FileName="CMCUST~1.PDB|CMCustomUDP.pdb" Attributes="0" SourcePath="..\Release\CMCustomUDP\CMCustomUDP.pdb" SelfReg="false"/>
     <ROW File="CMCustomUDPFormat.xml" Component_="CMCustomUDPFormat.xml" FileName="CMCUST~1.XML|CMCustomUDPFormat.xml" Attributes="0" SourcePath="..\Release\CMCustomUDP\CMCustomUDPFormat.xml" SelfReg="false"/>
-    <ROW File="Newtonsoft.Json.dll" Component_="Newtonsoft.Json.dll" FileName="NEWTON~1.DLL|Newtonsoft.Json.dll" Attributes="0" SourcePath="..\Release\Newtonsoft.Json\Newtonsoft.Json.dll" SelfReg="false"/>
-    <ROW File="Newtonsoft.Json.xml" Component_="Newtonsoft.Json.xml" FileName="NEWTON~1.XML|Newtonsoft.Json.xml" Attributes="0" SourcePath="..\Release\Newtonsoft.Json\Newtonsoft.Json.xml" SelfReg="false"/>
     <ROW File="SMConfig.txt" Component_="CMCustomUDPFormat.xml" FileName="SMConfig.txt" Attributes="0" SourcePath="..\Release\CMCustomUDP\SMConfig.txt" SelfReg="false"/>
     <ROW File="SMIcon.png" Component_="SMIcon.png" FileName="SMIcon.png" Attributes="0" SourcePath="..\Release\img\SMIcon.png" SelfReg="false"/>
     <ROW File="SpaceMonkeySFX.dll" Component_="SpaceMonkeySFX.dll" FileName="SPACEM~1.DLL|SpaceMonkeySFX.dll" Attributes="0" SourcePath="..\Release\provider\SpaceMonkeySFX.dll" SelfReg="false"/>
-    <ROW File="SpaceMonkeySFX.pdb" Component_="SpaceMonkeySFX.dll" FileName="SPACEM~1.PDB|SpaceMonkeySFX.pdb" Attributes="0" SourcePath="..\Release\provider\SpaceMonkeySFX.pdb" SelfReg="false"/>
     <ROW File="SMBanner.png" Component_="SMIcon.png" FileName="SMBanner.png" Attributes="0" SourcePath="..\Release\img\SMBanner.png" SelfReg="false"/>
     <ROW File="spacemonkeysfx_SpaceMonkeySFX__Default.xml" Component_="spacemonkeysfx_SpaceMonkeySFX__Default.xml" FileName="SPACEM~1.XML|spacemonkeysfx_SpaceMonkeySFX_-_Default.xml" Attributes="0" SourcePath="..\Release\profiles\spacemonkeysfx_SpaceMonkeySFX_-_Default.xml" SelfReg="false"/>
     <ROW File="spacemonkeysfx_SpaceMonkeySFX__Squadrons.xml" Component_="spacemonkeysfx_SpaceMonkeySFX__Default.xml" FileName="SPACEM~2.XML|spacemonkeysfx_SpaceMonkeySFX_-_Squadrons.xml" Attributes="0" SourcePath="..\Release\profiles\spacemonkeysfx_SpaceMonkeySFX_-_Squadrons.xml" SelfReg="false"/>
@@ -138,10 +129,7 @@
   <COMPONENT cid="caphyon.advinst.msicomp.MsiFeatCompsComponent">
     <ROW Feature_="MainFeature" Component_="APPDIR"/>
     <ROW Feature_="MainFeature" Component_="ProductInformation"/>
-    <ROW Feature_="MainFeature" Component_="CMCustomUDP.dll"/>
     <ROW Feature_="MainFeature" Component_="CMCustomUDPFormat.xml"/>
-    <ROW Feature_="MainFeature" Component_="Newtonsoft.Json.dll"/>
-    <ROW Feature_="MainFeature" Component_="Newtonsoft.Json.xml"/>
     <ROW Feature_="MainFeature" Component_="SMIcon.png"/>
     <ROW Feature_="MainFeature" Component_="SpaceMonkeySFX.dll"/>
     <ROW Feature_="MainFeature" Component_="spacemonkeysfx_SpaceMonkeySFX__Default.xml"/>
