@@ -367,7 +367,7 @@ WRC.Telemetry.TelemetryPort = 20777;
 ### Setup
 
 1. Navigate to the TrailOut sub folder inside the Space Monkey install folder.
-2. Extract the contents of TrailOut_0.1.zip into where you installed your Trail Out game.
+2. Extract the contents of TrailOut_0.3.zip into where you installed your Trail Out game.
 
 
 ### Usage
@@ -386,7 +386,7 @@ WRC.Telemetry.TelemetryPort = 20777;
 ### Setup
 
 1. Navigate to the MW5 sub folder inside the Space Monkey install folder.
-2. Extract the contents of MW5Mercs_0.1.zip into where you installed your MW5 game.
+2. Extract the contents of MW5Mercs_0.3.zip into where you installed your MW5 game.
 
 
 ### Usage
@@ -405,7 +405,7 @@ WRC.Telemetry.TelemetryPort = 20777;
 ### Setup
 
 1. Navigate to the Dakar2 sub folder inside the Space Monkey install folder.
-2. Extract the contents of Dakar2Mod_0.1.zip into where you installed your Dakar Desert Rally game.
+2. Extract the contents of Dakar2Mod_0.2.zip into where you installed your Dakar Desert Rally game.
 
 
 ### Usage
@@ -574,7 +574,7 @@ https://github.com/PHARTGAMES/SpaceMonkey/issues
 
 Enter an issue here https://github.com/PHARTGAMES/SpaceMonkey/issues
 
-Discord: https://discord.gg/2bJ9J39J
+Discord: https://discord.gg/ecfweprpx
 
 ---
 
