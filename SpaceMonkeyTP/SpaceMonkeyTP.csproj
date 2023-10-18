@@ -37,6 +37,9 @@
   <PropertyGroup>
     <StartupObject>SpaceMonkeyStart.Program</StartupObject>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>GTPIcon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -81,6 +84,9 @@
       <Project>{edc46c3a-20d4-4ee4-ac8a-c33a053d11da}</Project>
       <Name>GenericTelemetryProvider</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="GTPIcon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

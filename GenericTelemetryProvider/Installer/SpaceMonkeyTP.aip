@@ -9,10 +9,10 @@
     <ROW Property="ARPCOMMENTS" Value="This installer database contains the logic and data required to install [|ProductName]." ValueLocId="*"/>
     <ROW Property="ARPPRODUCTICON" Value="GTPIcon.exe" Type="8"/>
     <ROW Property="Manufacturer" Value="PHARTGAMES"/>
-    <ROW Property="ProductCode" Value="1033:{F18666E4-BD21-44B0-9529-AC1728202981} " Type="16"/>
+    <ROW Property="ProductCode" Value="1033:{57BE6FB5-676B-40EC-9112-F66F3CBEDFC5} " Type="16"/>
     <ROW Property="ProductLanguage" Value="1033"/>
     <ROW Property="ProductName" Value="SpaceMonkeyTP"/>
-    <ROW Property="ProductVersion" Value="1.0.6" Type="32"/>
+    <ROW Property="ProductVersion" Value="1.0.7" Type="32"/>
     <ROW Property="SecureCustomProperties" Value="OLDPRODUCTS;AI_NEWERPRODUCTFOUND"/>
     <ROW Property="UpgradeCode" Value="{DB0D552B-6C6F-4109-8226-33F4862D0228}"/>
     <ROW Property="WindowsType9X" MultiBuildValue="DefaultBuild:Windows 9x/ME" ValueLocId="-"/>
@@ -30,20 +30,18 @@
     <ROW Directory="BeamNG_Dir" Directory_Parent="APPDIR" DefaultDir="BeamNG"/>
     <ROW Directory="Configs_Dir" Directory_Parent="APPDIR" DefaultDir="Configs"/>
     <ROW Directory="DCS_Dir" Directory_Parent="APPDIR" DefaultDir="DCS"/>
-    <ROW Directory="Dakar2_Dir" Directory_Parent="APPDIR" DefaultDir="Dakar2"/>
     <ROW Directory="Dirt5_Dir" Directory_Parent="APPDIR" DefaultDir="Dirt5"/>
     <ROW Directory="Filters_Dir" Directory_Parent="APPDIR" DefaultDir="Filters"/>
     <ROW Directory="GTAV_Dir" Directory_Parent="APPDIR" DefaultDir="GTAV"/>
     <ROW Directory="IL2_Dir" Directory_Parent="APPDIR" DefaultDir="IL2"/>
-    <ROW Directory="MW5_Dir" Directory_Parent="APPDIR" DefaultDir="MW5"/>
     <ROW Directory="MonsterGames_Dir" Directory_Parent="APPDIR" DefaultDir="MONSTE~1|MonsterGames"/>
+    <ROW Directory="Outputs_Dir" Directory_Parent="APPDIR" DefaultDir="Outputs"/>
     <ROW Directory="PacketFormats_Dir" Directory_Parent="APPDIR" DefaultDir="PACKET~1|PacketFormats"/>
     <ROW Directory="Profiles_Dir" Directory_Parent="UnrealModLauncher_Dir" DefaultDir="Profiles"/>
     <ROW Directory="RBR_Dir" Directory_Parent="APPDIR" DefaultDir="RBR"/>
     <ROW Directory="Squadrons_Dir" Directory_Parent="APPDIR" DefaultDir="SQUADR~1|Squadrons"/>
     <ROW Directory="TARGETDIR" DefaultDir="SourceDir"/>
     <ROW Directory="Tools_Dir" Directory_Parent="UnrealModLauncher_Dir" DefaultDir="Tools"/>
-    <ROW Directory="TrailOut_Dir" Directory_Parent="APPDIR" DefaultDir="TrailOut"/>
     <ROW Directory="UnrealModLauncher_Dir" Directory_Parent="APPDIR" DefaultDir="UNREAL~1.1|UnrealModLoader_V2.2.1"/>
     <ROW Directory="WRC_Dir" Directory_Parent="APPDIR" DefaultDir="WRC"/>
     <ROW Directory="Wreckfest_Dir" Directory_Parent="APPDIR" DefaultDir="WRECKF~1|Wreckfest"/>
@@ -51,43 +49,42 @@
   <COMPONENT cid="caphyon.advinst.msicomp.MsiCompsComponent">
     <ROW Component="APPDIR" ComponentId="{4F5CF310-7596-43B8-8A10-DC64207D7BAD}" Directory_="APPDIR" Attributes="0"/>
     <ROW Component="Ace7Game.profile" ComponentId="{7CA2BE8E-FE69-4939-B40F-A378D21E95BC}" Directory_="Profiles_Dir" Attributes="0" KeyPath="Ace7Game.profile" Type="0"/>
-    <ROW Component="BalsaConfig.txt" ComponentId="{875A4090-4BFD-4EFA-9581-3F248BE29A52}" Directory_="Configs_Dir" Attributes="0" KeyPath="BalsaConfig.txt" Type="0"/>
-    <ROW Component="BalsaFilters.txt" ComponentId="{3CC283E8-4C09-44A3-9309-664B735FB5D7}" Directory_="Filters_Dir" Attributes="0" KeyPath="BalsaFilters.txt" Type="0"/>
-    <ROW Component="BalsaTelemetry.dll" ComponentId="{8A0F444E-5DA8-4735-A63D-70BE06A3C033}" Directory_="APPDIR" Attributes="0" KeyPath="BalsaTelemetry.dll"/>
-    <ROW Component="BeamNGConfig.txt" ComponentId="{4E3BE5D9-4DB4-44CC-A2E2-37532912AA5E}" Directory_="BeamNG_Dir" Attributes="0" KeyPath="BeamNGConfig.txt" Type="0"/>
-    <ROW Component="CMCustomUDP.dll" ComponentId="{3545417D-A090-4463-B0FB-07546ACEB88C}" Directory_="APPDIR" Attributes="0" KeyPath="CMCustomUDP.dll"/>
-    <ROW Component="DCSConfig.txt" ComponentId="{D1F5D84C-EAAE-4899-9262-602E8A7D7132}" Directory_="DCS_Dir" Attributes="0" KeyPath="DCSConfig.txt_1" Type="0"/>
-    <ROW Component="Dakar2Mod_0.1.zip" ComponentId="{0DEBAB94-0DF5-40FB-A4D5-7F0E39286952}" Directory_="Dakar2_Dir" Attributes="0" KeyPath="Dakar2Mod_0.1.zip" Type="0"/>
-    <ROW Component="Dirt5Config.txt" ComponentId="{8B511B27-051B-4223-A9BA-6C73C3F1B5CD}" Directory_="Dirt5_Dir" Attributes="0" KeyPath="Dirt5Config.txt" Type="0"/>
-    <ROW Component="GTAVAPI.dll" ComponentId="{9AC41CEA-B2CB-41F6-AA16-CDFE77CDCA52}" Directory_="APPDIR" Attributes="0" KeyPath="GTAVAPI.dll"/>
-    <ROW Component="GTAVConfig.txt" ComponentId="{26CAF501-E025-45AD-A8B5-E256382201FD}" Directory_="GTAV_Dir" Attributes="0" KeyPath="GTAVConfig.txt" Type="0"/>
-    <ROW Component="IL2Config.txt" ComponentId="{F0AC530E-8375-4591-89D0-99EC3CAAC1DE}" Directory_="IL2_Dir" Attributes="0" KeyPath="IL2Config.txt_1" Type="0"/>
-    <ROW Component="MW5Mercs_0.1.zip" ComponentId="{271247B1-63E8-4B64-A9D1-5BA7C61E49F0}" Directory_="MW5_Dir" Attributes="0" KeyPath="MW5Mercs_0.1.zip" Type="0"/>
+    <ROW Component="BalsaConfig.txt" ComponentId="{58394356-C452-41A7-978F-4087A11D5820}" Directory_="Configs_Dir" Attributes="0" KeyPath="BalsaConfig.txt" Type="0"/>
+    <ROW Component="BalsaFilters.txt" ComponentId="{C3DAD617-0825-44E0-B565-4EFAC1C6BA17}" Directory_="Filters_Dir" Attributes="0" KeyPath="BalsaFilters.txt" Type="0"/>
+    <ROW Component="BalsaTelemetry.dll" ComponentId="{07825F3A-66B1-4473-8482-F82CF79B3E8B}" Directory_="APPDIR" Attributes="0" KeyPath="BalsaTelemetry.dll"/>
+    <ROW Component="BeamNGConfig.txt" ComponentId="{461884C2-4FDF-43E6-88B7-094B2408762D}" Directory_="BeamNG_Dir" Attributes="0" KeyPath="BeamNGConfig.txt" Type="0"/>
+    <ROW Component="CMCustomUDP.dll" ComponentId="{0018E9E5-429B-4255-94A4-202076F3FEAB}" Directory_="APPDIR" Attributes="0" KeyPath="CMCustomUDP.dll"/>
+    <ROW Component="CodemastersExtraData3.xml" ComponentId="{66EA42BA-F8FE-4AF9-A8E8-A65288ADD766}" Directory_="PacketFormats_Dir" Attributes="0" KeyPath="CodemastersExtraData3.xml" Type="0"/>
+    <ROW Component="DCSConfig.txt" ComponentId="{7B2A3659-415C-4AB2-9F9A-DC0A958E7748}" Directory_="DCS_Dir" Attributes="0" KeyPath="DCSConfig.txt_1" Type="0"/>
+    <ROW Component="Dirt5Config.txt" ComponentId="{94777DD6-9BC5-4866-8D35-247E7D060314}" Directory_="Dirt5_Dir" Attributes="0" KeyPath="Dirt5Config.txt" Type="0"/>
+    <ROW Component="GTAVAPI.dll" ComponentId="{F234A30A-365F-47CB-9025-D2D0B15AF14D}" Directory_="APPDIR" Attributes="0" KeyPath="GTAVAPI.dll"/>
+    <ROW Component="GTAVConfig.txt" ComponentId="{5108559C-5610-4E23-B9CD-FA711461B7F6}" Directory_="GTAV_Dir" Attributes="0" KeyPath="GTAVConfig.txt" Type="0"/>
+    <ROW Component="IL2Config.txt" ComponentId="{C24EB4FB-A31F-4B5C-87B0-577F89EC357F}" Directory_="IL2_Dir" Attributes="0" KeyPath="IL2Config.txt_1" Type="0"/>
     <ROW Component="ModLoaderInfo.ini" ComponentId="{CBBE1DE8-9065-43E2-A42E-C255AAAF33C6}" Directory_="AutoInjector_Dir" Attributes="0" KeyPath="ModLoaderInfo.ini" Type="0"/>
     <ROW Component="ModLoaderInfo.ini_1" ComponentId="{445DBB98-D755-48FD-A56A-F2BBDC20ECAF}" Directory_="UnrealModLauncher_Dir" Attributes="0" KeyPath="ModLoaderInfo.ini_1" Type="0"/>
-    <ROW Component="MonsterGamesAPI.dll" ComponentId="{AE27D794-6FA9-468F-8160-4EE3010C7F70}" Directory_="APPDIR" Attributes="0" KeyPath="MonsterGamesAPI.dll"/>
-    <ROW Component="MonsterGamesTelemetry.dll" ComponentId="{2F89625C-52F2-4F1B-8E3B-CBEBA71CF527}" Directory_="MonsterGames_Dir" Attributes="0" KeyPath="MonsterGamesTelemetry.dll"/>
-    <ROW Component="Newtonsoft.Json.dll" ComponentId="{CCE05229-7407-4C3E-AC24-A7E604DCDACD}" Directory_="APPDIR" Attributes="0" KeyPath="Newtonsoft.Json.dll"/>
-    <ROW Component="OpenMotionAPI.dll" ComponentId="{22495A87-3BA1-4343-BCED-76A5F0274654}" Directory_="APPDIR" Attributes="0" KeyPath="OpenMotionAPI.dll"/>
-    <ROW Component="OverloadTelemetry.dll" ComponentId="{802A5357-C077-4442-83D3-3E034D21F7D1}" Directory_="APPDIR" Attributes="0" KeyPath="OverloadTelemetry.dll"/>
+    <ROW Component="MonsterGamesAPI.dll" ComponentId="{400BC803-1010-431B-BF9D-7FFA43DCB83A}" Directory_="APPDIR" Attributes="0" KeyPath="MonsterGamesAPI.dll"/>
+    <ROW Component="MonsterGamesTelemetry.dll" ComponentId="{5F1F1B8D-B777-4317-9556-79D7E0E3D595}" Directory_="MonsterGames_Dir" Attributes="0" KeyPath="MonsterGamesTelemetry.dll"/>
+    <ROW Component="Newtonsoft.Json.dll" ComponentId="{CB19911C-5F6C-41F5-8A69-3B46D590C5F9}" Directory_="APPDIR" Attributes="0" KeyPath="Newtonsoft.Json.dll"/>
+    <ROW Component="OpenMotionAPI.dll" ComponentId="{6A246293-D2DD-4936-967D-281001EAD152}" Directory_="APPDIR" Attributes="0" KeyPath="OpenMotionAPI.dll"/>
+    <ROW Component="OverloadTelemetry.dll" ComponentId="{5C5EC446-D68A-479F-9CCC-3A9A92179A7F}" Directory_="APPDIR" Attributes="0" KeyPath="OverloadTelemetry.dll"/>
     <ROW Component="ProductInformation" ComponentId="{B3C5559E-115B-4C83-9E62-C09C2E862C7E}" Directory_="APPDIR" Attributes="4" KeyPath="Version"/>
-    <ROW Component="RBRConfig.txt" ComponentId="{703F62DB-B82F-4A55-8BC9-026640B90A24}" Directory_="RBR_Dir" Attributes="0" KeyPath="RBRConfig.txt_1" Type="0"/>
-    <ROW Component="SharpMonoInjector.dll" ComponentId="{B2CD60CD-5AC6-4817-9EB0-437CCE9BE4F7}" Directory_="APPDIR" Attributes="0" KeyPath="SharpMonoInjector.dll"/>
-    <ROW Component="SpaceMonkeyTP.exe" ComponentId="{47DA16EE-3243-4FE2-86EB-88BBD8812E6A}" Directory_="APPDIR" Attributes="256" KeyPath="SpaceMonkeyTP.exe"/>
-    <ROW Component="TCAAPI.dll" ComponentId="{F06F9ADA-4CAF-443D-9CDD-36EAD48F439A}" Directory_="APPDIR" Attributes="0" KeyPath="TCAAPI.dll"/>
-    <ROW Component="TrailOut_0.1.zip" ComponentId="{B10D9119-17DF-4484-9111-CDE27ABD1A30}" Directory_="TrailOut_Dir" Attributes="0" KeyPath="TrailOut_0.1.zip" Type="0"/>
+    <ROW Component="RBRConfig.txt" ComponentId="{3E78065A-3C1B-434F-9128-8C313FDFD44D}" Directory_="RBR_Dir" Attributes="0" KeyPath="RBRConfig.txt_1" Type="0"/>
+    <ROW Component="SpaceMonkeyStart.exe" ComponentId="{AC863AC5-A617-464A-B585-288C9D569502}" Directory_="APPDIR" Attributes="0" KeyPath="SpaceMonkeyStart.exe"/>
+    <ROW Component="SpaceMonkeyTP.dll" ComponentId="{DAAF7569-49AF-456C-9A1C-1A2632250C96}" Directory_="APPDIR" Attributes="0" KeyPath="SpaceMonkeyTP.dll"/>
+    <ROW Component="TCAAPI.dll" ComponentId="{7C9EE455-A286-4C6E-B88D-A078CD48F7C7}" Directory_="APPDIR" Attributes="0" KeyPath="TCAAPI.dll"/>
     <ROW Component="UnrealEngineModLauncher.exe" ComponentId="{01FA80E9-EC34-49A5-AFB9-B1012AA72318}" Directory_="UnrealModLauncher_Dir" Attributes="256" KeyPath="UnrealEngineModLauncher.exe"/>
     <ROW Component="UnrealEngineModLoader.dll" ComponentId="{4050CF8C-9C34-4AED-9658-1C4E9C1C54D7}" Directory_="UnrealModLauncher_Dir" Attributes="256" KeyPath="UnrealEngineModLoader.dll"/>
-    <ROW Component="VTOLVRAPI.dll" ComponentId="{94A0CA87-4D89-42CB-AA81-6CAA2EBEC1C2}" Directory_="APPDIR" Attributes="0" KeyPath="VTOLVRAPI.dll"/>
-    <ROW Component="WRCGenAPI.dll" ComponentId="{FBFB95DA-B57A-47A7-8238-AB03F5AE025E}" Directory_="APPDIR" Attributes="0" KeyPath="WRCGenAPI.dll"/>
-    <ROW Component="WRCInjection.zip" ComponentId="{47918194-B33C-4CE9-B956-936058A5E7B1}" Directory_="WRC_Dir" Attributes="0" KeyPath="WRCInjection.zip" Type="0"/>
-    <ROW Component="WarplanesWW1API.dll" ComponentId="{58ABCAD6-A4E9-45C1-B28D-68E3E387B9DC}" Directory_="APPDIR" Attributes="0" KeyPath="WarplanesWW1API.dll"/>
-    <ROW Component="WreckfestConfig.txt" ComponentId="{49B19BE4-D84B-4751-B6A9-F9FD98CB01B9}" Directory_="Wreckfest_Dir" Attributes="0" KeyPath="WreckfestConfig.txt_1" Type="0"/>
-    <ROW Component="XInputDotNetPure.dll" ComponentId="{8F994AF8-A73F-49D8-B830-43E581035DA6}" Directory_="APPDIR" Attributes="256" KeyPath="XInputDotNetPure.dll"/>
-    <ROW Component="XInputInterface.dll" ComponentId="{9A009991-1111-4F19-B925-55524A2F97D7}" Directory_="APPDIR" Attributes="256" KeyPath="XInputInterface.dll"/>
-    <ROW Component="defaultPacketFormat.xml" ComponentId="{45EC3BE9-738A-4CFE-B848-24FC081F9FC2}" Directory_="PacketFormats_Dir" Attributes="0" KeyPath="defaultPacketFormat.xml" Type="0"/>
-    <ROW Component="gtp.txt" ComponentId="{EBED94D1-0AEE-4E22-9853-D1E52D894199}" Directory_="APPDIR" Attributes="0" KeyPath="gtp.txt" Type="0"/>
-    <ROW Component="steam_appid.txt" ComponentId="{E8225D97-9AF8-47F8-A772-5158DBE8388E}" Directory_="Squadrons_Dir" Attributes="0" KeyPath="steam_appid.txt" Type="0"/>
+    <ROW Component="VTOLVRAPI.dll" ComponentId="{A0FF104D-0762-4D56-840A-2CF8CC63C5BC}" Directory_="APPDIR" Attributes="0" KeyPath="VTOLVRAPI.dll"/>
+    <ROW Component="WRCGenAPI.dll" ComponentId="{32FDE1F8-D5F2-4663-A6DA-7DD9DAD68514}" Directory_="APPDIR" Attributes="0" KeyPath="WRCGenAPI.dll"/>
+    <ROW Component="WRCInjection.zip" ComponentId="{039557F6-7722-4DAF-98BB-AD6CE2860630}" Directory_="WRC_Dir" Attributes="0" KeyPath="WRCInjection.zip" Type="0"/>
+    <ROW Component="WarplanesWW1API.dll" ComponentId="{FA55B138-40E2-4D29-A81E-8AD83FA6D5E5}" Directory_="APPDIR" Attributes="0" KeyPath="WarplanesWW1API.dll"/>
+    <ROW Component="WreckfestConfig.txt" ComponentId="{D1CBE3E9-3876-40FE-B977-B6D5422A0398}" Directory_="Wreckfest_Dir" Attributes="0" KeyPath="WreckfestConfig.txt_1" Type="0"/>
+    <ROW Component="XInputDotNetPure.dll" ComponentId="{9AF4110D-6858-440D-A64B-C0204B94397D}" Directory_="APPDIR" Attributes="0" KeyPath="XInputDotNetPure.dll"/>
+    <ROW Component="XInputInterface32.dll" ComponentId="{C1FDEDA3-2E52-4877-8B83-FFA6B9AB71CE}" Directory_="APPDIR" Attributes="0" KeyPath="XInputInterface32.dll"/>
+    <ROW Component="XInputInterface64.dll" ComponentId="{ECA91B38-D279-491B-B627-F9B4581385E2}" Directory_="APPDIR" Attributes="256" KeyPath="XInputInterface64.dll"/>
+    <ROW Component="default_CB.txt" ComponentId="{8A87D8EB-99B0-4203-9EAF-1D4E1A2E77DF}" Directory_="Outputs_Dir" Attributes="0" KeyPath="default_CB.txt" Type="0"/>
+    <ROW Component="gtp.txt" ComponentId="{B0B81DF7-7D5B-48FA-A478-812F79A08BB0}" Directory_="APPDIR" Attributes="0" KeyPath="gtp.txt" Type="0"/>
+    <ROW Component="steam_appid.txt" ComponentId="{A5C13DA0-5B1F-480B-BF05-9D92CDEA6553}" Directory_="Squadrons_Dir" Attributes="0" KeyPath="steam_appid.txt" Type="0"/>
     <ROW Component="xinput1_3.dll" ComponentId="{8A603C5B-5733-4A33-9501-E356BA0126F8}" Directory_="AutoInjector_Dir" Attributes="256" KeyPath="xinput1_3.dll"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiFeatsComponent">
@@ -95,81 +92,6 @@
     <ATTRIBUTE name="CurrentFeature" value="MainFeature"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiFilesComponent">
-    <ROW File="CMCustomUDP.dll" Component_="CMCustomUDP.dll" FileName="CMCUST~1.DLL|CMCustomUDP.dll" Attributes="0" SourcePath="..\bin\Debug\CMCustomUDP.dll" SelfReg="false"/>
-    <ROW File="CMCustomUDP.pdb" Component_="CMCustomUDP.dll" FileName="CMCUST~1.PDB|CMCustomUDP.pdb" Attributes="0" SourcePath="..\bin\Debug\CMCustomUDP.pdb" SelfReg="false"/>
-    <ROW File="GTAVAPI.dll" Component_="GTAVAPI.dll" FileName="GTAVAPI.dll" Attributes="0" SourcePath="..\bin\Debug\GTAVAPI.dll" SelfReg="false"/>
-    <ROW File="GTAVAPI.pdb" Component_="GTAVAPI.dll" FileName="GTAVAPI.pdb" Attributes="0" SourcePath="..\bin\Debug\GTAVAPI.pdb" SelfReg="false"/>
-    <ROW File="gtp.txt" Component_="gtp.txt" FileName="gtp.txt" Attributes="0" SourcePath="..\bin\Debug\gtp.txt" SelfReg="false"/>
-    <ROW File="MonsterGamesAPI.dll" Component_="MonsterGamesAPI.dll" FileName="MONSTE~1.DLL|MonsterGamesAPI.dll" Attributes="0" SourcePath="..\bin\Debug\MonsterGamesAPI.dll" SelfReg="false"/>
-    <ROW File="MonsterGamesAPI.pdb" Component_="MonsterGamesAPI.dll" FileName="MONSTE~1.PDB|MonsterGamesAPI.pdb" Attributes="0" SourcePath="..\bin\Debug\MonsterGamesAPI.pdb" SelfReg="false"/>
-    <ROW File="Newtonsoft.Json.dll" Component_="Newtonsoft.Json.dll" FileName="NEWTON~1.DLL|Newtonsoft.Json.dll" Attributes="0" SourcePath="..\bin\Debug\Newtonsoft.Json.dll" SelfReg="false"/>
-    <ROW File="SharpMonoInjector.dll" Component_="SharpMonoInjector.dll" FileName="SHARPM~1.DLL|SharpMonoInjector.dll" Attributes="0" SourcePath="..\bin\Debug\SharpMonoInjector.dll" SelfReg="false"/>
-    <ROW File="SpaceMonkeyTP.exe" Component_="SpaceMonkeyTP.exe" FileName="SPACEM~1.EXE|SpaceMonkeyTP.exe" Attributes="0" SourcePath="..\bin\Debug\SpaceMonkeyTP.exe" SelfReg="false" DigSign="true"/>
-    <ROW File="SpaceMonkeyTP.exe.config" Component_="gtp.txt" FileName="SPACEM~1.CON|SpaceMonkeyTP.exe.config" Attributes="0" SourcePath="..\bin\Debug\SpaceMonkeyTP.exe.config" SelfReg="false"/>
-    <ROW File="SpaceMonkeyTP.pdb" Component_="SpaceMonkeyTP.exe" FileName="SPACEM~1.PDB|SpaceMonkeyTP.pdb" Attributes="0" SourcePath="..\bin\Debug\SpaceMonkeyTP.pdb" SelfReg="false"/>
-    <ROW File="VTOLVRAPI.dll" Component_="VTOLVRAPI.dll" FileName="VTOLVR~1.DLL|VTOLVRAPI.dll" Attributes="0" SourcePath="..\bin\Debug\VTOLVRAPI.dll" SelfReg="false"/>
-    <ROW File="VTOLVRAPI.pdb" Component_="VTOLVRAPI.dll" FileName="VTOLVR~1.PDB|VTOLVRAPI.pdb" Attributes="0" SourcePath="..\bin\Debug\VTOLVRAPI.pdb" SelfReg="false"/>
-    <ROW File="WarplanesWW1API.dll" Component_="WarplanesWW1API.dll" FileName="WARPLA~1.DLL|WarplanesWW1API.dll" Attributes="0" SourcePath="..\bin\Debug\WarplanesWW1API.dll" SelfReg="false"/>
-    <ROW File="WarplanesWW1API.pdb" Component_="WarplanesWW1API.dll" FileName="WARPLA~1.PDB|WarplanesWW1API.pdb" Attributes="0" SourcePath="..\bin\Debug\WarplanesWW1API.pdb" SelfReg="false"/>
-    <ROW File="XInputDotNetPure.dll" Component_="XInputDotNetPure.dll" FileName="XINPUT~1.DLL|XInputDotNetPure.dll" Attributes="0" SourcePath="..\bin\Debug\XInputDotNetPure.dll" SelfReg="false"/>
-    <ROW File="XInputDotNetPure.pdb" Component_="XInputDotNetPure.dll" FileName="XINPUT~1.PDB|XInputDotNetPure.pdb" Attributes="0" SourcePath="..\bin\Debug\XInputDotNetPure.pdb" SelfReg="false"/>
-    <ROW File="XInputInterface.dll" Component_="XInputInterface.dll" FileName="XINPUT~2.DLL|XInputInterface.dll" Attributes="0" SourcePath="..\bin\Debug\XInputInterface.dll" SelfReg="false"/>
-    <ROW File="XInputInterface.pdb" Component_="XInputInterface.dll" FileName="XINPUT~2.PDB|XInputInterface.pdb" Attributes="0" SourcePath="..\bin\Debug\XInputInterface.pdb" SelfReg="false"/>
-    <ROW File="BeamNGConfig.txt" Component_="BeamNGConfig.txt" FileName="BEAMNG~1.TXT|BeamNGConfig.txt" Attributes="0" SourcePath="..\bin\Debug\BeamNG\BeamNGConfig.txt" SelfReg="false"/>
-    <ROW File="DCSConfig.txt_1" Component_="DCSConfig.txt" FileName="DCSCON~1.TXT|DCSConfig.txt" Attributes="0" SourcePath="..\bin\Debug\DCS\DCSConfig.txt" SelfReg="false"/>
-    <ROW File="SMTPDCSExportPlugin.msi" Component_="DCSConfig.txt" FileName="SMTPDC~1.MSI|SMTP DCS Export Plugin.msi" Attributes="0" SourcePath="..\bin\Debug\DCS\SMTP DCS Export Plugin.msi" SelfReg="false"/>
-    <ROW File="Dirt5Config.txt" Component_="Dirt5Config.txt" FileName="DIRT5C~1.TXT|Dirt5Config.txt" Attributes="0" SourcePath="..\bin\Debug\Dirt5\Dirt5Config.txt" SelfReg="false"/>
-    <ROW File="Dirt5Vehicles.txt" Component_="Dirt5Config.txt" FileName="DIRT5V~1.TXT|Dirt5Vehicles.txt" Attributes="0" SourcePath="..\bin\Debug\Dirt5\Dirt5Vehicles.txt" SelfReg="false"/>
-    <ROW File="GTAVConfig.txt" Component_="GTAVConfig.txt" FileName="GTAVCO~1.TXT|GTAVConfig.txt" Attributes="0" SourcePath="..\bin\Debug\GTAV\GTAVConfig.txt" SelfReg="false"/>
-    <ROW File="SMTPGTAPlugin.msi" Component_="GTAVConfig.txt" FileName="SMTPGT~1.MSI|SMTP GTA Plugin.msi" Attributes="0" SourcePath="..\bin\Debug\GTAV\SMTP GTA Plugin.msi" SelfReg="false"/>
-    <ROW File="IL2Config.txt_1" Component_="IL2Config.txt" FileName="IL2CON~1.TXT|IL2Config.txt" Attributes="0" SourcePath="..\bin\Debug\IL2\IL2Config.txt" SelfReg="false"/>
-    <ROW File="MonsterGamesTelemetry.dll" Component_="MonsterGamesTelemetry.dll" FileName="MONSTE~1.DLL|MonsterGamesTelemetry.dll" Attributes="0" SourcePath="..\bin\Debug\MonsterGames\MonsterGamesTelemetry.dll" SelfReg="false"/>
-    <ROW File="MonsterGamesTelemetry.pdb" Component_="MonsterGamesTelemetry.dll" FileName="MONSTE~1.PDB|MonsterGamesTelemetry.pdb" Attributes="0" SourcePath="..\bin\Debug\MonsterGames\MonsterGamesTelemetry.pdb" SelfReg="false"/>
-    <ROW File="defaultPacketFormat.xml" Component_="defaultPacketFormat.xml" FileName="DEFAUL~1.XML|defaultPacketFormat.xml" Attributes="0" SourcePath="..\bin\Debug\PacketFormats\defaultPacketFormat.xml" SelfReg="false"/>
-    <ROW File="SimXperience_Dirt_V1.xml" Component_="defaultPacketFormat.xml" FileName="SIMXPE~1.XML|SimXperience_Dirt_V1.xml" Attributes="0" SourcePath="..\bin\Debug\PacketFormats\SimXperience_Dirt_V1.xml" SelfReg="false"/>
-    <ROW File="RBRConfig.txt_1" Component_="RBRConfig.txt" FileName="RBRCON~1.TXT|RBRConfig.txt" Attributes="0" SourcePath="..\bin\Debug\RBR\RBRConfig.txt" SelfReg="false"/>
-    <ROW File="WRCInjection.zip" Component_="WRCInjection.zip" FileName="WRCINJ~1.ZIP|WRCInjection.zip" Attributes="0" SourcePath="..\bin\Debug\WRC\WRCInjection.zip" SelfReg="false"/>
-    <ROW File="WreckfestConfig.txt_1" Component_="WreckfestConfig.txt" FileName="WRECKF~1.TXT|WreckfestConfig.txt" Attributes="0" SourcePath="..\bin\Debug\Wreckfest\WreckfestConfig.txt" SelfReg="false"/>
-    <ROW File="steam_appid.txt" Component_="steam_appid.txt" FileName="STEAM_~1.TXT|steam_appid.txt" Attributes="0" SourcePath="..\bin\Debug\Squadrons\steam_appid.txt" SelfReg="false"/>
-    <ROW File="OverloadTelemetry.dll" Component_="OverloadTelemetry.dll" FileName="OVERLO~1.DLL|OverloadTelemetry.dll" Attributes="0" SourcePath="..\bin\Debug\OverloadTelemetry.dll" SelfReg="false"/>
-    <ROW File="OverloadTelemetry.pdb" Component_="OverloadTelemetry.dll" FileName="OVERLO~1.PDB|OverloadTelemetry.pdb" Attributes="0" SourcePath="..\bin\Debug\OverloadTelemetry.pdb" SelfReg="false"/>
-    <ROW File="SpaceMonkeyBeamNG.Driveplugin.msi" Component_="BeamNGConfig.txt" FileName="SPACEM~1.MSI|SpaceMonkey BeamNG.Drive plugin.msi" Attributes="0" SourcePath="..\bin\Debug\BeamNG\SpaceMonkey BeamNG.Drive plugin.msi" SelfReg="false"/>
-    <ROW File="BalsaConfig.txt" Component_="BalsaConfig.txt" FileName="BALSAC~1.TXT|BalsaConfig.txt" Attributes="0" SourcePath="..\bin\Debug\Configs\BalsaConfig.txt" SelfReg="false"/>
-    <ROW File="BeamNGConfig.txt_1" Component_="BalsaConfig.txt" FileName="BEAMNG~1.TXT|BeamNGConfig.txt" Attributes="0" SourcePath="..\bin\Debug\Configs\BeamNGConfig.txt" SelfReg="false"/>
-    <ROW File="DCSConfig.txt" Component_="BalsaConfig.txt" FileName="DCSCON~1.TXT|DCSConfig.txt" Attributes="0" SourcePath="..\bin\Debug\Configs\DCSConfig.txt" SelfReg="false"/>
-    <ROW File="defaultConfig.txt" Component_="BalsaConfig.txt" FileName="DEFAUL~1.TXT|defaultConfig.txt" Attributes="0" SourcePath="..\bin\Debug\Configs\defaultConfig.txt" SelfReg="false"/>
-    <ROW File="dirt5_Simfeedback_SC4.txt" Component_="BalsaConfig.txt" FileName="DIRT5_~1.TXT|dirt5_Simfeedback_SC4.txt" Attributes="0" SourcePath="..\bin\Debug\Configs\dirt5_Simfeedback_SC4.txt" SelfReg="false"/>
-    <ROW File="GTAVDefault.txt" Component_="BalsaConfig.txt" FileName="GTAVDE~1.TXT|GTAVDefault.txt" Attributes="0" SourcePath="..\bin\Debug\Configs\GTAVDefault.txt" SelfReg="false"/>
-    <ROW File="IL2Config.txt" Component_="BalsaConfig.txt" FileName="IL2CON~1.TXT|IL2Config.txt" Attributes="0" SourcePath="..\bin\Debug\Configs\IL2Config.txt" SelfReg="false"/>
-    <ROW File="MonsterGamesConfig.txt" Component_="BalsaConfig.txt" FileName="MONSTE~1.TXT|MonsterGamesConfig.txt" Attributes="0" SourcePath="..\bin\Debug\Configs\MonsterGamesConfig.txt" SelfReg="false"/>
-    <ROW File="OpenMotionConfig.txt" Component_="BalsaConfig.txt" FileName="OPENMO~1.TXT|OpenMotionConfig.txt" Attributes="0" SourcePath="..\bin\Debug\Configs\OpenMotionConfig.txt" SelfReg="false"/>
-    <ROW File="OverloadConfig.txt" Component_="BalsaConfig.txt" FileName="OVERLO~1.TXT|OverloadConfig.txt" Attributes="0" SourcePath="..\bin\Debug\Configs\OverloadConfig.txt" SelfReg="false"/>
-    <ROW File="RBRConfig.txt" Component_="BalsaConfig.txt" FileName="RBRCON~1.TXT|RBRConfig.txt" Attributes="0" SourcePath="..\bin\Debug\Configs\RBRConfig.txt" SelfReg="false"/>
-    <ROW File="SquadronsConfig.txt" Component_="BalsaConfig.txt" FileName="SQUADR~1.TXT|SquadronsConfig.txt" Attributes="0" SourcePath="..\bin\Debug\Configs\SquadronsConfig.txt" SelfReg="false"/>
-    <ROW File="TinyCombatArenaConfig.txt" Component_="BalsaConfig.txt" FileName="TINYCO~1.TXT|TinyCombatArenaConfig.txt" Attributes="0" SourcePath="..\bin\Debug\Configs\TinyCombatArenaConfig.txt" SelfReg="false"/>
-    <ROW File="VTOLVRConfig.txt" Component_="BalsaConfig.txt" FileName="VTOLVR~1.TXT|VTOLVRConfig.txt" Attributes="0" SourcePath="..\bin\Debug\Configs\VTOLVRConfig.txt" SelfReg="false"/>
-    <ROW File="WarplanesWW1Config.txt" Component_="BalsaConfig.txt" FileName="WARPLA~1.TXT|WarplanesWW1Config.txt" Attributes="0" SourcePath="..\bin\Debug\Configs\WarplanesWW1Config.txt" SelfReg="false"/>
-    <ROW File="WRCConfig.txt" Component_="BalsaConfig.txt" FileName="WRCCON~1.TXT|WRCConfig.txt" Attributes="0" SourcePath="..\bin\Debug\Configs\WRCConfig.txt" SelfReg="false"/>
-    <ROW File="WRCGenerationsConfig.txt" Component_="BalsaConfig.txt" FileName="WRCGEN~1.TXT|WRCGenerationsConfig.txt" Attributes="0" SourcePath="..\bin\Debug\Configs\WRCGenerationsConfig.txt" SelfReg="false"/>
-    <ROW File="WreckfestConfig.txt" Component_="BalsaConfig.txt" FileName="WRECKF~1.TXT|WreckfestConfig.txt" Attributes="0" SourcePath="..\bin\Debug\Configs\WreckfestConfig.txt" SelfReg="false"/>
-    <ROW File="BalsaFilters.txt" Component_="BalsaFilters.txt" FileName="BALSAF~1.TXT|BalsaFilters.txt" Attributes="0" SourcePath="..\bin\Debug\Filters\BalsaFilters.txt" SelfReg="false"/>
-    <ROW File="BeamNGFilters.txt" Component_="BalsaFilters.txt" FileName="BEAMNG~1.TXT|BeamNGFilters.txt" Attributes="0" SourcePath="..\bin\Debug\Filters\BeamNGFilters.txt" SelfReg="false"/>
-    <ROW File="DCSFilters.txt" Component_="BalsaFilters.txt" FileName="DCSFIL~1.TXT|DCSFilters.txt" Attributes="0" SourcePath="..\bin\Debug\Filters\DCSFilters.txt" SelfReg="false"/>
-    <ROW File="defaultFilters.txt" Component_="BalsaFilters.txt" FileName="DEFAUL~1.TXT|defaultFilters.txt" Attributes="0" SourcePath="..\bin\Debug\Filters\defaultFilters.txt" SelfReg="false"/>
-    <ROW File="Dirt5Filters.txt" Component_="BalsaFilters.txt" FileName="DIRT5F~1.TXT|Dirt5Filters.txt" Attributes="0" SourcePath="..\bin\Debug\Filters\Dirt5Filters.txt" SelfReg="false"/>
-    <ROW File="GTAVFilters.txt" Component_="BalsaFilters.txt" FileName="GTAVFI~1.TXT|GTAVFilters.txt" Attributes="0" SourcePath="..\bin\Debug\Filters\GTAVFilters.txt" SelfReg="false"/>
-    <ROW File="IL2Filters.txt" Component_="BalsaFilters.txt" FileName="IL2FIL~1.TXT|IL2Filters.txt" Attributes="0" SourcePath="..\bin\Debug\Filters\IL2Filters.txt" SelfReg="false"/>
-    <ROW File="MonsterFilters.txt" Component_="BalsaFilters.txt" FileName="MONSTE~1.TXT|MonsterFilters.txt" Attributes="0" SourcePath="..\bin\Debug\Filters\MonsterFilters.txt" SelfReg="false"/>
-    <ROW File="openMotionFilters.txt" Component_="BalsaFilters.txt" FileName="OPENMO~1.TXT|openMotionFilters.txt" Attributes="0" SourcePath="..\bin\Debug\Filters\openMotionFilters.txt" SelfReg="false"/>
-    <ROW File="OverloadFilters.txt" Component_="BalsaFilters.txt" FileName="OVERLO~1.TXT|OverloadFilters.txt" Attributes="0" SourcePath="..\bin\Debug\Filters\OverloadFilters.txt" SelfReg="false"/>
-    <ROW File="RBRFilters.txt" Component_="BalsaFilters.txt" FileName="RBRFIL~1.TXT|RBRFilters.txt" Attributes="0" SourcePath="..\bin\Debug\Filters\RBRFilters.txt" SelfReg="false"/>
-    <ROW File="SquadronsFilters.txt" Component_="BalsaFilters.txt" FileName="SQUADR~1.TXT|SquadronsFilters.txt" Attributes="0" SourcePath="..\bin\Debug\Filters\SquadronsFilters.txt" SelfReg="false"/>
-    <ROW File="TinyCombatArenaFilters.txt" Component_="BalsaFilters.txt" FileName="TINYCO~1.TXT|TinyCombatArenaFilters.txt" Attributes="0" SourcePath="..\bin\Debug\Filters\TinyCombatArenaFilters.txt" SelfReg="false"/>
-    <ROW File="VTOLVRFilters.txt" Component_="BalsaFilters.txt" FileName="VTOLVR~1.TXT|VTOLVRFilters.txt" Attributes="0" SourcePath="..\bin\Debug\Filters\VTOLVRFilters.txt" SelfReg="false"/>
-    <ROW File="WarplanesWW1Filters.txt" Component_="BalsaFilters.txt" FileName="WARPLA~1.TXT|WarplanesWW1Filters.txt" Attributes="0" SourcePath="..\bin\Debug\Filters\WarplanesWW1Filters.txt" SelfReg="false"/>
-    <ROW File="WRCfilters.txt" Component_="BalsaFilters.txt" FileName="WRCFIL~1.TXT|WRCfilters.txt" Attributes="0" SourcePath="..\bin\Debug\Filters\WRCfilters.txt" SelfReg="false"/>
-    <ROW File="WRCGenerationsFilters.txt" Component_="BalsaFilters.txt" FileName="WRCGEN~1.TXT|WRCGenerationsFilters.txt" Attributes="0" SourcePath="..\bin\Debug\Filters\WRCGenerationsFilters.txt" SelfReg="false"/>
-    <ROW File="WreckfestFilters.txt" Component_="BalsaFilters.txt" FileName="WRECKF~1.TXT|WreckfestFilters.txt" Attributes="0" SourcePath="..\bin\Debug\Filters\WreckfestFilters.txt" SelfReg="false"/>
     <ROW File="Ace7Game.profile" Component_="Ace7Game.profile" FileName="ACE7GA~1.PRO|Ace7Game.profile" Attributes="0" SourcePath="..\..\UnrealModLoader\Release\2.2.1\UnrealModLoader_V2.2.1\Profiles\Ace7Game.profile" SelfReg="false"/>
     <ROW File="AdvancedExampleGame.profile" Component_="Ace7Game.profile" FileName="ADVANC~1.PRO|AdvancedExampleGame.profile" Attributes="0" SourcePath="..\..\UnrealModLoader\Release\2.2.1\UnrealModLoader_V2.2.1\Profiles\AdvancedExampleGame.profile" SelfReg="false"/>
     <ROW File="ARDWin64Shipping.profile" Component_="Ace7Game.profile" FileName="ARD-WI~1.PRO|ARD-Win64-Shipping.profile" Attributes="0" SourcePath="..\..\UnrealModLoader\Release\2.2.1\UnrealModLoader_V2.2.1\Profiles\ARD-Win64-Shipping.profile" SelfReg="false"/>
@@ -215,17 +137,82 @@
     <ROW File="ModLoaderInfo.ini_1" Component_="ModLoaderInfo.ini_1" FileName="MODLOA~1.INI|ModLoaderInfo.ini" Attributes="0" SourcePath="..\..\UnrealModLoader\Release\2.2.1\UnrealModLoader_V2.2.1\ModLoaderInfo.ini" SelfReg="false"/>
     <ROW File="UnrealEngineModLauncher.exe" Component_="UnrealEngineModLauncher.exe" FileName="UNREAL~1.EXE|UnrealEngineModLauncher.exe" Attributes="0" SourcePath="..\..\UnrealModLoader\Release\2.2.1\UnrealModLoader_V2.2.1\UnrealEngineModLauncher.exe" SelfReg="false" DigSign="true"/>
     <ROW File="UnrealEngineModLoader.dll" Component_="UnrealEngineModLoader.dll" FileName="UNREAL~1.DLL|UnrealEngineModLoader.dll" Attributes="0" SourcePath="..\..\UnrealModLoader\Release\2.2.1\UnrealModLoader_V2.2.1\UnrealEngineModLoader.dll" SelfReg="false"/>
-    <ROW File="Dakar2Mod_0.1.zip" Component_="Dakar2Mod_0.1.zip" FileName="DAKAR2~1.ZIP|Dakar2Mod_0.1.zip" Attributes="0" SourcePath="..\..\Dakar2Mod\Release\0.1\Dakar2Mod_0.1.zip" SelfReg="false"/>
-    <ROW File="MW5Mercs_0.1.zip" Component_="MW5Mercs_0.1.zip" FileName="MW5MER~1.ZIP|MW5Mercs_0.1.zip" Attributes="0" SourcePath="..\..\MW5MercsMod\Release\0.1\MW5Mercs_0.1.zip" SelfReg="false"/>
-    <ROW File="TrailOut_0.1.zip" Component_="TrailOut_0.1.zip" FileName="TRAILO~1.ZIP|TrailOut_0.1.zip" Attributes="0" SourcePath="..\..\TrailOutMod\Release\0.1\TrailOut_0.1.zip" SelfReg="false"/>
-    <ROW File="WRCGenAPI.dll" Component_="WRCGenAPI.dll" FileName="WRCGEN~1.DLL|WRCGenAPI.dll" Attributes="0" SourcePath="..\bin\Debug\WRCGenAPI.dll" SelfReg="false"/>
-    <ROW File="WRCGenAPI.pdb" Component_="WRCGenAPI.dll" FileName="WRCGEN~1.PDB|WRCGenAPI.pdb" Attributes="0" SourcePath="..\bin\Debug\WRCGenAPI.pdb" SelfReg="false"/>
-    <ROW File="BalsaTelemetry.dll" Component_="BalsaTelemetry.dll" FileName="BALSAT~1.DLL|BalsaTelemetry.dll" Attributes="0" SourcePath="..\bin\Debug\BalsaTelemetry.dll" SelfReg="false"/>
-    <ROW File="BalsaTelemetry.pdb" Component_="BalsaTelemetry.dll" FileName="BALSAT~1.PDB|BalsaTelemetry.pdb" Attributes="0" SourcePath="..\bin\Debug\BalsaTelemetry.pdb" SelfReg="false"/>
-    <ROW File="OpenMotionAPI.dll" Component_="OpenMotionAPI.dll" FileName="OPENMO~1.DLL|OpenMotionAPI.dll" Attributes="0" SourcePath="..\bin\Debug\OpenMotionAPI.dll" SelfReg="false"/>
-    <ROW File="OpenMotionAPI.pdb" Component_="OpenMotionAPI.dll" FileName="OPENMO~1.PDB|OpenMotionAPI.pdb" Attributes="0" SourcePath="..\bin\Debug\OpenMotionAPI.pdb" SelfReg="false"/>
-    <ROW File="TCAAPI.dll" Component_="TCAAPI.dll" FileName="TCAAPI.dll" Attributes="0" SourcePath="..\bin\Debug\TCAAPI.dll" SelfReg="false"/>
-    <ROW File="TCAAPI.pdb" Component_="TCAAPI.dll" FileName="TCAAPI.pdb" Attributes="0" SourcePath="..\bin\Debug\TCAAPI.pdb" SelfReg="false"/>
+    <ROW File="SpaceMonkeyStart.exe" Component_="SpaceMonkeyStart.exe" FileName="SPACEM~1.EXE|SpaceMonkeyStart.exe" Attributes="0" SourcePath="..\Release\SpaceMonkeyStart.exe" SelfReg="false" DigSign="true"/>
+    <ROW File="SpaceMonkeyTP.dll" Component_="SpaceMonkeyTP.dll" FileName="SPACEM~1.DLL|SpaceMonkeyTP.dll" Attributes="0" SourcePath="..\Release\SpaceMonkeyTP.dll" SelfReg="false"/>
+    <ROW File="TCAAPI.dll" Component_="TCAAPI.dll" FileName="TCAAPI.dll" Attributes="0" SourcePath="..\Release\TCAAPI.dll" SelfReg="false"/>
+    <ROW File="VTOLVRAPI.dll" Component_="VTOLVRAPI.dll" FileName="VTOLVR~1.DLL|VTOLVRAPI.dll" Attributes="0" SourcePath="..\Release\VTOLVRAPI.dll" SelfReg="false"/>
+    <ROW File="WarplanesWW1API.dll" Component_="WarplanesWW1API.dll" FileName="WARPLA~1.DLL|WarplanesWW1API.dll" Attributes="0" SourcePath="..\Release\WarplanesWW1API.dll" SelfReg="false"/>
+    <ROW File="WRCGenAPI.dll" Component_="WRCGenAPI.dll" FileName="WRCGEN~1.DLL|WRCGenAPI.dll" Attributes="0" SourcePath="..\Release\WRCGenAPI.dll" SelfReg="false"/>
+    <ROW File="XInputDotNetPure.dll" Component_="XInputDotNetPure.dll" FileName="XINPUT~1.DLL|XInputDotNetPure.dll" Attributes="0" SourcePath="..\Release\XInputDotNetPure.dll" SelfReg="false"/>
+    <ROW File="XInputInterface32.dll" Component_="XInputInterface32.dll" FileName="XINPUT~2.DLL|XInputInterface32.dll" Attributes="0" SourcePath="..\Release\XInputInterface32.dll" SelfReg="false"/>
+    <ROW File="XInputInterface64.dll" Component_="XInputInterface64.dll" FileName="XINPUT~3.DLL|XInputInterface64.dll" Attributes="0" SourcePath="..\Release\XInputInterface64.dll" SelfReg="false"/>
+    <ROW File="BeamNGConfig.txt" Component_="BeamNGConfig.txt" FileName="BEAMNG~1.TXT|BeamNGConfig.txt" Attributes="0" SourcePath="..\Release\BeamNG\BeamNGConfig.txt" SelfReg="false"/>
+    <ROW File="SpaceMonkeyBeamNG.Driveplugin.msi" Component_="BeamNGConfig.txt" FileName="SPACEM~1.MSI|SpaceMonkey BeamNG.Drive plugin.msi" Attributes="0" SourcePath="..\Release\BeamNG\SpaceMonkey BeamNG.Drive plugin.msi" SelfReg="false"/>
+    <ROW File="BalsaConfig.txt" Component_="BalsaConfig.txt" FileName="BALSAC~1.TXT|BalsaConfig.txt" Attributes="0" SourcePath="..\Release\Configs\BalsaConfig.txt" SelfReg="false"/>
+    <ROW File="BeamNGConfig.txt_1" Component_="BalsaConfig.txt" FileName="BEAMNG~1.TXT|BeamNGConfig.txt" Attributes="0" SourcePath="..\Release\Configs\BeamNGConfig.txt" SelfReg="false"/>
+    <ROW File="DCSConfig.txt" Component_="BalsaConfig.txt" FileName="DCSCON~1.TXT|DCSConfig.txt" Attributes="0" SourcePath="..\Release\Configs\DCSConfig.txt" SelfReg="false"/>
+    <ROW File="defaultConfig.txt" Component_="BalsaConfig.txt" FileName="DEFAUL~1.TXT|defaultConfig.txt" Attributes="0" SourcePath="..\Release\Configs\defaultConfig.txt" SelfReg="false"/>
+    <ROW File="dirt5_Simfeedback_SC4.txt" Component_="BalsaConfig.txt" FileName="DIRT5_~1.TXT|dirt5_Simfeedback_SC4.txt" Attributes="0" SourcePath="..\Release\Configs\dirt5_Simfeedback_SC4.txt" SelfReg="false"/>
+    <ROW File="GTAVDefault.txt" Component_="BalsaConfig.txt" FileName="GTAVDE~1.TXT|GTAVDefault.txt" Attributes="0" SourcePath="..\Release\Configs\GTAVDefault.txt" SelfReg="false"/>
+    <ROW File="IL2Config.txt" Component_="BalsaConfig.txt" FileName="IL2CON~1.TXT|IL2Config.txt" Attributes="0" SourcePath="..\Release\Configs\IL2Config.txt" SelfReg="false"/>
+    <ROW File="MonsterGamesConfig.txt" Component_="BalsaConfig.txt" FileName="MONSTE~1.TXT|MonsterGamesConfig.txt" Attributes="0" SourcePath="..\Release\Configs\MonsterGamesConfig.txt" SelfReg="false"/>
+    <ROW File="OpenMotionConfig.txt" Component_="BalsaConfig.txt" FileName="OPENMO~1.TXT|OpenMotionConfig.txt" Attributes="0" SourcePath="..\Release\Configs\OpenMotionConfig.txt" SelfReg="false"/>
+    <ROW File="OverloadConfig.txt" Component_="BalsaConfig.txt" FileName="OVERLO~1.TXT|OverloadConfig.txt" Attributes="0" SourcePath="..\Release\Configs\OverloadConfig.txt" SelfReg="false"/>
+    <ROW File="RBRConfig.txt" Component_="BalsaConfig.txt" FileName="RBRCON~1.TXT|RBRConfig.txt" Attributes="0" SourcePath="..\Release\Configs\RBRConfig.txt" SelfReg="false"/>
+    <ROW File="SquadronsConfig.txt" Component_="BalsaConfig.txt" FileName="SQUADR~1.TXT|SquadronsConfig.txt" Attributes="0" SourcePath="..\Release\Configs\SquadronsConfig.txt" SelfReg="false"/>
+    <ROW File="TinyCombatArenaConfig.txt" Component_="BalsaConfig.txt" FileName="TINYCO~1.TXT|TinyCombatArenaConfig.txt" Attributes="0" SourcePath="..\Release\Configs\TinyCombatArenaConfig.txt" SelfReg="false"/>
+    <ROW File="VTOLVRConfig.txt" Component_="BalsaConfig.txt" FileName="VTOLVR~1.TXT|VTOLVRConfig.txt" Attributes="0" SourcePath="..\Release\Configs\VTOLVRConfig.txt" SelfReg="false"/>
+    <ROW File="WarplanesWW1Config.txt" Component_="BalsaConfig.txt" FileName="WARPLA~1.TXT|WarplanesWW1Config.txt" Attributes="0" SourcePath="..\Release\Configs\WarplanesWW1Config.txt" SelfReg="false"/>
+    <ROW File="WRCConfig.txt" Component_="BalsaConfig.txt" FileName="WRCCON~1.TXT|WRCConfig.txt" Attributes="0" SourcePath="..\Release\Configs\WRCConfig.txt" SelfReg="false"/>
+    <ROW File="WRCGenerationsConfig.txt" Component_="BalsaConfig.txt" FileName="WRCGEN~1.TXT|WRCGenerationsConfig.txt" Attributes="0" SourcePath="..\Release\Configs\WRCGenerationsConfig.txt" SelfReg="false"/>
+    <ROW File="WreckfestConfig.txt" Component_="BalsaConfig.txt" FileName="WRECKF~1.TXT|WreckfestConfig.txt" Attributes="0" SourcePath="..\Release\Configs\WreckfestConfig.txt" SelfReg="false"/>
+    <ROW File="DCSConfig.txt_1" Component_="DCSConfig.txt" FileName="DCSCON~1.TXT|DCSConfig.txt" Attributes="0" SourcePath="..\Release\DCS\DCSConfig.txt" SelfReg="false"/>
+    <ROW File="SMTPDCSExportPlugin.msi" Component_="DCSConfig.txt" FileName="SMTPDC~1.MSI|SMTP DCS Export Plugin.msi" Attributes="0" SourcePath="..\Release\DCS\SMTP DCS Export Plugin.msi" SelfReg="false"/>
+    <ROW File="Dirt5Config.txt" Component_="Dirt5Config.txt" FileName="DIRT5C~1.TXT|Dirt5Config.txt" Attributes="0" SourcePath="..\Release\Dirt5\Dirt5Config.txt" SelfReg="false"/>
+    <ROW File="Dirt5Vehicles.txt" Component_="Dirt5Config.txt" FileName="DIRT5V~1.TXT|Dirt5Vehicles.txt" Attributes="0" SourcePath="..\Release\Dirt5\Dirt5Vehicles.txt" SelfReg="false"/>
+    <ROW File="BalsaFilters.txt" Component_="BalsaFilters.txt" FileName="BALSAF~1.TXT|BalsaFilters.txt" Attributes="0" SourcePath="..\Release\Filters\BalsaFilters.txt" SelfReg="false"/>
+    <ROW File="BeamNGFilters.txt" Component_="BalsaFilters.txt" FileName="BEAMNG~1.TXT|BeamNGFilters.txt" Attributes="0" SourcePath="..\Release\Filters\BeamNGFilters.txt" SelfReg="false"/>
+    <ROW File="DCSFilters.txt" Component_="BalsaFilters.txt" FileName="DCSFIL~1.TXT|DCSFilters.txt" Attributes="0" SourcePath="..\Release\Filters\DCSFilters.txt" SelfReg="false"/>
+    <ROW File="defaultFilters.txt" Component_="BalsaFilters.txt" FileName="DEFAUL~1.TXT|defaultFilters.txt" Attributes="0" SourcePath="..\Release\Filters\defaultFilters.txt" SelfReg="false"/>
+    <ROW File="Dirt5Filters.txt" Component_="BalsaFilters.txt" FileName="DIRT5F~1.TXT|Dirt5Filters.txt" Attributes="0" SourcePath="..\Release\Filters\Dirt5Filters.txt" SelfReg="false"/>
+    <ROW File="GTAVFilters.txt" Component_="BalsaFilters.txt" FileName="GTAVFI~1.TXT|GTAVFilters.txt" Attributes="0" SourcePath="..\Release\Filters\GTAVFilters.txt" SelfReg="false"/>
+    <ROW File="IL2Filters.txt" Component_="BalsaFilters.txt" FileName="IL2FIL~1.TXT|IL2Filters.txt" Attributes="0" SourcePath="..\Release\Filters\IL2Filters.txt" SelfReg="false"/>
+    <ROW File="MonsterFilters.txt" Component_="BalsaFilters.txt" FileName="MONSTE~1.TXT|MonsterFilters.txt" Attributes="0" SourcePath="..\Release\Filters\MonsterFilters.txt" SelfReg="false"/>
+    <ROW File="openMotionFilters.txt" Component_="BalsaFilters.txt" FileName="OPENMO~1.TXT|openMotionFilters.txt" Attributes="0" SourcePath="..\Release\Filters\openMotionFilters.txt" SelfReg="false"/>
+    <ROW File="OverloadFilters.txt" Component_="BalsaFilters.txt" FileName="OVERLO~1.TXT|OverloadFilters.txt" Attributes="0" SourcePath="..\Release\Filters\OverloadFilters.txt" SelfReg="false"/>
+    <ROW File="RBRFilters.txt" Component_="BalsaFilters.txt" FileName="RBRFIL~1.TXT|RBRFilters.txt" Attributes="0" SourcePath="..\Release\Filters\RBRFilters.txt" SelfReg="false"/>
+    <ROW File="SquadronsFilters.txt" Component_="BalsaFilters.txt" FileName="SQUADR~1.TXT|SquadronsFilters.txt" Attributes="0" SourcePath="..\Release\Filters\SquadronsFilters.txt" SelfReg="false"/>
+    <ROW File="TinyCombatArenaFilters.txt" Component_="BalsaFilters.txt" FileName="TINYCO~1.TXT|TinyCombatArenaFilters.txt" Attributes="0" SourcePath="..\Release\Filters\TinyCombatArenaFilters.txt" SelfReg="false"/>
+    <ROW File="VTOLVRFilters.txt" Component_="BalsaFilters.txt" FileName="VTOLVR~1.TXT|VTOLVRFilters.txt" Attributes="0" SourcePath="..\Release\Filters\VTOLVRFilters.txt" SelfReg="false"/>
+    <ROW File="WarplanesWW1Filters.txt" Component_="BalsaFilters.txt" FileName="WARPLA~1.TXT|WarplanesWW1Filters.txt" Attributes="0" SourcePath="..\Release\Filters\WarplanesWW1Filters.txt" SelfReg="false"/>
+    <ROW File="WRCfilters.txt" Component_="BalsaFilters.txt" FileName="WRCFIL~1.TXT|WRCfilters.txt" Attributes="0" SourcePath="..\Release\Filters\WRCfilters.txt" SelfReg="false"/>
+    <ROW File="WRCGenerationsFilters.txt" Component_="BalsaFilters.txt" FileName="WRCGEN~1.TXT|WRCGenerationsFilters.txt" Attributes="0" SourcePath="..\Release\Filters\WRCGenerationsFilters.txt" SelfReg="false"/>
+    <ROW File="WreckfestFilters.txt" Component_="BalsaFilters.txt" FileName="WRECKF~1.TXT|WreckfestFilters.txt" Attributes="0" SourcePath="..\Release\Filters\WreckfestFilters.txt" SelfReg="false"/>
+    <ROW File="GTAVConfig.txt" Component_="GTAVConfig.txt" FileName="GTAVCO~1.TXT|GTAVConfig.txt" Attributes="0" SourcePath="..\Release\GTAV\GTAVConfig.txt" SelfReg="false"/>
+    <ROW File="SMTPGTAPlugin.msi" Component_="GTAVConfig.txt" FileName="SMTPGT~1.MSI|SMTP GTA Plugin.msi" Attributes="0" SourcePath="..\Release\GTAV\SMTP GTA Plugin.msi" SelfReg="false"/>
+    <ROW File="IL2Config.txt_1" Component_="IL2Config.txt" FileName="IL2CON~1.TXT|IL2Config.txt" Attributes="0" SourcePath="..\Release\IL2\IL2Config.txt" SelfReg="false"/>
+    <ROW File="MonsterGamesTelemetry.dll" Component_="MonsterGamesTelemetry.dll" FileName="MONSTE~1.DLL|MonsterGamesTelemetry.dll" Attributes="0" SourcePath="..\Release\MonsterGames\MonsterGamesTelemetry.dll" SelfReg="false"/>
+    <ROW File="MonsterGamesTelemetry.pdb" Component_="MonsterGamesTelemetry.dll" FileName="MONSTE~1.PDB|MonsterGamesTelemetry.pdb" Attributes="0" SourcePath="..\Release\MonsterGames\MonsterGamesTelemetry.pdb" SelfReg="false"/>
+    <ROW File="default_CB.txt" Component_="default_CB.txt" FileName="DEFAUL~1.TXT|default_CB.txt" Attributes="0" SourcePath="..\Release\Outputs\default_CB.txt" SelfReg="false"/>
+    <ROW File="default_CMED3.txt" Component_="default_CB.txt" FileName="DEFAUL~2.TXT|default_CMED3.txt" Attributes="0" SourcePath="..\Release\Outputs\default_CMED3.txt" SelfReg="false"/>
+    <ROW File="default_MMF_UDP.txt" Component_="default_CB.txt" FileName="DEFAUL~3.TXT|default_MMF_UDP.txt" Attributes="0" SourcePath="..\Release\Outputs\default_MMF_UDP.txt" SelfReg="false"/>
+    <ROW File="default_MMF_UDP_CMED3.txt" Component_="default_CB.txt" FileName="DEFAUL~4.TXT|default_MMF_UDP_CMED3.txt" Attributes="0" SourcePath="..\Release\Outputs\default_MMF_UDP_CMED3.txt" SelfReg="false"/>
+    <ROW File="CodemastersExtraData3.xml" Component_="CodemastersExtraData3.xml" FileName="CODEMA~1.XML|CodemastersExtraData3.xml" Attributes="0" SourcePath="..\Release\PacketFormats\CodemastersExtraData3.xml" SelfReg="false"/>
+    <ROW File="defaultPacketFormat.xml" Component_="CodemastersExtraData3.xml" FileName="DEFAUL~1.XML|defaultPacketFormat.xml" Attributes="0" SourcePath="..\Release\PacketFormats\defaultPacketFormat.xml" SelfReg="false"/>
+    <ROW File="SimXperience_Dirt_V1.xml" Component_="CodemastersExtraData3.xml" FileName="SIMXPE~1.XML|SimXperience_Dirt_V1.xml" Attributes="0" SourcePath="..\Release\PacketFormats\SimXperience_Dirt_V1.xml" SelfReg="false"/>
+    <ROW File="RBRConfig.txt_1" Component_="RBRConfig.txt" FileName="RBRCON~1.TXT|RBRConfig.txt" Attributes="0" SourcePath="..\Release\RBR\RBRConfig.txt" SelfReg="false"/>
+    <ROW File="steam_appid.txt" Component_="steam_appid.txt" FileName="STEAM_~1.TXT|steam_appid.txt" Attributes="0" SourcePath="..\Release\Squadrons\steam_appid.txt" SelfReg="false"/>
+    <ROW File="WRCInjection.zip" Component_="WRCInjection.zip" FileName="WRCINJ~1.ZIP|WRCInjection.zip" Attributes="0" SourcePath="..\Release\WRC\WRCInjection.zip" SelfReg="false"/>
+    <ROW File="WreckfestConfig.txt_1" Component_="WreckfestConfig.txt" FileName="WRECKF~1.TXT|WreckfestConfig.txt" Attributes="0" SourcePath="..\Release\Wreckfest\WreckfestConfig.txt" SelfReg="false"/>
+    <ROW File="BalsaTelemetry.dll" Component_="BalsaTelemetry.dll" FileName="BALSAT~1.DLL|BalsaTelemetry.dll" Attributes="0" SourcePath="..\Release\BalsaTelemetry.dll" SelfReg="false"/>
+    <ROW File="CMCustomUDP.dll" Component_="CMCustomUDP.dll" FileName="CMCUST~1.DLL|CMCustomUDP.dll" Attributes="0" SourcePath="..\Release\CMCustomUDP.dll" SelfReg="false"/>
+    <ROW File="GTAVAPI.dll" Component_="GTAVAPI.dll" FileName="GTAVAPI.dll" Attributes="0" SourcePath="..\Release\GTAVAPI.dll" SelfReg="false"/>
+    <ROW File="gtp.txt" Component_="gtp.txt" FileName="gtp.txt" Attributes="0" SourcePath="..\Release\gtp.txt" SelfReg="false"/>
+    <ROW File="MonsterGamesAPI.dll" Component_="MonsterGamesAPI.dll" FileName="MONSTE~1.DLL|MonsterGamesAPI.dll" Attributes="0" SourcePath="..\Release\MonsterGamesAPI.dll" SelfReg="false"/>
+    <ROW File="Newtonsoft.Json.dll" Component_="Newtonsoft.Json.dll" FileName="NEWTON~1.DLL|Newtonsoft.Json.dll" Attributes="0" SourcePath="..\Release\Newtonsoft.Json.dll" SelfReg="false"/>
+    <ROW File="Newtonsoft.Json.xml" Component_="gtp.txt" FileName="NEWTON~1.XML|Newtonsoft.Json.xml" Attributes="0" SourcePath="..\Release\Newtonsoft.Json.xml" SelfReg="false"/>
+    <ROW File="OpenMotionAPI.dll" Component_="OpenMotionAPI.dll" FileName="OPENMO~1.DLL|OpenMotionAPI.dll" Attributes="0" SourcePath="..\Release\OpenMotionAPI.dll" SelfReg="false"/>
+    <ROW File="OverloadTelemetry.dll" Component_="OverloadTelemetry.dll" FileName="OVERLO~1.DLL|OverloadTelemetry.dll" Attributes="0" SourcePath="..\Release\OverloadTelemetry.dll" SelfReg="false"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.BootstrOptComponent">
     <ROW BootstrOptKey="GlobalOptions" DownloadFolder="[AppDataFolder][|Manufacturer]\[|ProductName]\prerequisites" Options="2"/>
@@ -292,7 +279,6 @@
     <ROW Action="AI_EnableDebugLog" Type="321" Source="aicustact.dll" Target="EnableDebugLog"/>
     <ROW Action="AI_InstallModeCheck" Type="1" Source="aicustact.dll" Target="UpdateInstallMode" WithoutSeq="true"/>
     <ROW Action="AI_PREPARE_UPGRADE" Type="65" Source="aicustact.dll" Target="PrepareUpgrade"/>
-    <ROW Action="AI_RESTORE_LOCATION" Type="65" Source="aicustact.dll" Target="RestoreLocation"/>
     <ROW Action="AI_ResolveKnownFolders" Type="1" Source="aicustact.dll" Target="AI_ResolveKnownFolders"/>
     <ROW Action="AI_SHOW_LOG" Type="65" Source="aicustact.dll" Target="LaunchLogFile" WithoutSeq="true"/>
     <ROW Action="AI_STORE_LOCATION" Type="51" Source="ARPINSTALLLOCATION" Target="[APPDIR]"/>
@@ -303,31 +289,11 @@
   <COMPONENT cid="caphyon.advinst.msicomp.MsiFeatCompsComponent">
     <ROW Feature_="MainFeature" Component_="APPDIR"/>
     <ROW Feature_="MainFeature" Component_="ProductInformation"/>
-    <ROW Feature_="MainFeature" Component_="CMCustomUDP.dll"/>
-    <ROW Feature_="MainFeature" Component_="GTAVAPI.dll"/>
-    <ROW Feature_="MainFeature" Component_="gtp.txt"/>
-    <ROW Feature_="MainFeature" Component_="MonsterGamesAPI.dll"/>
-    <ROW Feature_="MainFeature" Component_="Newtonsoft.Json.dll"/>
-    <ROW Feature_="MainFeature" Component_="SharpMonoInjector.dll"/>
-    <ROW Feature_="MainFeature" Component_="SpaceMonkeyTP.exe"/>
+    <ROW Feature_="MainFeature" Component_="SpaceMonkeyStart.exe"/>
+    <ROW Feature_="MainFeature" Component_="SpaceMonkeyTP.dll"/>
+    <ROW Feature_="MainFeature" Component_="TCAAPI.dll"/>
     <ROW Feature_="MainFeature" Component_="VTOLVRAPI.dll"/>
     <ROW Feature_="MainFeature" Component_="WarplanesWW1API.dll"/>
-    <ROW Feature_="MainFeature" Component_="XInputDotNetPure.dll"/>
-    <ROW Feature_="MainFeature" Component_="XInputInterface.dll"/>
-    <ROW Feature_="MainFeature" Component_="BeamNGConfig.txt"/>
-    <ROW Feature_="MainFeature" Component_="DCSConfig.txt"/>
-    <ROW Feature_="MainFeature" Component_="Dirt5Config.txt"/>
-    <ROW Feature_="MainFeature" Component_="GTAVConfig.txt"/>
-    <ROW Feature_="MainFeature" Component_="IL2Config.txt"/>
-    <ROW Feature_="MainFeature" Component_="MonsterGamesTelemetry.dll"/>
-    <ROW Feature_="MainFeature" Component_="defaultPacketFormat.xml"/>
-    <ROW Feature_="MainFeature" Component_="RBRConfig.txt"/>
-    <ROW Feature_="MainFeature" Component_="WRCInjection.zip"/>
-    <ROW Feature_="MainFeature" Component_="WreckfestConfig.txt"/>
-    <ROW Feature_="MainFeature" Component_="steam_appid.txt"/>
-    <ROW Feature_="MainFeature" Component_="OverloadTelemetry.dll"/>
-    <ROW Feature_="MainFeature" Component_="BalsaConfig.txt"/>
-    <ROW Feature_="MainFeature" Component_="BalsaFilters.txt"/>
     <ROW Feature_="MainFeature" Component_="Ace7Game.profile"/>
     <ROW Feature_="MainFeature" Component_="ModLoaderInfo.ini"/>
     <ROW Feature_="MainFeature" Component_="xinput1_3.dll"/>
@@ -335,19 +301,37 @@
     <ROW Feature_="MainFeature" Component_="UnrealEngineModLauncher.exe"/>
     <ROW Feature_="MainFeature" Component_="UnrealEngineModLoader.dll"/>
     <ROW Feature_="MainFeature" Component_="WRCGenAPI.dll"/>
-    <ROW Feature_="MainFeature" Component_="Dakar2Mod_0.1.zip"/>
-    <ROW Feature_="MainFeature" Component_="MW5Mercs_0.1.zip"/>
-    <ROW Feature_="MainFeature" Component_="TrailOut_0.1.zip"/>
+    <ROW Feature_="MainFeature" Component_="XInputDotNetPure.dll"/>
+    <ROW Feature_="MainFeature" Component_="XInputInterface32.dll"/>
+    <ROW Feature_="MainFeature" Component_="XInputInterface64.dll"/>
+    <ROW Feature_="MainFeature" Component_="BeamNGConfig.txt"/>
+    <ROW Feature_="MainFeature" Component_="BalsaConfig.txt"/>
+    <ROW Feature_="MainFeature" Component_="DCSConfig.txt"/>
+    <ROW Feature_="MainFeature" Component_="Dirt5Config.txt"/>
+    <ROW Feature_="MainFeature" Component_="BalsaFilters.txt"/>
+    <ROW Feature_="MainFeature" Component_="GTAVConfig.txt"/>
+    <ROW Feature_="MainFeature" Component_="IL2Config.txt"/>
+    <ROW Feature_="MainFeature" Component_="MonsterGamesTelemetry.dll"/>
+    <ROW Feature_="MainFeature" Component_="default_CB.txt"/>
+    <ROW Feature_="MainFeature" Component_="CodemastersExtraData3.xml"/>
+    <ROW Feature_="MainFeature" Component_="RBRConfig.txt"/>
+    <ROW Feature_="MainFeature" Component_="steam_appid.txt"/>
+    <ROW Feature_="MainFeature" Component_="WRCInjection.zip"/>
+    <ROW Feature_="MainFeature" Component_="WreckfestConfig.txt"/>
     <ROW Feature_="MainFeature" Component_="BalsaTelemetry.dll"/>
+    <ROW Feature_="MainFeature" Component_="CMCustomUDP.dll"/>
+    <ROW Feature_="MainFeature" Component_="GTAVAPI.dll"/>
+    <ROW Feature_="MainFeature" Component_="gtp.txt"/>
+    <ROW Feature_="MainFeature" Component_="MonsterGamesAPI.dll"/>
+    <ROW Feature_="MainFeature" Component_="Newtonsoft.Json.dll"/>
     <ROW Feature_="MainFeature" Component_="OpenMotionAPI.dll"/>
-    <ROW Feature_="MainFeature" Component_="TCAAPI.dll"/>
+    <ROW Feature_="MainFeature" Component_="OverloadTelemetry.dll"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiIconsComponent">
     <ROW Name="GTPIcon.exe" SourcePath="..\GTPIcon.ico" Index="0"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiInstExSeqComponent">
     <ROW Action="AI_DOWNGRADE" Condition="AI_NEWERPRODUCTFOUND AND (UILevel &lt;&gt; 5)" Sequence="210"/>
-    <ROW Action="AI_RESTORE_LOCATION" Condition="APPDIR=&quot;&quot;" Sequence="749"/>
     <ROW Action="AI_STORE_LOCATION" Condition="(Not Installed) OR REINSTALL" Sequence="1501"/>
     <ROW Action="AI_PREPARE_UPGRADE" Condition="AI_UPGRADE=&quot;No&quot; AND (Not Installed)" Sequence="1399"/>
     <ROW Action="AI_ResolveKnownFolders" Sequence="52"/>
@@ -355,7 +339,6 @@
     <ROW Action="AI_DetectSoftware" Sequence="101"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiInstallUISequenceComponent">
-    <ROW Action="AI_RESTORE_LOCATION" Condition="APPDIR=&quot;&quot;" Sequence="749"/>
     <ROW Action="AI_ResolveKnownFolders" Sequence="53"/>
     <ROW Action="AI_DpiContentScale" Sequence="52"/>
     <ROW Action="AI_EnableDebugLog" Sequence="51"/>
