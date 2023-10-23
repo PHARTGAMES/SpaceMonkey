@@ -58,6 +58,7 @@ Install anywhere to your local drive.
 3. Filter Config; Extra filter configs can be created by copying a filter config in the Filters folder.
 4. Telemetry Ouput; Choose how you want telemetry to be output from SpaceMonkey. These configs are modified by pressing the Outputs button (6)
 5. Hotkey;  The hotkey can be used to pause and resume telemetry globally when the app is not in focus.
+6. Outputs; Press this button to load the Outputs Interface.
 7. Filters Button; press this to load the filters interface.
 
 
