@@ -95,6 +95,11 @@ namespace XInputFFB
             m_manager.AddDevice(this);
         }
 
+        public bool Enabled
+        {
+            get; set;
+        }
+
         public Joystick m_joystick;
 
         public string ID
@@ -491,6 +496,8 @@ namespace XInputFFB
         public DirectInput m_directInput;
         List<DIDevice> m_devices = new List<DIDevice>();
 
+        public List<DIDevice> Devices { get { return m_devices; } }
+
         public DInputDeviceManager()
         {
             Instance = this;
@@ -581,6 +588,28 @@ namespace XInputFFB
             x.IsBackground = true;
             x.Start(a_callback);
 
+        }
+
+        public void SetDeviceEnabled(string a_deviceID, bool a_enabled)
+        {
+            DIDevice device = m_devices.Find((x) => x.ID == a_deviceID);
+
+            if (device == null)
+            {
+                return;
+            }
+
+            device.Enabled = a_enabled;
+        }
+
+        public bool GetDeviceEnabled(string a_deviceID)
+        {
+            DIDevice device = m_devices.Find((x) => x.ID == a_deviceID);
+
+            if (device == null)
+                return false;
+
+            return device.Enabled;
         }
 
 

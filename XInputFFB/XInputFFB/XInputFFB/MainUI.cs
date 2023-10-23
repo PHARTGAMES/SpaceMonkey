@@ -18,22 +18,22 @@ namespace XInputFFB
         Thread m_testThread;
         bool m_stopThread = false;
         DInputDeviceManager m_diDeviceManager;
+        XInputFFBInputMapping m_ffbInputMapping;
 
         public MainUI()
         {
             InitializeComponent();
 
             m_diDeviceManager = new DInputDeviceManager();
-
+            m_ffbInputMapping = new XInputFFBInputMapping();
         }
+
 
         public void StartXInputOutput()
         { 
-
             m_ffbCom = new XInputFFBCom();
             m_ffbCom.m_comPort = "COM5";
             m_ffbCom.StartCMDMessenger();
-
         }
 
         void TestXInputFFBCom()
@@ -104,5 +104,47 @@ namespace XInputFFB
             });
 
         }
+
+        void RefreshDevicesList()
+        {
+            devicesFlowPanel.Invoke((Action)delegate
+            {
+                devicesFlowPanel.Controls.Clear();
+
+                foreach(DIDevice device in DInputDeviceManager.Instance.Devices)
+                {
+                    DIDeviceControl newControl = new DIDeviceControl();
+                    newControl.SetDeviceName(device.ID);
+                    newControl.SetEnabled(XInputFFBInputMapping.Instance.GetDeviceEnabled(device.ID));
+
+                    devicesFlowPanel.Controls.Add(newControl);
+                }
+            });
+        }
+
+        void RefreshMappingList()
+        {
+            mappingFlowPanel.Invoke((Action)delegate
+            {
+                mappingFlowPanel.Controls.Clear();
+
+                foreach (XIControlMetadata def in XInputFFBInputMapping.XIControlMetadataDefinitions)
+                {
+                    DIInputMapControl newControl = new DIInputMapControl();
+
+                    newControl.Init(def);
+
+                    mappingFlowPanel.Controls.Add(newControl);
+                }
+            });
+        }
+
+        private void MainUI_Load(object sender, EventArgs e)
+        {
+            RefreshDevicesList();
+            RefreshMappingList();
+        }
+
+
     }
 }

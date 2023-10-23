@@ -55,6 +55,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DIDeviceControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DIDeviceControl.Designer.cs">
+      <DependentUpon>DIDeviceControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DIInputMapControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DIInputMapControl.Designer.cs">
+      <DependentUpon>DIInputMapControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="DInputDeviceManager.cs" />
     <Compile Include="MainUI.cs">
       <SubType>Form</SubType>
@@ -66,6 +78,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="XInputFFBCom.cs" />
     <Compile Include="XInputFFBInputMapping.cs" />
+    <EmbeddedResource Include="DIDeviceControl.resx">
+      <DependentUpon>DIDeviceControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DIInputMapControl.resx">
+      <DependentUpon>DIInputMapControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainUI.resx">
       <DependentUpon>MainUI.cs</DependentUpon>
     </EmbeddedResource>
