@@ -9,7 +9,7 @@
     <ROW Property="ARPCOMMENTS" Value="This installer database contains the logic and data required to install [|ProductName]." ValueLocId="*"/>
     <ROW Property="ARPPRODUCTICON" Value="GTPIcon.exe" Type="8"/>
     <ROW Property="Manufacturer" Value="PHARTGAMES"/>
-    <ROW Property="ProductCode" Value="1033:{57BE6FB5-676B-40EC-9112-F66F3CBEDFC5} " Type="16"/>
+    <ROW Property="ProductCode" Value="1033:{9EA880BB-053C-4EBA-BCF1-0B62A9AD3E03} " Type="16"/>
     <ROW Property="ProductLanguage" Value="1033"/>
     <ROW Property="ProductName" Value="SpaceMonkeyTP"/>
     <ROW Property="ProductVersion" Value="1.0.7" Type="32"/>
@@ -65,6 +65,7 @@
     <ROW Component="GTAVConfig.txt" ComponentId="{5108559C-5610-4E23-B9CD-FA711461B7F6}" Directory_="GTAV_Dir" Attributes="0" KeyPath="GTAVConfig.txt" Type="0"/>
     <ROW Component="IL2Config.txt" ComponentId="{C24EB4FB-A31F-4B5C-87B0-577F89EC357F}" Directory_="IL2_Dir" Attributes="0" KeyPath="IL2Config.txt_1" Type="0"/>
     <ROW Component="MW5Mercs_0.3.zip" ComponentId="{C3DEF9C8-7C72-4826-8689-A5614101CA35}" Directory_="MW5_Dir" Attributes="0" KeyPath="MW5Mercs_0.3.zip" Type="0"/>
+    <ROW Component="Manufacturer" ComponentId="{63CCF226-CBDF-410A-9DDB-BD20B379AD3D}" Directory_="APPDIR" Attributes="260" KeyPath="Manufacturer"/>
     <ROW Component="ModLoaderInfo.ini" ComponentId="{CBBE1DE8-9065-43E2-A42E-C255AAAF33C6}" Directory_="AutoInjector_Dir" Attributes="0" KeyPath="ModLoaderInfo.ini" Type="0"/>
     <ROW Component="ModLoaderInfo.ini_1" ComponentId="{445DBB98-D755-48FD-A56A-F2BBDC20ECAF}" Directory_="UnrealModLauncher_Dir" Attributes="0" KeyPath="ModLoaderInfo.ini_1" Type="0"/>
     <ROW Component="MonsterGamesAPI.dll" ComponentId="{400BC803-1010-431B-BF9D-7FFA43DCB83A}" Directory_="APPDIR" Attributes="0" KeyPath="MonsterGamesAPI.dll"/>
@@ -72,8 +73,10 @@
     <ROW Component="Newtonsoft.Json.dll" ComponentId="{CB19911C-5F6C-41F5-8A69-3B46D590C5F9}" Directory_="APPDIR" Attributes="0" KeyPath="Newtonsoft.Json.dll"/>
     <ROW Component="OpenMotionAPI.dll" ComponentId="{6A246293-D2DD-4936-967D-281001EAD152}" Directory_="APPDIR" Attributes="0" KeyPath="OpenMotionAPI.dll"/>
     <ROW Component="OverloadTelemetry.dll" ComponentId="{5C5EC446-D68A-479F-9CCC-3A9A92179A7F}" Directory_="APPDIR" Attributes="0" KeyPath="OverloadTelemetry.dll"/>
-    <ROW Component="ProductInformation" ComponentId="{B3C5559E-115B-4C83-9E62-C09C2E862C7E}" Directory_="APPDIR" Attributes="4" KeyPath="Version"/>
+    <ROW Component="ProductInformation" ComponentId="{B3C5559E-115B-4C83-9E62-C09C2E862C7E}" Directory_="APPDIR" Attributes="260" KeyPath="Version"/>
+    <ROW Component="ProductName" ComponentId="{8312928D-E604-40AD-818E-D1B1941773C0}" Directory_="APPDIR" Attributes="260" KeyPath="ProductName"/>
     <ROW Component="RBRConfig.txt" ComponentId="{3E78065A-3C1B-434F-9128-8C313FDFD44D}" Directory_="RBR_Dir" Attributes="0" KeyPath="RBRConfig.txt_1" Type="0"/>
+    <ROW Component="Software" ComponentId="{12C64031-4753-4576-B200-AFE9D3B8F9FD}" Directory_="APPDIR" Attributes="260" KeyPath="Software"/>
     <ROW Component="SpaceMonkeyStart.exe" ComponentId="{AC863AC5-A617-464A-B585-288C9D569502}" Directory_="APPDIR" Attributes="0" KeyPath="SpaceMonkeyStart.exe"/>
     <ROW Component="SpaceMonkeyTP.dll" ComponentId="{DAAF7569-49AF-456C-9A1C-1A2632250C96}" Directory_="APPDIR" Attributes="0" KeyPath="SpaceMonkeyTP.dll"/>
     <ROW Component="TCAAPI.dll" ComponentId="{7C9EE455-A286-4C6E-B88D-A078CD48F7C7}" Directory_="APPDIR" Attributes="0" KeyPath="TCAAPI.dll"/>
@@ -230,7 +233,7 @@
     <ROW Action="AI_DetectSoftware" Sequence="151"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.BuildComponent">
-    <ROW BuildKey="DefaultBuild" BuildName="DefaultBuild" BuildOrder="1" BuildType="0" Languages="en" InstallationType="4" UseLargeSchema="true"/>
+    <ROW BuildKey="DefaultBuild" BuildName="DefaultBuild" BuildOrder="1" BuildType="0" Languages="en" InstallationType="4" UseLargeSchema="true" MsiPackageType="x64"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.DictionaryComponent">
     <ROW Path="&lt;AI_DICTS&gt;ui.ail"/>
@@ -291,7 +294,7 @@
     <ROW Action="AI_ResolveKnownFolders" Type="1" Source="aicustact.dll" Target="AI_ResolveKnownFolders"/>
     <ROW Action="AI_SHOW_LOG" Type="65" Source="aicustact.dll" Target="LaunchLogFile" WithoutSeq="true"/>
     <ROW Action="AI_STORE_LOCATION" Type="51" Source="ARPINSTALLLOCATION" Target="[APPDIR]"/>
-    <ROW Action="SET_APPDIR" Type="307" Source="APPDIR" Target="[ProgramFilesFolder][Manufacturer]\[ProductName]"/>
+    <ROW Action="SET_APPDIR" Type="307" Source="APPDIR" Target="[ProgramFilesFolder][Manufacturer]\[ProductName]" MultiBuildTarget="DefaultBuild:[ProgramFiles64Folder][Manufacturer]\[ProductName]"/>
     <ROW Action="SET_SHORTCUTDIR" Type="307" Source="SHORTCUTDIR" Target="[ProgramMenuFolder][ProductName]"/>
     <ROW Action="SET_TARGETDIR_TO_APPDIR" Type="51" Source="TARGETDIR" Target="[APPDIR]"/>
   </COMPONENT>
@@ -338,6 +341,9 @@
     <ROW Feature_="MainFeature" Component_="Dakar2Mod_0.2.zip"/>
     <ROW Feature_="MainFeature" Component_="MW5Mercs_0.3.zip"/>
     <ROW Feature_="MainFeature" Component_="TrailOut_0.3.zip"/>
+    <ROW Feature_="MainFeature" Component_="ProductName"/>
+    <ROW Feature_="MainFeature" Component_="Manufacturer"/>
+    <ROW Feature_="MainFeature" Component_="Software"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiIconsComponent">
     <ROW Name="GTPIcon.exe" SourcePath="..\GTPIcon.ico" Index="0"/>
@@ -364,7 +370,10 @@
     <ROW Condition="VersionNT" Description="[ProductName] cannot be installed on [WindowsType9XDisplay]." DescriptionLocId="AI.LaunchCondition.No9X" IsPredefined="true" Builds="DefaultBuild"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiRegsComponent">
+    <ROW Registry="Manufacturer" Root="-1" Key="Software\[Manufacturer]" Name="*" Component_="Manufacturer"/>
     <ROW Registry="Path" Root="-1" Key="Software\[Manufacturer]\[ProductName]" Name="install_path" Value="[APPDIR]" Component_="ProductInformation"/>
+    <ROW Registry="ProductName" Root="-1" Key="Software\[Manufacturer]\[ProductName]" Name="*" Component_="ProductName"/>
+    <ROW Registry="Software" Root="-1" Key="Software" Name="*" Component_="Software"/>
     <ROW Registry="Version" Root="-1" Key="Software\[Manufacturer]\[ProductName]" Name="Version" Value="[ProductVersion]" Component_="ProductInformation"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiThemeComponent">

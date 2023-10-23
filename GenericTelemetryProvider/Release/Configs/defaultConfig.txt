@@ -1,11 +1,6 @@
 {
-  "sendUDP": true,
-  "udpIP": "127.0.0.1",
-  "udpPort": 10001,
-  "fillMMF": true,
-  "copyFormatDestinations": [],
-  "packetFormat": "PacketFormats\\defaultPacketFormat.xml",
   "filterConfig": "Filters\\defaultFilters.txt",
+  "outputConfig": "Outputs\\default_MMF_UDP_CMED3.txt",
   "hotkey": {
     "key": 56,
     "enabled": true,
