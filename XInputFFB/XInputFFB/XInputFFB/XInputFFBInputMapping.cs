@@ -10,12 +10,14 @@ using System.Threading;
 namespace XInputFFB
 {
 
+    [Serializable]
     public class XIDIDeviceConfig
     {
         public string m_deviceID;
         public bool m_enabled;
     }
 
+    [Serializable]
     public enum XInputControlAxis
     {
         X,
@@ -23,16 +25,32 @@ namespace XInputFFB
         NONE
     }
 
+    [Serializable]
     public class XIDIMapConfig
     {
-        public XInputControl m_xi;
+        public XInputControl m_xiControl;
         public XInputControlAxis m_axis;
         public string m_diDeviceID;
         public string m_diObjectID;
         public int m_diObjectIndex = -1;
         public bool m_invert;
+
+        [JsonIgnore]
+        public string UIString
+        {
+            get
+            {
+                string objectString = m_diObjectID;
+
+                if (m_diObjectIndex != -1)
+                    objectString += m_diObjectIndex;
+
+                return $"{m_diDeviceID}, {objectString} ";
+            }
+        }
     }
 
+    [Serializable]
     public class XInputFFBInputMappingConfig
     {
         public List<XIDIDeviceConfig> m_devices = new List<XIDIDeviceConfig>();
@@ -196,6 +214,56 @@ namespace XInputFFB
             return m_config.GetDeviceEnabled(a_deviceID);
         }
 
+        public void SetMapConfig(XIDIMapConfig a_config)
+        {
+            XIDIMapConfig foundConfig = m_config.m_inputMap.Find((x) => x.m_xiControl == a_config.m_xiControl && x.m_axis == a_config.m_axis);
 
+            if (foundConfig != null)
+            {
+                m_config.m_inputMap[m_config.m_inputMap.IndexOf(foundConfig)] = a_config;
+            }
+            else
+                m_config.m_inputMap.Add(a_config);
+        }
+
+        public void RemoveMapConfig(XIDIMapConfig a_config)
+        {
+            XIDIMapConfig foundConfig = m_config.m_inputMap.Find((x) => x.m_xiControl == a_config.m_xiControl && x.m_axis == a_config.m_axis);
+
+            m_config.m_inputMap.Remove(foundConfig);
+        }
+
+        public XIDIMapConfig GetMapConfig(XIControlMetadata a_metadataDef)
+        {
+            XIDIMapConfig foundConfig = m_config.m_inputMap.Find((x) => x.m_xiControl == a_metadataDef.m_control && x.m_axis == a_metadataDef.m_axis);
+
+            return foundConfig;
+        }
+
+        public void SetDeviceConfig(XIDIDeviceConfig a_config)
+        {
+            XIDIDeviceConfig foundConfig = m_config.m_devices.Find((x) => x.m_deviceID == a_config.m_deviceID);
+
+            if (foundConfig != null)
+            {
+                m_config.m_devices[m_config.m_devices.IndexOf(foundConfig)] = a_config;
+            }
+            else
+                m_config.m_devices.Add(a_config);
+        }
+
+        public XIDIDeviceConfig GetDeviceConfig(string a_deviceID)
+        {
+            XIDIDeviceConfig foundConfig = m_config.m_devices.Find((x) => x.m_deviceID == a_deviceID);
+
+            if (foundConfig == null)
+            {
+                foundConfig = new XIDIDeviceConfig();
+                foundConfig.m_deviceID = a_deviceID;
+                m_config.m_devices.Add(foundConfig);
+            }
+
+            return foundConfig;
+        }
     }
 }

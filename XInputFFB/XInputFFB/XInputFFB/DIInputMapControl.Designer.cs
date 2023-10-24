@@ -60,7 +60,7 @@ namespace XInputFFB
             this.lblDIInput.Name = "lblDIInput";
             this.lblDIInput.Size = new System.Drawing.Size(470, 19);
             this.lblDIInput.TabIndex = 1;
-            this.lblDIInput.Text = "Some direct input device and button";
+            this.lblDIInput.Text = "NONE";
             // 
             // btnRecord
             // 
@@ -70,6 +70,7 @@ namespace XInputFFB
             this.btnRecord.TabIndex = 2;
             this.btnRecord.Text = "RECORD";
             this.btnRecord.UseVisualStyleBackColor = true;
+            this.btnRecord.Click += new System.EventHandler(this.btnRecord_Click);
             // 
             // invertCheckBox
             // 
@@ -80,6 +81,7 @@ namespace XInputFFB
             this.invertCheckBox.TabIndex = 3;
             this.invertCheckBox.Text = "Invert";
             this.invertCheckBox.UseVisualStyleBackColor = true;
+            this.invertCheckBox.CheckedChanged += new System.EventHandler(this.invertCheckBox_CheckedChanged);
             // 
             // lblValue
             // 
@@ -101,6 +103,7 @@ namespace XInputFFB
             this.btnForget.TabIndex = 5;
             this.btnForget.Text = "FORGET";
             this.btnForget.UseVisualStyleBackColor = true;
+            this.btnForget.Click += new System.EventHandler(this.btnForget_Click);
             // 
             // DIInputMapControl
             // 

@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
 using System.Diagnostics;
+using System.Globalization;
+using CMCustomUDP;
 
 namespace XInputFFB
 {
@@ -17,15 +19,14 @@ namespace XInputFFB
         XInputFFBCom m_ffbCom;
         Thread m_testThread;
         bool m_stopThread = false;
-        DInputDeviceManager m_diDeviceManager;
-        XInputFFBInputMapping m_ffbInputMapping;
 
-        public MainUI()
+        public MainUI(Action<bool> initCallback)
         {
+            CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
             InitializeComponent();
 
-            m_diDeviceManager = new DInputDeviceManager();
-            m_ffbInputMapping = new XInputFFBInputMapping();
+            new DInputDeviceManager();
+            new XInputFFBInputMapping();
         }
 
 
@@ -38,8 +39,6 @@ namespace XInputFFB
 
         void TestXInputFFBCom()
         {
-
-
             Stopwatch sw = new Stopwatch();
             sw.Start();
 
@@ -81,29 +80,6 @@ namespace XInputFFB
             Application.ExitThread();
         }
 
-        bool m_detecting = false;
-        private void DetectInput_Click(object sender, EventArgs e)
-        {
-            if (m_detecting)
-                return;
-
-            m_detecting = true;
-            m_diDeviceManager.DetectInput((List<DIInputDetectionResult> results) =>
-            {
-                foreach(DIInputDetectionResult result in results)
-                {
-                    Console.WriteLine($"Detected Input: {result.Identifier}, {result.m_delta}");
-                }
-
-                if(results.Count > 0)
-                {
-                    Console.WriteLine($"Best Input: {results[0].Identifier}");
-                }
-
-                m_detecting = false;
-            });
-
-        }
 
         void RefreshDevicesList()
         {
@@ -114,8 +90,8 @@ namespace XInputFFB
                 foreach(DIDevice device in DInputDeviceManager.Instance.Devices)
                 {
                     DIDeviceControl newControl = new DIDeviceControl();
-                    newControl.SetDeviceName(device.ID);
-                    newControl.SetEnabled(XInputFFBInputMapping.Instance.GetDeviceEnabled(device.ID));
+
+                    newControl.SetDataFromDeviceConfig(XInputFFBInputMapping.Instance.GetDeviceConfig(device.ID));
 
                     devicesFlowPanel.Controls.Add(newControl);
                 }
@@ -133,6 +109,16 @@ namespace XInputFFB
                     DIInputMapControl newControl = new DIInputMapControl();
 
                     newControl.Init(def);
+                    newControl.SetDataFromMapConfig(XInputFFBInputMapping.Instance.GetMapConfig(def));
+
+                    newControl.RecordAction += (XIDIMapConfig a_config) =>
+                    {
+                        if(a_config != null)
+                        {
+                            XInputFFBInputMapping.Instance.SetMapConfig(a_config);
+                        }
+                        
+                    };
 
                     mappingFlowPanel.Controls.Add(newControl);
                 }
@@ -141,10 +127,27 @@ namespace XInputFFB
 
         private void MainUI_Load(object sender, EventArgs e)
         {
+            LoadConfig();
+
             RefreshDevicesList();
             RefreshMappingList();
         }
 
+        void LoadConfig()
+        {
+            MainConfig.Instance.Load();
 
+            XInputFFBInputMapping.Instance.Load(MainConfig.installPath + MainConfig.Instance.configData.m_mappingConfig);
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            XInputFFBInputMapping.Instance.Save(MainConfig.installPath + MainConfig.Instance.configData.m_mappingConfig);
+        }
+
+        public void UpdateTelemetry(CMCustomUDPData a_telemetry)
+        {
+
+        }
     }
 }

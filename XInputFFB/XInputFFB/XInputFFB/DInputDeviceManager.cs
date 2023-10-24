@@ -495,6 +495,7 @@ namespace XInputFFB
 
         public DirectInput m_directInput;
         List<DIDevice> m_devices = new List<DIDevice>();
+        bool m_detecting = false;
 
         public List<DIDevice> Devices { get { return m_devices; } }
 
@@ -531,11 +532,17 @@ namespace XInputFFB
 
         public void DetectInput(Action<List<DIInputDetectionResult>> a_callback)
         {
+            if (m_detecting)
+                return;
+
             Console.WriteLine("Detecting Input Start...");
             Thread x = new Thread(new ParameterizedThreadStart((a_detectionCallback) =>
             {
                 foreach (DIDevice device in m_devices)
                 {
+                    if (!device.Enabled)
+                        continue;
+
                     device.Acquire();
                     device.PollState(true);
                 }
@@ -548,6 +555,8 @@ namespace XInputFFB
                 {
                     foreach (DIDevice device in m_devices)
                     {
+                        if (!device.Enabled)
+                            continue;
                         device.PollState();
 
                         results.AddRange(device.DetectInputChanges());
@@ -567,7 +576,7 @@ namespace XInputFFB
                     .Distinct() // Get distinct Identifier values from the top
                     .Count() == 1;
 
-                    if (sameResultPresent || (results.Count > 3 && sw.Elapsed.TotalSeconds > 5))
+                    if (sameResultPresent || sw.Elapsed.TotalSeconds > 5)
                     {
                         break;
                     }
@@ -578,10 +587,15 @@ namespace XInputFFB
 
                 foreach (DIDevice device in m_devices)
                 {
+                    if (!device.Enabled)
+                        continue;
+
                     device.Unacquire();
                 }
 
                 ((Action<List<DIInputDetectionResult>>)a_detectionCallback).Invoke(results);
+
+                m_detecting = false;
 
                 Console.WriteLine("Detecting Input End");
             }));

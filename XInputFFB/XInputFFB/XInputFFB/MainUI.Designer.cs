@@ -29,20 +29,10 @@ namespace XInputFFB
         /// </summary>
         private void InitializeComponent()
         {
-            this.DetectInput = new System.Windows.Forms.Button();
             this.devicesFlowPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.mappingFlowPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.btnSave = new System.Windows.Forms.Button();
             this.SuspendLayout();
-            // 
-            // DetectInput
-            // 
-            this.DetectInput.Location = new System.Drawing.Point(1045, 674);
-            this.DetectInput.Name = "DetectInput";
-            this.DetectInput.Size = new System.Drawing.Size(161, 50);
-            this.DetectInput.TabIndex = 0;
-            this.DetectInput.Text = "DetectInput";
-            this.DetectInput.UseVisualStyleBackColor = true;
-            this.DetectInput.Click += new System.EventHandler(this.DetectInput_Click);
             // 
             // devicesFlowPanel
             // 
@@ -62,14 +52,24 @@ namespace XInputFFB
             this.mappingFlowPanel.Size = new System.Drawing.Size(967, 398);
             this.mappingFlowPanel.TabIndex = 3;
             // 
+            // btnSave
+            // 
+            this.btnSave.Location = new System.Drawing.Point(1045, 608);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(161, 60);
+            this.btnSave.TabIndex = 4;
+            this.btnSave.Text = "Save";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            // 
             // MainUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1218, 736);
+            this.Controls.Add(this.btnSave);
             this.Controls.Add(this.mappingFlowPanel);
             this.Controls.Add(this.devicesFlowPanel);
-            this.Controls.Add(this.DetectInput);
             this.Name = "MainUI";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.MainUI_Load);
@@ -78,10 +78,9 @@ namespace XInputFFB
         }
 
         #endregion
-
-        private System.Windows.Forms.Button DetectInput;
         private System.Windows.Forms.FlowLayoutPanel devicesFlowPanel;
         private System.Windows.Forms.FlowLayoutPanel mappingFlowPanel;
+        private System.Windows.Forms.Button btnSave;
     }
 }
 

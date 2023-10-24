@@ -12,34 +12,36 @@ namespace XInputFFB
 {
     public partial class DIDeviceControl : UserControl
     {
-        public Action<bool> OnCheckedChanged;
+        XIDIDeviceConfig m_config;
 
-        bool ignoreChanges = false;
+        bool m_ignoreChanges = false;
         public DIDeviceControl()
         {
             InitializeComponent();
         }
 
-        public void SetDeviceName(string a_deviceName)
+        public void SetDataFromDeviceConfig(XIDIDeviceConfig a_config)
         {
-            deviceEnabledCheckBox.Text = a_deviceName;
-        }
-
-        public void SetEnabled(bool a_enabled)
-        {
-            ignoreChanges = true;
-            deviceEnabledCheckBox.Checked = a_enabled;
+            m_config = a_config;
+            deviceEnabledCheckBox.Checked = m_config.m_enabled;
+            deviceEnabledCheckBox.Text = m_config.m_deviceID;
+            DInputDeviceManager.Instance.SetDeviceEnabled(m_config.m_deviceID, m_config.m_enabled);
         }
 
         private void deviceEnabledCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            if (ignoreChanges)
+            if (m_ignoreChanges)
             {
-                ignoreChanges = false;
+                m_ignoreChanges = false;
                 return;
             }
 
-            OnCheckedChanged?.Invoke(deviceEnabledCheckBox.Checked);
+            if (m_config != null)
+            {
+                m_config.m_enabled = deviceEnabledCheckBox.Checked;
+                XInputFFBInputMapping.Instance.SetDeviceConfig(m_config);
+                DInputDeviceManager.Instance.SetDeviceEnabled(m_config.m_deviceID, m_config.m_enabled);
+            }
         }
     }
 }

@@ -1,0 +1,18 @@
+{
+  "m_devices": [
+    {
+      "m_deviceID": "Logitech G HUB G920 Driving Force Racing Wheel USB",
+      "m_enabled": true
+    }
+  ],
+  "m_inputMap": [
+    {
+      "m_xiControl": 17,
+      "m_axis": 0,
+      "m_diDeviceID": "Logitech G HUB G920 Driving Force Racing Wheel USB",
+      "m_diObjectID": "X",
+      "m_diObjectIndex": -1,
+      "m_invert": false
+    }
+  ]
+}

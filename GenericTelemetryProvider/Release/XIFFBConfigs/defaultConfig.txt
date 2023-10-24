@@ -1,0 +1,3 @@
+{
+	"m_mappingConfig": "XIFFBMappings\defaultMappings.txt"
+}
