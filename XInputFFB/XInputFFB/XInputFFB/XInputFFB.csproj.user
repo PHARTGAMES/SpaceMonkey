@@ -4,4 +4,8 @@
     <NXTargetSerialNumber />
     <NXTargetName>Default</NXTargetName>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <NXTargetSerialNumber />
+    <NXTargetName>Default</NXTargetName>
+  </PropertyGroup>
 </Project>

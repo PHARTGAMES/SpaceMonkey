@@ -15,6 +15,7 @@ namespace XInputFFB
         public XIControlMetadata m_metadata;
 
         public Action<XIDIMapConfig> RecordAction;
+        public Action ForgetAction;
         XIDIMapConfig m_mapConfig;
 
         bool m_ignoreChanges = false;
@@ -33,6 +34,7 @@ namespace XInputFFB
 
         private void btnRecord_Click(object sender, EventArgs e)
         {
+            XInputFFBInputMapping.Instance.StopRunning();
 
             DInputDeviceManager.Instance.DetectInput((List<DIInputDetectionResult> results) =>
             {
@@ -51,7 +53,6 @@ namespace XInputFFB
 
                     m_mapConfig.m_diDeviceID = bestResult.m_deviceID;
                     m_mapConfig.m_diObjectID = bestResult.m_objectID;
-                    m_mapConfig.m_diObjectIndex = bestResult.m_index;
                     m_mapConfig.m_invert = invertCheckBox.Checked;
                     m_mapConfig.m_xiControl = m_metadata.m_control;
                     m_mapConfig.m_axis = m_metadata.m_axis;
@@ -78,7 +79,9 @@ namespace XInputFFB
 
         private void btnForget_Click(object sender, EventArgs e)
         {
-            if(m_mapConfig != null)
+            XInputFFBInputMapping.Instance.StopRunning();
+
+            if (m_mapConfig != null)
                 XInputFFBInputMapping.Instance.RemoveMapConfig(m_mapConfig);
 
             m_mapConfig = null;
@@ -87,6 +90,8 @@ namespace XInputFFB
             invertCheckBox.Checked = false;
             lblValue.Text = "Value";
             lblDIInput.Text = "NONE";
+
+            ForgetAction?.Invoke();
         }
 
         private void invertCheckBox_CheckedChanged(object sender, EventArgs e)

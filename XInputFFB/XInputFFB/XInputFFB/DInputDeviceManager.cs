@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using SharpDX.DirectInput;
 using System.Threading;
 using System.Diagnostics;
+using System.Reflection;
 
 
 namespace XInputFFB
@@ -15,10 +16,9 @@ namespace XInputFFB
     {
         public string m_deviceID;
         public string m_objectID;
-        public int m_index;
         public int m_delta;
 
-        public string Identifier { get { return $"{m_deviceID}, {m_objectID}, {m_index}"; } }
+        public string Identifier { get { return $"{m_deviceID}, {m_objectID}"; } }
     }
 
 
@@ -80,7 +80,7 @@ namespace XInputFFB
         public JoystickState m_currentState;
         public JoystickState m_lastState;
 
-        bool m_acquired = false;
+        public bool m_acquired = false;
         public DIDevice(DInputDeviceManager a_manager, DeviceInstance a_deviceInstance)
         {
             m_manager = a_manager;
@@ -187,8 +187,7 @@ namespace XInputFFB
                 {
                     DIInputDetectionResult change = new DIInputDetectionResult();
                     change.m_deviceID = ID;
-                    change.m_objectID = "Buttons";
-                    change.m_index = i;
+                    change.m_objectID = $"Buttons[{i}]";
                     change.m_delta = 1;
                     inputChanges.Add(change);
                 }
@@ -203,8 +202,7 @@ namespace XInputFFB
                 {
                     DIInputDetectionResult change = new DIInputDetectionResult();
                     change.m_deviceID = ID;
-                    change.m_objectID = "PointOfViewControllers";
-                    change.m_index = i;
+                    change.m_objectID = $"PointOfViewControllers[{i}]";
                     change.m_delta = currentPointOfViewControllers[i] - lastPointOfViewControllers[i];
                     inputChanges.Add(change);
                 }
@@ -219,8 +217,7 @@ namespace XInputFFB
                 {
                     DIInputDetectionResult change = new DIInputDetectionResult();
                     change.m_deviceID = ID;
-                    change.m_objectID = "Sliders";
-                    change.m_index = i;
+                    change.m_objectID = $"Sliders[{i}]";
                     change.m_delta = currentSliders[i] - lastSliders[i];
                     inputChanges.Add(change);
                 }
@@ -235,8 +232,7 @@ namespace XInputFFB
                 {
                     DIInputDetectionResult change = new DIInputDetectionResult();
                     change.m_deviceID = ID;
-                    change.m_objectID = "VelocitySliders";
-                    change.m_index = i;
+                    change.m_objectID = $"VelocitySliders[{i}]";
                     change.m_delta = currentSliders[i] - lastSliders[i];
                     inputChanges.Add(change);
                 }
@@ -251,8 +247,7 @@ namespace XInputFFB
                 {
                     DIInputDetectionResult change = new DIInputDetectionResult();
                     change.m_deviceID = ID;
-                    change.m_objectID = "AccelerationSliders";
-                    change.m_index = i;
+                    change.m_objectID = $"AccelerationSliders[{i}]";
                     change.m_delta = currentSliders[i] - lastSliders[i];
                     inputChanges.Add(change);
                 }
@@ -267,8 +262,7 @@ namespace XInputFFB
                 {
                     DIInputDetectionResult change = new DIInputDetectionResult();
                     change.m_deviceID = ID;
-                    change.m_objectID = "ForceSliders";
-                    change.m_index = i;
+                    change.m_objectID = $"ForceSliders[{i}]";
                     change.m_delta = currentSliders[i] - lastSliders[i];
                     inputChanges.Add(change);
                 }
@@ -279,7 +273,6 @@ namespace XInputFFB
                 DIInputDetectionResult change = new DIInputDetectionResult();
                 change.m_deviceID = ID;
                 change.m_objectID = "X";
-                change.m_index = -1;
                 change.m_delta = m_currentState.X - m_lastState.X;
                 inputChanges.Add(change);
             }
@@ -289,7 +282,6 @@ namespace XInputFFB
                 DIInputDetectionResult change = new DIInputDetectionResult();
                 change.m_deviceID = ID;
                 change.m_objectID = "Y";
-                change.m_index = -1;
                 change.m_delta = m_currentState.Y - m_lastState.Y;
                 inputChanges.Add(change);
             }
@@ -299,7 +291,6 @@ namespace XInputFFB
                 DIInputDetectionResult change = new DIInputDetectionResult();
                 change.m_deviceID = ID;
                 change.m_objectID = "Z";
-                change.m_index = -1;
                 change.m_delta = m_currentState.Z - m_lastState.Z;
                 inputChanges.Add(change);
             }
@@ -309,7 +300,6 @@ namespace XInputFFB
                 DIInputDetectionResult change = new DIInputDetectionResult();
                 change.m_deviceID = ID;
                 change.m_objectID = "RotationX";
-                change.m_index = -1;
                 change.m_delta = m_currentState.RotationX - m_lastState.RotationX;
                 inputChanges.Add(change);
             }
@@ -319,7 +309,6 @@ namespace XInputFFB
                 DIInputDetectionResult change = new DIInputDetectionResult();
                 change.m_deviceID = ID;
                 change.m_objectID = "RotationY";
-                change.m_index = -1;
                 change.m_delta = m_currentState.RotationY - m_lastState.RotationY;
                 inputChanges.Add(change);
             }
@@ -329,7 +318,6 @@ namespace XInputFFB
                 DIInputDetectionResult change = new DIInputDetectionResult();
                 change.m_deviceID = ID;
                 change.m_objectID = "RotationZ";
-                change.m_index = -1;
                 change.m_delta = m_currentState.RotationZ - m_lastState.RotationZ;
                 inputChanges.Add(change);
             }
@@ -339,7 +327,6 @@ namespace XInputFFB
                 DIInputDetectionResult change = new DIInputDetectionResult();
                 change.m_deviceID = ID;
                 change.m_objectID = "AccelerationX";
-                change.m_index = -1;
                 change.m_delta = m_currentState.AccelerationX - m_lastState.AccelerationX;
                 inputChanges.Add(change);
             }
@@ -349,7 +336,6 @@ namespace XInputFFB
                 DIInputDetectionResult change = new DIInputDetectionResult();
                 change.m_deviceID = ID;
                 change.m_objectID = "AccelerationY";
-                change.m_index = -1;
                 change.m_delta = m_currentState.AccelerationY - m_lastState.AccelerationY;
                 inputChanges.Add(change);
             }
@@ -359,7 +345,6 @@ namespace XInputFFB
                 DIInputDetectionResult change = new DIInputDetectionResult();
                 change.m_deviceID = ID;
                 change.m_objectID = "AccelerationZ";
-                change.m_index = -1;
                 change.m_delta = m_currentState.AccelerationZ - m_lastState.AccelerationZ;
                 inputChanges.Add(change);
             }
@@ -369,7 +354,6 @@ namespace XInputFFB
                 DIInputDetectionResult change = new DIInputDetectionResult();
                 change.m_deviceID = ID;
                 change.m_objectID = "AngularAccelerationX";
-                change.m_index = -1;
                 change.m_delta = m_currentState.AngularAccelerationX - m_lastState.AngularAccelerationX;
                 inputChanges.Add(change);
             }
@@ -379,7 +363,6 @@ namespace XInputFFB
                 DIInputDetectionResult change = new DIInputDetectionResult();
                 change.m_deviceID = ID;
                 change.m_objectID = "AngularAccelerationY";
-                change.m_index = -1;
                 change.m_delta = m_currentState.AngularAccelerationY - m_lastState.AngularAccelerationY;
                 inputChanges.Add(change);
             }
@@ -389,7 +372,6 @@ namespace XInputFFB
                 DIInputDetectionResult change = new DIInputDetectionResult();
                 change.m_deviceID = ID;
                 change.m_objectID = "AngularAccelerationZ";
-                change.m_index = -1;
                 change.m_delta = m_currentState.AngularAccelerationZ - m_lastState.AngularAccelerationZ;
                 inputChanges.Add(change);
             }
@@ -399,7 +381,6 @@ namespace XInputFFB
                 DIInputDetectionResult change = new DIInputDetectionResult();
                 change.m_deviceID = ID;
                 change.m_objectID = "AngularVelocityX";
-                change.m_index = -1;
                 change.m_delta = m_currentState.AngularVelocityX - m_lastState.AngularVelocityX;
                 inputChanges.Add(change);
             }
@@ -409,7 +390,6 @@ namespace XInputFFB
                 DIInputDetectionResult change = new DIInputDetectionResult();
                 change.m_deviceID = ID;
                 change.m_objectID = "AngularVelocityY";
-                change.m_index = -1;
                 change.m_delta = m_currentState.AngularVelocityY - m_lastState.AngularVelocityY;
                 inputChanges.Add(change);
             }
@@ -419,7 +399,6 @@ namespace XInputFFB
                 DIInputDetectionResult change = new DIInputDetectionResult();
                 change.m_deviceID = ID;
                 change.m_objectID = "AngularVelocityZ";
-                change.m_index = -1;
                 change.m_delta = m_currentState.AngularVelocityZ - m_lastState.AngularVelocityZ;
                 inputChanges.Add(change);
             }
@@ -429,7 +408,6 @@ namespace XInputFFB
                 DIInputDetectionResult change = new DIInputDetectionResult();
                 change.m_deviceID = ID;
                 change.m_objectID = "ForceX";
-                change.m_index = -1;
                 change.m_delta = m_currentState.ForceX - m_lastState.ForceX;
                 inputChanges.Add(change);
             }
@@ -439,7 +417,6 @@ namespace XInputFFB
                 DIInputDetectionResult change = new DIInputDetectionResult();
                 change.m_deviceID = ID;
                 change.m_objectID = "ForceY";
-                change.m_index = -1;
                 change.m_delta = m_currentState.ForceY - m_lastState.ForceY;
                 inputChanges.Add(change);
             }
@@ -449,7 +426,6 @@ namespace XInputFFB
                 DIInputDetectionResult change = new DIInputDetectionResult();
                 change.m_deviceID = ID;
                 change.m_objectID = "ForceZ";
-                change.m_index = -1;
                 change.m_delta = m_currentState.ForceZ - m_lastState.ForceZ;
                 inputChanges.Add(change);
             }
@@ -459,7 +435,6 @@ namespace XInputFFB
                 DIInputDetectionResult change = new DIInputDetectionResult();
                 change.m_deviceID = ID;
                 change.m_objectID = "TorqueX";
-                change.m_index = -1;
                 change.m_delta = m_currentState.TorqueX - m_lastState.TorqueX;
                 inputChanges.Add(change);
             }
@@ -469,7 +444,6 @@ namespace XInputFFB
                 DIInputDetectionResult change = new DIInputDetectionResult();
                 change.m_deviceID = ID;
                 change.m_objectID = "TorqueY";
-                change.m_index = -1;
                 change.m_delta = m_currentState.TorqueY - m_lastState.TorqueY;
                 inputChanges.Add(change);
             }
@@ -479,7 +453,6 @@ namespace XInputFFB
                 DIInputDetectionResult change = new DIInputDetectionResult();
                 change.m_deviceID = ID;
                 change.m_objectID = "TorqueZ";
-                change.m_index = -1;
                 change.m_delta = m_currentState.TorqueZ - m_lastState.TorqueZ;
                 inputChanges.Add(change);
             }
@@ -489,9 +462,23 @@ namespace XInputFFB
         }
     }
 
+
+
     public class DInputDeviceManager
     {
-        public static DInputDeviceManager Instance;
+        public static DInputDeviceManager m_instance;
+
+        public static DInputDeviceManager Instance
+        {
+            get
+            {
+                if (m_instance == null)
+                {
+                    m_instance = new DInputDeviceManager();
+                }
+                return m_instance;
+            }
+        }
 
         public DirectInput m_directInput;
         List<DIDevice> m_devices = new List<DIDevice>();
@@ -501,8 +488,6 @@ namespace XInputFFB
 
         public DInputDeviceManager()
         {
-            Instance = this;
-
             m_directInput = new DirectInput();
 
             EnumerateDevices();
@@ -627,5 +612,78 @@ namespace XInputFFB
         }
 
 
+    }
+
+    public static class JoystickStateExtensions
+    {
+        
+        public static T GetInputState<T>(this JoystickState a_joystickState, string a_objectId)
+        {
+            object data;
+
+            int arrayIndexPos = -1;
+            int squareBracketPos = a_objectId.IndexOf('[');
+            if (squareBracketPos != -1)
+            {
+                int closeBracketPos = a_objectId.IndexOf(']');
+                int.TryParse(a_objectId.Substring(squareBracketPos + 1, (closeBracketPos-squareBracketPos)-1), out arrayIndexPos);
+                a_objectId = a_objectId.Substring(0, squareBracketPos);
+            }
+            Type eleDataType = typeof(JoystickState);
+            PropertyInfo propertyInfo;
+            FieldInfo fieldInfo = eleDataType.GetField($"<{a_objectId}>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance);
+            if (fieldInfo != null)
+            {
+                data = fieldInfo.GetValue(a_joystickState);
+                if (arrayIndexPos != -1 && data.GetType().IsArray)
+                {
+                    Type arrayType = fieldInfo.FieldType;
+                    if (arrayType == typeof(bool[]))
+                    {
+                        bool[] boolArray = (bool[])fieldInfo.GetValue(a_joystickState);
+
+                        data = boolArray[arrayIndexPos];
+                    }
+                    else if (arrayType == typeof(int[]))
+                    {
+                        int[] intArray = (int[])fieldInfo.GetValue(a_joystickState);
+
+                        data = intArray[arrayIndexPos];
+                    }
+                }
+
+            }
+            else if ((propertyInfo = eleDataType.GetProperty(a_objectId)) != null)
+            {
+                data = propertyInfo.GetValue(a_joystickState, null);
+            }
+            else
+            {
+                throw new Exception($"Cannot find {a_objectId}");
+            }
+
+
+            Type tType = typeof(T);
+            Type dataType = data.GetType();
+
+            if (tType == dataType)
+                return (T)data;
+
+            if(tType == typeof(int))
+            {
+                if (dataType == typeof(bool))
+                    return (T)(((bool)data) ? (object)1 : (object)0);
+            }
+
+            if (tType == typeof(bool))
+            {
+                if (dataType == typeof(int))
+                    return (T)(((int)data) > 0 ? (object)true : (object)false);
+            }
+
+            return (T)data;
+        }
+
+       
     }
 }

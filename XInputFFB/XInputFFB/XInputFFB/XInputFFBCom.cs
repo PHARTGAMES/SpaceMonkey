@@ -34,14 +34,45 @@ namespace XInputFFB
 		JOY_RIGHT = 18,
 	};
 
-	class XInputFFBCom
+	public class XInputFFBCom
     {
+		static XInputFFBCom m_instance;
+		public static XInputFFBCom Instance
+        {
+			get
+            {
+				if(m_instance == null)
+                {
+					m_instance = new XInputFFBCom();
+                }
+				return m_instance;
+            }
+        }
         SerialTransport m_serialTransport;
         CmdMessenger m_cmdMessenger;
 
-		public string m_comPort = "COM5";
+		string m_comPort = "COM5";
 		public int m_baudRate = 57600;
 		const int commandId = 0;
+
+		public string COMPort
+        {
+			get
+            {
+				return m_comPort;
+            }
+
+			set
+            {
+				m_comPort = value;
+
+				if(m_cmdMessenger != null)
+                {
+					StopCMDMessenger();
+					StartCMDMessenger();
+                }
+            }
+        }
 
 		public void StartCMDMessenger()
         {
@@ -68,6 +99,14 @@ namespace XInputFFB
 			if(m_cmdMessenger != null)
             {
 				m_cmdMessenger.Disconnect();
+				m_cmdMessenger.Dispose();
+				m_cmdMessenger = null;
+            }
+
+			if(m_serialTransport != null)
+            {
+				m_serialTransport.Dispose();
+				m_serialTransport = null;
             }
         }
 
@@ -99,6 +138,9 @@ namespace XInputFFB
 
 		public void SendControlStateButton(XInputControl a_control, bool a_pressed)
         {
+			if (m_cmdMessenger == null)
+				return;
+
 			SendCommand cmd = new SendCommand(commandId, (Int16)a_control);
 			cmd.AddArgument(a_pressed);
 			m_cmdMessenger.SendCommand(cmd, SendQueue.InFrontQueue, ReceiveQueue.Default);
@@ -106,6 +148,9 @@ namespace XInputFFB
 
 		public void SendControlStateStick(XInputControl a_control, Int32 a_xAxis, Int32 a_yAxis)
 		{
+			if (m_cmdMessenger == null)
+				return;
+
 			SendCommand cmd = new SendCommand(commandId, (Int16)a_control);
 			cmd.AddArgument(a_xAxis);
 			cmd.AddArgument(a_yAxis);
@@ -115,6 +160,9 @@ namespace XInputFFB
 
 		public void SendControlStateTrigger(XInputControl a_control, Int32 a_axis)
 		{
+			if (m_cmdMessenger == null)
+				return;
+
 			SendCommand cmd = new SendCommand(commandId, (Int16)a_control);
 			cmd.AddArgument(a_axis);
 			m_cmdMessenger.SendCommand(cmd, SendQueue.InFrontQueue, ReceiveQueue.Default);

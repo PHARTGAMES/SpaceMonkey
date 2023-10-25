@@ -11,7 +11,125 @@
       "m_axis": 0,
       "m_diDeviceID": "Logitech G HUB G920 Driving Force Racing Wheel USB",
       "m_diObjectID": "X",
-      "m_diObjectIndex": -1,
+      "m_invert": false
+    },
+    {
+      "m_xiControl": 0,
+      "m_axis": 2,
+      "m_diDeviceID": "Logitech G HUB G920 Driving Force Racing Wheel USB",
+      "m_diObjectID": "Buttons[10]",
+      "m_invert": false
+    },
+    {
+      "m_xiControl": 1,
+      "m_axis": 2,
+      "m_diDeviceID": "Logitech G HUB G920 Driving Force Racing Wheel USB",
+      "m_diObjectID": "Buttons[0]",
+      "m_invert": false
+    },
+    {
+      "m_xiControl": 2,
+      "m_axis": 2,
+      "m_diDeviceID": "Logitech G HUB G920 Driving Force Racing Wheel USB",
+      "m_diObjectID": "Buttons[1]",
+      "m_invert": false
+    },
+    {
+      "m_xiControl": 3,
+      "m_axis": 2,
+      "m_diDeviceID": "Logitech G HUB G920 Driving Force Racing Wheel USB",
+      "m_diObjectID": "Buttons[2]",
+      "m_invert": false
+    },
+    {
+      "m_xiControl": 4,
+      "m_axis": 2,
+      "m_diDeviceID": "Logitech G HUB G920 Driving Force Racing Wheel USB",
+      "m_diObjectID": "Buttons[3]",
+      "m_invert": false
+    },
+    {
+      "m_xiControl": 5,
+      "m_axis": 2,
+      "m_diDeviceID": "Logitech G HUB G920 Driving Force Racing Wheel USB",
+      "m_diObjectID": "Buttons[5]",
+      "m_invert": false
+    },
+    {
+      "m_xiControl": 6,
+      "m_axis": 2,
+      "m_diDeviceID": "Logitech G HUB G920 Driving Force Racing Wheel USB",
+      "m_diObjectID": "Buttons[4]",
+      "m_invert": false
+    },
+    {
+      "m_xiControl": 15,
+      "m_axis": 2,
+      "m_diDeviceID": "Logitech G HUB G920 Driving Force Racing Wheel USB",
+      "m_diObjectID": "RotationZ",
+      "m_invert": false
+    },
+    {
+      "m_xiControl": 16,
+      "m_axis": 2,
+      "m_diDeviceID": "Logitech G HUB G920 Driving Force Racing Wheel USB",
+      "m_diObjectID": "Y",
+      "m_invert": false
+    },
+    {
+      "m_xiControl": 11,
+      "m_axis": 2,
+      "m_diDeviceID": "Logitech G HUB G920 Driving Force Racing Wheel USB",
+      "m_diObjectID": "PointOfViewControllers[0]",
+      "m_invert": false
+    },
+    {
+      "m_xiControl": 12,
+      "m_axis": 2,
+      "m_diDeviceID": "Logitech G HUB G920 Driving Force Racing Wheel USB",
+      "m_diObjectID": "PointOfViewControllers[0]",
+      "m_invert": false
+    },
+    {
+      "m_xiControl": 13,
+      "m_axis": 2,
+      "m_diDeviceID": "Logitech G HUB G920 Driving Force Racing Wheel USB",
+      "m_diObjectID": "PointOfViewControllers[0]",
+      "m_invert": false
+    },
+    {
+      "m_xiControl": 14,
+      "m_axis": 2,
+      "m_diDeviceID": "Logitech G HUB G920 Driving Force Racing Wheel USB",
+      "m_diObjectID": "PointOfViewControllers[0]",
+      "m_invert": false
+    },
+    {
+      "m_xiControl": 7,
+      "m_axis": 2,
+      "m_diDeviceID": "Logitech G HUB G920 Driving Force Racing Wheel USB",
+      "m_diObjectID": "Buttons[7]",
+      "m_invert": false
+    },
+    {
+      "m_xiControl": 8,
+      "m_axis": 2,
+      "m_diDeviceID": "Logitech G HUB G920 Driving Force Racing Wheel USB",
+      "m_diObjectID": "Buttons[6]",
+      "m_invert": false
+    },
+    {
+      "m_xiControl": 9,
+      "m_axis": 2,
+      "m_diDeviceID": "Logitech G HUB G920 Driving Force Racing Wheel USB",
+      "m_diObjectID": "Buttons[9]",
+      "m_invert": false
+    },
+    {
+      "m_xiControl": 10,
+      "m_axis": 2,
+      "m_diDeviceID": "Logitech G HUB G920 Driving Force Racing Wheel USB",
+      "m_diObjectID": "Buttons[8]",
       "m_invert": false
     }
   ]

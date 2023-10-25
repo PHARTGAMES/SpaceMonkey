@@ -16,7 +16,6 @@ namespace XInputFFB
 {
     public partial class MainUI : Form
     {
-        XInputFFBCom m_ffbCom;
         Thread m_testThread;
         bool m_stopThread = false;
 
@@ -24,17 +23,13 @@ namespace XInputFFB
         {
             CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
             InitializeComponent();
-
-            new DInputDeviceManager();
-            new XInputFFBInputMapping();
         }
 
 
         public void StartXInputOutput()
         { 
-            m_ffbCom = new XInputFFBCom();
-            m_ffbCom.m_comPort = "COM5";
-            m_ffbCom.StartCMDMessenger();
+            XInputFFBCom.Instance.COMPort = "COM5";
+            XInputFFBCom.Instance.StartCMDMessenger();
         }
 
         void TestXInputFFBCom()
@@ -51,9 +46,9 @@ namespace XInputFFB
 
                 Int16 stickVal = (Int16)(Math.Sin(elapsed) * stickRange);
 
-                m_ffbCom.SendControlStateStick(XInputControl.JOY_LEFT, stickVal, -stickVal);
+                XInputFFBCom.Instance.SendControlStateStick(XInputControl.JOY_LEFT, stickVal, -stickVal);
 
-                m_ffbCom.SendControlStateButton(XInputControl.BUTTON_A, stickVal > 0);
+                XInputFFBCom.Instance.SendControlStateButton(XInputControl.BUTTON_A, stickVal > 0);
 
                 Thread.Sleep(10);
             }
@@ -69,8 +64,7 @@ namespace XInputFFB
 
             Thread.Sleep(0);
 
-            if(m_ffbCom != null)
-                m_ffbCom.StopCMDMessenger();
+            XInputFFBCom.Instance.StopCMDMessenger();
 
             if (!IsDisposed)
             {
@@ -116,8 +110,14 @@ namespace XInputFFB
                         if(a_config != null)
                         {
                             XInputFFBInputMapping.Instance.SetMapConfig(a_config);
+                            XInputFFBInputMapping.Instance.StartRunning();
                         }
-                        
+
+                    };
+
+                    newControl.ForgetAction += () =>
+                    {
+                        XInputFFBInputMapping.Instance.StartRunning();
                     };
 
                     mappingFlowPanel.Controls.Add(newControl);
@@ -131,6 +131,8 @@ namespace XInputFFB
 
             RefreshDevicesList();
             RefreshMappingList();
+
+            XInputFFBInputMapping.Instance.StartRunning();
         }
 
         void LoadConfig()

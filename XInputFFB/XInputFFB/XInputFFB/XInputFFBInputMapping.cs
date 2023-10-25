@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.IO;
 using System.Threading;
+using SharpDX.DirectInput;
 
 namespace XInputFFB
 {
@@ -32,7 +33,6 @@ namespace XInputFFB
         public XInputControlAxis m_axis;
         public string m_diDeviceID;
         public string m_diObjectID;
-        public int m_diObjectIndex = -1;
         public bool m_invert;
 
         [JsonIgnore]
@@ -41,9 +41,6 @@ namespace XInputFFB
             get
             {
                 string objectString = m_diObjectID;
-
-                if (m_diObjectIndex != -1)
-                    objectString += m_diObjectIndex;
 
                 return $"{m_diDeviceID}, {objectString} ";
             }
@@ -104,11 +101,32 @@ namespace XInputFFB
 
     }
 
+    public struct XIStickState
+    {
+        public int m_x;
+        public int m_y;
+    }
+
     public class XInputFFBInputMapping
     {
-        public static XInputFFBInputMapping Instance;
+        static XInputFFBInputMapping m_instance;
+
+        public static XInputFFBInputMapping Instance
+        {
+            get
+            {
+                if (m_instance == null)
+                {
+                    m_instance = new XInputFFBInputMapping();
+                }
+                return m_instance;
+            }
+        }
+
         public XInputFFBInputMappingConfig m_config = new XInputFFBInputMappingConfig();
         List<XIDIMap> m_runningMap = new List<XIDIMap>();
+        Dictionary<DIDevice, JoystickState> m_runningDeviceStates = new Dictionary<DIDevice, JoystickState>();
+        List<DIDevice> m_runningDevices = new List<DIDevice>();
         bool m_stopThread = false;
         Thread thread;
 
@@ -139,11 +157,6 @@ namespace XInputFFB
         };
 
 
-        public XInputFFBInputMapping()
-        {
-            Instance = this;
-        }
-
         public void Load(string a_path)
         {
             string text = File.ReadAllText(a_path);
@@ -160,6 +173,13 @@ namespace XInputFFB
 
         void RefreshRunning()
         {
+
+            foreach (DIDevice device in m_runningDevices)
+            {
+                device.Unacquire();
+            }
+            m_runningDeviceStates.Clear();
+            m_runningDevices.Clear();
             m_runningMap.Clear();
 
             foreach(XIDIMapConfig mapConfig in m_config.m_inputMap)
@@ -170,37 +190,135 @@ namespace XInputFFB
                 {
                     XIDIMap newMap = new XIDIMap(mapConfig, device);
 
-                    device.Acquire();
-
+                    if(!m_runningDevices.Contains(device))
+                    {
+                        device.Acquire();
+                        m_runningDevices.Add(device);
+                    }
                     m_runningMap.Add(newMap);
                 }
             }
         }
 
-        void StartRunning()
+        public void StartRunning()
         {
             thread = new Thread(RunThread);
             thread.IsBackground = true;
             thread.Start();
         }
 
-        void StopRunning()
+        public void StopRunning()
         {
+            m_stopThread = true;
 
+            while(m_stopThread)
+                Thread.Sleep(1);
         }
 
         void RunThread()
         {
             RefreshRunning();
 
-            //while(!m_stopThread)
-            //{
-            //    foreach(XIDIMap map in m_runningMap)
-            //    {
-            //        map.
-            //    }
-            //}
+            Dictionary<XInputControl, XIStickState> stickStates = new Dictionary<XInputControl, XIStickState>();
 
+            while (!m_stopThread)
+            {
+                stickStates.Clear();
+
+                //read device state
+                foreach (DIDevice device in m_runningDevices)
+                {
+                    m_runningDeviceStates[device] = device.PollState();
+                }
+
+                //pass on device state to mapped output on XInputFFBCom
+                foreach (XIDIMap map in m_runningMap)
+                {
+                    JoystickState joystickState = m_runningDeviceStates[map.m_diDevice];
+
+                    switch (map.m_config.m_xiControl)
+                    {
+                        case XInputControl.BUTTON_LOGO:
+                        case XInputControl.BUTTON_A:
+                        case XInputControl.BUTTON_B:
+                        case XInputControl.BUTTON_X:
+                        case XInputControl.BUTTON_Y:
+                        case XInputControl.BUTTON_LB:
+                        case XInputControl.BUTTON_RB:
+                        case XInputControl.BUTTON_BACK:
+                        case XInputControl.BUTTON_START:
+                        case XInputControl.BUTTON_L3:
+                        case XInputControl.BUTTON_R3:
+                        case XInputControl.DPAD_UP:
+                        case XInputControl.DPAD_DOWN:
+                        case XInputControl.DPAD_LEFT:
+                        case XInputControl.DPAD_RIGHT:
+                            {
+                                XInputFFBCom.Instance.SendControlStateButton(map.m_config.m_xiControl, joystickState.GetInputState<bool>(map.m_config.m_diObjectID));
+                                break;
+                            }
+
+                        case XInputControl.TRIGGER_LEFT:
+                        case XInputControl.TRIGGER_RIGHT:
+                            {
+                                XInputFFBCom.Instance.SendControlStateTrigger(map.m_config.m_xiControl, joystickState.GetInputState<int>(map.m_config.m_diObjectID));
+                                break;
+                            }
+
+                        case XInputControl.JOY_LEFT:
+                        case XInputControl.JOY_RIGHT:
+                            {
+                                int diState = joystickState.GetInputState<int>(map.m_config.m_diObjectID);
+                                if (map.m_config.m_axis == XInputControlAxis.X)
+                                {
+                                    if(stickStates.TryGetValue(map.m_config.m_xiControl, out XIStickState stickState))
+                                    {
+                                        stickState.m_x = diState;
+                                        stickStates[map.m_config.m_xiControl] = stickState;
+                                    }
+                                    else
+                                    {
+                                        stickStates.Add(map.m_config.m_xiControl, new XIStickState { m_x = diState, m_y = 0 });
+                                    }
+                                }
+                                else
+                                if (map.m_config.m_axis == XInputControlAxis.Y)
+                                {
+                                    if (stickStates.TryGetValue(map.m_config.m_xiControl, out XIStickState stickState))
+                                    {
+                                        stickState.m_y = diState;
+                                        stickStates[map.m_config.m_xiControl] = stickState;
+                                    }
+                                    else
+                                    {
+                                        stickStates.Add(map.m_config.m_xiControl, new XIStickState { m_x = 0, m_y = diState });
+                                    }
+                                }
+
+                                break;
+                            }
+
+                    }
+
+                }
+
+                if (stickStates.ContainsKey(XInputControl.JOY_LEFT))
+                {
+                    XIStickState stickState = stickStates[XInputControl.JOY_LEFT];
+
+                    XInputFFBCom.Instance.SendControlStateStick(XInputControl.JOY_LEFT, stickState.m_x, stickState.m_y);
+                }
+
+                if (stickStates.ContainsKey(XInputControl.JOY_RIGHT))
+                {
+                    XIStickState stickState = stickStates[XInputControl.JOY_RIGHT];
+
+                    XInputFFBCom.Instance.SendControlStateStick(XInputControl.JOY_RIGHT, stickState.m_x, stickState.m_y);
+                }
+            }
+
+            m_stopThread = false;
+            Thread.CurrentThread.Join();
         }
 
         public void SetDeviceEnabled(string a_deviceID, bool a_enabled)
