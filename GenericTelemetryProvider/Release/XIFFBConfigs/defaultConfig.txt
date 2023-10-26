@@ -1,3 +1,4 @@
 {
-	"m_mappingConfig": "XIFFBMappings\defaultMappings.txt"
+  "m_comPort": "COM5",
+  "m_mappingConfig": "XIFFBMappings\\defaultMappings.txt"
 }

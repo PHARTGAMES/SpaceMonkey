@@ -1,1 +1,1 @@
-XIFFBMappings\defaultMappings.txt
+XIFFBConfigs\defaultConfig.txt

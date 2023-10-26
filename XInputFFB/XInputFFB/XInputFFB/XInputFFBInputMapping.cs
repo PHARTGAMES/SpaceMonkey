@@ -34,6 +34,10 @@ namespace XInputFFB
         public string m_diDeviceID;
         public string m_diObjectID;
         public bool m_invert;
+        public int m_minInput = 0;
+        public int m_maxInput = 65535;
+        public int m_minOutput = 0;
+        public int m_maxOutput = 65535;
 
         [JsonIgnore]
         public string UIString
@@ -90,8 +94,6 @@ namespace XInputFFB
         public XIDIMapConfig m_config;
         public DIDevice m_diDevice;
     }
-
-
 
     public struct XIControlMetadata
     {
@@ -215,6 +217,24 @@ namespace XInputFFB
                 Thread.Sleep(1);
         }
 
+        int TransformInputToOutputValue(XIDIMapConfig a_config, int a_inputValue)
+        {
+            int inputRange = a_config.m_maxInput - a_config.m_minInput;
+            int outputRange = a_config.m_maxOutput - a_config.m_minOutput;
+
+            if (inputRange == 0 || outputRange == 0)
+                return a_inputValue;
+
+            int outputValue = (int)(((((double)a_inputValue - (double)a_config.m_minInput) / (double)inputRange) * (double)outputRange) + (double)a_config.m_minOutput);
+
+            if(a_config.m_invert)
+            {
+                outputValue = a_config.m_maxOutput - (outputValue - a_config.m_minOutput);
+            }
+
+            return Math.Min(a_config.m_maxOutput, Math.Max(a_config.m_minOutput, outputValue));
+        }
+
         void RunThread()
         {
             RefreshRunning();
@@ -261,14 +281,14 @@ namespace XInputFFB
                         case XInputControl.TRIGGER_LEFT:
                         case XInputControl.TRIGGER_RIGHT:
                             {
-                                XInputFFBCom.Instance.SendControlStateTrigger(map.m_config.m_xiControl, joystickState.GetInputState<int>(map.m_config.m_diObjectID));
+                                XInputFFBCom.Instance.SendControlStateTrigger(map.m_config.m_xiControl, TransformInputToOutputValue(map.m_config, joystickState.GetInputState<int>(map.m_config.m_diObjectID)));
                                 break;
                             }
 
                         case XInputControl.JOY_LEFT:
                         case XInputControl.JOY_RIGHT:
                             {
-                                int diState = joystickState.GetInputState<int>(map.m_config.m_diObjectID);
+                                int diState = TransformInputToOutputValue(map.m_config, joystickState.GetInputState<int>(map.m_config.m_diObjectID));
                                 if (map.m_config.m_axis == XInputControlAxis.X)
                                 {
                                     if(stickStates.TryGetValue(map.m_config.m_xiControl, out XIStickState stickState))
@@ -315,6 +335,8 @@ namespace XInputFFB
 
                     XInputFFBCom.Instance.SendControlStateStick(XInputControl.JOY_RIGHT, stickState.m_x, stickState.m_y);
                 }
+
+                Thread.Sleep(16);
             }
 
             m_stopThread = false;

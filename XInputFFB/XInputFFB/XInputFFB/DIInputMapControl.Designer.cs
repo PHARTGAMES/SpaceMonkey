@@ -35,6 +35,8 @@ namespace XInputFFB
             this.invertCheckBox = new System.Windows.Forms.CheckBox();
             this.lblValue = new System.Windows.Forms.Label();
             this.btnForget = new System.Windows.Forms.Button();
+            this.tbMinInput = new System.Windows.Forms.TextBox();
+            this.tbMaxInput = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // lblXInput
@@ -105,11 +107,31 @@ namespace XInputFFB
             this.btnForget.UseVisualStyleBackColor = true;
             this.btnForget.Click += new System.EventHandler(this.btnForget_Click);
             // 
+            // tbMinInput
+            // 
+            this.tbMinInput.Location = new System.Drawing.Point(12, 44);
+            this.tbMinInput.Name = "tbMinInput";
+            this.tbMinInput.Size = new System.Drawing.Size(100, 22);
+            this.tbMinInput.TabIndex = 6;
+            this.tbMinInput.Text = "Min Input";
+            this.tbMinInput.TextChanged += new System.EventHandler(this.tbMinInput_TextChanged);
+            // 
+            // tbMaxInput
+            // 
+            this.tbMaxInput.Location = new System.Drawing.Point(118, 44);
+            this.tbMaxInput.Name = "tbMaxInput";
+            this.tbMaxInput.Size = new System.Drawing.Size(100, 22);
+            this.tbMaxInput.TabIndex = 7;
+            this.tbMaxInput.Text = "Max Input";
+            this.tbMaxInput.TextChanged += new System.EventHandler(this.tbMaxInput_TextChanged);
+            // 
             // DIInputMapControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.Controls.Add(this.tbMaxInput);
+            this.Controls.Add(this.tbMinInput);
             this.Controls.Add(this.btnForget);
             this.Controls.Add(this.lblValue);
             this.Controls.Add(this.invertCheckBox);
@@ -131,5 +153,7 @@ namespace XInputFFB
         private System.Windows.Forms.CheckBox invertCheckBox;
         private System.Windows.Forms.Label lblValue;
         private System.Windows.Forms.Button btnForget;
+        private System.Windows.Forms.TextBox tbMinInput;
+        private System.Windows.Forms.TextBox tbMaxInput;
     }
 }

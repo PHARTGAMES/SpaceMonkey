@@ -11,13 +11,13 @@ using System.Threading;
 using System.Diagnostics;
 using System.Globalization;
 using CMCustomUDP;
+using System.IO.Ports;
 
 namespace XInputFFB
 {
     public partial class MainUI : Form
     {
-        Thread m_testThread;
-        bool m_stopThread = false;
+        bool m_ignoreChanges = false;
 
         public MainUI(Action<bool> initCallback)
         {
@@ -28,41 +28,18 @@ namespace XInputFFB
 
         public void StartXInputOutput()
         { 
-            XInputFFBCom.Instance.COMPort = "COM5";
+            XInputFFBCom.Instance.COMPort = MainConfig.Instance.configData.m_comPort;
             XInputFFBCom.Instance.StartCMDMessenger();
         }
 
-        void TestXInputFFBCom()
+        public void StopXinputOutput()
         {
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
-
-            
-            while (!m_stopThread)
-            {
-                double elapsed = sw.Elapsed.TotalSeconds;
-
-                double stickRange = 32768;
-
-                Int16 stickVal = (Int16)(Math.Sin(elapsed) * stickRange);
-
-                XInputFFBCom.Instance.SendControlStateStick(XInputControl.JOY_LEFT, stickVal, -stickVal);
-
-                XInputFFBCom.Instance.SendControlStateButton(XInputControl.BUTTON_A, stickVal > 0);
-
-                Thread.Sleep(10);
-            }
-
-            Thread.CurrentThread.Join();
+            XInputFFBCom.Instance.StopCMDMessenger();
         }
 
 
         private void OnFormClosing(object sender, FormClosingEventArgs e)
         {
-
-            m_stopThread = true;
-
-            Thread.Sleep(0);
 
             XInputFFBCom.Instance.StopCMDMessenger();
 
@@ -129,11 +106,18 @@ namespace XInputFFB
         {
             LoadConfig();
 
+            RefreshComPort();
+
             RefreshDevicesList();
             RefreshMappingList();
 
             XInputFFBInputMapping.Instance.StartRunning();
+
+            if(!string.IsNullOrEmpty(MainConfig.Instance.configData.m_comPort))
+                StartXInputOutput();
         }
+
+
 
         void LoadConfig()
         {
@@ -145,11 +129,45 @@ namespace XInputFFB
         private void btnSave_Click(object sender, EventArgs e)
         {
             XInputFFBInputMapping.Instance.Save(MainConfig.installPath + MainConfig.Instance.configData.m_mappingConfig);
+
+            MainConfig.Instance.Save();
         }
 
         public void UpdateTelemetry(CMCustomUDPData a_telemetry)
         {
 
+        }
+
+        void RefreshComPort()
+        {
+            string[] portNames = SerialPort.GetPortNames();
+
+            cbComPort.Items.Clear();
+            int selectedIndex = 0;
+            for(int i = 0; i < portNames.Length; ++i)
+            {
+                cbComPort.Items.Add(portNames[i]);
+                if (portNames[i] == MainConfig.Instance.configData.m_comPort)
+                {
+                    selectedIndex = i;
+                }
+            }
+
+            m_ignoreChanges = true;
+            cbComPort.SelectedIndex = selectedIndex;
+        }
+
+        private void cbComPort_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if(m_ignoreChanges)
+            {
+                m_ignoreChanges = false;
+                return;
+            }
+
+            StopXinputOutput();
+            MainConfig.Instance.configData.m_comPort = cbComPort.SelectedItem.ToString();
+            StartXInputOutput();
         }
     }
 }
