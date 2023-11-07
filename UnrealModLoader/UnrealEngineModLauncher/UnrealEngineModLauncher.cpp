@@ -3,6 +3,7 @@
 #include <string>
 #include <filesystem>
 #include <psapi.h>
+#include <filesystem>
 
 uint32_t FoundGamepid = 0;
 std::vector<std::string> GameProfiles;
@@ -114,7 +115,10 @@ void WaitingForUnrealWindow(std::string path)
 
 int main(int argc, char* argv[])
 {
-    GetAllProfiles(std::string(argv[0]));
-    WaitingForUnrealWindow(std::string(argv[0]));
+    std::filesystem::path currentPath = std::filesystem::current_path();
+    std::string currentDirectory = currentPath.string() + "\\UnrealEngineModLauncher.exe";
+
+    GetAllProfiles(currentDirectory);// std::string(argv[0]));
+    WaitingForUnrealWindow(currentDirectory);// std::string(argv[0]));
     return 0;
 }

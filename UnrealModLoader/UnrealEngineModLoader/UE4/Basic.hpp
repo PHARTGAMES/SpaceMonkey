@@ -62,10 +62,15 @@ public:
 };
 
 class UObject;
+//#include <stddef.h>
 
-class FUObjectItem
+struct 
+//	__declspec(align(4))
+//__attribute__((packed,aligned(4)))
+	FUObjectItem
 {
-public:
+
+	//int bla;
 	UObject* Object;
 	int Flags;
 	int ClusterRootIndex;
@@ -100,16 +105,35 @@ public:
 
 	inline FUObjectItem const* GetObjectPtr(int Index) const
 	{
-		auto ElementsPerChunk = MaxElements / MaxChunks;
-		auto ChunkIndex = Index / ElementsPerChunk;
-		auto WithinChunkIndex = Index % ElementsPerChunk;
-		auto Chunk = Objects[ChunkIndex];
+		Log::Info("FChunkedFixedUObjectArray::GetObjectPtr Index: %d", Index);
+		Log::Info("FChunkedFixedUObjectArray::GetObjectPtr NumElements: %d", NumElements);
+		Log::Info("FChunkedFixedUObjectArray::GetObjectPtr MaxElements: %d", MaxElements);
+		Log::Info("FChunkedFixedUObjectArray::GetObjectPtr MaxChunks: %d", MaxChunks);
+
+		UINT32 ElementsPerChunk = MaxElements / MaxChunks; //64 * 1024;
+
+		Log::Info("FChunkedFixedUObjectArray::GetObjectPtr ElementsPerChunk: %d", ElementsPerChunk);
+
+		UINT32 ChunkIndex = Index / ElementsPerChunk;
+
+		Log::Info("FChunkedFixedUObjectArray::GetObjectPtr ChunkIndex: %d", ChunkIndex);
+
+		UINT32 WithinChunkIndex = Index % ElementsPerChunk;
+
+		Log::Info("FChunkedFixedUObjectArray::GetObjectPtr WithinChunkIndex: %d", WithinChunkIndex);
+
+		FUObjectItem* Chunk = Objects[ChunkIndex];
+
+		Log::Info("FChunkedFixedUObjectArray::GetObjectPtr Chunk: 0x%p", Chunk);
+
 		return Chunk + WithinChunkIndex;
 	}
 
 	inline FUObjectItem const& GetByIndex(int Index) const
 	{
-		return *GetObjectPtr(Index);
+		const FUObjectItem* objectPtr = GetObjectPtr(Index);
+		Log::Info("FChunkedFixedUObjectArray::GetByIndex Chunk: 0x%p", objectPtr);
+		return *objectPtr;
 	}
 
 private:

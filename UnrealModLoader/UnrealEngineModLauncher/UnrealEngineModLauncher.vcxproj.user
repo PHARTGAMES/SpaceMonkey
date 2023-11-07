@@ -6,4 +6,9 @@
     <LocalDebuggerWorkingDirectory>D:\Personal\UE4 Modding\UnrealModLoader_V2.2.1</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <NXTargetName>Default</NXTargetName>
+    <LocalDebuggerWorkingDirectory>D:\Personal\projects\SpaceMonkey\trunk\UnrealModLoader\Release\2.2.1\UnrealModLoader_V2.2.1</LocalDebuggerWorkingDirectory>
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+  </PropertyGroup>
 </Project>

@@ -8,6 +8,8 @@
 #include "Utilities/Version.h"
 #include "../Hooks.h"
 #include "../UE4/Ue4.hpp"
+#include "CoreUObject_classes.hpp"
+
 GameProfile GameProfile::SelectedGameProfile;
 
 DWORD StringToDWord(std::string str)
@@ -69,6 +71,7 @@ void SetupProfile(std::string Path)
 		GameProfile::SelectedGameProfile.bIsDefaultObjectArrayed = GameInfo.getAs<int>("GameInfo", "IsDefaultObjectArrayed", 0);
 		GameProfile::SelectedGameProfile.bDelayGUISpawn = GameInfo.getAs<int>("GameInfo", "DelayGUISpawn", 0);
 		GameProfile::SelectedGameProfile.ExeAtRoot = GameInfo.getAs<int>("GameInfo", "ExeAtRoot", 0);
+		GameProfile::SelectedGameProfile.LogicModsInRoot = GameInfo.getAs<int>("GameInfo", "LogicModsInRoot", 0);
 		
 		if (GameInfo.get("GameInfo", "BeginPlayOverwrite", "") != "")
 		{
@@ -144,8 +147,22 @@ void SetupProfile(std::string Path)
 			{
 				Log::Error("GObject Could Not Be Found!");
 			}
-			
+
+
+			DWORD64   GObjObjects_offset = NULL;
+			GObjObjects_offset = (DWORD64)(GameProfile::SelectedGameProfile.GObject);
+			UE4::UObject::GObjects = (UE4::FUObjectArray*)GObjObjects_offset;
+
+
+			Log::Info("GObjects->ObjFirstGCIndex: %d", UE4::UObject::GObjects->ObjFirstGCIndex);
+			Log::Info("GObjects->ObjLastNonGCIndex: %d", UE4::UObject::GObjects->ObjLastNonGCIndex);
+			Log::Info("GObjects->MaxObjectsNotConsideredByGC: %d", UE4::UObject::GObjects->MaxObjectsNotConsideredByGC);
+			Log::Info("GObjects->OpenForDisregardForGC: %d", UE4::UObject::GObjects->OpenForDisregardForGC);
+			Log::Info("GObjects->ObjObjects: 0x%p", UE4::UObject::GObjects->ObjObjects);
+
+		
 			auto GWorldPat = Pattern::Find("0F 2E ? 74 ? 48 8B 1D ? ? ? ? 48 85 DB 74");
+			//auto GWorldPat = Pattern::Find("F8 2E ? 74 ? 48 8B 1D ? ? ? ? 48 85 DB 74"); //for wrc, handles SIMD vmovss instruction at start
 			if (GWorldPat != nullptr)
 			{
 				auto GWorldAddress = *reinterpret_cast<uint32_t*>(GWorldPat + 8);

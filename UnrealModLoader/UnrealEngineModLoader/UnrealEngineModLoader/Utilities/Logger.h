@@ -106,6 +106,7 @@ public:
 			fprintf(Log, "%s\n", currentstring.c_str());
 		}
 		fclose(Log);
+		return true;
 	}
 
 private:

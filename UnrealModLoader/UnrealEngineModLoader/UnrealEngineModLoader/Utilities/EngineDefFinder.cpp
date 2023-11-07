@@ -2,24 +2,40 @@
 #include "Utilities/Logger.h"
 namespace ClassDefFinder
 {
-	bool FindUObjectIndexDefs(UE4::UObject* CoreUObject, UE4::UObject* UEObject)
+	bool FindUObjectIndexDefs(UE4::UObject* CoreUObject, UE4::UObject* UEObject, int baseIndex)
 	{
 		Log::Info("Scanning For UObject Index Def.");
 		bool HasIndexNotBeenFound = true;
 
+		Log::Info("UObject Index Def CoreUObject: 0x%p", CoreUObject);
+		Log::Info("UObject Index Def UEObject: 0x%p", UEObject);
+		int maxCounter = 32;
 		while (HasIndexNotBeenFound)
 		{
 			GameProfile::SelectedGameProfile.defs.UObject.Index = GameProfile::SelectedGameProfile.defs.UObject.Index + 0x4;
-			if (Read<int32_t>((byte*)CoreUObject + GameProfile::SelectedGameProfile.defs.UObject.Index) == 1)
+
+			Log::Info("CoreUObject Index Def read %d", Read<int32_t>((byte*)CoreUObject + GameProfile::SelectedGameProfile.defs.UObject.Index));
+
+			if (Read<int32_t>((byte*)CoreUObject + GameProfile::SelectedGameProfile.defs.UObject.Index) == baseIndex)
 			{
-				if (Read<int32_t>((byte*)UEObject + GameProfile::SelectedGameProfile.defs.UObject.Index) == 2)
+				Log::Info("UEObject Index Def read %d", Read<int32_t>((byte*)UEObject + GameProfile::SelectedGameProfile.defs.UObject.Index));
+				if (Read<int32_t>((byte*)UEObject + GameProfile::SelectedGameProfile.defs.UObject.Index) == baseIndex+1)
 				{
 					HasIndexNotBeenFound = false;
 				}
 			}
+			if (maxCounter-- <= 0)
+				break;
 		}
-		Log::Info("UObject Index Def located at: 0x%p", GameProfile::SelectedGameProfile.defs.UObject.Index);
-		return true;
+
+		if (maxCounter > 0)
+		{
+			Log::Info("UObject Index Def located at: 0x%p", GameProfile::SelectedGameProfile.defs.UObject.Index);
+			return true;
+		}
+		
+		return false;
+		
 	};
 
 	bool FindUObjectNameDefs(UE4::UObject* CoreUObject)
@@ -141,9 +157,9 @@ namespace ClassDefFinder
 		return true;
 	}
 
-	bool FindUObjectDefs(UE4::UObject* CoreUObject, UE4::UObject* UEObject)
+	bool FindUObjectDefs(UE4::UObject* CoreUObject, UE4::UObject* UEObject, int baseIndex)
 	{
-		if (FindUObjectIndexDefs(CoreUObject, UEObject) && FindUObjectNameDefs(CoreUObject) && FindUObjectClassDefs(CoreUObject) && FindUObjectOuterDefs(CoreUObject))
+		if (/*FindUObjectIndexDefs(CoreUObject, UEObject, baseIndex) && */ FindUObjectNameDefs(CoreUObject) && FindUObjectClassDefs(CoreUObject) && FindUObjectOuterDefs(CoreUObject))
 		{
 			Log::Info("UObject Defined");
 			return true;
