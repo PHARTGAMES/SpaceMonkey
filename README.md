@@ -592,6 +592,12 @@ Release v1.0.7
 4. Added telemetry callback interface and restructured project to be loaded as a dll.
 5. Simfeedback plugin gets SpaceMonkey integration and callback support.
 
+
+Release v1.0.8
+
+1. Added EA Sports WRC Support
+
+
 ---
 
 
