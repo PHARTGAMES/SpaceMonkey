@@ -37,11 +37,12 @@ SpaceMonkey has been tested with Sim Racing Studio (motion, wind, shakers and le
 - Dakar Desert Rally
 - WRC Generations
 - Tiny Combat Arena
+- EA Sports WRC
 
 
 ## Installation
 
-The latest installer for SpaceMonkey is here (v1.0.7)
+The latest installer for SpaceMonkey is here (v1.0.8)
 
 https://github.com/PHARTGAMES/SpaceMonkey/raw/main/GenericTelemetryProvider/Installer/SpaceMonkeyTP-SetupFiles/SpaceMonkeyTP.msi
 
@@ -140,6 +141,37 @@ The default output configs are as follows
 5. Space Monkey will now wait for a connection from BeamNG.Drive and output telemetry automatically. You can launch BeamNG.Drive and any other software at this point.
 
 ---
+
+## EA Sports WRC
+
+### Setup
+
+1. Navigate to Documents/My Games/WRC/telemetry/
+2. Edit the config.json file in a text editor
+3. Change the "structure": "wrc" entry to match as follows; frequencyHz and port are optional
+
+```json
+{
+	"structure": "wrc",
+	"packet": "session_update",
+	"ip": "127.0.0.1",
+	"port": 20777,
+	"frequencyHz": 60,
+	"bEnabled": true
+}
+```
+
+
+### Usage
+
+1. Go to the main interface of Space Monkey and select a main config for EA WRC.
+2. Go to the main interface of Space Monkey and press the EA WRC button.
+3. Specify the UDP receive port specified in the setup step (Default 20777), if you are forwarding to a different port with SimHub or other, use this port.
+4. Press the Initialize! button.
+5. Space Monkey will now wait for a connection from EA Sports WRC and output telemetry automatically. You can launch EA Sports WRC and any other software at this point.
+
+---
+
 ## GTAV
 
 ### Setup
