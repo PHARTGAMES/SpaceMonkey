@@ -41,10 +41,11 @@ namespace GenericTelemetryProvider
         OpenMotionUI openMotionUI;
         WRCGenUI wrcGenUI;
         TinyCombatArenaUI tcaUI;
+        EAWRCUI eaWRCUI;
         FilterUI filterUI;
         OutputUI outputUI;
         public static MainForm Instance;
-        public string versionString = "v1.0.7";
+        public string versionString = "v1.0.8";
 
         bool ignoreConfigChanges = false;
         public bool integrated = false;
@@ -649,6 +650,22 @@ namespace GenericTelemetryProvider
             x.Start(tcaUI);
         }
 
+        private void EAWRCBtn_Click(object sender, EventArgs e)
+        {
+            if (eaWRCUI != null && !eaWRCUI.IsDisposed)
+            {
+                eaWRCUI.BeginInvoke(new Action<Form>((s) => { s.Close(); }), eaWRCUI);
+            }
+
+            eaWRCUI = new EAWRCUI();
+            Thread x = new Thread(new ParameterizedThreadStart((form) =>
+            {
+                ((EAWRCUI)form).ShowDialog();
+            }));
+            x.IsBackground = true;
+            x.Start(eaWRCUI);
+        }
+
         private void OutputsBtn_Click(object sender, EventArgs e)
         {
             if (outputUI != null && !outputUI.IsDisposed)
@@ -690,5 +707,7 @@ namespace GenericTelemetryProvider
                 callbackOutput.RegisterCallback(callback);
             }
         }
+
+
     }
 }

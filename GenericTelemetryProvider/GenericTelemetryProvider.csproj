@@ -63,6 +63,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EAWRCTelemetryProvider.cs" />
+    <Compile Include="EAWRCUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EAWRCUI.Designer.cs">
+      <DependentUpon>EAWRCUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EAWRCAPI.cs" />
     <Compile Include="HighPassFilter.cs" />
     <Compile Include="OutputUDPControl.cs">
       <SubType>UserControl</SubType>
@@ -290,6 +298,9 @@
     <Compile Include="Utils.cs" />
     <Compile Include="WreckfestTelemetryProvider.cs" />
     <Compile Include="XInputController.cs" />
+    <EmbeddedResource Include="EAWRCUI.resx">
+      <DependentUpon>EAWRCUI.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="OutputUDPControl.resx">
       <DependentUpon>OutputUDPControl.cs</DependentUpon>
     </EmbeddedResource>

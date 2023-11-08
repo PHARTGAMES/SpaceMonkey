@@ -9,10 +9,10 @@
     <ROW Property="ARPCOMMENTS" Value="This installer database contains the logic and data required to install [|ProductName]." ValueLocId="*"/>
     <ROW Property="ARPPRODUCTICON" Value="GTPIcon.exe" Type="8"/>
     <ROW Property="Manufacturer" Value="PHARTGAMES"/>
-    <ROW Property="ProductCode" Value="1033:{9EA880BB-053C-4EBA-BCF1-0B62A9AD3E03} " Type="16"/>
+    <ROW Property="ProductCode" Value="1033:{F1D59E9E-8A21-42ED-B470-30EFE4E3C1D1} " Type="16"/>
     <ROW Property="ProductLanguage" Value="1033"/>
     <ROW Property="ProductName" Value="SpaceMonkeyTP"/>
-    <ROW Property="ProductVersion" Value="1.0.7" Type="32"/>
+    <ROW Property="ProductVersion" Value="1.0.8" Type="32"/>
     <ROW Property="SecureCustomProperties" Value="OLDPRODUCTS;AI_NEWERPRODUCTFOUND"/>
     <ROW Property="UpgradeCode" Value="{DB0D552B-6C6F-4109-8226-33F4862D0228}"/>
     <ROW Property="WindowsType9X" MultiBuildValue="DefaultBuild:Windows 9x/ME" ValueLocId="-"/>
@@ -225,6 +225,8 @@
     <ROW File="Dakar2Mod_0.2.zip" Component_="Dakar2Mod_0.2.zip" FileName="DAKAR2~1.ZIP|Dakar2Mod_0.2.zip" Attributes="0" SourcePath="..\..\Dakar2Mod\Release\0.2\Dakar2Mod_0.2.zip" SelfReg="false"/>
     <ROW File="MW5Mercs_0.3.zip" Component_="MW5Mercs_0.3.zip" FileName="MW5MER~1.ZIP|MW5Mercs_0.3.zip" Attributes="0" SourcePath="..\..\MW5MercsMod\Release\0.3\MW5Mercs_0.3.zip" SelfReg="false"/>
     <ROW File="TrailOut_0.3.zip" Component_="TrailOut_0.3.zip" FileName="TRAILO~1.ZIP|TrailOut_0.3.zip" Attributes="0" SourcePath="..\..\TrailOutMod\Release\0.3\TrailOut_0.3.zip" SelfReg="false"/>
+    <ROW File="EAWRCConfig.txt" Component_="BalsaConfig.txt" FileName="EAWRCC~1.TXT|EAWRCConfig.txt" Attributes="0" SourcePath="..\Release\Configs\EAWRCConfig.txt" SelfReg="false"/>
+    <ROW File="EAWRCFilters.txt" Component_="BalsaFilters.txt" FileName="EAWRCF~1.TXT|EAWRCFilters.txt" Attributes="0" SourcePath="..\Release\Filters\EAWRCFilters.txt" SelfReg="false"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.BootstrOptComponent">
     <ROW BootstrOptKey="GlobalOptions" DownloadFolder="[AppDataFolder][|Manufacturer]\[|ProductName]\prerequisites" Options="2"/>

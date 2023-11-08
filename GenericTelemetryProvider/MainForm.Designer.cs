@@ -62,6 +62,7 @@
             this.outputConfigLabel = new System.Windows.Forms.Label();
             this.outputsComboBox = new System.Windows.Forms.ComboBox();
             this.OutputsBtn = new System.Windows.Forms.Button();
+            this.EAWRCBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // Dirt5Button
@@ -340,7 +341,7 @@
             // 
             // wreckfestExperimentsButton
             // 
-            this.wreckfestExperimentsButton.Location = new System.Drawing.Point(18, 519);
+            this.wreckfestExperimentsButton.Location = new System.Drawing.Point(223, 581);
             this.wreckfestExperimentsButton.Margin = new System.Windows.Forms.Padding(4);
             this.wreckfestExperimentsButton.Name = "wreckfestExperimentsButton";
             this.wreckfestExperimentsButton.Size = new System.Drawing.Size(195, 56);
@@ -363,7 +364,7 @@
             // 
             // balsaButton
             // 
-            this.balsaButton.Location = new System.Drawing.Point(221, 519);
+            this.balsaButton.Location = new System.Drawing.Point(16, 579);
             this.balsaButton.Margin = new System.Windows.Forms.Padding(2);
             this.balsaButton.Name = "balsaButton";
             this.balsaButton.Size = new System.Drawing.Size(197, 56);
@@ -437,11 +438,22 @@
             this.OutputsBtn.UseVisualStyleBackColor = true;
             this.OutputsBtn.Click += new System.EventHandler(this.OutputsBtn_Click);
             // 
+            // EAWRCBtn
+            // 
+            this.EAWRCBtn.Location = new System.Drawing.Point(18, 518);
+            this.EAWRCBtn.Name = "EAWRCBtn";
+            this.EAWRCBtn.Size = new System.Drawing.Size(197, 56);
+            this.EAWRCBtn.TabIndex = 48;
+            this.EAWRCBtn.Text = "EA WRC";
+            this.EAWRCBtn.UseVisualStyleBackColor = true;
+            this.EAWRCBtn.Click += new System.EventHandler(this.EAWRCBtn_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(730, 581);
+            this.ClientSize = new System.Drawing.Size(730, 589);
+            this.Controls.Add(this.EAWRCBtn);
             this.Controls.Add(this.OutputsBtn);
             this.Controls.Add(this.outputConfigLabel);
             this.Controls.Add(this.outputsComboBox);
@@ -523,6 +535,7 @@
         private System.Windows.Forms.Label outputConfigLabel;
         private System.Windows.Forms.ComboBox outputsComboBox;
         private System.Windows.Forms.Button OutputsBtn;
+        private System.Windows.Forms.Button EAWRCBtn;
     }
 }
 

@@ -1,6 +1,6 @@
 {
   "filterConfig": "Filters\\openMotionFilters.txt",
-  "outputConfig": "Outputs\\default_MMF_UDP_CMED3.txt",
+  "outputConfig": "Outputs\\default_CMED3.txt",
   "hotkey": {
     "key": 56,
     "enabled": true,
