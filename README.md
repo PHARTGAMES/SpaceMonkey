@@ -601,6 +601,7 @@ Release v1.0.8
 Release v1.0.9
 
 1. Try fix dependency issues in GTPSimfeedback and SpaceMonkeyTP
+2. Fix EA WRC axis issues.
 
 ---
 
