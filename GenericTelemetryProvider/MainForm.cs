@@ -45,7 +45,7 @@ namespace GenericTelemetryProvider
         FilterUI filterUI;
         OutputUI outputUI;
         public static MainForm Instance;
-        public string versionString = "v1.0.9";
+        public string versionString = "v1.1.0";
 
         bool ignoreConfigChanges = false;
         public bool integrated = false;

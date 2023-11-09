@@ -9,10 +9,10 @@
     <ROW Property="ARPCOMMENTS" Value="This installer database contains the logic and data required to install [|ProductName]." ValueLocId="*"/>
     <ROW Property="ARPPRODUCTICON" Value="SMIcon.exe" Type="8"/>
     <ROW Property="Manufacturer" Value="PHARTGAMES"/>
-    <ROW Property="ProductCode" Value="1033:{63BC0785-1435-400D-88F8-9DF3B7D35DBE} " Type="16"/>
+    <ROW Property="ProductCode" Value="1033:{01B811D6-60AB-45E9-B48A-71100B8DD8F3} " Type="16"/>
     <ROW Property="ProductLanguage" Value="1033"/>
     <ROW Property="ProductName" Value="SpaceMonkeySFX"/>
-    <ROW Property="ProductVersion" Value="1.0.9" Type="32"/>
+    <ROW Property="ProductVersion" Value="1.1.0" Type="32"/>
     <ROW Property="SecureCustomProperties" Value="OLDPRODUCTS;AI_NEWERPRODUCTFOUND"/>
     <ROW Property="UpgradeCode" Value="{1C2C4747-B60E-447F-B4AA-47607E7B2FDF}"/>
     <ROW Property="WindowsType9X" MultiBuildValue="DefaultBuild:Windows 9x/ME" ValueLocId="-"/>
@@ -52,6 +52,7 @@
     <ROW File="SMBanner.png" Component_="SMIcon.png" FileName="SMBanner.png" Attributes="0" SourcePath="..\Release\img\SMBanner.png" SelfReg="false"/>
     <ROW File="spacemonkeysfx_SpaceMonkeySFX__Default.xml" Component_="spacemonkeysfx_SpaceMonkeySFX__Default.xml" FileName="SPACEM~1.XML|spacemonkeysfx_SpaceMonkeySFX_-_Default.xml" Attributes="0" SourcePath="..\Release\profiles\spacemonkeysfx_SpaceMonkeySFX_-_Default.xml" SelfReg="false"/>
     <ROW File="spacemonkeysfx_SpaceMonkeySFX__Squadrons.xml" Component_="spacemonkeysfx_SpaceMonkeySFX__Default.xml" FileName="SPACEM~2.XML|spacemonkeysfx_SpaceMonkeySFX_-_Squadrons.xml" Attributes="0" SourcePath="..\Release\profiles\spacemonkeysfx_SpaceMonkeySFX_-_Squadrons.xml" SelfReg="false"/>
+    <ROW File="spacemonkeysfx_SpaceMonkeySFX__EAWRC.xml" Component_="spacemonkeysfx_SpaceMonkeySFX__Default.xml" FileName="SPACEM~3.XML|spacemonkeysfx_SpaceMonkeySFX_-_EAWRC.xml" Attributes="0" SourcePath="..\Release\profiles\spacemonkeysfx_SpaceMonkeySFX_-_EAWRC.xml" SelfReg="false"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.BootstrOptComponent">
     <ROW BootstrOptKey="GlobalOptions" DownloadFolder="[AppDataFolder][|Manufacturer]\[|ProductName]\prerequisites" Options="2"/>

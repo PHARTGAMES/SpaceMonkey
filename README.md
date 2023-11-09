@@ -42,7 +42,7 @@ SpaceMonkey has been tested with Sim Racing Studio (motion, wind, shakers and le
 
 ## Installation
 
-The latest installer for SpaceMonkey is here (v1.0.9)
+The latest installer for SpaceMonkey is here (v1.1.0)
 
 https://github.com/PHARTGAMES/SpaceMonkey/raw/main/GenericTelemetryProvider/Installer/SpaceMonkeyTP-SetupFiles/SpaceMonkeyTP.msi
 
@@ -533,7 +533,13 @@ public void Init()
 		{
 			string assemblyName = args.Name.Split(',')[0];
 
-			string installPath = (string)Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\PHARTGAMES\\SpaceMonkeyTP", "install_path", null);
+			RegistryKey localKey;
+            if (Environment.Is64BitOperatingSystem)
+                localKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
+            else
+                localKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32);
+
+            string installPath = localKey.OpenSubKey("SOFTWARE\\PHARTGAMES\\SpaceMonkeyTP").GetValue("install_path").ToString();
 			if (string.IsNullOrEmpty(installPath))
 			{
 				throw new Exception("SpaceMonkey Not Installed");
@@ -603,9 +609,13 @@ Release v1.0.9
 1. Try fix dependency issues in GTPSimfeedback and SpaceMonkeyTP
 2. Fix EA WRC axis issues.
 
+
+Release v1.1.0
+
+1. Fixed issues reading install folder from registry in GTPSimfeedback and SpaceMonkeyTP
+2. Add EAWRC profile to GTPSimfeedback
+
 ---
-
-
 
 
 # Known Issues
@@ -625,3 +635,11 @@ Discord: https://discord.gg/ecfweprpx
 # Contributors
 
 https://github.com/PHARTGAMES/SpaceMonkey/graphs/contributors
+
+---
+
+# Special Thanks
+
+Tiger Feet oO0o for helping me debug registry issues in production; you're awesome!
+
+

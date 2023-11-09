@@ -52,7 +52,7 @@
             this.matrixBox.Location = new System.Drawing.Point(16, 121);
             this.matrixBox.Margin = new System.Windows.Forms.Padding(4);
             this.matrixBox.Name = "matrixBox";
-            this.matrixBox.Size = new System.Drawing.Size(611, 1327);
+            this.matrixBox.Size = new System.Drawing.Size(611, 1611);
             this.matrixBox.TabIndex = 8;
             this.matrixBox.Text = "";
             this.matrixBox.TextChanged += new System.EventHandler(this.matrixBox_TextChanged);
@@ -92,7 +92,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(644, 1463);
+            this.ClientSize = new System.Drawing.Size(644, 1745);
             this.Controls.Add(this.portLabel);
             this.Controls.Add(this.portTextBox);
             this.Controls.Add(this.initializeButton);
@@ -101,7 +101,7 @@
             this.Icon = global::GenericTelemetryProvider.Properties.Resources.GTPIcon;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "EAWRCUI";
-            this.Text = "BeamNGUI";
+            this.Text = "EAWRCUI";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OnFormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -81,9 +81,7 @@ namespace GTPSimfeedback
             systemTimer.Start();
             lastSystemTimerSeconds = systemTimer.Elapsed.TotalSeconds;
 
-            AssemblyResolveSetup();
 
-            LoadConfig("CMCustomUDP/SMConfig.txt");
         }
 
         void AssemblyResolveSetup()
@@ -96,20 +94,44 @@ namespace GTPSimfeedback
                 {
                     string assemblyName = args.Name.Split(',')[0];
 
-                    string installPath = (string)Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\PHARTGAMES\\SpaceMonkeyTP", "install_path", null);
+                    RegistryKey localKey;
+                    if (Environment.Is64BitOperatingSystem)
+                        localKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
+                    else
+                        localKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32);
+
+                    string installPath = localKey.OpenSubKey("SOFTWARE\\PHARTGAMES\\SpaceMonkeyTP").GetValue("install_path").ToString();
+
+
+                    Log($"GTPTelemetryProvider: Got SpaceMonkey install path: {installPath}");
                     if (string.IsNullOrEmpty(installPath))
                     {
+                        Log("GTPTelemetryProvider: SpaceMonkey not installed");
                         throw new Exception("SpaceMonkey Not Installed");
                     }
                     else
                     {
-                        Assembly ass = Assembly.LoadFrom(installPath + assemblyName + ".dll");
+                        string assPath = installPath + assemblyName + ".dll";
+                        Log($"GTPTelemetryProvider:trying to load assembly: {assPath}");
+
+                        Assembly ass = Assembly.LoadFrom(assPath);
+
+                        if(ass != null)
+                        {
+                            Log($"GTPTelemetryProvider: loaded assembly: {assPath}");
+                        }
+                        else
+                        {
+                            Log($"GTPTelemetryProvider: did not load assembly: {assPath}");
+                        }
 
                         return ass;
                     }
                 }
                 catch (Exception e)
                 {
+                    Log($"GTPTelemetryProvider: Failed to load assembly: {e.Message}");
+
                     Console.WriteLine("Failed to load assembly: " + e.Message);
                     return null;
                 }
@@ -126,6 +148,10 @@ namespace GTPSimfeedback
         {
             base.Init(logger);
             Log("Initializing GTPTelemetryProvider");
+
+            AssemblyResolveSetup();
+
+            LoadConfig("CMCustomUDP/SMConfig.txt");
 
         }
 

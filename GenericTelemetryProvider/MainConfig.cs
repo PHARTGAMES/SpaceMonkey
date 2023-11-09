@@ -58,7 +58,13 @@ namespace GenericTelemetryProvider
             //}
 
 
-            installPath = (string)Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\PHARTGAMES\\SpaceMonkeyTP", "install_path", null);
+            RegistryKey localKey;
+            if (Environment.Is64BitOperatingSystem)
+                localKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
+            else
+                localKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32);
+
+            installPath = localKey.OpenSubKey("SOFTWARE\\PHARTGAMES\\SpaceMonkeyTP").GetValue("install_path").ToString();
 
         }
 
