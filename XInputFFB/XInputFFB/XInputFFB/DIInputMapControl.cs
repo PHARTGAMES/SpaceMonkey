@@ -65,8 +65,8 @@ namespace XInputFFB
                     else
                     if (m_metadata.m_control == XInputControl.JOY_LEFT || m_metadata.m_control == XInputControl.JOY_RIGHT)
                     {
-                        m_mapConfig.m_minOutput = -65535;
-                        m_mapConfig.m_maxOutput = 65535;
+                        m_mapConfig.m_minOutput = -32767;
+                        m_mapConfig.m_maxOutput = 32767;
                     }
 
                     SetDataFromMapConfig(m_mapConfig);
