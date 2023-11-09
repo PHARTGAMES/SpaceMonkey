@@ -9,10 +9,10 @@
     <ROW Property="ARPCOMMENTS" Value="This installer database contains the logic and data required to install [|ProductName]." ValueLocId="*"/>
     <ROW Property="ARPPRODUCTICON" Value="SMIcon.exe" Type="8"/>
     <ROW Property="Manufacturer" Value="PHARTGAMES"/>
-    <ROW Property="ProductCode" Value="1033:{FFC25D12-FB2E-4E6C-9864-B5537F064DA5} " Type="16"/>
+    <ROW Property="ProductCode" Value="1033:{63BC0785-1435-400D-88F8-9DF3B7D35DBE} " Type="16"/>
     <ROW Property="ProductLanguage" Value="1033"/>
     <ROW Property="ProductName" Value="SpaceMonkeySFX"/>
-    <ROW Property="ProductVersion" Value="1.0.8" Type="32"/>
+    <ROW Property="ProductVersion" Value="1.0.9" Type="32"/>
     <ROW Property="SecureCustomProperties" Value="OLDPRODUCTS;AI_NEWERPRODUCTFOUND"/>
     <ROW Property="UpgradeCode" Value="{1C2C4747-B60E-447F-B4AA-47607E7B2FDF}"/>
     <ROW Property="WindowsType9X" MultiBuildValue="DefaultBuild:Windows 9x/ME" ValueLocId="-"/>

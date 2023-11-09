@@ -45,7 +45,7 @@ namespace GenericTelemetryProvider
         FilterUI filterUI;
         OutputUI outputUI;
         public static MainForm Instance;
-        public string versionString = "v1.0.8";
+        public string versionString = "v1.0.9";
 
         bool ignoreConfigChanges = false;
         public bool integrated = false;
@@ -163,23 +163,7 @@ namespace GenericTelemetryProvider
         { 
             MainConfig.Instance.Load();
 
-            try
-            {
-                AppDomain currentDomain = AppDomain.CurrentDomain;
-
-                AppDomain.CurrentDomain.AssemblyResolve += (object sender, ResolveEventArgs args) => 
-                {
-                    string assemblyName = args.Name.Split(',')[0];
-
-                    Assembly ass = Assembly.LoadFrom(MainConfig.installPath + assemblyName + ".dll");
-
-                    return ass;
-                };
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine("Failed to load assembly: " + e.Message);
-            }
+            AssemblyResolveSetup();
 
             ignoreConfigChanges = true;
             RefreshConfigs();
@@ -188,6 +172,28 @@ namespace GenericTelemetryProvider
             RefreshHotkey();
             RefreshOtherSettings();
             ignoreConfigChanges = false;
+        }
+
+        void AssemblyResolveSetup()
+        {
+            try
+            {
+                AppDomain currentDomain = AppDomain.CurrentDomain;
+
+                AppDomain.CurrentDomain.AssemblyResolve += (object sender, ResolveEventArgs args) =>
+                {
+                    string assemblyName = args.Name.Split(',')[0];
+
+                    Assembly ass = Assembly.LoadFrom(MainConfig.installPath + assemblyName + ".dll");
+
+                    return ass;
+                };
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Failed to load assembly: " + e.Message);
+            }
+
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)

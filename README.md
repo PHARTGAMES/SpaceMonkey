@@ -42,7 +42,7 @@ SpaceMonkey has been tested with Sim Racing Studio (motion, wind, shakers and le
 
 ## Installation
 
-The latest installer for SpaceMonkey is here (v1.0.8)
+The latest installer for SpaceMonkey is here (v1.0.9)
 
 https://github.com/PHARTGAMES/SpaceMonkey/raw/main/GenericTelemetryProvider/Installer/SpaceMonkeyTP-SetupFiles/SpaceMonkeyTP.msi
 
@@ -597,6 +597,10 @@ Release v1.0.8
 
 1. Added EA Sports WRC Support
 
+
+Release v1.0.9
+
+1. Try fix dependency issues in GTPSimfeedback and SpaceMonkeyTP
 
 ---
 

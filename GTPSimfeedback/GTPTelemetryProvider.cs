@@ -39,6 +39,7 @@ using Newtonsoft.Json;
 using System.Globalization;
 using GenericTelemetryProvider;
 using Microsoft.Win32;
+using System.Runtime.CompilerServices;
 
 namespace GTPSimfeedback
 {
@@ -79,8 +80,14 @@ namespace GTPSimfeedback
             systemTimer = new Stopwatch();
             systemTimer.Start();
             lastSystemTimerSeconds = systemTimer.Elapsed.TotalSeconds;
-            
 
+            AssemblyResolveSetup();
+
+            LoadConfig("CMCustomUDP/SMConfig.txt");
+        }
+
+        void AssemblyResolveSetup()
+        {
             AppDomain currentDomain = AppDomain.CurrentDomain;
 
             AppDomain.CurrentDomain.AssemblyResolve += (object sender, ResolveEventArgs args) =>
@@ -107,10 +114,6 @@ namespace GTPSimfeedback
                     return null;
                 }
             };
-
-            LoadConfig("CMCustomUDP/SMConfig.txt");
-
-
         }
 
         /// <summary>
@@ -178,6 +181,7 @@ namespace GTPSimfeedback
                 t.Join();
         }
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
         void LoadConfig(string filename)
         {
             config = new GTPConfig();

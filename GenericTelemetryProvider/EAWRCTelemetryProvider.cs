@@ -74,9 +74,9 @@ namespace GenericTelemetryProvider
                 {
 
                     Vector3 fwd = new Vector3((float)session_updateData.vehicle_forward_direction_x, (float)session_updateData.vehicle_forward_direction_y, (float)session_updateData.vehicle_forward_direction_z);
-                    Vector3 rht = -new Vector3((float)session_updateData.vehicle_left_direction_x, (float)session_updateData.vehicle_left_direction_y, (float)session_updateData.vehicle_left_direction_z);
+                    Vector3 rht = new Vector3((float)session_updateData.vehicle_left_direction_x, (float)session_updateData.vehicle_left_direction_y, (float)session_updateData.vehicle_left_direction_z);
                     Vector3 up = Vector3.Cross(fwd, rht);
-                    Vector3 pos = new Vector3(-(float)session_updateData.vehicle_position_x, (float)session_updateData.vehicle_position_y, (float)session_updateData.vehicle_position_z);
+                    Vector3 pos = new Vector3((float)session_updateData.vehicle_position_x, (float)session_updateData.vehicle_position_y, (float)session_updateData.vehicle_position_z);
 
                     transform = new Matrix4x4(rht.X, rht.Y, rht.Z, 0.0f,
                                             up.X, up.Y, up.Z, 0.0f,

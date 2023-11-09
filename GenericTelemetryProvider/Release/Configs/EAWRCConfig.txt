@@ -1,6 +1,6 @@
 {
   "filterConfig": "Filters\\EAWRCFilters.txt",
-  "outputConfig": "Outputs\\default_CB.txt",
+  "outputConfig": "Outputs\\default_MMF_UDP.txt",
   "hotkey": {
     "key": 56,
     "enabled": true,

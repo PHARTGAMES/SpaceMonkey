@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using System.IO;
 using System.Windows.Forms;
 using Microsoft.Win32;
+using System.Runtime.CompilerServices;
 
 namespace GenericTelemetryProvider
 {
@@ -61,6 +62,7 @@ namespace GenericTelemetryProvider
 
         }
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
         public void Load()
         {
             ResolveInstallDirectory();
