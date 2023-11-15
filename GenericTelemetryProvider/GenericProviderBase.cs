@@ -197,6 +197,10 @@ namespace GenericTelemetryProvider
 
                 CalcCMExtraData3();
 
+                CalcSlipAngle();
+
+                CalcSlipAngle2();
+
                 ProcessInputs();
 
                 //Filter everything besides position, velocity, angular velocity, suspension velocity, etc..
@@ -491,6 +495,42 @@ namespace GenericTelemetryProvider
                         rawData.roll_acceleration = ((float) filteredData.roll_velocity - (float) lastFilteredData.roll_velocity) / dt;
             */
 
+        }
+
+        public virtual void CalcSlipAngle()
+        {
+            rawData.slip_angle = 0.0f;
+            float speedKPH = (float)rawData.speed * 3.6f;
+
+            if (speedKPH > 5)
+            {
+                float VelocityX = (float)filteredData.local_velocity_x;
+                float VelocityZ = (float)filteredData.local_velocity_z;
+                float YawRate = (float)filteredData.yaw_velocity;
+
+                float t1 = VelocityX - YawRate * (0.99f);
+                float t2 = VelocityZ - YawRate * (1.228f);
+                rawData.slip_angle = (float)(Math.Atan(t1 / t2) * (180.0 / Math.PI));
+            }
+
+
+            //rawData.slip_angle = 0.0f;
+            //Vector3 velocity = new Vector3((float)filteredData.local_velocity_x, 0.0f, (float)filteredData.local_velocity_z);
+            //float speedKPH = (float)velocity.Length() * 3.6f;
+            //if (speedKPH > 5)
+            //{
+            //    Vector3 normVel = Vector3.Normalize(velocity);
+
+            //    float angle = (float)Math.Acos(1.0f - Math.Max(0.0f, Vector3.Dot(fwd, normVel)));
+
+            //    rawData.slip_angle = angle * (float)filteredData.yaw_velocity;
+            //}
+
+        }
+
+        public virtual void CalcSlipAngle2()
+        {
+            rawData.slip_angle2 = rht.X * (float)filteredData.world_velocity_x * rht.Y * (float)filteredData.world_velocity_y * rht.Z * (float)filteredData.world_velocity_z;
         }
 
         public virtual void SimulateEngine()

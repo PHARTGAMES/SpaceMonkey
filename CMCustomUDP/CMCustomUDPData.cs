@@ -113,6 +113,8 @@ namespace CMCustomUDP
             engine_rate_div10,
             max_rpm_div10,
             idle_rpm_div10,
+            slip_angle,
+            slip_angle2,
 
             Max
         }
@@ -211,6 +213,8 @@ namespace CMCustomUDP
         public object engine_rate_div10;
         public object max_rpm_div10;
         public object idle_rpm_div10;
+        public object slip_angle;
+        public object slip_angle2;
 
         public CMCustomUDPData()
         {
@@ -308,6 +312,8 @@ namespace CMCustomUDP
             engine_rate_div10 = 0.0f;
             max_rpm_div10 = 0.0f;
             idle_rpm_div10 = 0.0f;
+            slip_angle = 0.0f;
+            slip_angle2 = 0.0f;
 
 
     }
@@ -507,6 +513,8 @@ namespace CMCustomUDP
             engine_rate_div10 = other.engine_rate_div10;
             max_rpm_div10 = other.max_rpm_div10;
             idle_rpm_div10 = other.idle_rpm_div10;
+            slip_angle = other.slip_angle;
+            slip_angle2 = other.slip_angle2;
 
             if (copyChannels)
                 channels = other.channels;
@@ -635,6 +643,8 @@ namespace CMCustomUDP
             engine_rate_div10 = Lerp(0.0f, (float)engine_rate_div10, lerp);
             max_rpm_div10 = Lerp(0.0f, (float)max_rpm_div10, lerp);
             idle_rpm_div10 = Lerp(0.0f, (float)idle_rpm_div10, lerp);
+            slip_angle = Lerp(0.0f, (float)slip_angle, lerp);
+            slip_angle2 = Lerp(0.0f, (float)slip_angle2, lerp);
 
 
         }
@@ -710,6 +720,9 @@ namespace CMCustomUDP
             engine_rate_div10 = Lerp((float)from.engine_rate_div10, (float)engine_rate_div10, lerp);
             max_rpm_div10 = Lerp((float)from.max_rpm_div10, (float)max_rpm_div10, lerp);
             idle_rpm_div10 = Lerp((float)from.idle_rpm_div10, (float)idle_rpm_div10, lerp);
+
+            slip_angle = Lerp((float)from.slip_angle, (float)slip_angle, lerp);
+            slip_angle2 = Lerp((float)from.slip_angle2, (float)slip_angle2, lerp);
         }
 
 

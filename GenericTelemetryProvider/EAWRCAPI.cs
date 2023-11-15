@@ -437,7 +437,7 @@ namespace GenericTelemetryProvider
         {
             foreach (EAWRCConfigPacketData packetConfig in configData.udp.packets)
             {
-                if (packetConfig.structure == structure && packet == packet)
+                if (packetConfig.structure == structure && packetConfig.packet == packet)
                     return packetConfig;
             }
             return null;
