@@ -26,12 +26,14 @@ namespace GenericTelemetryProvider
         {
             base.Run();
 
+            socket = new UdpClient();
+            socket.ExclusiveAddressUse = false;
+
             t = new Thread(MonitorThread);
             t.IsBackground = true;
             t.Start();
 
-            socket = new UdpClient();
-            socket.ExclusiveAddressUse = false;
+
 
         }
 
