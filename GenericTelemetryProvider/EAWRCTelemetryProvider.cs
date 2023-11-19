@@ -24,36 +24,60 @@ namespace GenericTelemetryProvider
         public override void Run()
         {
             base.Run();
+            try
+            {
+                EAWRCCustomUDPData.LoadConfig();
 
-            EAWRCCustomUDPData.LoadConfig();
+                string structure = "wrc";
+                string packet = "session_update";
 
-            string structure = "wrc";
-            string packet = "session_update";
+                session_updateData = EAWRCCustomUDPData.GetPacket(structure, packet);
 
-            session_updateData = EAWRCCustomUDPData.GetPacket(structure, packet);
+                //this must happen before t = new Thread(MonitorThread);
+                socket = new UdpClient();
+                socket.ExclusiveAddressUse = false;
 
-            t = new Thread(MonitorThread);
-            t.IsBackground = true;
-            t.Start();
+                t = new Thread(MonitorThread);
+                t.IsBackground = true;
+                t.Start();
 
-            socket = new UdpClient();
-            socket.ExclusiveAddressUse = false;
+            }
+            catch(Exception e)
+            {
+                Utils.DebugLog($"Exception in EAWRCTelemetryProvider.Run - {e.Message}");
+            }
         }
 
         void MonitorThread()
         {
+
+            Utils.DebugLog("Before StartSending");
             StartSending();
 
-            IPEndPoint remoteEP = new IPEndPoint(IPAddress.Any, readPort);
-            socket.Client.Bind(remoteEP);
-            socket.BeginReceive(new AsyncCallback(ReceiveCallback), remoteEP);
+            Utils.DebugLog("Before socket.Client.Bind");
+
+            try
+            {
+                IPEndPoint remoteEP = new IPEndPoint(IPAddress.Any, readPort);
+                socket.Client.Bind(remoteEP);
+                socket.BeginReceive(new AsyncCallback(ReceiveCallback), remoteEP);
+            }
+            catch(Exception e)
+            {
+                Utils.DebugLog($"Exception while setting up socket - {e.Message}\n {e.StackTrace}");
+            }
+
+            Utils.DebugLog("after socket.BeginReceive");
 
             while (!IsStopped)
             {
                 Thread.Sleep(1000);
             }
 
+            Utils.DebugLog("after while (!IsStopped)");
+
             StopSending();
+
             socket.Close();
 
             Thread.CurrentThread.Join();

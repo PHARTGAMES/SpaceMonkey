@@ -230,5 +230,14 @@ namespace GenericTelemetryProvider
 
         public static extern uint TimeEndPeriod(uint uMilliseconds);
 
+        public static void DebugLog(string message)
+        {
+            using (StreamWriter writer = new StreamWriter("SpaceMonkey.log", true))
+            {
+                // Write the current date and time along with the log message
+                writer.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - {message}");
+            }
+        }
+
     }
 }
