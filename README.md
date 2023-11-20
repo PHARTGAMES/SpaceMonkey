@@ -42,7 +42,7 @@ SpaceMonkey has been tested with Sim Racing Studio (motion, wind, shakers and le
 
 ## Installation
 
-The latest installer for SpaceMonkey is here (v1.1.0)
+The latest installer for SpaceMonkey is here (v1.1.1)
 
 https://github.com/PHARTGAMES/SpaceMonkey/raw/main/GenericTelemetryProvider/Installer/SpaceMonkeyTP-SetupFiles/SpaceMonkeyTP.msi
 
@@ -614,6 +614,12 @@ Release v1.1.0
 
 1. Fixed issues reading install folder from registry in GTPSimfeedback and SpaceMonkeyTP
 2. Add EAWRC profile to GTPSimfeedback
+
+
+Release v1.1.1
+
+1. Add slip_angle and slip_angle2 to output; use defaultPacketFormat_SlipAngle when outputting mmf or udp if you would like to use these values.
+2. Fix race conditions in WRC and BeamNG that started to break with "2023-11 Cumulative Update for .NET Framework 3.5, 4.8 and 4.8.1 for Windows 10 Version 22H2 for x64 (KB5032339)"
 
 ---
 
