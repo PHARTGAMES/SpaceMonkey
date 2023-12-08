@@ -130,6 +130,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
+      <AdditionalDependencies>../UnrealModLoader/UnrealEngineModLoader/MinHook/lib/libMinHook-x64-v141-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>copy /Y "$(OutDir)$(TargetName)$(TargetExt)" "D:\Program Files (x86)\Steam\steamapps\common\EA SPORTS WRC\WRC\Content\CoreMods"
@@ -154,6 +155,7 @@ copy /Y "$(OutDir)$(TargetName).pdb" "D:\Program Files (x86)\Steam\steamapps\com
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
+      <AdditionalDependencies>../UnrealModLoader/UnrealEngineModLoader/MinHook/lib/libMinHook-x64-v141-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>copy /Y "$(OutDir)$(TargetName)$(TargetExt)" "D:\Program Files (x86)\Steam\steamapps\common\TRAIL OUT\TrailOut\Content\CoreMods"

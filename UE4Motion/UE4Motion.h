@@ -80,6 +80,8 @@ public:
 
 	void OnDestroy();
 
+	virtual void OnPresent();
+
 
 private:
 	// If you have a BP Mod Actor, This is a straight refrence to it
@@ -89,5 +91,7 @@ private:
 	OpenMotionFrameData m_frameData;
 
 	float m_systemTime;
+	float m_presentTime;
+	float m_presentDT;
 };
 

@@ -2,10 +2,10 @@
 [GameInfo]
 
 #Set to 1 (true) if the games engine version is 4.23 and up
-UsesFNamePool=0
+UsesFNamePool=1
 
 #Set to 1 (true) if the game engine version is 4.18 and up (this can vary)
-IsUsingFChunkedFixedUObjectArray=0
+IsUsingFChunkedFixedUObjectArray=1
 
 #Fallback if Spawn Actor can't be found or refuses to work. You should almost NEVER use.
 IsUsingDeferedSpawn=0
@@ -15,7 +15,3 @@ IsUsingDeferedSpawn=0
 
 #if you get any Direct X errors such as resizing, enable this to delay the hook and prevent most issues.
 DelayGUISpawn=1
-
-ExeAtRoot=1
-
-MotionOnPresent=0

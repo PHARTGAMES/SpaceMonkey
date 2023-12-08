@@ -25,14 +25,6 @@ namespace UE4
 		GObjObjects_offset = (DWORD64)(GameProfile::SelectedGameProfile.GObject);
 		UObject::GObjects = (FUObjectArray*)GObjObjects_offset;
 
-
-		Log::Info("GObjects->ObjFirstGCIndex: %d", UObject::GObjects->ObjFirstGCIndex);
-		Log::Info("GObjects->ObjLastNonGCIndex: %d", UObject::GObjects->ObjLastNonGCIndex);
-		Log::Info("GObjects->MaxObjectsNotConsideredByGC: %d", UObject::GObjects->MaxObjectsNotConsideredByGC);
-		Log::Info("GObjects->OpenForDisregardForGC: %d", UObject::GObjects->OpenForDisregardForGC);
-		Log::Info("GObjects->ObjObjects: 0x%p", UObject::GObjects->ObjObjects);
-
-
 		DWORD64   GWorldObjects = NULL;
 		GWorldObjects = (DWORD64)(GameProfile::SelectedGameProfile.GWorld);
 		UWorld::GWorld = (UWorld**)GWorldObjects;
@@ -42,59 +34,19 @@ namespace UE4
 		if (GameProfile::SelectedGameProfile.IsUObjectMissing)
 		{
 			Log::Warn("UObject Not Defined. Scanning for def.");
-			UE4::UObject* CoreUobjectObject = nullptr;
-			UE4::UObject* UEObject = nullptr;
-			int baseIndex = 1;
-
-			uint16_t storedIndexOffs = GameProfile::SelectedGameProfile.defs.UObject.Index;
-
+			UE4::UObject* CoreUobjectObject;
+			UE4::UObject* UEObject;
 			if (GameProfile::SelectedGameProfile.IsUsingFChunkedFixedUObjectArray)
 			{
-				Log::Info("UObject Array Length: %d", UE4::UObject::GObjects->GetAsChunckArray().Num());
-
-
-				int arrayCount = UE4::UObject::GObjects->GetAsChunckArray().Num();
-
-				Log::Info("UObject Array Length: %d", UE4::UObject::GObjects->GetAsChunckArray().Num());
-
-
-				for (baseIndex = 1; baseIndex < arrayCount; baseIndex++)
-				{
-					UE4::UObject* obj = UE4::UObject::GObjects->GetAsChunckArray().GetByIndex(baseIndex).Object;
-
-					Log::Info("InitSDK:LoopObjects: Index: %d, Object 0x%p", baseIndex, obj);
-				}
-
-
-				for (baseIndex = 1; baseIndex < arrayCount; baseIndex++)
-				{
-					CoreUobjectObject = UE4::UObject::GObjects->GetAsChunckArray().GetByIndex(baseIndex).Object;
-					UEObject = UE4::UObject::GObjects->GetAsChunckArray().GetByIndex(baseIndex+1).Object;
-
-					if (CoreUobjectObject != nullptr && UEObject != nullptr)
-					{
-						Log::Info("Found CoreUobjectObject and UEObject at baseIndex: %d", baseIndex);
-
-						GameProfile::SelectedGameProfile.defs.UObject.Index = storedIndexOffs;
-						if (ClassDefFinder::FindUObjectIndexDefs(CoreUobjectObject, UEObject, baseIndex))
-						{
-							break;
-						}
-					}
-				}
-
-				//CoreUobjectObject = UE4::UObject::GObjects->GetAsChunckArray().GetByIndex(1).Object;
-				//UEObject = UE4::UObject::GObjects->GetAsChunckArray().GetByIndex(2).Object;
-
+				CoreUobjectObject = UE4::UObject::GObjects->GetAsChunckArray().GetByIndex(1).Object;
+				UEObject = UE4::UObject::GObjects->GetAsChunckArray().GetByIndex(2).Object;
 			}
 			else
 			{
-				Log::Info("UObject Array Length: %d", UE4::UObject::GObjects->GetAsTUArray().Num());
-
 				CoreUobjectObject = UE4::UObject::GObjects->GetAsTUArray().GetByIndex(1).Object;
 				UEObject = UE4::UObject::GObjects->GetAsTUArray().GetByIndex(2).Object;
 			}
-			ClassDefFinder::FindUObjectDefs(CoreUobjectObject, UEObject, baseIndex);
+			ClassDefFinder::FindUObjectDefs(CoreUobjectObject, UEObject);
 			GameProfile::SelectedGameProfile.IsUObjectMissing = false;
 		}
 

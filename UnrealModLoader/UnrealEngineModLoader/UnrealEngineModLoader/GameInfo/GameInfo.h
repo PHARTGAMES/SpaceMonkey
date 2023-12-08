@@ -52,6 +52,7 @@ public:
 	bool ExeAtRoot = false;
 	bool LogicModsInRoot = false;
 	bool IsFunctionPatterns = false;
+	bool MotionOnPresent = false;
 	DWORD64 ProcessEvent = 0x0;
 	DWORD64 CreateDefaultObject = 0x0;
 	DWORD64 GameStateInit = 0x0;
