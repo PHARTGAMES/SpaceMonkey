@@ -1,0 +1,1 @@
+copy "WindowsNoEditor\ProjectWingman\Content\Paks\pakchunk69-WindowsNoEditor.pak" "D:\Program Files (x86)\Steam\steamapps\common\Project Wingman\ProjectWingman\Content\Paks\LogicMods\OpenMotion.pak"

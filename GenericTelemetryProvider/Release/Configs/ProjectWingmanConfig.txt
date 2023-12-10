@@ -1,0 +1,12 @@
+{
+  "filterConfig": "Filters\\ProjectWingmanFilters.txt",
+  "outputConfig": "Outputs\\default_MMF_UDP.txt",
+  "hotkey": {
+    "key": 56,
+    "enabled": true,
+    "windows": false,
+    "alt": true,
+    "ctrl": true,
+    "shift": false
+  }
+}

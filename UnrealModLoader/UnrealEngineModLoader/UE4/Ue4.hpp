@@ -30,6 +30,13 @@ namespace UE4
 		UWorld::GWorld = (UWorld**)GWorldObjects;
 
 
+		Log::Info("GObjects->ObjFirstGCIndex: %d", UObject::GObjects->ObjFirstGCIndex);
+		Log::Info("GObjects->ObjLastNonGCIndex: %d", UObject::GObjects->ObjLastNonGCIndex);
+		Log::Info("GObjects->MaxObjectsNotConsideredByGC: %d", UObject::GObjects->MaxObjectsNotConsideredByGC);
+		Log::Info("GObjects->OpenForDisregardForGC: %d", UObject::GObjects->OpenForDisregardForGC);
+		Log::Info("GObjects->ObjObjects: 0x%p", UObject::GObjects->ObjObjects);
+
+
 		#ifdef UNREALENGINEMODLOADER_EXPORTS //Stops dumb errors from the ExampleMod shit
 		if (GameProfile::SelectedGameProfile.IsUObjectMissing)
 		{

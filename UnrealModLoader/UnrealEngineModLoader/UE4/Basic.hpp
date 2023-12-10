@@ -105,26 +105,26 @@ public:
 
 	inline FUObjectItem const* GetObjectPtr(int Index) const
 	{
-		Log::Info("FChunkedFixedUObjectArray::GetObjectPtr Index: %d", Index);
-		Log::Info("FChunkedFixedUObjectArray::GetObjectPtr NumElements: %d", NumElements);
-		Log::Info("FChunkedFixedUObjectArray::GetObjectPtr MaxElements: %d", MaxElements);
-		Log::Info("FChunkedFixedUObjectArray::GetObjectPtr MaxChunks: %d", MaxChunks);
+		//Log::Info("FChunkedFixedUObjectArray::GetObjectPtr Index: %d", Index);
+		//Log::Info("FChunkedFixedUObjectArray::GetObjectPtr NumElements: %d", NumElements);
+		//Log::Info("FChunkedFixedUObjectArray::GetObjectPtr MaxElements: %d", MaxElements);
+		//Log::Info("FChunkedFixedUObjectArray::GetObjectPtr MaxChunks: %d", MaxChunks);
 
 		UINT32 ElementsPerChunk = MaxElements / MaxChunks; //64 * 1024;
 
-		Log::Info("FChunkedFixedUObjectArray::GetObjectPtr ElementsPerChunk: %d", ElementsPerChunk);
+		//Log::Info("FChunkedFixedUObjectArray::GetObjectPtr ElementsPerChunk: %d", ElementsPerChunk);
 
 		UINT32 ChunkIndex = Index / ElementsPerChunk;
 
-		Log::Info("FChunkedFixedUObjectArray::GetObjectPtr ChunkIndex: %d", ChunkIndex);
+		//Log::Info("FChunkedFixedUObjectArray::GetObjectPtr ChunkIndex: %d", ChunkIndex);
 
 		UINT32 WithinChunkIndex = Index % ElementsPerChunk;
 
-		Log::Info("FChunkedFixedUObjectArray::GetObjectPtr WithinChunkIndex: %d", WithinChunkIndex);
+		//Log::Info("FChunkedFixedUObjectArray::GetObjectPtr WithinChunkIndex: %d", WithinChunkIndex);
 
 		FUObjectItem* Chunk = Objects[ChunkIndex];
 
-		Log::Info("FChunkedFixedUObjectArray::GetObjectPtr Chunk: 0x%p", Chunk);
+		//Log::Info("FChunkedFixedUObjectArray::GetObjectPtr Chunk: 0x%p", Chunk);
 
 		return Chunk + WithinChunkIndex;
 	}
@@ -132,7 +132,7 @@ public:
 	inline FUObjectItem const& GetByIndex(int Index) const
 	{
 		const FUObjectItem* objectPtr = GetObjectPtr(Index);
-		Log::Info("FChunkedFixedUObjectArray::GetByIndex Chunk: 0x%p", objectPtr);
+		//Log::Info("FChunkedFixedUObjectArray::GetByIndex Chunk: 0x%p", objectPtr);
 		return *objectPtr;
 	}
 

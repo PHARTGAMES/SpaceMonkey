@@ -84,10 +84,28 @@ BPFUNCTION(GetHeadTracking)
 		//Log::Print("Pos: %f, %f, %f ", pos.X, pos.Y, pos.Z);
 		//Log::Print("Rot: %f, %f, %f ", rot.Pitch, rot.Yaw, rot.Roll);
 
+		//Log::Print("stack: %x", stack);
+
+
 		stack->SetOutput<UE4::FVector>("Pos", pos);
 		stack->SetOutput<UE4::FRotator>("Rot", rot);
 		stack->SetOutput<UE4::FVector>("Constants", constants);
+
+		//Log::Print("GetHeadTracking set outputs");
 	}
+}
+
+
+BPFUNCTION(SetPlayerCameraManager)
+{
+	struct InputParams
+	{
+		UE4::APlayerCameraManager *PCM;
+	};
+	auto Inputs = stack->GetInputParams<InputParams>();
+
+	Log::Print("SetPlayerCameraManager");
+	Log::Print("Player Camera Manager %x", Inputs->PCM);
 }
 
 HRESULT __stdcall hkPresent(IDXGISwapChain* pSwapChain, UINT SyncInterval, UINT Flags)
@@ -196,6 +214,7 @@ void UE4Motion::InitializeMod()
 	REGISTER_FUNCTION(TickMotion);
 
 	REGISTER_FUNCTION(GetHeadTracking);
+	REGISTER_FUNCTION(SetPlayerCameraManager);
 
 	if (GameProfile::SelectedGameProfile.MotionOnPresent == 1)
 	{
@@ -339,10 +358,12 @@ void UE4Motion::_GetHeadTracking(UE4::FVector& a_pos, UE4::FRotator& a_rot, floa
 	a_hFov = 120.0f;
 	a_worldScale = 1.0f;
 
+	//Log::Print("_GetHeadTracking before tick\n");
+
 	WWCaptureTrackData trackingData;
 	if (WWTickHeadTracking(trackingData))
 	{
-		Log::Print("_GetHeadTracking tick\n");
+		//Log::Print("_GetHeadTracking tick\n");
 
 		float ry, rp, rr, px, py, pz = 0;
 		M34ToYPRXYZ(ry, rp, rr, px, py, pz, trackingData.m_headVehicle);

@@ -7,6 +7,7 @@
 #include "CoreUObject_structs.hpp"
 #include "GameInfo/GameInfo.h"
 #include "Memory/mem.h"
+#include "../Utils.h"
 
 namespace UE4
 {
@@ -560,6 +561,7 @@ namespace UE4
 		{
 			if (GameProfile::SelectedGameProfile.bIsFProperty)
 			{
+				//Log::Print("SetOutput bIsFProperty %s", OutputName);
 				auto CurrentOutParam = OutParms;
 				while (true)
 				{
@@ -567,7 +569,7 @@ namespace UE4
 					{
 						break;
 					}
-					if (CurrentOutParam->Property->GetParentFProperty()->GetName() == OutputName)
+					if(Utils::CaseInsensitiveStringCompare(CurrentOutParam->Property->GetParentFProperty()->GetName(), OutputName))
 					{
 						Write<T>((byte*)CurrentOutParam->PropAddr, Value);
 						return true;
@@ -578,14 +580,26 @@ namespace UE4
 			}
 			else
 			{
+				//Log::Print("SetOutput !bIsFProperty %s", OutputName);
 				auto CurrentOutParam = OutParms;
+
 				while (true)
 				{
+					//Log::Print("SetOutput !bIsFProperty CurrentOutParam %x", CurrentOutParam);
+
+					if (CurrentOutParam == nullptr)
+					{
+						Log::Print("SetOutput !bIsFProperty ERROR, no param named %s", OutputName);
+						return false;
+					}
+
 					if (!CurrentOutParam->Property)
 					{
 						break;
 					}
-					if (CurrentOutParam->Property->GetParentUProperty()->GetName() == OutputName)
+					//Log::Print("SetOutput !bIsFProperty CurrentOutParam Name %s", CurrentOutParam->Property->GetParentUProperty()->GetName());
+
+					if (Utils::CaseInsensitiveStringCompare(CurrentOutParam->Property->GetParentUProperty()->GetName(), OutputName))
 					{
 						Write<T>((byte*)CurrentOutParam->PropAddr, Value);
 						return true;
@@ -599,6 +613,21 @@ namespace UE4
 		template<typename T>
 		T* GetInputParams() { return (T*)Locals; }
 	};
+
+
+	class APlayerCameraManager : public AActor
+	{
+	public:
+		static UClass* StaticClass()
+		{
+			static auto ptr = UObject::FindClass("Class Engine.PlayerCameraManager");
+			return ptr;
+		}
+
+		bool BlueprintUpdateCamera(AActor* CameraTarget, FVector& NewCameraLocation, FRotator& NewCameraRotation, float& NewCameraFOV);
+
+	};
+
 }
 
 #ifdef _MSC_VER

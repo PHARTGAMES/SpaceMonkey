@@ -509,7 +509,11 @@ namespace UE4
 		GameplayStatics->ProcessEvent(fn, &params);
 	}
 
+	bool APlayerCameraManager::BlueprintUpdateCamera(AActor* CameraTarget, FVector& NewCameraLocation, FRotator& NewCameraRotation, float& NewCameraFOV)
+	{
 
+		return true;
+	}
 }
 
 #ifdef _MSC_VER

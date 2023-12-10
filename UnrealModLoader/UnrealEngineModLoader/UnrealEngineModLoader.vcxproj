@@ -40,6 +40,7 @@
     <ClCompile Include="UnrealEngineModLoader\Utilities\EngineDefFinder.cpp" />
     <ClCompile Include="UnrealEngineModLoader\Utilities\Globals.cpp" />
     <ClCompile Include="UnrealEngineModLoader\Utilities\Logger.cpp" />
+    <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EventSystem.h" />
@@ -68,6 +69,7 @@
     <ClInclude Include="UnrealEngineModLoader\Utilities\MinHook.h" />
     <ClInclude Include="UnrealEngineModLoader\Utilities\Pattern.h" />
     <ClInclude Include="UnrealEngineModLoader\Utilities\Version.h" />
+    <ClInclude Include="Utils.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\UE4Motion\UE4Motion.vcxproj" />

@@ -164,6 +164,7 @@ copy /Y "$(OutDir)$(TargetName)$(TargetExt)" "D:\Program Files\Epic Games\MW5Mer
 copy /Y "$(OutDir)$(TargetName)$(TargetExt)" "D:\Program Files (x86)\Steam\steamapps\common\Dakar Desert Rally\Dakar2Game\Content\CoreMods"
 copy /Y "$(OutDir)$(TargetName)$(TargetExt)" "D:\Program Files (x86)\Steam\steamapps\common\ACE COMBAT 7\Game\Content\CoreMods"
 copy /Y "$(OutDir)$(TargetName)$(TargetExt)" "D:\Program Files (x86)\Steam\steamapps\common\EA SPORTS WRC\WRC\Content\CoreMods"
+copy /Y "$(OutDir)$(TargetName)$(TargetExt)" "D:\Program Files (x86)\Steam\steamapps\common\Project Wingman\ProjectWingman\Content\CoreMods"
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
