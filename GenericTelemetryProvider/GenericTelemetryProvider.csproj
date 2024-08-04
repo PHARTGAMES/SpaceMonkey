@@ -33,7 +33,8 @@
     <WarningLevel>0</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>GTPIcon.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
@@ -132,14 +133,7 @@
       <DependentUpon>KalmanVelocityFilterControl.cs</DependentUpon>
     </Compile>
     <Compile Include="KalmanVelocityNoiseFilter.cs" />
-    <Compile Include="BaslaTelemetryProvider.cs" />
     <Compile Include="OverloadTelemetryProvider.cs" />
-    <Compile Include="BalsaUI.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="BalsaUI.Designer.cs">
-      <DependentUpon>BalsaUI.cs</DependentUpon>
-    </Compile>
     <Compile Include="OverloadUI.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -325,9 +319,6 @@
     <EmbeddedResource Include="KalmanVelocityFilterControl.resx">
       <DependentUpon>KalmanVelocityFilterControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="BalsaUI.resx">
-      <DependentUpon>BalsaUI.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="OverloadUI.resx">
       <DependentUpon>OverloadUI.cs</DependentUpon>
     </EmbeddedResource>
@@ -413,10 +404,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BalsaTelemetry\BalsaTelemetry.csproj">
-      <Project>{e2ff2e0a-35c3-40b6-b412-1ce271e6114b}</Project>
-      <Name>BalsaTelemetry</Name>
-    </ProjectReference>
     <ProjectReference Include="..\CMCustomUDP\CMCustomUDP.csproj">
       <Project>{5cd4d965-fb7f-41e9-af9a-86ebf9ea15a3}</Project>
       <Name>CMCustomUDP</Name>
@@ -470,7 +457,7 @@
   <PropertyGroup>
     <PostBuildEvent>copy /Y "$(TargetPath)" "$(ProjectDir)..\GenericTelemetryProvider\Release"
 copy /Y "$(TargetDir)Newtonsoft.Json.dll" "$(ProjectDir)..\GenericTelemetryProvider\Release"
-copy /Y "$(TargetDir)Newtonsoft.Json.xml" "$(ProjectDir)..\GenericTelemetryProvider\Release"
+
 </PostBuildEvent>
   </PropertyGroup>
 </Project>

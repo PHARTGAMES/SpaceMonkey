@@ -55,7 +55,6 @@
             this.vtolvrBtn = new System.Windows.Forms.Button();
             this.wreckfestExperimentsButton = new System.Windows.Forms.Button();
             this.overloadButton = new System.Windows.Forms.Button();
-            this.balsaButton = new System.Windows.Forms.Button();
             this.OpenMotionBtn = new System.Windows.Forms.Button();
             this.WRCGenBtn = new System.Windows.Forms.Button();
             this.tinyCombatArenaButton = new System.Windows.Forms.Button();
@@ -362,18 +361,6 @@
             this.overloadButton.UseVisualStyleBackColor = true;
             this.overloadButton.Click += new System.EventHandler(this.overloadButton_Click);
             // 
-            // balsaButton
-            // 
-            this.balsaButton.Location = new System.Drawing.Point(16, 579);
-            this.balsaButton.Margin = new System.Windows.Forms.Padding(2);
-            this.balsaButton.Name = "balsaButton";
-            this.balsaButton.Size = new System.Drawing.Size(197, 56);
-            this.balsaButton.TabIndex = 41;
-            this.balsaButton.Text = "Balsa";
-            this.balsaButton.UseVisualStyleBackColor = true;
-            this.balsaButton.Visible = false;
-            this.balsaButton.Click += new System.EventHandler(this.balsaButton_Click);
-            // 
             // OpenMotionBtn
             // 
             this.OpenMotionBtn.Location = new System.Drawing.Point(18, 457);
@@ -460,7 +447,6 @@
             this.Controls.Add(this.tinyCombatArenaButton);
             this.Controls.Add(this.WRCGenBtn);
             this.Controls.Add(this.OpenMotionBtn);
-            this.Controls.Add(this.balsaButton);
             this.Controls.Add(this.overloadButton);
             this.Controls.Add(this.wreckfestExperimentsButton);
             this.Controls.Add(this.vtolvrBtn);
@@ -528,7 +514,6 @@
         private System.Windows.Forms.Button vtolvrBtn;
         private System.Windows.Forms.Button wreckfestExperimentsButton;
         private System.Windows.Forms.Button overloadButton;
-        private System.Windows.Forms.Button balsaButton;
         private System.Windows.Forms.Button OpenMotionBtn;
         private System.Windows.Forms.Button WRCGenBtn;
         private System.Windows.Forms.Button tinyCombatArenaButton;

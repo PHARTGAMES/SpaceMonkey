@@ -37,7 +37,6 @@ namespace GenericTelemetryProvider
         WarplanesWW1UI warplanesWW1UI;
         VTOLVRUI vtolVRUI;
         OverloadUI overloadUI;
-        BalsaUI balsaUI;
         OpenMotionUI openMotionUI;
         WRCGenUI wrcGenUI;
         TinyCombatArenaUI tcaUI;
@@ -594,21 +593,6 @@ namespace GenericTelemetryProvider
             Thread x = new Thread(new ParameterizedThreadStart((form) => ((OverloadUI)form).ShowDialog()));
             x.IsBackground = true;
             x.Start(overloadUI);
-        }
-
-        private void balsaButton_Click(object sender, EventArgs e)
-        {
-            if (balsaUI != null && !balsaUI.IsDisposed)
-            {
-                balsaUI.Dispose();
-                balsaUI = null;
-            }
-
-            balsaUI = new BalsaUI();
-
-            Thread x = new Thread(new ParameterizedThreadStart((form) => ((BalsaUI)form).ShowDialog()));
-            x.IsBackground = true;
-            x.Start(balsaUI);
         }
 
         private void openMotionBtn_Click(object sender, EventArgs e)

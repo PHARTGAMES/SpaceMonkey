@@ -28,8 +28,6 @@ local function getStructDefinition()
     ////// IMPORTANT: if you modify this definition, also update the docs at https://go.beamng.com/protocols /////////
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     char format[4]; // allows to verify if packet is the expected format, fixed value of "BNG1"
-
-	float timeStamp;
 	
     float posX, posY, posZ; // world position of the vehicle
     float velX, velY, velZ; // velocity of the vehicle
@@ -41,6 +39,11 @@ local function getStructDefinition()
     float rollVel, pitchVel, yawVel; // angular velocities of roll, pitch and yaw of the vehicle
     float rollAcc, pitchAcc, yawAcc; // angular acceleration of roll, pitch and yaw of the vehicle
 	
+	//engine
+    float engine_rate;
+    float idle_rpm;
+	float max_rpm;
+
 	//gears
 	int gear;
 	int max_gears;      
@@ -88,19 +91,20 @@ local function fillStruct(o, dtSim)
 
 
 --engine bits
---  local engine = powertrain.getDevice("mainEngine")
---  local gearbox = powertrain.getDevice("gearbox")
+  local engine = powertrain.getDevice("mainEngine")
+  local gearbox = powertrain.getDevice("gearbox")
+  local avToRPM = 9.549296596425384
 
---  if engine ~= nil then
---    o.engine_rate = engine and engine.outputAV1 * avToRPM or 0
---    o.idle_rpm = engine.idleRPM
---    o.max_rpm = engine.maxRPM
---  end
+  if engine ~= nil then
+    o.engine_rate = engine and engine.outputAV1 * avToRPM or 0
+    o.idle_rpm = engine.idleRPM
+    o.max_rpm = engine.maxRPM
+  end
 
---  if gearbox ~= nil then
---	o.gear = gearbox and gearbox.gearIndex or 0
---	o.max_gears = gearbox and gearbox.maxGearIndex or 0
---  end
+  if gearbox ~= nil then
+	o.gear = gearbox and gearbox.gearIndex or 0
+	o.max_gears = gearbox and gearbox.maxGearIndex or 0
+  end
 
   o.suspension_position_bl = 0
   o.suspension_position_br = 0

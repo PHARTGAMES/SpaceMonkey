@@ -1,1 +1,1 @@
-Configs\EAWRCConfig.txt
+Configs\BeamNGConfig.txt
