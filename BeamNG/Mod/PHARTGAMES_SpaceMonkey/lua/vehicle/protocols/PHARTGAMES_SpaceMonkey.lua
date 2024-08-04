@@ -16,6 +16,7 @@ local function getPort()           return settings.getValue("protocols_motionSim
 local function getMaxUpdateRate()  return settings.getValue("protocols_motionSim_maxUpdateRate") end  -- return 60
 
 local timeStamp = 0
+local moTimer = (HighPerfTimer or hptimer)()
 
 local function isPhysicsStepUsed()
   --return false-- use graphics step. performance cost is ok. the update rate could reach UP TO min(getMaxUpdateRate(), graphicsFramerate)
@@ -73,13 +74,23 @@ local function getStructDefinition()
   ]]
 end
 
+local position = nil
+
 local function fillStruct(o, dtSim)
   o.format = "BNG2"
   
-  timeStamp = timeStamp + dtSim
+  local dt = moTimer:stopAndReset() / 1000
+
+  timeStamp = timeStamp + dt
   o.timeStamp = timeStamp
 
-  o.posX, o.posY, o.posZ = protocols.posX, protocols.posY, protocols.posZ
+  if position == nil then
+	position = vec3(protocols.posX, protocols.posY, protocols.posZ)
+  else
+	position = position + (vec3(protocols.velXSmoothed, protocols.velYSmoothed, protocols.velZSmoothed) * dt)
+  end
+
+  o.posX, o.posY, o.posZ = position.x, position.y, position.z
   o.velX, o.velY, o.velZ = protocols.velXSmoothed, protocols.velYSmoothed, protocols.velZSmoothed
   o.accX, o.accY, o.accZ = protocols.accXSmoothed, protocols.accYSmoothed, protocols.accZSmoothed
 

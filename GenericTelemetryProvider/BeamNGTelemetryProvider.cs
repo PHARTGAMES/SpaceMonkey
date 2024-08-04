@@ -32,9 +32,6 @@ namespace GenericTelemetryProvider
             t = new Thread(MonitorThread);
             t.IsBackground = true;
             t.Start();
-
-
-
         }
 
         void MonitorThread()
@@ -166,6 +163,11 @@ namespace GenericTelemetryProvider
             rawData.wheel_patch_speed_fr = telemetryData.wheel_speed_fr;
         }
 
+        public override void ProcessInputs()
+        {
+
+        }
+        /*
 
 
         public override void CalcPosition()
@@ -225,6 +227,7 @@ namespace GenericTelemetryProvider
             rawData.roll_acceleration = telemetryData.rollAcc;
 
         }
+        */
     }
 
 }
