@@ -126,7 +126,7 @@ namespace GenericTelemetryProvider
                 dt = 0.015f;
 
         }
-        
+
 
         public override void SimulateEngine()
         {
@@ -140,9 +140,6 @@ namespace GenericTelemetryProvider
             rawData.speed = localVelocity.Length();
         }
 
-        public override void ProcessInputs()
-        {
-        }
 
         public override void SimulateSuspension()
         {
@@ -169,6 +166,65 @@ namespace GenericTelemetryProvider
             rawData.wheel_patch_speed_fr = telemetryData.wheel_speed_fr;
         }
 
+
+
+        public override void CalcPosition()
+        {
+
+            currRawPos = new Vector3(telemetryData.posX, telemetryData.posZ, telemetryData.posY);
+
+            rawData.position_x = currRawPos.X;
+            rawData.position_y = currRawPos.Y;
+            rawData.position_z = currRawPos.Z;
+
+            //filter position
+            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, posKeyMask, true);
+
+            //assign
+            worldPosition = new Vector3((float)filteredData.position_x, (float)filteredData.position_y, (float)filteredData.position_z);
+
+        }
+
+        public override void CalcVelocity()
+        {
+            rawData.local_velocity_x = telemetryData.velX;
+            rawData.local_velocity_y = telemetryData.velZ;
+            rawData.local_velocity_z = telemetryData.velY;
+        }
+
+        public override void CalcAcceleration()
+        {
+
+            rawData.gforce_lateral = telemetryData.accX;
+            rawData.gforce_vertical = telemetryData.accZ;
+            rawData.gforce_longitudinal = telemetryData.accY;
+
+            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, accelKeyMask, false);
+
+        }
+
+
+        public override void CalcAngles()
+        {
+            rawData.pitch = -telemetryData.pitchPos;
+            rawData.yaw = -telemetryData.yawPos;
+            rawData.roll = Utils.LoopAngleRad(-telemetryData.rollPos, (float)Math.PI * 0.5f);
+        }
+
+        public override void CalcAngularVelocityAndAccel()
+        {
+
+            rawData.yaw_velocity = telemetryData.yawRate;
+            rawData.pitch_velocity = telemetryData.pitchRate;
+            rawData.roll_velocity = telemetryData.rollRate;
+
+            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, angVelKeyMask, false);
+
+            rawData.yaw_acceleration = telemetryData.yawAcc;
+            rawData.pitch_acceleration = telemetryData.pitchAcc;
+            rawData.roll_acceleration = telemetryData.rollAcc;
+
+        }
     }
 
 }
