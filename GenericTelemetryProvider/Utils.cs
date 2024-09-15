@@ -239,5 +239,13 @@ namespace GenericTelemetryProvider
             }
         }
 
+        // Cubic smoothing function that mimics half of a bell curve
+        public static double CubicSmoothStep(double x)
+        {
+
+            return x * x * (3 - 2 * x);
+        }
+
+
     }
 }

@@ -675,7 +675,8 @@ namespace GenericTelemetryProvider
                             teleportTimer = teleportTime;
                             CMCustomUDPData filteredCopy = new CMCustomUDPData();
                             filteredCopy.Copy(lastFilteredData);
-                            FilterModuleCustom.Instance.AddFilteredData(filteredCopy);
+                            //FilterModuleCustom.Instance.AddFilteredData(filteredCopy);
+                            FilterModuleCustom.Instance.ReplaceLatestFilteredHistory(filteredCopy);
                             throw new Exception(failureMessage);
                         }
 
@@ -734,7 +735,9 @@ namespace GenericTelemetryProvider
                     {
                         filteredData.Copy(teleportData);
                        
-                        float lerp = (float)(1.0 - Math.Pow(1.0 - Math.Pow((double)(teleportTimer / teleportTime), 2.0), 2.0));
+                        float lerp = (float)Utils.CubicSmoothStep((double)(teleportTimer / teleportTime));
+
+
                         filteredData.LerpAll(lerp);
 
                         FilterModuleCustom.Instance.ReplaceLatestFilteredHistory(filteredData);
@@ -742,7 +745,7 @@ namespace GenericTelemetryProvider
                     }
                 case TeleportState.Out:
                     {
-                        float lerp = (float)Math.Pow(1.0 - Math.Pow((double)(teleportTimer / teleportTime), 2.0), 2.0);
+                        float lerp = (float)Utils.CubicSmoothStep((double)(1.0 - teleportTimer / teleportTime));
                         filteredData.LerpAllFrom(teleportData, lerp);
 
                         FilterModuleCustom.Instance.ReplaceLatestFilteredHistory(filteredData);
@@ -750,5 +753,6 @@ namespace GenericTelemetryProvider
                     }
             }
         }
+
     }
 }

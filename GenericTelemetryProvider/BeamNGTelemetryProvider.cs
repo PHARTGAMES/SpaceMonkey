@@ -22,9 +22,13 @@ namespace GenericTelemetryProvider
         BNGAPI lastTelemetryData = new BNGAPI();
         UdpClient socket;
 
+
         public override void Run()
         {
             base.Run();
+
+            maxPosVelocityDelta = 100.0f;
+            maxRotVelocityDelta = 15.0f;
 
             socket = new UdpClient();
             socket.ExclusiveAddressUse = false;
@@ -165,7 +169,7 @@ namespace GenericTelemetryProvider
 
         public override void ProcessInputs()
         {
-
+            base.ProcessInputs();
         }
         /*
 
