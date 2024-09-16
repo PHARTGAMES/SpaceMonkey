@@ -16,6 +16,7 @@ using CMCustomUDP;
 using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Reflection;
+using SMHaptics;
 
 namespace GenericTelemetryProvider
 {
@@ -43,6 +44,7 @@ namespace GenericTelemetryProvider
         EAWRCUI eaWRCUI;
         FilterUI filterUI;
         OutputUI outputUI;
+        HapticsUI hapticsUI;
         public static MainForm Instance;
         public string versionString = "v1.1.1";
 
@@ -71,6 +73,10 @@ namespace GenericTelemetryProvider
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+
+            AppDomain.CurrentDomain.UnhandledException += GlobalExceptionHandler;
+            Application.ThreadException += GlobalThreadExceptionHandler;
+
             Utils.TimeBeginPeriod(1);
 
             this.Text = "SpaceMonkey " + versionString;
@@ -78,6 +84,37 @@ namespace GenericTelemetryProvider
             LoadConfig();
 
             loadCallback?.Invoke(true);
+
+            InitHaptics();
+        }
+
+        // Handles exceptions that occur in non-UI threads (e.g., background workers)
+        private static void GlobalExceptionHandler(object sender, UnhandledExceptionEventArgs e)
+        {
+            Exception ex = (Exception)e.ExceptionObject;
+            if (ex is DllNotFoundException)
+            {
+                Console.WriteLine("DLL not found: " + ex.Message);
+                // Handle the exception, log it, or display an error message
+            }
+            else
+            {
+                Console.WriteLine("An unhandled exception occurred: " + ex.Message);
+            }
+        }
+
+        // Handles exceptions that occur in the main UI thread
+        private static void GlobalThreadExceptionHandler(object sender, ThreadExceptionEventArgs e)
+        {
+            Exception ex = e.Exception;
+            if (ex is DllNotFoundException)
+            {
+                MessageBox.Show("DLL not found: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                MessageBox.Show("An unhandled exception occurred: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         void RefreshConfigs()
@@ -698,6 +735,50 @@ namespace GenericTelemetryProvider
             }
         }
 
+        public void InitHaptics()
+        {
+            SMHapticsManager.instance.Init(MainConfig.installPath);
+            SMHapticsManager.instance.InitFromConfig(MainConfig.Instance.configData.hapticsConfig);
 
+            RegisterTelemetryCallback(SMHapticsManager.instance.Input);
+
+            //SMHEngineEffectConfig engineConfig = new SMHEngineEffectConfig();
+
+            //engineConfig.enabled = true;
+            //engineConfig.gain = 1.0;
+            //engineConfig.outputChannelIndex = 1;
+            //engineConfig.outputDeviceModuleName = "{0.0.0.00000000}.{e0f80a10-91f6-46ee-878f-477f7c3aa586}";
+            //engineConfig.waveform = 3;
+            //engineConfig.id = "SMHaptics.SMHEngineEffect";
+            //engineConfig.minFrequency = 10;
+            //engineConfig.maxFrequency = 80;
+
+            //SMHapticsManager.instance.CreateEffect(engineConfig);
+
+            //SMHOutputDevice outputDevice = SMHOutputManager.instance.GetDeviceByModuleName(engineConfig.outputDeviceModuleName);
+            //if(outputDevice != null)
+            //{
+            //    outputDevice.Enable(true);
+            //}
+
+        }
+
+        private void HapticsBtn_Click(object sender, EventArgs e)
+        {
+            if (hapticsUI != null && !hapticsUI.IsDisposed)
+            {
+                hapticsUI.Dispose();
+                hapticsUI = null;
+            }
+
+            hapticsUI = new HapticsUI();
+
+            Thread x = new Thread(new ParameterizedThreadStart((form) =>
+            {
+                ((HapticsUI)form).ShowDialog();
+            }));
+            x.IsBackground = true;
+            x.Start(hapticsUI);
+        }
     }
 }

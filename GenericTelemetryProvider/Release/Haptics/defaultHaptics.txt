@@ -1,0 +1,19 @@
+{
+  "$type": "SMHaptics.SMHapticsConfig, SMHaptics",
+  "effects": {
+    "$type": "System.Collections.Generic.List`1[[SMHaptics.SMHEffectConfig, SMHaptics]], mscorlib",
+    "$values": [
+      {
+        "$type": "SMHaptics.SMHEngineEffectConfig, SMHaptics",
+        "minFrequency": 10.0,
+        "maxFrequency": 80.0,
+        "id": "SMHaptics.SMHEngineEffect",
+        "enabled": true,
+        "outputDeviceModuleName": "{0.0.0.00000000}.{e0f80a10-91f6-46ee-878f-477f7c3aa586}",
+        "outputChannelIndex": 1,
+        "waveform": 3,
+        "gain": 0.23
+      }
+    ]
+  }
+}

@@ -108,6 +108,8 @@ namespace GenericTelemetryProvider
 
         public string outputConfig = "Outputs\\default_MMF_UDP.txt";
 
+        public string hapticsConfig = "Haptics\\defaultHaptics.txt";
+
         public class HotkeyConfig
         {
             public Keys key;

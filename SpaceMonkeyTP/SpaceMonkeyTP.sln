@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarplanesWW1API", "..\Warpl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WRCGenAPI", "..\WRCGenAPI\WRCGenAPI.csproj", "{9595027C-2C95-4AE0-93F0-19FC54A15483}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMHaptics", "..\SMHaptics\SMHaptics.csproj", "{19B64A51-6BE5-45C4-90E8-F31A1ADA6BE0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{9595027C-2C95-4AE0-93F0-19FC54A15483}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9595027C-2C95-4AE0-93F0-19FC54A15483}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9595027C-2C95-4AE0-93F0-19FC54A15483}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19B64A51-6BE5-45C4-90E8-F31A1ADA6BE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19B64A51-6BE5-45C4-90E8-F31A1ADA6BE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19B64A51-6BE5-45C4-90E8-F31A1ADA6BE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19B64A51-6BE5-45C4-90E8-F31A1ADA6BE0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

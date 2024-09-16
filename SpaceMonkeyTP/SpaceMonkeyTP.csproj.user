@@ -8,5 +8,6 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <NXTargetSerialNumber />
     <NXTargetName>Default</NXTargetName>
+    <StartWorkingDirectory>D:\Personal\projects\SpaceMonkey\SpaceMonkeyTP\bin\Release\</StartWorkingDirectory>
   </PropertyGroup>
 </Project>

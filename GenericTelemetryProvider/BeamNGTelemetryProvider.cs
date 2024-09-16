@@ -169,7 +169,7 @@ namespace GenericTelemetryProvider
 
         public override void ProcessInputs()
         {
-            base.ProcessInputs();
+//            base.ProcessInputs();
         }
         /*
 
