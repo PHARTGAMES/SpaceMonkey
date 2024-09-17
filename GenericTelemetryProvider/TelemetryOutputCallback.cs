@@ -49,7 +49,7 @@ namespace GenericTelemetryProvider
 
         public void RegisterCallback(Action<CMCustomUDPData> cb)
         {
-            callback = cb;
+            callback += cb;
         }
     }
 }
