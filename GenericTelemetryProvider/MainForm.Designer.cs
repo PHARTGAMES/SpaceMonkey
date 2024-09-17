@@ -62,6 +62,7 @@
             this.outputsComboBox = new System.Windows.Forms.ComboBox();
             this.OutputsBtn = new System.Windows.Forms.Button();
             this.EAWRCBtn = new System.Windows.Forms.Button();
+            this.HapticsBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // Dirt5Button
@@ -77,7 +78,7 @@
             // 
             // Filters
             // 
-            this.Filters.Location = new System.Drawing.Point(455, 519);
+            this.Filters.Location = new System.Drawing.Point(458, 455);
             this.Filters.Margin = new System.Windows.Forms.Padding(4);
             this.Filters.Name = "Filters";
             this.Filters.Size = new System.Drawing.Size(248, 54);
@@ -416,7 +417,7 @@
             // 
             // OutputsBtn
             // 
-            this.OutputsBtn.Location = new System.Drawing.Point(455, 457);
+            this.OutputsBtn.Location = new System.Drawing.Point(458, 393);
             this.OutputsBtn.Margin = new System.Windows.Forms.Padding(4);
             this.OutputsBtn.Name = "OutputsBtn";
             this.OutputsBtn.Size = new System.Drawing.Size(248, 54);
@@ -435,11 +436,23 @@
             this.EAWRCBtn.UseVisualStyleBackColor = true;
             this.EAWRCBtn.Click += new System.EventHandler(this.EAWRCBtn_Click);
             // 
+            // HapticsBtn
+            // 
+            this.HapticsBtn.Location = new System.Drawing.Point(458, 517);
+            this.HapticsBtn.Margin = new System.Windows.Forms.Padding(4);
+            this.HapticsBtn.Name = "HapticsBtn";
+            this.HapticsBtn.Size = new System.Drawing.Size(248, 54);
+            this.HapticsBtn.TabIndex = 49;
+            this.HapticsBtn.Text = "Haptics";
+            this.HapticsBtn.UseVisualStyleBackColor = true;
+            this.HapticsBtn.Click += new System.EventHandler(this.HapticsBtn_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(730, 589);
+            this.Controls.Add(this.HapticsBtn);
             this.Controls.Add(this.EAWRCBtn);
             this.Controls.Add(this.OutputsBtn);
             this.Controls.Add(this.outputConfigLabel);
@@ -521,6 +534,7 @@
         private System.Windows.Forms.ComboBox outputsComboBox;
         private System.Windows.Forms.Button OutputsBtn;
         private System.Windows.Forms.Button EAWRCBtn;
+        private System.Windows.Forms.Button HapticsBtn;
     }
 }
 
