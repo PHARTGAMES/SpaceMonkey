@@ -34,12 +34,14 @@
             // 
             // flowLayoutEffects
             // 
+            this.flowLayoutEffects.AutoScroll = true;
             this.flowLayoutEffects.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutEffects.Location = new System.Drawing.Point(13, 47);
             this.flowLayoutEffects.Margin = new System.Windows.Forms.Padding(4);
             this.flowLayoutEffects.Name = "flowLayoutEffects";
             this.flowLayoutEffects.Size = new System.Drawing.Size(1102, 895);
             this.flowLayoutEffects.TabIndex = 2;
+            this.flowLayoutEffects.WrapContents = false;
             // 
             // saveButton
             // 
