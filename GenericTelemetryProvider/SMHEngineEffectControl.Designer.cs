@@ -62,7 +62,7 @@
             // deleteButton
             // 
             this.deleteButton.Location = new System.Drawing.Point(8, 398);
-            this.deleteButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.deleteButton.Margin = new System.Windows.Forms.Padding(4);
             this.deleteButton.Name = "deleteButton";
             this.deleteButton.Size = new System.Drawing.Size(116, 28);
             this.deleteButton.TabIndex = 1;
@@ -73,7 +73,7 @@
             // maxFrequency
             // 
             this.maxFrequency.Location = new System.Drawing.Point(430, 147);
-            this.maxFrequency.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.maxFrequency.Margin = new System.Windows.Forms.Padding(4);
             this.maxFrequency.Name = "maxFrequency";
             this.maxFrequency.Size = new System.Drawing.Size(115, 22);
             this.maxFrequency.TabIndex = 2;
@@ -83,7 +83,7 @@
             // minFrequency
             // 
             this.minFrequency.Location = new System.Drawing.Point(430, 91);
-            this.minFrequency.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.minFrequency.Margin = new System.Windows.Forms.Padding(4);
             this.minFrequency.Name = "minFrequency";
             this.minFrequency.Size = new System.Drawing.Size(115, 22);
             this.minFrequency.TabIndex = 3;
@@ -93,7 +93,7 @@
             // outputChannelIndex
             // 
             this.outputChannelIndex.Location = new System.Drawing.Point(29, 175);
-            this.outputChannelIndex.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.outputChannelIndex.Margin = new System.Windows.Forms.Padding(4);
             this.outputChannelIndex.Name = "outputChannelIndex";
             this.outputChannelIndex.Size = new System.Drawing.Size(115, 22);
             this.outputChannelIndex.TabIndex = 4;
@@ -215,9 +215,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.effectGroupBox);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "SMHEngineEffectControl";
-            this.Size = new System.Drawing.Size(1510, 982);
+            this.Size = new System.Drawing.Size(614, 469);
             ((System.ComponentModel.ISupportInitialize)(this.gainTrackBar)).EndInit();
             this.deviceGroupBox.ResumeLayout(false);
             this.deviceGroupBox.PerformLayout();

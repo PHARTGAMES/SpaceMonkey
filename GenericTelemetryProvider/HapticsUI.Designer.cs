@@ -34,8 +34,9 @@
             // 
             // flowLayoutEffects
             // 
+            this.flowLayoutEffects.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutEffects.Location = new System.Drawing.Point(13, 47);
-            this.flowLayoutEffects.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.flowLayoutEffects.Margin = new System.Windows.Forms.Padding(4);
             this.flowLayoutEffects.Name = "flowLayoutEffects";
             this.flowLayoutEffects.Size = new System.Drawing.Size(1102, 895);
             this.flowLayoutEffects.TabIndex = 2;
@@ -43,7 +44,7 @@
             // saveButton
             // 
             this.saveButton.Location = new System.Drawing.Point(13, 13);
-            this.saveButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.saveButton.Margin = new System.Windows.Forms.Padding(4);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(320, 26);
             this.saveButton.TabIndex = 3;
@@ -59,7 +60,7 @@
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.flowLayoutEffects);
             this.Icon = global::GenericTelemetryProvider.Properties.Resources.GTPIcon;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "HapticsUI";
             this.Text = "HapticsUI";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OnFormClosing);
