@@ -451,6 +451,10 @@
       <Project>{d113346d-947f-4f82-8014-e63e863308d1}</Project>
       <Name>OverloadTelemetry</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SMGSeat\SMGSeat\SMGSeat.csproj">
+      <Project>{5e17c376-4b48-43c5-bf42-26348415acd3}</Project>
+      <Name>SMGSeat</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SMHaptics\SMHaptics.csproj">
       <Project>{19b64a51-6be5-45c4-90e8-f31a1ada6be0}</Project>
       <Name>SMHaptics</Name>
