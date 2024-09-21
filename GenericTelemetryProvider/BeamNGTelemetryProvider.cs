@@ -77,7 +77,7 @@ namespace GenericTelemetryProvider
                     && telemetryData.magic[3] == '2')
                 {
                     dt = telemetryData.timeStamp - lastTelemetryData.timeStamp;
-                    Console.WriteLine($"dt: {dt}");
+//                    Console.WriteLine($"dt: {dt}");
                     ProcessBNGAPI(dt);
                     lastTelemetryData.CopyFields(telemetryData);
                 }

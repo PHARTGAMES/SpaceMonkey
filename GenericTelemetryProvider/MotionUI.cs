@@ -148,7 +148,7 @@ namespace GenericTelemetryProvider
             if (ignoreChanges)
                 return;
 
-            config.AccelerationScale = Utils.TextBoxSafeParseFloat(asTextBox, config.AccelerationScale);
+            config.AccelerationScale = Utils.TextBoxSafeParseFloat(accScaleTextBox, config.AccelerationScale);
         }
 
         private void accMaxTextBox_TextChanged(object sender, EventArgs e)
