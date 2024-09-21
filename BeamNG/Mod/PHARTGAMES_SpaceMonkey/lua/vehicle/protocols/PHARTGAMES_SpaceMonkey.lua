@@ -13,14 +13,15 @@ local function init() end
 local function reset() end
 local function getAddress()        return settings.getValue("protocols_motionSim_address") end        -- return "127.0.0.1"
 local function getPort()           return settings.getValue("protocols_motionSim_port") end           -- return 4567
-local function getMaxUpdateRate()  return settings.getValue("protocols_motionSim_maxUpdateRate") end  -- return 60
+--local function getMaxUpdateRate()  return settings.getValue("protocols_motionSim_maxUpdateRate") end  -- return 60
+local function getMaxUpdateRate()  return 60 end
 
 local timeStamp = 0
 local moTimer = (HighPerfTimer or hptimer)()
 
 local function isPhysicsStepUsed()
-  --return false-- use graphics step. performance cost is ok. the update rate could reach UP TO min(getMaxUpdateRate(), graphicsFramerate)
-  return true   -- use physics step. performance cost is big. the update rate could reach UP TO min(getMaxUpdateRate(), 2000 Hz)
+  return false-- use graphics step. performance cost is ok. the update rate could reach UP TO min(getMaxUpdateRate(), graphicsFramerate)
+  --return true   -- use physics step. performance cost is big. the update rate could reach UP TO min(getMaxUpdateRate(), 2000 Hz)
 end
 
 local function getStructDefinition()
@@ -79,26 +80,42 @@ local position = nil
 local function fillStruct(o, dtSim)
   o.format = "BNG2"
   
-  local dt = moTimer:stopAndReset() / 1000
+  local dt = dtSim --moTimer:stopAndReset() / 1000
 
   timeStamp = timeStamp + dt
   o.timeStamp = timeStamp
 
-  if position == nil then
-	position = vec3(protocols.posX, protocols.posY, protocols.posZ)
-  else
-	position = position + (vec3(protocols.velXSmoothed, protocols.velYSmoothed, protocols.velZSmoothed) * dt)
-  end
+--  if position == nil then
+--	position = vec3(protocols.posX, protocols.posY, protocols.posZ)
+--  else
+--	position = position + (vec3(protocols.velXSmoothed, protocols.velYSmoothed, protocols.velZSmoothed) * dt)
+--  end
 
-  o.posX, o.posY, o.posZ = position.x, position.y, position.z
-  o.velX, o.velY, o.velZ = protocols.velXSmoothed, protocols.velYSmoothed, protocols.velZSmoothed
-  o.accX, o.accY, o.accZ = protocols.accXSmoothed, protocols.accYSmoothed, protocols.accZSmoothed
+--  o.posX, o.posY, o.posZ = position.x, position.y, position.z
+--  o.velX, o.velY, o.velZ = protocols.velXSmoothed, protocols.velYSmoothed, protocols.velZSmoothed
+--  o.accX, o.accY, o.accZ = protocols.accXSmoothed, protocols.accYSmoothed, protocols.accZSmoothed
 
-  o.upX,  o.upY,  o.upZ  = protocols.upX,  protocols.upY,  protocols.upZ
+--  o.upX,  o.upY,  o.upZ  = protocols.upX,  protocols.upY,  protocols.upZ
 
-  o.rollPos, o.pitchPos, o.yawPos = protocols.rollPosSmoothed, protocols.pitchPosSmoothed, protocols.yawPosSmoothed
-  o.rollVel, o.pitchVel, o.yawVel = protocols.rollVelSmoothed, protocols.pitchVelSmoothed, protocols.yawVelSmoothed
-  o.rollAcc, o.pitchAcc, o.yawAcc = protocols.rollAccSmoothed, protocols.pitchAccSmoothed, protocols.yawAccSmoothed
+--  o.rollPos, o.pitchPos, o.yawPos = protocols.rollPosSmoothed, protocols.pitchPosSmoothed, protocols.yawPosSmoothed
+--  o.rollVel, o.pitchVel, o.yawVel = protocols.rollVelSmoothed, protocols.pitchVelSmoothed, protocols.yawVelSmoothed
+--  o.rollAcc, o.pitchAcc, o.yawAcc = protocols.rollAccSmoothed, protocols.pitchAccSmoothed, protocols.yawAccSmoothed
+
+  o.posX, o.posY, o.posZ = obj:getPositionXYZ()
+
+--  local roll, pitch, yaw = obj:getRollPitchYaw()
+--  o.rollPos, o.pitchPos, o.yawPos = -roll, pitch, yaw
+
+
+  local upVector = obj:getDirectionVectorUp()
+  local vectorForward = obj:getDirectionVector()
+  local quat = quatFromDir(vectorForward, upVector)
+  local euler = quat:toEulerYXZ()
+
+
+  o.rollPos = -euler.z --negated angle here, seems like that is the "standard" for motion sims here
+  o.pitchPos = -euler.y --negated angle here, seems like that is the "standard" for motion sims here
+  o.yawPos = euler.x
 
 
 --engine bits

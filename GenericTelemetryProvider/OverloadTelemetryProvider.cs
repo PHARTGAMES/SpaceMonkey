@@ -173,7 +173,7 @@ namespace GenericTelemetryProvider
             rawData.position_z = data.posZ * worldScale;
 
             //filter position
-            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, posKeyMask, true);
+            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, posKeyMask, true, dt);
 
             worldPosition = new Vector3((float)filteredData.position_x, (float)filteredData.position_y, (float)filteredData.position_z);
 
@@ -199,7 +199,7 @@ namespace GenericTelemetryProvider
         public override void FilterVelocity()
         {
             //filter local velocity
-            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, velKeyMask, false);
+            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, velKeyMask, false, dt);
         }
 
         public override void CalcAcceleration()
@@ -209,7 +209,7 @@ namespace GenericTelemetryProvider
             rawData.gforce_vertical = data.accelY * worldScale;
             rawData.gforce_longitudinal = data.accelZ * worldScale;
 
-            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, accelKeyMask, false);
+            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, accelKeyMask, false, dt);
         }
 
         public override void CalcAngles()

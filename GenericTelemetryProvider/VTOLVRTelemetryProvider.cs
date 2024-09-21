@@ -196,7 +196,7 @@ namespace GenericTelemetryProvider
         public override void FilterVelocity()
         {
             //filter local velocity
-            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, velKeyMask, false);
+            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, velKeyMask, false, dt);
         }
         
         public override void CalcAcceleration()
@@ -206,7 +206,7 @@ namespace GenericTelemetryProvider
             rawData.gforce_vertical = data.accelY;
             rawData.gforce_longitudinal = data.accelZ;
 
-            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, accelKeyMask, false);
+            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, accelKeyMask, false, dt);
         }
         
         public override void CalcAngles()

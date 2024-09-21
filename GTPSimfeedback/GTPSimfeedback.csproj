@@ -36,6 +36,12 @@
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="SMMotion">
+      <HintPath>..\GenericTelemetryProvider\Release\SMMotion.dll</HintPath>
+    </Reference>
+    <Reference Include="SpaceMonkeyTP">
+      <HintPath>..\GenericTelemetryProvider\Release\SpaceMonkeyTP.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -50,6 +56,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GTPTelemetryInfoControlState.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -64,17 +71,13 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Simfeedback-ACServo\trunk\Src\SimFeedbackTelemetryProvider\SimFeedbackTelemetryProvider.csproj">
+    <ProjectReference Include="..\..\Simfeedback-ACServo\trunk\Src\SimFeedbackTelemetryProvider\SimFeedbackTelemetryProvider.csproj">
       <Project>{a43fc598-5e10-4730-83f8-ca0f6164c988}</Project>
       <Name>SimFeedbackTelemetryProvider</Name>
     </ProjectReference>
     <ProjectReference Include="..\CMCustomUDP\CMCustomUDP.csproj">
       <Project>{5cd4d965-fb7f-41e9-af9a-86ebf9ea15a3}</Project>
       <Name>CMCustomUDP</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\GenericTelemetryProvider\GenericTelemetryProvider.csproj">
-      <Project>{edc46c3a-20d4-4ee4-ac8a-c33a053d11da}</Project>
-      <Name>GenericTelemetryProvider</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

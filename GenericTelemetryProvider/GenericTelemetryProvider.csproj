@@ -72,6 +72,19 @@
       <DependentUpon>EAWRCUI.cs</DependentUpon>
     </Compile>
     <Compile Include="EAWRCAPI.cs" />
+    <Compile Include="MotionUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MotionUI.Designer.cs">
+      <DependentUpon>MotionUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WashoutFilterControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WashoutFilterControl.Designer.cs">
+      <DependentUpon>WashoutFilterControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WashoutFilter.cs" />
     <Compile Include="SMHEffectPicker.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -313,6 +326,12 @@
     <EmbeddedResource Include="EAWRCUI.resx">
       <DependentUpon>EAWRCUI.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="MotionUI.resx">
+      <DependentUpon>MotionUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WashoutFilterControl.resx">
+      <DependentUpon>WashoutFilterControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SMHEffectPicker.resx">
       <DependentUpon>SMHEffectPicker.cs</DependentUpon>
     </EmbeddedResource>
@@ -455,6 +474,10 @@
       <Project>{19b64a51-6be5-45c4-90e8-f31a1ada6be0}</Project>
       <Name>SMHaptics</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SMMotion\SMMotion.csproj">
+      <Project>{e79a849e-b8ab-4211-928c-f966178f033a}</Project>
+      <Name>SMMotion</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TCAAPI\TCAAPI.csproj">
       <Project>{ba2c6b52-5ea7-4e5b-862e-632e1152693e}</Project>
       <Name>TCAAPI</Name>
@@ -490,6 +513,7 @@
 copy /Y "$(TargetDir)NAudio*.*" "$(ProjectDir)..\GenericTelemetryProvider\Release"
 copy /Y "$(TargetDir)SMHaptics.dll" "$(ProjectDir)..\GenericTelemetryProvider\Release"
 copy /Y "$(TargetDir)Newtonsoft.Json.dll" "$(ProjectDir)..\GenericTelemetryProvider\Release"
+copy /Y "$(TargetDir)SMMotion.dll" "$(ProjectDir)..\GenericTelemetryProvider\Release"
 
 </PostBuildEvent>
   </PropertyGroup>

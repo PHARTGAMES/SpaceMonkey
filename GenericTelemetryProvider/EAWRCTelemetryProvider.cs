@@ -183,7 +183,7 @@ namespace GenericTelemetryProvider
             rawData.suspension_velocity_fl = session_updateData.vehicle_hub_velocity_fl;
             rawData.suspension_velocity_fr = session_updateData.vehicle_hub_velocity_fr;
 
-            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, suspVelKeyMask, false);
+            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, suspVelKeyMask, false, dt);
 
             //rawData.suspension_acceleration_bl = session_updateData.suspension_acceleration_bl;
             //rawData.suspension_acceleration_br = session_updateData.suspension_acceleration_br;

@@ -211,7 +211,7 @@ namespace GenericTelemetryProvider
             rawData.position_z = currRawPos.Z;
 
             //filter position
-            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, posKeyMask, true);
+            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, posKeyMask, true, dt);
 
             //assign
             worldPosition = new Vector3((float)filteredData.position_x, (float)filteredData.position_y, (float)filteredData.position_z);
@@ -245,7 +245,7 @@ namespace GenericTelemetryProvider
         public override void FilterVelocity()
         {
             //filter local velocity
-            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, velKeyMask, false);
+            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, velKeyMask, false, dt);
         }
 
         public override void CalcAcceleration()
@@ -316,7 +316,7 @@ namespace GenericTelemetryProvider
             rawData.pitch_velocity = pitchVel;
             rawData.roll_velocity = rollVel;
 
-            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, angVelKeyMask, false);
+            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, angVelKeyMask, false, dt);
 
             rawData.yaw_acceleration = ((float)filteredData.yaw_velocity - (float)lastFilteredData.yaw_velocity) / dt;
             rawData.pitch_acceleration = ((float)filteredData.pitch_velocity - (float)lastFilteredData.pitch_velocity) / dt;

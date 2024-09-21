@@ -2,5 +2,6 @@
 	"udpPort":10001,
 	"receiveUDP":false,
 	"receiveMMF":false,
-	"integrated":true
+	"integrated":false,
+	"useControlState":true,
 }

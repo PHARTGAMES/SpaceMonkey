@@ -17,6 +17,7 @@ using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Reflection;
 using SMHaptics;
+using SMMotion;
 
 namespace GenericTelemetryProvider
 {
@@ -45,6 +46,7 @@ namespace GenericTelemetryProvider
         FilterUI filterUI;
         OutputUI outputUI;
         HapticsUI hapticsUI;
+        MotionUI motionUI;
         public static MainForm Instance;
         public string versionString = "v1.1.1";
 
@@ -86,6 +88,8 @@ namespace GenericTelemetryProvider
             loadCallback?.Invoke(true);
 
             InitHaptics();
+
+            InitMotion();
         }
 
         // Handles exceptions that occur in non-UI threads (e.g., background workers)
@@ -723,7 +727,7 @@ namespace GenericTelemetryProvider
             MainConfig.Instance.Save();
         }
 
-        public void RegisterTelemetryCallback(Action<CMCustomUDPData> callback)
+        public void RegisterTelemetryCallback(Action<CMCustomUDPData, float> callback)
         {
             integrated = true;
 
@@ -741,27 +745,8 @@ namespace GenericTelemetryProvider
             SMHapticsManager.instance.InitFromConfig(MainConfig.Instance.configData.hapticsConfig);
 
             RegisterTelemetryCallback(SMHapticsManager.instance.Input);
-
-            //SMHEngineEffectConfig engineConfig = new SMHEngineEffectConfig();
-
-            //engineConfig.enabled = true;
-            //engineConfig.gain = 1.0;
-            //engineConfig.outputChannelIndex = 1;
-            //engineConfig.outputDeviceModuleName = "{0.0.0.00000000}.{e0f80a10-91f6-46ee-878f-477f7c3aa586}";
-            //engineConfig.waveform = 3;
-            //engineConfig.id = "SMHaptics.SMHEngineEffect";
-            //engineConfig.minFrequency = 10;
-            //engineConfig.maxFrequency = 80;
-
-            //SMHapticsManager.instance.CreateEffect(engineConfig);
-
-            //SMHOutputDevice outputDevice = SMHOutputManager.instance.GetDeviceByModuleName(engineConfig.outputDeviceModuleName);
-            //if(outputDevice != null)
-            //{
-            //    outputDevice.Enable(true);
-            //}
-
         }
+
 
         private void HapticsBtn_Click(object sender, EventArgs e)
         {
@@ -779,6 +764,32 @@ namespace GenericTelemetryProvider
             }));
             x.IsBackground = true;
             x.Start(hapticsUI);
+        }
+
+        public void InitMotion()
+        {
+            SMMotionManager.instance.Init(MainConfig.installPath);
+            SMMotionManager.instance.InitFromConfig(MainConfig.Instance.configData.motionConfig);
+
+            RegisterTelemetryCallback(SMMotionManager.instance.Input);
+        }
+
+        private void MotionButton_Click(object sender, EventArgs e)
+        {
+            if (motionUI != null && !motionUI.IsDisposed)
+            {
+                motionUI.Dispose();
+                motionUI = null;
+            }
+
+            motionUI = new MotionUI();
+
+            Thread x = new Thread(new ParameterizedThreadStart((form) =>
+            {
+                ((MotionUI)form).ShowDialog();
+            }));
+            x.IsBackground = true;
+            x.Start(motionUI);
         }
     }
 }

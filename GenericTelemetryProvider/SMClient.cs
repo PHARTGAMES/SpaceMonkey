@@ -35,7 +35,7 @@ namespace GenericTelemetryProvider
             thread.Start();
         }
 
-        public static void RegisterTelemetryCallback(Action<CMCustomUDPData> callback)
+        public static void RegisterTelemetryCallback(Action<CMCustomUDPData, float> callback)
         {
             mainForm.RegisterTelemetryCallback(callback);
         }

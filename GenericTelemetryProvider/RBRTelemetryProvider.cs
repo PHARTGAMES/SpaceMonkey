@@ -125,7 +125,7 @@ namespace GenericTelemetryProvider
             rawData.position_z = telemetryData.car_.positionZ_;
 
             //filter position
-            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, posKeyMask, true);
+            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, posKeyMask, true, dt);
 
             worldPosition = new Vector3((float)filteredData.position_x, (float)filteredData.position_y, (float)filteredData.position_z);
 
@@ -141,7 +141,7 @@ namespace GenericTelemetryProvider
         public override void FilterVelocity()
         {
             //filter local velocity
-            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, velKeyMask, false);
+            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, velKeyMask, false, dt);
         }
 
         public override void CalcAcceleration()
@@ -151,7 +151,7 @@ namespace GenericTelemetryProvider
             rawData.gforce_vertical = telemetryData.car_.accelerations_.heave_;
             rawData.gforce_longitudinal = telemetryData.car_.accelerations_.surge_;
 
-            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, accelKeyMask, false);
+            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, accelKeyMask, false, dt);
         }
 
         public override void CalcAngles()
@@ -167,7 +167,7 @@ namespace GenericTelemetryProvider
             rawData.pitch_velocity = -telemetryData.car_.velocities_.pitch_ * ((float)Math.PI / 180.0f);
             rawData.roll_velocity = -telemetryData.car_.velocities_.roll_ * ((float)Math.PI / 180.0f);
 
-            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, angVelKeyMask, false);
+            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, angVelKeyMask, false, dt);
 
             rawData.yaw_acceleration = telemetryData.car_.accelerations_.yaw_ * ((float)Math.PI / 180.0f);
             rawData.pitch_acceleration = -telemetryData.car_.accelerations_.pitch_ * ((float)Math.PI / 180.0f);

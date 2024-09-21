@@ -195,7 +195,7 @@ namespace GenericTelemetryProvider
             rawData.position_z = currRawPos.Z;
 
             //filter position
-            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, posKeyMask, true);
+            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, posKeyMask, true, dt);
         }
 
         public override void CalcVelocity()
@@ -228,7 +228,7 @@ namespace GenericTelemetryProvider
         public override void FilterVelocity()
         {
             //filter local velocity
-            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, velKeyMask, false);
+            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, velKeyMask, false, dt);
         }
 
         public override void CalcAcceleration()

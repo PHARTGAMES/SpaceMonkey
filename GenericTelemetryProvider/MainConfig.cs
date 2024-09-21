@@ -110,6 +110,8 @@ namespace GenericTelemetryProvider
 
         public string hapticsConfig = "Haptics\\defaultHaptics.txt";
 
+        public string motionConfig = "Motion\\defaultMotion.txt";
+
         public class HotkeyConfig
         {
             public Keys key;

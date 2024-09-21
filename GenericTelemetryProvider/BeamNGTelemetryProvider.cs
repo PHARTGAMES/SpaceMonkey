@@ -76,7 +76,9 @@ namespace GenericTelemetryProvider
                     && telemetryData.magic[2] == 'G'
                     && telemetryData.magic[3] == '2')
                 {
-                    ProcessBNGAPI(telemetryData.timeStamp - lastTelemetryData.timeStamp);
+                    dt = telemetryData.timeStamp - lastTelemetryData.timeStamp;
+                    Console.WriteLine($"dt: {dt}");
+                    ProcessBNGAPI(dt);
                     lastTelemetryData.CopyFields(telemetryData);
                 }
 
@@ -154,7 +156,7 @@ namespace GenericTelemetryProvider
             rawData.suspension_velocity_fl = telemetryData.suspension_velocity_fl;
             rawData.suspension_velocity_fr = telemetryData.suspension_velocity_fr;
 
-            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, suspVelKeyMask, false);
+            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, suspVelKeyMask, false, dt);
 
             rawData.suspension_acceleration_bl = telemetryData.suspension_acceleration_bl;
             rawData.suspension_acceleration_br = telemetryData.suspension_acceleration_br;

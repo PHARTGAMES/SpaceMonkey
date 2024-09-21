@@ -165,7 +165,7 @@ namespace GenericTelemetryProvider
         public override void FilterVelocity()
         {
             //filter local velocity
-            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, velKeyMask, true);
+            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, velKeyMask, true, dt);
         }
 
         public override void CalcAcceleration()

@@ -28,7 +28,7 @@ namespace GenericTelemetryProvider
 
         }
 
-        public virtual void SendData(CMCustomUDPData _data)
+        public virtual void SendData(CMCustomUDPData _data, float _dt)
         {
             data.Copy(_data, false);
         }

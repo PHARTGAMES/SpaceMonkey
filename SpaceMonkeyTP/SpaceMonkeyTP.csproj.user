@@ -3,7 +3,10 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <NXTargetSerialNumber />
     <NXTargetName>Default</NXTargetName>
-    <StartWorkingDirectory>D:\Personal\projects\SpaceMonkey\GenericTelemetryProvider\Release\</StartWorkingDirectory>
+    <StartWorkingDirectory>D:\Personal\projects\SpaceMonkey\GenericTelemetryProvider\Release</StartWorkingDirectory>
+    <StartAction>Project</StartAction>
+    <StartProgram>
+    </StartProgram>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <NXTargetSerialNumber />

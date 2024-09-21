@@ -110,11 +110,11 @@ namespace GenericTelemetryProvider
             state = State.Stopped;
         }
 
-        public void SendData(CMCustomUDPData data)
+        public void SendData(CMCustomUDPData data, float dt)
         {
             foreach (TelemetryOutput output in telemetryOutputs)
             {
-                output.SendData(data);
+                output.SendData(data, dt);
             }
         }
 

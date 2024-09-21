@@ -444,7 +444,7 @@ namespace GenericTelemetryProvider
             rawData.position_z = currRawPos.Z;
 
             //filter position
-            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, posKeyMask, true);
+            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, posKeyMask, true, dt);
 
             worldPosition = new Vector3((float)filteredData.position_x, (float)filteredData.position_y, (float)filteredData.position_z);
 

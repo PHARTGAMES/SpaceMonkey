@@ -12,7 +12,7 @@ namespace GenericTelemetryProvider
     public class TelemetryOutputCallback : TelemetryOutput
     {
         protected OutputConfigTypeDataCallback typedConfig;
-        protected Action<CMCustomUDPData> callback;
+        protected Action<CMCustomUDPData, float> callback;
 
 
         public override void Init(OutputConfigTypeData _outputConfig)
@@ -35,11 +35,11 @@ namespace GenericTelemetryProvider
 
         }
 
-        public override void SendData(CMCustomUDPData _data)
+        public override void SendData(CMCustomUDPData _data, float dt)
         {
-            base.SendData(_data);
+            base.SendData(_data, dt);
 
-            callback?.Invoke(_data);
+            callback?.Invoke(_data, dt);
         }
 
         public override OutputConfigTypeData GetConfigTypeData()
@@ -47,7 +47,7 @@ namespace GenericTelemetryProvider
             return outputConfig;
         }
 
-        public void RegisterCallback(Action<CMCustomUDPData> cb)
+        public void RegisterCallback(Action<CMCustomUDPData, float> cb)
         {
             callback += cb;
         }

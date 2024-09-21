@@ -153,7 +153,7 @@ namespace GenericTelemetryProvider
             rawData.gforce_vertical = telemetryData.accY;
             rawData.gforce_longitudinal = telemetryData.accZ;
 
-            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, accelKeyMask, false);
+            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, accelKeyMask, false, dt);
 
         }
 

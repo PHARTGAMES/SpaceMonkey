@@ -40,6 +40,7 @@ using System.Globalization;
 using GenericTelemetryProvider;
 using Microsoft.Win32;
 using System.Runtime.CompilerServices;
+using SMMotion;
 
 namespace GTPSimfeedback
 {
@@ -161,7 +162,14 @@ namespace GTPSimfeedback
         /// <returns>List of all telemetry names</returns>
         public override string[] GetValueList()
         {
-            return GetValueListByReflection(typeof(CMCustomUDPData));
+            if (config.useControlState)
+            {
+                return GetValueListByReflection(typeof(SMMControlState));
+            }
+            else
+            {
+                return GetValueListByReflection(typeof(CMCustomUDPData));
+            }
         }
 
         /// <summary>
@@ -180,6 +188,17 @@ namespace GTPSimfeedback
                     SMClient.Init((success) =>
                     {
                         SMClient.RegisterTelemetryCallback(TelemetryCallback);
+
+                        IsConnected = true;
+                        IsRunning = true;
+                    });
+                } 
+
+                if(config.useControlState)
+                {
+                    SMClient.Init((success) =>
+                    {
+                        SMMotionManager.instance.RegisterCallback(ControlRigCallback);
 
                         IsConnected = true;
                         IsRunning = true;
@@ -218,7 +237,7 @@ namespace GTPSimfeedback
             config = JsonConvert.DeserializeObject<GTPConfig>(File.ReadAllText(filename));
         }
 
-        public void TelemetryCallback(CMCustomUDPData telemetryData)
+        public void TelemetryCallback(CMCustomUDPData telemetryData, float _dt)
         {
             double systemTimerSeconds = systemTimer.Elapsed.TotalSeconds;
             dt = systemTimerSeconds - lastSystemTimerSeconds;
@@ -232,6 +251,17 @@ namespace GTPSimfeedback
             TelemetryEventArgs args = new TelemetryEventArgs(new GTPTelemetryInfo(telemetryToSend));
             RaiseEvent(OnTelemetryUpdate, args);
         }
+
+        public void ControlRigCallback(SMMControlState controlStateIn)
+        {
+            double systemTimerSeconds = systemTimer.Elapsed.TotalSeconds;
+            dt = systemTimerSeconds - lastSystemTimerSeconds;
+            lastSystemTimerSeconds = systemTimerSeconds;
+
+            TelemetryEventArgs args = new TelemetryEventArgs(new GTPTelemetryInfoControlState(controlStateIn));
+            RaiseEvent(OnTelemetryUpdate, args);
+        }
+
 
         public void ProcessTelemetryExceptions(CMCustomUDPData telemetryToSend)
         {
@@ -428,6 +458,7 @@ namespace GTPSimfeedback
         public bool receiveUDP = false;
         public bool receiveMMF = false;
         public bool integrated = true;
+        public bool useControlState = false;
     }
 
 }

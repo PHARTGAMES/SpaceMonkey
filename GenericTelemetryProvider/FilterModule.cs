@@ -377,4 +377,10 @@ namespace GenericTelemetryProvider
     {
         public int sampleCount;
     }
+
+    [System.Serializable]
+    public class WashoutFilterData : FilterData
+    {
+        public float timeConstant;
+    }
 }

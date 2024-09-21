@@ -42,9 +42,9 @@ namespace GenericTelemetryProvider
             outputMMF = null;
         }
 
-        public override void SendData(CMCustomUDPData _data)
+        public override void SendData(CMCustomUDPData _data, float _dt)
         {
-            base.SendData(_data);
+            base.SendData(_data, _dt);
 
             if (outputMMF != null)
             {

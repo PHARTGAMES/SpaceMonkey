@@ -63,6 +63,7 @@
             this.OutputsBtn = new System.Windows.Forms.Button();
             this.EAWRCBtn = new System.Windows.Forms.Button();
             this.HapticsBtn = new System.Windows.Forms.Button();
+            this.MotionButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // Dirt5Button
@@ -78,7 +79,7 @@
             // 
             // Filters
             // 
-            this.Filters.Location = new System.Drawing.Point(458, 455);
+            this.Filters.Location = new System.Drawing.Point(457, 392);
             this.Filters.Margin = new System.Windows.Forms.Padding(4);
             this.Filters.Name = "Filters";
             this.Filters.Size = new System.Drawing.Size(248, 54);
@@ -417,7 +418,7 @@
             // 
             // OutputsBtn
             // 
-            this.OutputsBtn.Location = new System.Drawing.Point(458, 393);
+            this.OutputsBtn.Location = new System.Drawing.Point(457, 330);
             this.OutputsBtn.Margin = new System.Windows.Forms.Padding(4);
             this.OutputsBtn.Name = "OutputsBtn";
             this.OutputsBtn.Size = new System.Drawing.Size(248, 54);
@@ -438,7 +439,7 @@
             // 
             // HapticsBtn
             // 
-            this.HapticsBtn.Location = new System.Drawing.Point(458, 517);
+            this.HapticsBtn.Location = new System.Drawing.Point(457, 454);
             this.HapticsBtn.Margin = new System.Windows.Forms.Padding(4);
             this.HapticsBtn.Name = "HapticsBtn";
             this.HapticsBtn.Size = new System.Drawing.Size(248, 54);
@@ -447,11 +448,23 @@
             this.HapticsBtn.UseVisualStyleBackColor = true;
             this.HapticsBtn.Click += new System.EventHandler(this.HapticsBtn_Click);
             // 
+            // MotionButton
+            // 
+            this.MotionButton.Location = new System.Drawing.Point(457, 516);
+            this.MotionButton.Margin = new System.Windows.Forms.Padding(4);
+            this.MotionButton.Name = "MotionButton";
+            this.MotionButton.Size = new System.Drawing.Size(248, 54);
+            this.MotionButton.TabIndex = 50;
+            this.MotionButton.Text = "Motion";
+            this.MotionButton.UseVisualStyleBackColor = true;
+            this.MotionButton.Click += new System.EventHandler(this.MotionButton_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(730, 589);
+            this.Controls.Add(this.MotionButton);
             this.Controls.Add(this.HapticsBtn);
             this.Controls.Add(this.EAWRCBtn);
             this.Controls.Add(this.OutputsBtn);
@@ -535,6 +548,7 @@
         private System.Windows.Forms.Button OutputsBtn;
         private System.Windows.Forms.Button EAWRCBtn;
         private System.Windows.Forms.Button HapticsBtn;
+        private System.Windows.Forms.Button MotionButton;
     }
 }
 

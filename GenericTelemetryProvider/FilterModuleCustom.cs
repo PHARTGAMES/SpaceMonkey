@@ -42,6 +42,7 @@ namespace GenericTelemetryProvider
             FIR,
             Median,
             KalmanVelocity,
+            Washout,
 
             Max
         }
@@ -58,6 +59,8 @@ namespace GenericTelemetryProvider
         Mutex mutex = new Mutex(false);
 
         public int maxHistorySamples = 200;
+
+        public float deltaTime = 0.016f;
 
 
         public void InitFromConfig(string filename)
@@ -121,6 +124,15 @@ namespace GenericTelemetryProvider
 
                         filterList.Add(newFilter);
                     }
+                    else
+                    if (filterData is WashoutFilterData)
+                    {
+                        WashoutFilterData fData = (WashoutFilterData)filterData;
+                        WashoutFilter newFilter = new WashoutFilter();
+                        newFilter.SetParameters(fData.timeConstant);
+
+                        filterList.Add(newFilter);
+                    }
                 }
 
             }
@@ -180,7 +192,15 @@ namespace GenericTelemetryProvider
 
                             newConfig.filters.Add(newFilterData);
                         }
+                        else
+                        if (filter is WashoutFilter)
+                        {
+                            WashoutFilterData newFilterData = new WashoutFilterData();
+                            WashoutFilter washoutFilter = (WashoutFilter)filter;
+                            newFilterData.timeConstant = washoutFilter.GetTimeConstant();
 
+                            newConfig.filters.Add(newFilterData);
+                        }
                     }
                 }    
             }    
@@ -196,10 +216,12 @@ namespace GenericTelemetryProvider
 
         }
 
-        public void Filter(CMCustomUDPData dataIn, ref CMCustomUDPData dataOut, int keyMask = int.MaxValue, bool newHistory = true)
+        public void Filter(CMCustomUDPData dataIn, ref CMCustomUDPData dataOut, int keyMask = int.MaxValue, bool newHistory = true, float _deltaTime = 0.016f)
         {
             if (filters == null)
                 return;
+
+            deltaTime = _deltaTime;
 
             mutex.WaitOne();
 
@@ -386,6 +408,18 @@ namespace GenericTelemetryProvider
 
                         filterList.Add(newFilterW);
                         newFilter = newFilterW;
+
+                        break;
+                    }
+
+                case FilterType.Washout:
+                    {
+
+                        WashoutFilter newWashoutFilter = new WashoutFilter();
+                        newWashoutFilter.SetParameters(0.2f);
+
+                        filterList.Add(newWashoutFilter);
+                        newFilter = newWashoutFilter;
 
                         break;
                     }

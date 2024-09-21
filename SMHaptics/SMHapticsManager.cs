@@ -45,7 +45,7 @@ namespace SMHaptics
             SMHOutputManager.instance.EnumerateDevices();
         }
 
-        public virtual void Input(CMCustomUDPData telemetryData)
+        public virtual void Input(CMCustomUDPData telemetryData, float dt)
         {
             foreach(SMHEffect effect in effects)
             {

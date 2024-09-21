@@ -137,6 +137,14 @@ namespace GenericTelemetryProvider
 
                             flowLayoutFilters.Controls.Add(newControl);
                         }
+                        else
+                        if (filter is WashoutFilter)
+                        {
+                            WashoutFilterControl newControl = new WashoutFilterControl();
+                            newControl.SetFilter((WashoutFilter)filter);
+
+                            flowLayoutFilters.Controls.Add(newControl);
+                        }
 
                     }
                 }
@@ -227,6 +235,11 @@ namespace GenericTelemetryProvider
             {
                 FilterModuleCustom.Instance.DeleteFilter(((KalmanVelocityFilterControl)control).filter, filterKey);
             }
+            else
+            if (control is WashoutFilterControl)
+            {
+                FilterModuleCustom.Instance.DeleteFilter(((WashoutFilterControl)control).filter, filterKey);
+            }
             flowLayoutFilters.Controls.Remove(control);
         }
 
@@ -256,6 +269,11 @@ namespace GenericTelemetryProvider
             if (control is KalmanVelocityFilterControl)
             {
                 FilterModuleCustom.Instance.MoveFilter(((KalmanVelocityFilterControl)control).filter, filterKey, direction);
+            }
+            else
+            if (control is WashoutFilterControl)
+            {
+                FilterModuleCustom.Instance.MoveFilter(((WashoutFilterControl)control).filter, filterKey, direction);
             }
         }
 

@@ -204,7 +204,7 @@ namespace GenericTelemetryProvider
                 ProcessInputs();
 
                 //Filter everything besides position, velocity, angular velocity, suspension velocity, etc..
-                FilterModuleCustom.Instance.Filter(rawData, ref filteredData, int.MaxValue & ~(posKeyMask | velKeyMask | angVelKeyMask | suspVelKeyMask | accelKeyMask), false);
+                FilterModuleCustom.Instance.Filter(rawData, ref filteredData, int.MaxValue & ~(posKeyMask | velKeyMask | angVelKeyMask | suspVelKeyMask | accelKeyMask), false, dt);
 
                 ProcessTeleportEnd();
 
@@ -274,7 +274,7 @@ namespace GenericTelemetryProvider
             rawData.position_z = currRawPos.Z;
 
             //filter position
-            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, posKeyMask, true);
+            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, posKeyMask, true, dt);
 
             //assign
             worldPosition = new Vector3((float)filteredData.position_x, (float)filteredData.position_y, (float)filteredData.position_z);
@@ -311,7 +311,7 @@ namespace GenericTelemetryProvider
         { 
 
             //filter local velocity
-            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, velKeyMask, false);
+            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, velKeyMask, false, dt);
 
         }
 
@@ -329,7 +329,7 @@ namespace GenericTelemetryProvider
             rawData.gforce_vertical = localAcceleration.Y;
             rawData.gforce_longitudinal = localAcceleration.Z;
 
-            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, accelKeyMask, false);
+            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, accelKeyMask, false, dt);
 
         }
 
@@ -431,7 +431,7 @@ namespace GenericTelemetryProvider
             rawData.suspension_velocity_fl = ((float)filteredData.suspension_position_fl - (float)lastFilteredData.suspension_position_fl) / dt;
             rawData.suspension_velocity_fr = ((float)filteredData.suspension_position_fr - (float)lastFilteredData.suspension_position_fr) / dt;
 
-            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, suspVelKeyMask, false);
+            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, suspVelKeyMask, false, dt);
 
             rawData.suspension_acceleration_bl = ((float)filteredData.suspension_velocity_bl - (float)lastFilteredData.suspension_velocity_bl) / dt;
             rawData.suspension_acceleration_br = ((float)filteredData.suspension_velocity_br - (float)lastFilteredData.suspension_velocity_br) / dt;
@@ -474,7 +474,7 @@ namespace GenericTelemetryProvider
             rawData.pitch_velocity = pitchVel;
             rawData.roll_velocity = rollVel;
 
-            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, angVelKeyMask, false);
+            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, angVelKeyMask, false, dt);
 
             rawData.yaw_acceleration = ((float)filteredData.yaw_velocity - (float)lastFilteredData.yaw_velocity) / dt;
             rawData.pitch_acceleration = ((float)filteredData.pitch_velocity - (float)lastFilteredData.pitch_velocity) / dt;
@@ -558,7 +558,7 @@ namespace GenericTelemetryProvider
 
         public virtual void SendFilteredData()
         {
-            OutputModule.Instance.SendData(filteredData);
+            OutputModule.Instance.SendData(filteredData, dt);
 
             lastFilteredData.Copy(filteredData);
         }
