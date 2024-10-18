@@ -7,14 +7,14 @@
     "rigLength": 0.93,
     "actuatorVerticalOffset": 0.0,
     "actuatorStroke": 0.1,
-    "actuatorLength": 0.2,
+    "actuatorLength": 0.15,
     "headLocalOffset": {
       "$type": "System.Numerics.Vector3, System.Numerics",
       "X": 0.0,
       "Y": 1.01,
-      "Z": -0.2
+      "Z": -0.3
     },
-    "accelerationScale": 0.05,
-    "maxAcceleration": 5.2
+    "accelerationScale": 0.025,
+    "maxAcceleration": 0.025
   }
 }
