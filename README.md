@@ -634,8 +634,8 @@ https://github.com/PHARTGAMES/SpaceMonkey/issues
 
 Enter an issue here https://github.com/PHARTGAMES/SpaceMonkey/issues
 
-Discord: https://discord.gg/ecfweprpx
 
+ [Discord](https://discord.gg/gGUufTdpgG)
 ---
 
 # Contributors
