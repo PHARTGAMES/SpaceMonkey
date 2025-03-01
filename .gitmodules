@@ -1,0 +1,3 @@
+[submodule "UEVR"]
+	path = UEVR
+	url = https://github.com/PHARTGAMES/UEVR.git
