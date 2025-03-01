@@ -31,9 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="0Harmony">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\VTOL VR\VTOLVR_Data\Managed\0Harmony.dll</HintPath>
-    </Reference>
     <Reference Include="Accessibility" />
     <Reference Include="Assembly-CSharp">
       <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\VTOL VR\VTOLVR_Data\Managed\Assembly-CSharp.dll</HintPath>
@@ -43,9 +40,6 @@
     </Reference>
     <Reference Include="BDLearningBot">
       <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\VTOL VR\VTOLVR_Data\Managed\BDLearningBot.dll</HintPath>
-    </Reference>
-    <Reference Include="Core">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\VTOL VR\VTOLVR_Data\Managed\Core.dll</HintPath>
     </Reference>
     <Reference Include="CsvHelper">
       <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\VTOL VR\VTOLVR_Data\Managed\CsvHelper.dll</HintPath>
@@ -69,11 +63,8 @@
     <Reference Include="Rewired_Core">
       <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\VTOL VR\VTOLVR_Data\Managed\Rewired_Core.dll</HintPath>
     </Reference>
-    <Reference Include="Rewired_Windows_Lib">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\VTOL VR\VTOLVR_Data\Managed\Rewired_Windows_Lib.dll</HintPath>
-    </Reference>
-    <Reference Include="SimpleTCP">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\VTOL VR\VTOLVR_Data\Managed\SimpleTCP.dll</HintPath>
+    <Reference Include="Rewired_Windows">
+      <HintPath>..\..\..\..\Program Files (x86)\Steam\steamapps\common\VTOL VR\VTOLVR_Data\Managed\Rewired_Windows.dll</HintPath>
     </Reference>
     <Reference Include="SteamVR">
       <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\VTOL VR\VTOLVR_Data\Managed\SteamVR.dll</HintPath>
@@ -140,9 +131,6 @@
     <Reference Include="UnityEngine.DirectorModule">
       <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\VTOL VR\VTOLVR_Data\Managed\UnityEngine.DirectorModule.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.FileSystemHttpModule">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\VTOL VR\VTOLVR_Data\Managed\UnityEngine.FileSystemHttpModule.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEngine.GameCenterModule">
       <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\VTOL VR\VTOLVR_Data\Managed\UnityEngine.GameCenterModule.dll</HintPath>
     </Reference>
@@ -199,9 +187,6 @@
     </Reference>
     <Reference Include="UnityEngine.StreamingModule">
       <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\VTOL VR\VTOLVR_Data\Managed\UnityEngine.StreamingModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.StyleSheetsModule">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\VTOL VR\VTOLVR_Data\Managed\UnityEngine.StyleSheetsModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.SubstanceModule">
       <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\VTOL VR\VTOLVR_Data\Managed\UnityEngine.SubstanceModule.dll</HintPath>
