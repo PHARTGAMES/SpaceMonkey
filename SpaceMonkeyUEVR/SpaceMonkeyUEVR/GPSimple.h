@@ -31,12 +31,20 @@ public:
 
 inline void to_json(json& a_json, const GPSimpleConfig& a_config)
 {
+	to_json(a_json, static_cast<const UEVRGameConfig&>(a_config));
+
 	a_json = json{ {"m_object_path", a_config.m_object_path}, {"m_object_class", a_config.m_object_class} };
 }
 
+inline void to_json(json& a_json, const GPSimpleConfig* a_config)
+{
+	to_json(a_json, *a_config);
+}
 
 inline void from_json(const json& a_json, GPSimpleConfig& a_config)
 {
+	from_json(a_json, static_cast<UEVRGameConfig&>(a_config));
+
 	JsonGetOptional(a_json, "m_object_path", a_config.m_object_path);
 	JsonGetOptional(a_json, "m_object_class", a_config.m_object_class);
 }

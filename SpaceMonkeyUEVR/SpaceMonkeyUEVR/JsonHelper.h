@@ -10,37 +10,47 @@ using json = nlohmann::json;
 template<typename T>
 inline T* jsonHelperLoadFile(const char* a_basePath, const char* a_filename)
 {
-	T* output = new T();
-
-	std::string filePath = std::string(a_basePath) + "/" + a_filename;
-
-
-	FILE* file = std::fopen(filePath.c_str(), "rb");
-	if (!file)
+	try
 	{
-		std::cerr << "Error opening file " << filePath << std::endl;
+		T* output = nullptr;// new T();
+
+		std::string filePath = std::string(a_basePath) + "/" + a_filename;
+
+
+		FILE* file = std::fopen(filePath.c_str(), "rb");
+		if (!file)
+		{
+			std::cerr << "Error opening file " << filePath << std::endl;
+			return output;
+		}
+
+		// Get the length of the file
+		std::fseek(file, 0, SEEK_END);
+		long length = std::ftell(file);
+		std::rewind(file);
+
+		// Allocate memory for the char string and read the file contents into it
+		char* buffer = new char[length + 1];
+		std::fread(buffer, 1, length, file);
+		buffer[length] = '\0';
+
+		// Close the file and return the pointer to the char string
+		std::fclose(file);
+
+		json j = json::parse(buffer);
+//		j.get_to(*output);
+
+		output = j.get<T*>();
+
+		delete[] buffer;
+
 		return output;
+
 	}
-
-	// Get the length of the file
-	std::fseek(file, 0, SEEK_END);
-	long length = std::ftell(file);
-	std::rewind(file);
-
-	// Allocate memory for the char string and read the file contents into it
-	char* buffer = new char[length + 1];
-	std::fread(buffer, 1, length, file);
-	buffer[length] = '\0';
-
-	// Close the file and return the pointer to the char string
-	std::fclose(file);
-
-	json j = json::parse(buffer);
-	j.get_to(*output);
-
-	delete[] buffer;
-
-	return output;
+	catch (std::exception* e)
+	{
+		return nullptr;
+	}
 }
 
 
