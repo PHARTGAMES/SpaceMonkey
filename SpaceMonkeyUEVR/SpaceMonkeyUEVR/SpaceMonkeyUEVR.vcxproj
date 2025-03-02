@@ -176,12 +176,20 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="framework.h" />
+    <ClInclude Include="GPSimple.h" />
+    <ClInclude Include="JsonHelper.h" />
+    <ClInclude Include="nlohmann\json.hpp" />
     <ClInclude Include="SpaceMonkeyUEVRDefines.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="SpaceMonkeyUEVR.h" />
+    <ClInclude Include="UEVRGameConfig.h" />
+    <ClInclude Include="UEVRGameConfigTypes.h" />
+    <ClInclude Include="UEVRGamePlugin.h" />
     <ClInclude Include="UEVRUtils.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GPSimple.cpp" />
+    <ClCompile Include="JsonHelper.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -189,6 +197,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="SpaceMonkeyUEVR.cpp" />
+    <ClCompile Include="UEVRGameConfig.cpp" />
+    <ClCompile Include="UEVRGamePlugin.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
