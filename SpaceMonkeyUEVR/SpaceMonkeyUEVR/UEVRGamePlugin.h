@@ -1,5 +1,6 @@
 #pragma once
 #include "uevr/API.hpp"
+#include "UObjectStructs.h"
 
 using namespace uevr;
 
@@ -15,6 +16,5 @@ public:
     virtual void on_pre_engine_tick(API::UGameEngine * engine, float delta) = 0;
 
     virtual void on_post_engine_tick(API::UGameEngine* engine, float delta) = 0;
-
 };
 

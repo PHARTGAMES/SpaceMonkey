@@ -24,6 +24,52 @@ void SpaceMonkeyUEVR::load_game_plugin()
 }
 
 
+void SpaceMonkeyUEVR::on_initialize() 
+{
+    // Logs to the appdata UnrealVRMod log.txt file
+    //API::get()->log_error("%s %s", "Hello", "error");
+    //API::get()->log_warn("%s %s", "Hello", "warning");
+    //API::get()->log_info("%s %s", "Hello", "info");
+
+    load_game_plugin();
+}
+
+
+void SpaceMonkeyUEVR::on_pre_engine_tick(API::UGameEngine* engine, float delta) 
+{
+    //PLUGIN_LOG_ONCE("Pre Engine Tick: %f", delta);
+
+    if(m_game_plugin != nullptr)
+    {
+        m_game_plugin->on_pre_engine_tick(engine, delta);
+    }
+}
+
+void SpaceMonkeyUEVR::on_post_engine_tick(API::UGameEngine* engine, float delta) 
+{
+    //PLUGIN_LOG_ONCE("Post Engine Tick: %f", delta);
+
+    if (m_game_plugin != nullptr)
+    {
+        m_game_plugin->on_post_engine_tick(engine, delta);
+    }
+}
+
+void SpaceMonkeyUEVR::on_pre_slate_draw_window(UEVR_FSlateRHIRendererHandle renderer, UEVR_FViewportInfoHandle viewport_info) 
+{
+    //PLUGIN_LOG_ONCE("Pre Slate Draw Window");
+}
+
+void SpaceMonkeyUEVR::on_post_slate_draw_window(UEVR_FSlateRHIRendererHandle renderer, UEVR_FViewportInfoHandle viewport_info) 
+{
+    //PLUGIN_LOG_ONCE("Post Slate Draw Window");
+}
+
+
+
+
+
+
 std::string SpaceMonkeyUEVR::get_module_path()
 {
     char path[MAX_PATH] = { 0 };

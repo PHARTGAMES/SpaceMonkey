@@ -182,10 +182,12 @@
     <ClInclude Include="SpaceMonkeyUEVRDefines.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="SpaceMonkeyUEVR.h" />
+    <ClInclude Include="UEVRFunctions.h" />
     <ClInclude Include="UEVRGameConfig.h" />
     <ClInclude Include="UEVRGameConfigTypes.h" />
     <ClInclude Include="UEVRGamePlugin.h" />
     <ClInclude Include="UEVRUtils.h" />
+    <ClInclude Include="UObjectStructs.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GPSimple.cpp" />
@@ -197,6 +199,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="SpaceMonkeyUEVR.cpp" />
+    <ClCompile Include="UEVRFunctions.cpp" />
     <ClCompile Include="UEVRGameConfig.cpp" />
     <ClCompile Include="UEVRGamePlugin.cpp" />
   </ItemGroup>
