@@ -1,6 +1,7 @@
 #pragma once
 #include "uevr/API.hpp"
 #include "UObjectStructs.h"
+#include "SpaceMonkeyTelemetryAPI.h"
 
 using namespace uevr;
 
@@ -8,10 +9,14 @@ class UEVRGameConfig;
 
 class UEVRGamePlugin
 {
+protected:
 
+    SpaceMonkeyTelemetryAPI* m_telemetryAPI;
+    SpaceMonkeyTelemetryFrameData m_frameData;
 public:
 
-    UEVRGamePlugin(UEVRGameConfig* a_game_config) {}
+    UEVRGamePlugin(UEVRGameConfig* a_game_config);
+    ~UEVRGamePlugin();
 
     virtual void on_pre_engine_tick(API::UGameEngine * engine, float delta) = 0;
 

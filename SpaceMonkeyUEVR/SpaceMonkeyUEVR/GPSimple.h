@@ -22,6 +22,7 @@ protected:
 	GPSimpleConfig* m_game_config_gp_simple;
 
 	API::UObject* m_selected_pawn = nullptr;
+	double m_systemTime;
 
 public:
 	GPSimple(UEVRGameConfig* a_game_config);
