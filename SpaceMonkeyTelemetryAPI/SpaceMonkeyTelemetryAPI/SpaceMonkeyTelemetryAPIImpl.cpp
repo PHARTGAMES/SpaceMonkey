@@ -2,10 +2,6 @@
 #include "SpaceMonkeyTelemetryAPIImpl.h"
 
 
-SpaceMonkeyTelemetryAPI* SpaceMonkeyTelemetryAPI_Create()
-{
-	return new SpaceMonkeyTelemetryAPIImpl();
-}
 
 void SpaceMonkeyTelemetryAPIImpl::InitSendSharedMemory()
 {
@@ -54,3 +50,67 @@ void SpaceMonkeyTelemetryAPIImpl::Deinit()
 	}
 }
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+	// Factory function to create an instance of the API.
+	SMT_API SpaceMonkeyTelemetryAPI* SpaceMonkeyTelemetryAPI_Create() 
+	{
+		return new SpaceMonkeyTelemetryAPIImpl();
+	}
+
+	// Function to destroy an instance of the API.
+	SMT_API void SpaceMonkeyTelemetryAPI_Destroy(SpaceMonkeyTelemetryAPI* instance) 
+	{
+		delete instance;
+	}
+
+	// Wrapper function for InitSendSharedMemory.
+	SMT_API void SpaceMonkeyTelemetryAPI_InitSendSharedMemory(SpaceMonkeyTelemetryAPI* instance) 
+	{
+		if (instance) 
+		{
+			instance->InitSendSharedMemory();
+		}
+	}
+
+	// Wrapper function for InitRecieveSharedMemory.
+	SMT_API void SpaceMonkeyTelemetryAPI_InitRecieveSharedMemory(SpaceMonkeyTelemetryAPI* instance) 
+	{
+		if (instance) 
+		{
+			instance->InitRecieveSharedMemory();
+		}
+	}
+
+	// Wrapper function for SendFrame.
+	SMT_API void SpaceMonkeyTelemetryAPI_SendFrame(SpaceMonkeyTelemetryAPI* instance, SpaceMonkeyTelemetryFrameData* a_frame) 
+	{
+		if (instance && a_frame) 
+		{
+			instance->SendFrame(a_frame);
+		}
+	}
+
+	// Wrapper function for RecieveFrame.
+	SMT_API void SpaceMonkeyTelemetryAPI_RecieveFrame(SpaceMonkeyTelemetryAPI* instance, SpaceMonkeyTelemetryFrameData* a_frame) 
+	{
+		if (instance && a_frame) 
+		{
+			instance->RecieveFrame(a_frame);
+		}
+	}
+
+	// Wrapper function for Deinit.
+	SMT_API void SpaceMonkeyTelemetryAPI_Deinit(SpaceMonkeyTelemetryAPI* instance) 
+	{
+		if (instance) 
+		{
+			instance->Deinit();
+		}
+	}
+
+#ifdef __cplusplus
+}
+#endif

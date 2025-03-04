@@ -72,6 +72,13 @@
       <DependentUpon>EAWRCUI.cs</DependentUpon>
     </Compile>
     <Compile Include="EAWRCAPI.cs" />
+    <Compile Include="SMTTelemetryProvider.cs" />
+    <Compile Include="SMTUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SMTUI.Designer.cs">
+      <DependentUpon>SMTUI.cs</DependentUpon>
+    </Compile>
     <Compile Include="SMHEffectPicker.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -111,6 +118,7 @@
     <Compile Include="SMHEngineEffectControl.Designer.cs">
       <DependentUpon>SMHEngineEffectControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="SpaceMonkeyTelemetryAPI.cs" />
     <Compile Include="TelemetryOutput.cs" />
     <Compile Include="TelemetryOutputCallback.cs" />
     <Compile Include="TelemetryOutputMMF.cs" />
@@ -312,6 +320,9 @@
     <Compile Include="XInputController.cs" />
     <EmbeddedResource Include="EAWRCUI.resx">
       <DependentUpon>EAWRCUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SMTUI.resx">
+      <DependentUpon>SMTUI.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SMHEffectPicker.resx">
       <DependentUpon>SMHEffectPicker.cs</DependentUpon>

@@ -17,4 +17,6 @@ copy /Y "%FROM_DIR%SpaceMonkeyTelemetryAPI%PLT%.dll" %TO_DIR_LIBS%
 copy /Y "%FROM_DIR%SpaceMonkeyUEVR%PLT%.dll" %TO_DIR_PLUGS%
 copy /Y "%FROM_DIR%SpaceMonkeyTelemetryAPI%PLT%.dll" %TO_DIR_PLUGS%
 
+copy /Y "%FROM_DIR%SpaceMonkeyTelemetryAPI%PLT%.dll" "..\..\GenericTelemetryProvider\Release"
+
 popd

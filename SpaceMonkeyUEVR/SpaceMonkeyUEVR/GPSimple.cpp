@@ -73,6 +73,10 @@ void GPSimple::on_post_engine_tick(API::UGameEngine* engine, float delta)
 
 		m_systemTime += delta;
 		m_frameData.m_time = m_systemTime;
+		
+		m_frameData.m_posX = location.X;
+		m_frameData.m_posY = location.Y;
+		m_frameData.m_posZ = location.Z;
 
 		m_frameData.m_fwdX = forward.X;
 		m_frameData.m_fwdY = forward.Y;
