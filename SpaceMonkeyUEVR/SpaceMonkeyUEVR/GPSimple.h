@@ -20,8 +20,7 @@ class GPSimple : public UEVRGamePlugin
 {
 protected:
 	GPSimpleConfig* m_game_config_gp_simple;
-
-	API::UObject* m_selected_pawn = nullptr;
+		
 	double m_systemTime;
 
 public:
@@ -31,8 +30,7 @@ public:
 
     virtual void on_post_engine_tick(API::UGameEngine* engine, float delta) override;
 
-
-
+	bool is_correct_pawn(API::UObject* object);
 
 };
 
@@ -55,3 +53,4 @@ inline void from_json(const json& a_json, GPSimpleConfig& a_config)
 
 	JsonGetOptional(a_json, "m_pawn_display_name_substring", a_config.m_pawn_display_name_substring);
 }
+

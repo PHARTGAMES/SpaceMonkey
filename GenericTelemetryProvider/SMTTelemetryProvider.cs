@@ -68,7 +68,7 @@ namespace GenericTelemetryProvider
 
                     SMTAPI.RecieveFrame(ref frameData);
 
-                    if (lastFrameTime == 0.0f && frameData.m_time != 0.0f)
+                    if ((lastFrameTime == 0.0f && frameData.m_time != 0.0f) || frameData.m_time < lastFrameTime)
                     {
                         lastFrameTime = frameData.m_time;
                         continue;
@@ -82,7 +82,6 @@ namespace GenericTelemetryProvider
 
                         ProcessFrameData((float)calcDT);
 
-                        //while ((sw.Elapsed.TotalSeconds - lastSWTime) < ((1.0/60.0))) { }
                     }
                 }
                 catch (Exception e)

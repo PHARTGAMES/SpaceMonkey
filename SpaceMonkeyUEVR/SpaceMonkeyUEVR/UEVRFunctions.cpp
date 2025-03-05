@@ -110,3 +110,26 @@ void get_actor_transform_vectors(uevr::API::UObject* uobject, FVectorDouble* loc
 }
 
 
+
+//bool get_uobject_is_valid(uevr::API::UObject* uobject)
+//{
+//	if (uobject == nullptr)
+//		return false;
+//
+//	struct {
+//		bool return_value{};
+//	} get_uobject_is_valid_lowlevel_function_params;
+//
+//
+//	uobject->call_function(L"IsValidLowLevel", &get_uobject_is_valid_lowlevel_function_params);
+//
+//	struct {
+//		bool return_value{};
+//	} get_uobject_is_pending_kill_function_params;
+//
+//
+//	uobject->call_function(L"IsPendingKill", &get_uobject_is_pending_kill_function_params);
+//
+//
+//	return get_uobject_is_valid_lowlevel_function_params.return_value && !get_uobject_is_pending_kill_function_params.return_value;
+//}
