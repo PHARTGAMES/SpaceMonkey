@@ -60,13 +60,13 @@ void get_actor_transform_vectors(uevr::API::UObject* uobject, FVectorDouble* loc
 		location->Y = get_location_params_double.return_value.Y;
 		location->Z = get_location_params_double.return_value.Z;
 
-		forward->X = get_up_params_double.return_value.X;
-		forward->Y = get_up_params_double.return_value.Y;
-		forward->Z = get_up_params_double.return_value.Z;
+		forward->X = get_forward_params_double.return_value.X;
+		forward->Y = get_forward_params_double.return_value.Y;
+		forward->Z = get_forward_params_double.return_value.Z;
 
-		up->X = get_forward_params_double.return_value.X;
-		up->Y = get_forward_params_double.return_value.Y;
-		up->Z = get_forward_params_double.return_value.Z;
+		up->X = get_up_params_double.return_value.X;
+		up->Y = get_up_params_double.return_value.Y;
+		up->Z = get_up_params_double.return_value.Z;
 
 		right->X = get_right_params_double.return_value.X;
 		right->Y = get_right_params_double.return_value.Y;
@@ -89,18 +89,17 @@ void get_actor_transform_vectors(uevr::API::UObject* uobject, FVectorDouble* loc
 		GetActorRightFunctionParams<float> get_right_params_float;
 		call_function_on_uobject<GetActorRightFunctionParams<float>>(uobject, &get_right_params_float);
 
-
 		location->X = get_location_params_float.return_value.X;
 		location->Y = get_location_params_float.return_value.Y;
 		location->Z = get_location_params_float.return_value.Z;
 
-		forward->X = get_up_params_float.return_value.X;
-		forward->Y = get_up_params_float.return_value.Y;
-		forward->Z = get_up_params_float.return_value.Z;
+		forward->X = get_forward_params_float.return_value.X;
+		forward->Y = get_forward_params_float.return_value.Y;
+		forward->Z = get_forward_params_float.return_value.Z;
 
-		up->X = get_forward_params_float.return_value.X;
-		up->Y = get_forward_params_float.return_value.Y;
-		up->Z = get_forward_params_float.return_value.Z;
+		up->X = get_up_params_float.return_value.X;
+		up->Y = get_up_params_float.return_value.Y;
+		up->Z = get_up_params_float.return_value.Z;
 
 		right->X = get_right_params_float.return_value.X;
 		right->Y = get_right_params_float.return_value.Y;

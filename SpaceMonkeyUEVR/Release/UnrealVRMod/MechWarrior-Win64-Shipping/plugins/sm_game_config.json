@@ -1,0 +1,11 @@
+{
+	"m_plugin_type":"GPSimple",
+	"m_pawn_display_name_substring":"DerivedMech_C",
+	"m_use_doubles":true,
+	"m_object_path":[
+	"Components",
+	"ChildActorComponent",
+	"Properties",
+	"ChildActor"
+	]
+}

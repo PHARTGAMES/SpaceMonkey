@@ -17,7 +17,8 @@ inline std::wstring string_to_wstring(const std::string& str)
 
     // Determine the number of wide characters needed.
     int size_needed = MultiByteToWideChar(CP_UTF8, 0, str.c_str(), static_cast<int>(str.size()), nullptr, 0);
-    if (size_needed == 0) {
+    if (size_needed == 0) 
+    {
         // Handle error: call GetLastError() if needed.
         return std::wstring();
     }
@@ -26,3 +27,4 @@ inline std::wstring string_to_wstring(const std::string& str)
     MultiByteToWideChar(CP_UTF8, 0, str.c_str(), static_cast<int>(str.size()), &wstr[0], size_needed);
     return wstr;
 }
+

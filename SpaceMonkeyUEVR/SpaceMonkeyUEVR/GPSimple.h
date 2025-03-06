@@ -8,12 +8,12 @@
 
 using json = nlohmann::json;
 
+
 class GPSimpleConfig : public UEVRGameConfig 
 {
 public:
 	std::string m_pawn_display_name_substring;
-
-
+	std::vector<std::string> m_object_path;
 };
 
 class GPSimple : public UEVRGamePlugin
@@ -22,6 +22,7 @@ protected:
 	GPSimpleConfig* m_game_config_gp_simple;
 		
 	double m_systemTime;
+	API::UObject* m_resolved_object;
 
 public:
 	GPSimple(UEVRGameConfig* a_game_config);
@@ -31,6 +32,8 @@ public:
     virtual void on_post_engine_tick(API::UGameEngine* engine, float delta) override;
 
 	bool is_correct_pawn(API::UObject* object);
+
+	API::UObject* get_child_object_for_path(API::UObject* a_object, std::vector<std::string>& a_object_path);
 
 };
 
@@ -52,5 +55,10 @@ inline void from_json(const json& a_json, GPSimpleConfig& a_config)
 	from_json(a_json, static_cast<UEVRGameConfig&>(a_config));
 
 	JsonGetOptional(a_json, "m_pawn_display_name_substring", a_config.m_pawn_display_name_substring);
+	JsonGetOptional(a_json, "m_object_path", a_config.m_object_path);
 }
+
+
+
+
 

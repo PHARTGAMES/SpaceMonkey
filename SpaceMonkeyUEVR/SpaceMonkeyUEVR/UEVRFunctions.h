@@ -2,6 +2,7 @@
 
 #include "uevr/API.hpp"
 #include "UObjectStructs.h"
+using namespace uevr;
 
 // Templated function parameter structs for location and rotation
 template<typename T>
@@ -60,14 +61,34 @@ struct FunctionNameTraits<GetActorRightFunctionParams<T>> {
     static constexpr const wchar_t* name = L"GetActorRightVector";
 };
 
+template<typename T>
+struct GetActorComponentsParams {
+    API::UClass* c;
+    API::TArray<API::UObject*> return_value{};
+};
+
+
+template<typename T>
+struct FunctionNameTraits<GetActorComponentsParams<T>> {
+    static constexpr const wchar_t* name = L"K2_GetComponentsByClass";
+};
+
+
 
 // A templated helper function to wrap call_function
 // (Assumes your uobject type has a member function call_function that accepts a wchar_t* and a void pointer)
 template<typename FuncParams>
-void call_function_on_uobject(uevr::API::UObject* object, FuncParams* params) 
+void call_function_on_uobject(API::UObject* object, FuncParams* params) 
 {
     object->call_function(FunctionNameTraits<FuncParams>::name, params);
 }
+
+
+
+
+
+
+
 
 void get_actor_transform(uevr::API::UObject* uobject, FVectorDouble* location, FRotatorDouble* rotation, bool doubles);
 
