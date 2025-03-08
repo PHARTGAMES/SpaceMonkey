@@ -75,6 +75,73 @@ struct FunctionNameTraits<GetActorComponentsParams<T>> {
 
 
 
+
+
+template<typename T>
+struct PawnIsLocallyControlledFunctionParams {
+    bool return_value;
+};
+
+template<typename T>
+struct FunctionNameTraits<PawnIsLocallyControlledFunctionParams<T>> {
+    static constexpr const wchar_t* name = L"IsLocallyControlled";
+};
+
+
+
+template<typename T>
+struct PawnIsPlayerControlledFunctionParams {
+    bool return_value;
+};
+
+template<typename T>
+struct FunctionNameTraits<PawnIsPlayerControlledFunctionParams<T>> {
+    static constexpr const wchar_t* name = L"IsPlayerControlled";
+};
+
+
+
+template<typename T>
+struct ActorGetWorldFunctionParams {
+    API::UWorld* return_value; //world
+};
+
+template<typename T>
+struct FunctionNameTraits<ActorGetWorldFunctionParams<T>> {
+    static constexpr const wchar_t* name = L"GetWorld";
+};
+
+
+template<typename T>
+struct WorldSpawnActorFunctionParams {
+    API::UClass* actor_class;
+    TVector<T> *location;
+    TRotator<T> *rotation;
+    FActorSpawnParameters &spawn_parameters;
+
+    API::UObject* return_value; //aactor
+
+    WorldSpawnActorFunctionParams(FActorSpawnParameters& InSpawnParameters)
+        : spawn_parameters(InSpawnParameters), actor_class(nullptr), location(nullptr), rotation(nullptr), return_value(nullptr)
+    {}
+};
+
+template<typename T>
+struct FunctionNameTraits<WorldSpawnActorFunctionParams<T>> {
+    static constexpr const wchar_t* name = L"SpawnActor";
+};
+
+
+
+
+
+
+
+
+
+
+
+
 // A templated helper function to wrap call_function
 // (Assumes your uobject type has a member function call_function that accepts a wchar_t* and a void pointer)
 template<typename FuncParams>

@@ -68,8 +68,6 @@ void SpaceMonkeyUEVR::on_post_slate_draw_window(UEVR_FSlateRHIRendererHandle ren
 
 
 
-
-
 std::string SpaceMonkeyUEVR::get_module_path()
 {
     char path[MAX_PATH] = { 0 };

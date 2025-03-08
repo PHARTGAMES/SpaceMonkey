@@ -6,6 +6,10 @@
 	"Components",
 	"ChildActorComponent",
 	"Properties",
+	"ChildActor",
+	"Components",
+	"Pilot_ChildActor",
+	"Properties",
 	"ChildActor"
 	]
 }

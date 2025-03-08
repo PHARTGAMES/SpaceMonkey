@@ -2,6 +2,7 @@
 #include "uevr/API.hpp"
 #include "UObjectStructs.h"
 #include "SpaceMonkeyTelemetryAPI.h"
+#include <windows.h>
 
 using namespace uevr;
 
