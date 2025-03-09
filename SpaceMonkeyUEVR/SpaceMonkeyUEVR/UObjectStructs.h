@@ -12,6 +12,16 @@ struct TVector {
     TVector(T x, T y, T z) : X(x), Y(y), Z(z) { }
 };
 
+template<typename T>
+struct TVector4 {
+    T X, Y, Z, W;
+
+
+    TVector4() : X(T{}), Y(T{}), Z(T{}), W(T{}) { }
+    TVector4(T x, T y, T z, T w) : X(x), Y(y), Z(z), W(w) { }
+};
+
+
 //rotator
 template<typename T>
 struct TRotator {
@@ -36,10 +46,11 @@ using FVectorFloat = TVector<float>;
 using FRotatorFloat = TRotator<float>;
 using FVectorDouble = TVector<double>;
 using FRotatorDouble = TRotator<double>;
+using FVector4Double = TVector4<double>;
+using FVector4Float = TVector4<float>;
 
 
-
-enum ESpawnActorCollisionHandlingMethod
+enum class ESpawnActorCollisionHandlingMethod
 {
     Undefined,
     AlwaysSpawn,
@@ -48,7 +59,7 @@ enum ESpawnActorCollisionHandlingMethod
     DontSpawnIfColliding
 };
 
-enum ESpawnActorScaleMethod
+enum class ESpawnActorScaleMethod
 {
     OverrideRootScale,
     MultiplyWithRoot,
@@ -66,13 +77,83 @@ struct FActorSpawnParameters
     API::UObject* override_parent_component;
     ESpawnActorCollisionHandlingMethod spawn_collision_handling_override;
     ESpawnActorScaleMethod tranform_scale_method;
+
+};
+
+
+// A constexpr function to compute the maximum of two values
+constexpr std::size_t constexpr_max(std::size_t a, std::size_t b) {
+    return a > b ? a : b;
+}
+
+// Primary template for TAlignOfTransform (left undefined)
+template<typename T>
+struct TAlignOfTransform;
+
+// Specialization for float
+template<>
+struct TAlignOfTransform<float> {
+    // Ensure a minimum alignment of 16 bytes
+    static constexpr std::size_t Value = constexpr_max(16, alignof(TVector4<float>));
+};
+
+// Specialization for double
+template<>
+struct TAlignOfTransform<double> {
+    // Ensure a minimum alignment of 16 bytes
+    static constexpr std::size_t Value = constexpr_max(16, alignof(TVector4<double>));
 };
 
 template<typename T>
-struct TTransform {
-    TVector<T> location;
-    TQuaternion<T> rotation;
-
+struct alignas(TAlignOfTransform<T>::Value) TTransform {
+    TVector4<T> rotation;
+    TVector4<T> translation;
+    TVector4<T> scale3d;
 };
 
 
+template <typename T, int Version>
+struct BeginDeferredActorSpawnFromClassParams;
+
+template <typename T>
+struct BeginDeferredActorSpawnFromClassParams<T, 0> {
+    API::UObject* pawn;
+    API::UClass* actor_class;
+    TTransform<T> spawn_transform;
+    ESpawnActorCollisionHandlingMethod collision_handling_override;
+    API::UObject* owner;
+    // Version 0: no transform scale method
+    API::UObject* return_value{};
+};
+
+template <typename T>
+struct BeginDeferredActorSpawnFromClassParams<T, 1> {
+    API::UObject* pawn;
+    API::UClass* actor_class;
+    TTransform<T> spawn_transform;
+    ESpawnActorCollisionHandlingMethod collision_handling_override;
+    API::UObject* owner;
+    ESpawnActorScaleMethod tranform_scale_method;
+    API::UObject* return_value{};
+};
+
+// Templated structs for FinishSpawningActor parameters
+
+template <typename T, int Version>
+struct FinishSpawningActorParams;
+
+template <typename T>
+struct FinishSpawningActorParams<T, 0> {
+    API::UObject* actor;
+    TTransform<T> spawn_transform;
+    // Version 0: no transform scale method
+    API::UObject* return_value{};
+};
+
+template <typename T>
+struct FinishSpawningActorParams<T, 1> {
+    API::UObject* actor;
+    TTransform<T> spawn_transform;
+    ESpawnActorScaleMethod transform_scale_method;
+    API::UObject* return_value{};
+};

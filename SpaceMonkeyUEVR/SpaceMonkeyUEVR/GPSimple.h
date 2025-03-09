@@ -38,7 +38,7 @@ public:
 
 	API::UObject* get_child_object_for_path(API::UObject* a_object, std::vector<std::string>& a_object_path);
 
-	API::UObject* create_transform_offset_object(API::UObject* a_parent);
+	API::UObject* create_transform_offset_object(API::UObject* a_parent, API::UObject* a_pawn, bool a_use_double, int a_spawn_actor_version);
 
 	void resolve_world(API::UGameEngine* engine);
 

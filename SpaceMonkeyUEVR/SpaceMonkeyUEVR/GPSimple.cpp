@@ -119,20 +119,20 @@ void GPSimple::on_post_engine_tick(API::UGameEngine* engine, float delta)
 				m_world = nullptr;
 			}
 
-			if (m_world == nullptr)
-			{
-				resolve_world(engine);
-			}
+			//if (m_world == nullptr)
+			//{
+			//	resolve_world(engine);
+			//}
 
 			//resolve child object
 			if (m_resolved_object == nullptr)
 			{
 				m_resolved_object = get_child_object_for_path(pawn, m_game_config_gp_simple->m_object_path);
 
-				//if (m_resolved_object != nullptr)
-				//{
-				//	m_resolved_object = create_transform_offset_object(m_resolved_object);
-				//}
+				if (m_resolved_object != nullptr)
+				{
+					m_resolved_object = create_transform_offset_object(m_resolved_object, pawn, m_game_config_gp_simple->m_use_doubles, m_game_config_gp_simple->m_spawn_actor_version);
+				}
 			}
 
 			//resolved something, extract telemetry
@@ -299,110 +299,96 @@ API::UObject* GPSimple::get_child_object_for_path(API::UObject* a_object, std::v
 }
 
 
-API::UObject* GPSimple::create_transform_offset_object(API::UObject* a_parent)
+
+// Templated helper function that does the spawning
+template <typename T, int Version>
+API::UObject* create_transform_offset_object_impl(API::UObject* a_parent, API::UObject* a_pawn)
 {
+	auto ugameplay_statics_class = API::get()->find_uobject<API::UClass>(L"Class /Script/Engine.GameplayStatics");
+	API::UObject* statics_default_object = ugameplay_statics_class->get_class_default_object();
 
-
-	//ActorGetWorldFunctionParams<double> actor_get_world_function_params;
-	//call_function_on_uobject<ActorGetWorldFunctionParams<double>>(a_parent, &actor_get_world_function_params);
-
-	//const API::UObject* world = actor_get_world_function_params.return_value;
-
-
-	if (m_world != nullptr)
+	if (statics_default_object != nullptr)
 	{
-		//FActorSpawnParameters spawn_params;
-		//memset(&spawn_params, 0, sizeof(FActorSpawnParameters));
-		//spawn_params.name = API::FName(std::wstring(L"SpaceMonkeyTransform"));
-		//spawn_params.owner = a_parent;
-		//spawn_params.spawn_collision_handling_override = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-		//spawn_params.tranform_scale_method = ESpawnActorScaleMethod::OverrideRootScale;
+		// Set up a transform of type T
+		TTransform<T> trans;
+		trans.rotation = TVector4<T>(0, 0, 0, 1);
+		trans.translation = TVector4<T>(0, 0, 0, 0);
+		trans.scale3d = TVector4<T>(1, 1, 1, 1);
 
-		////fixme:
-		////if(m_game_config_gp_simple->m_use_doubles)
+		API::UClass* actor_class = API::get()->find_uobject<API::UClass>(L"Class /Script/Engine.Actor");
 
-		//WorldSpawnActorFunctionParams<double> world_spawn_actor_function_params(spawn_params);
-		//memset(&world_spawn_actor_function_params, 0, sizeof(WorldSpawnActorFunctionParams<double>));
-
-		//FVectorDouble location = FVectorDouble(0, 0, 0);
-		//FRotatorDouble rotation = FRotatorDouble(0, 0, 0);
-
-		//world_spawn_actor_function_params.actor_class = API::get()->find_uobject<API::UClass>(L"Class /Script/Engine.Actor");
-		//world_spawn_actor_function_params.location = &location;
-		//world_spawn_actor_function_params.rotation = &rotation;
-
-		//call_function_on_uobject<WorldSpawnActorFunctionParams<double>>((API::UObject*)m_world, &world_spawn_actor_function_params);
-
-		//API::UObject* spawned_actor = world_spawn_actor_function_params.return_value;
-
-		//if (spawned_actor != nullptr)
-		//{
-
-		//}
-
-		const auto ugameplay_statics_class = API::get()->find_uobject<API::UClass>(L"Class /Script/Engine.GameplayStatics");
-
-		if (ugameplay_statics_class != nullptr)
+		// Fill begin parameters
+		BeginDeferredActorSpawnFromClassParams<T, Version> begin_params;
+		begin_params.pawn = a_pawn;
+		begin_params.actor_class = actor_class;
+		begin_params.spawn_transform = trans;
+		begin_params.collision_handling_override = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+		begin_params.owner = a_parent;
+		if constexpr (Version == 1)
 		{
-			struct FBeginDeferredActorSpawnFromClassParams {
-				API::UWorld* world;
-				API::UClass* actor_class;
-				TTransform<double>& spawn_transform;
-				ESpawnActorCollisionHandlingMethod collision_handling_override;
-				API::UObject* owner;
-				ESpawnActorScaleMethod tranform_scale_method;
-				API::UObject* return_value{};
-				// Constructor initializing all members.
-				FBeginDeferredActorSpawnFromClassParams(
-					API::UWorld* InWorld,
-					API::UClass* InActorClass,
-					TTransform<double>& InSpawnTransform,
-					ESpawnActorCollisionHandlingMethod InCollisionHandlingOverride,
-					API::UObject* InOwner,
-					ESpawnActorScaleMethod InTranformScaleMethod,
-					API::UObject* InReturnValue = nullptr
-				)
-					: world(InWorld)
-					, actor_class(InActorClass)
-					, spawn_transform(InSpawnTransform)
-					, collision_handling_override(InCollisionHandlingOverride)
-					, owner(InOwner)
-					, tranform_scale_method(InTranformScaleMethod)
-					, return_value(InReturnValue)
-				{}
-			};
-
-			TTransform<double> trans;
-			memset(&trans, 0, sizeof(TTransform<double>));
-
-			FBeginDeferredActorSpawnFromClassParams begin_deferred_actor_spawn_from_class_params(m_world,
-				API::get()->find_uobject<API::UClass>(L"Class /Script/Engine.Actor"),
-				trans,
-				ESpawnActorCollisionHandlingMethod::AlwaysSpawn, 
-				a_parent,
-				ESpawnActorScaleMethod::OverrideRootScale
-				);
-
-
-			//begin_deferred_actor_spawn_from_class_params.world = m_world;
-			//begin_deferred_actor_spawn_from_class_params.actor_class = API::get()->find_uobject<API::UClass>(L"Class /Script/Engine.Actor");
-			//begin_deferred_actor_spawn_from_class_params.spawn_transform = trans;
-			//begin_deferred_actor_spawn_from_class_params.collision_handling_override = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-			//begin_deferred_actor_spawn_from_class_params.owner = a_parent;
-			//begin_deferred_actor_spawn_from_class_params.tranform_scale_method = ESpawnActorScaleMethod::OverrideRootScale;
-
-			ugameplay_statics_class->call_function(L"BeginDeferredActorSpawnFromClass", &begin_deferred_actor_spawn_from_class_params);
-
-			if (begin_deferred_actor_spawn_from_class_params.return_value != nullptr)
-			{
-				API::get()->log_info("create_transform_offset_object spawned actor");
-			}
-
-
+			begin_params.tranform_scale_method = ESpawnActorScaleMethod::OverrideRootScale;
 		}
 
+		statics_default_object->call_function(L"BeginDeferredActorSpawnFromClass", &begin_params);
 
+		if (begin_params.return_value != nullptr)
+		{
+			API::get()->log_info("create_transform_offset_object spawned actor: %s",
+				wstring_to_string(begin_params.return_value->get_full_name()).c_str());
+		}
+
+		API::UObject* spawned_actor = begin_params.return_value;
+
+		// Finish spawning if the actor was successfully spawned
+		if (spawned_actor != nullptr)
+		{
+			FinishSpawningActorParams<T, Version> finish_params;
+			finish_params.actor = spawned_actor;
+			finish_params.spawn_transform = trans;
+			if constexpr (Version == 1)
+			{
+				finish_params.transform_scale_method = ESpawnActorScaleMethod::OverrideRootScale;
+			}
+
+			statics_default_object->call_function(L"FinishSpawningActor", &finish_params);
+
+			if (finish_params.return_value != nullptr)
+			{
+				API::get()->log_info("create_transform_offset_object finished spawning actor: %s",
+					wstring_to_string(finish_params.return_value->get_full_name()).c_str());
+				return finish_params.return_value;
+			}
+		}
 	}
+	return a_parent;
+}
 
+// Main dispatch function – selects the proper template instantiation based on a_use_double and a_spawn_actor_version
+API::UObject* GPSimple::create_transform_offset_object(API::UObject* a_parent, API::UObject* a_pawn, bool a_use_double, int a_spawn_actor_version)
+{
+	if (a_use_double)
+	{
+		switch (a_spawn_actor_version)
+		{
+		case 0:
+			return create_transform_offset_object_impl<double, 0>(a_parent, a_pawn);
+		case 1:
+			return create_transform_offset_object_impl<double, 1>(a_parent, a_pawn);
+		default:
+			break;
+		}
+	}
+	else
+	{
+		switch (a_spawn_actor_version)
+		{
+		case 0:
+			return create_transform_offset_object_impl<float, 0>(a_parent, a_pawn);
+		case 1:
+			return create_transform_offset_object_impl<float, 1>(a_parent, a_pawn);
+		default:
+			break;
+		}
+	}
 	return a_parent;
 }

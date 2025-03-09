@@ -2,6 +2,7 @@
 	"m_plugin_type":"GPSimple",
 	"m_pawn_display_name_substring":"DerivedMech_C",
 	"m_use_doubles":true,
+	"m_spawn_actor_version":1,
 	"m_object_path":[
 	"Components",
 	"ChildActorComponent",
