@@ -10,6 +10,13 @@ struct TVector {
 
     TVector() : X(T{}), Y(T{}), Z(T{}) { }
     TVector(T x, T y, T z) : X(x), Y(y), Z(z) { }
+
+    template<typename U>
+    TVector(const TVector<U>& Other)
+        : X(static_cast<T>(Other.X))
+        , Y(static_cast<T>(Other.Y))
+        , Z(static_cast<T>(Other.Z))
+    { }
 };
 
 template<typename T>
@@ -19,6 +26,9 @@ struct TVector4 {
 
     TVector4() : X(T{}), Y(T{}), Z(T{}), W(T{}) { }
     TVector4(T x, T y, T z, T w) : X(x), Y(y), Z(z), W(w) { }
+
+
+
 };
 
 
@@ -156,4 +166,122 @@ struct FinishSpawningActorParams<T, 1> {
     TTransform<T> spawn_transform;
     ESpawnActorScaleMethod transform_scale_method;
     API::UObject* return_value{};
+};
+
+enum class EAttachmentRule : unsigned char
+{
+    /** Keeps current relative transform as the relative transform to the new parent. */
+    KeepRelative,
+
+    /** Automatically calculates the relative transform such that the attached component maintains the same world transform. */
+    KeepWorld,
+
+    /** Snaps transform to the attach point */
+    SnapToTarget
+};
+
+enum EComponentMobility : int
+{
+    /**
+ * Static objects cannot be moved or changed in game.
+ * - Allows baked lighting
+ * - Fastest rendering
+ */
+    Static,
+
+    /**
+     * A stationary light will only have its shadowing and bounced lighting from static geometry baked by Lightmass, all other lighting will be dynamic.
+     * - It can change color and intensity in game.
+     * - Can't move
+     * - Allows partial baked lighting
+     * - Dynamic shadows
+     */
+     Stationary,
+
+     /**
+      * Movable objects can be moved and changed in game.
+      * - Totally dynamic
+      * - Can cast dynamic shadows
+      * - Slowest rendering
+      */
+      Movable
+};
+
+enum ECollisionEnabled : int
+{
+    /** Will not create any representation in the physics engine. Cannot be used for spatial queries (raycasts, sweeps, overlaps) or simulation (rigid body, constraints). Best performance possible (especially for moving objects) */
+    NoCollision,
+    /** Only used for spatial queries (raycasts, sweeps, and overlaps). Cannot be used for simulation (rigid body, constraints). Useful for character movement and things that do not need physical simulation. Performance gains by keeping data out of simulation tree. */
+    QueryOnly,
+    /** Only used only for physics simulation (rigid body, constraints). Cannot be used for spatial queries (raycasts, sweeps, overlaps). Useful for jiggly bits on characters that do not need per bone detection. Performance gains by keeping data out of query tree */
+    PhysicsOnly,
+    /** Can be used for both spatial queries (raycasts, sweeps, overlaps) and simulation (rigid body, constraints). */
+    QueryAndPhysics,
+    /** Only used for probing the physics simulation (rigid body, constraints). Cannot be used for spatial queries (raycasts,
+    sweeps, overlaps). Useful for when you want to detect potential physics interactions and pass contact data to hit callbacks
+    or contact modification, but don't want to physically react to these contacts. */
+    ProbeOnly,
+    /** Can be used for both spatial queries (raycasts, sweeps, overlaps) and probing the physics simulation (rigid body,
+    constraints). Will not allow for actual physics interaction, but will generate contact data, trigger hit callbacks, and
+    contacts will appear in contact modification. */
+    QueryAndProbe
+};
+
+struct FAttachmentTransformRules
+{
+
+    static FAttachmentTransformRules KeepRelativeTransform;
+    static FAttachmentTransformRules KeepWorldTransform;
+    static FAttachmentTransformRules SnapToTargetNotIncludingScale;
+    static FAttachmentTransformRules SnapToTargetIncludingScale;
+
+    //FAttachmentTransformRules()
+    //    : LocationRule(EAttachmentRule::KeepRelative),
+    //    RotationRule(EAttachmentRule::KeepRelative),
+    //    ScaleRule(EAttachmentRule::KeepRelative),
+    //    bWeldSimulatedBodies(false)
+    //{}
+
+    FAttachmentTransformRules(EAttachmentRule InRule, bool bInWeldSimulatedBodies)
+        : LocationRule(InRule)
+        , RotationRule(InRule)
+        , ScaleRule(InRule)
+        , bWeldSimulatedBodies(bInWeldSimulatedBodies)
+    {}
+
+    FAttachmentTransformRules(EAttachmentRule InLocationRule, EAttachmentRule InRotationRule, EAttachmentRule InScaleRule, bool bInWeldSimulatedBodies)
+        : LocationRule(InLocationRule)
+        , RotationRule(InRotationRule)
+        , ScaleRule(InScaleRule)
+        , bWeldSimulatedBodies(bInWeldSimulatedBodies)
+    {}
+
+    EAttachmentRule LocationRule;
+
+    /** The rule to apply to rotation when attaching */
+    EAttachmentRule RotationRule;
+
+    /** The rule to apply to scale when attaching */
+    EAttachmentRule ScaleRule;
+
+    /** Whether to weld simulated bodies together when attaching */
+    bool bWeldSimulatedBodies;
+};
+
+
+enum class ETeleportType : unsigned char
+{
+    /** Do not teleport physics body. This means velocity will reflect the movement between initial and final position, and collisions along the way will occur */
+    None,
+
+    /** Teleport physics body so that velocity remains the same and no collision occurs */
+    TeleportPhysics,
+
+    /** Teleport physics body and reset physics state completely */
+    ResetPhysics
+};
+
+struct FHitResult
+{
+    unsigned char padding[264];
 };

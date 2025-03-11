@@ -12,5 +12,13 @@
 	"Pilot_ChildActor",
 	"Properties",
 	"ChildActor"
-	]
+	],
+	"m_transform_offset":{
+		"m_locationX":0.0,
+		"m_locationY":0.0,
+		"m_locationZ":0.0,
+		"m_rotationPitch": 0.0,
+		"m_rotationYaw": -90.0,
+		"m_rotationRoll": 0.0
+	}
 }
