@@ -58,7 +58,6 @@ protected:
 	API::UObject* m_resolved_object;
 	int m_pawn_index = 0;
 	std::wstring m_selected_pawn_name;
-	API::UWorld* m_world;
 
 public:
 	GPSimple(UEVRGameConfig* a_game_config);
@@ -70,8 +69,6 @@ public:
 	bool is_correct_pawn(API::UObject* object);
 
 	API::UObject* get_child_object_for_path(API::UObject* a_object, std::vector<std::string>& a_object_path);
-
-	API::UObject* create_transform_offset_object(API::UObject* a_parent, API::UObject* a_pawn, bool a_use_double, int a_spawn_actor_version, const TransformOffset& a_transformOffset);
 
 	void resolve_world(API::UGameEngine* engine);
 

@@ -1,6 +1,5 @@
 {
 	"m_plugin_type":"GPSimple",
 	"m_pawn_display_name_substring":"BP_Car",
-	"m_use_doubles":false,
-	"m_spawn_actor_version":0
+	"m_use_doubles":false
 }

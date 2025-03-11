@@ -4,62 +4,9 @@
 #include "UObjectStructs.h"
 using namespace uevr;
 
-// Templated function parameter structs for location and rotation
-template<typename T>
-struct GetLocationFunctionParams {
-    TVector<T> return_value;
-};
-
-template<typename T>
-struct GetRotationFunctionParams {
-    TRotator<T> return_value;
-};
-
 // Traits class to associate each function parameter struct with its function name
 template<typename FuncParams>
 struct FunctionNameTraits;
-
-template<typename T>
-struct FunctionNameTraits<GetLocationFunctionParams<T>> {
-    static constexpr const wchar_t* name = L"K2_GetActorLocation";
-};
-
-template<typename T>
-struct FunctionNameTraits<GetRotationFunctionParams<T>> {
-    static constexpr const wchar_t* name = L"K2_GetActorRotation";
-};
-
-
-
-template<typename T>
-struct GetActorForwardFunctionParams {
-    TVector<T> return_value;
-};
-
-template<typename T>
-struct FunctionNameTraits<GetActorForwardFunctionParams<T>> {
-    static constexpr const wchar_t* name = L"GetActorForwardVector";
-};
-
-template<typename T>
-struct GetActorUpFunctionParams {
-    TVector<T> return_value;
-};
-
-template<typename T>
-struct FunctionNameTraits<GetActorUpFunctionParams<T>> {
-    static constexpr const wchar_t* name = L"GetActorUpVector";
-};
-
-template<typename T>
-struct GetActorRightFunctionParams {
-    TVector<T> return_value;
-};
-
-template<typename T>
-struct FunctionNameTraits<GetActorRightFunctionParams<T>> {
-    static constexpr const wchar_t* name = L"GetActorRightVector";
-};
 
 template<typename T>
 struct GetActorComponentsParams {
@@ -73,10 +20,6 @@ struct FunctionNameTraits<GetActorComponentsParams<T>> {
     static constexpr const wchar_t* name = L"K2_GetComponentsByClass";
 };
 
-
-
-
-
 template<typename T>
 struct PawnIsLocallyControlledFunctionParams {
     bool return_value;
@@ -86,8 +29,6 @@ template<typename T>
 struct FunctionNameTraits<PawnIsLocallyControlledFunctionParams<T>> {
     static constexpr const wchar_t* name = L"IsLocallyControlled";
 };
-
-
 
 template<typename T>
 struct PawnIsPlayerControlledFunctionParams {
@@ -99,39 +40,6 @@ struct FunctionNameTraits<PawnIsPlayerControlledFunctionParams<T>> {
     static constexpr const wchar_t* name = L"IsPlayerControlled";
 };
 
-
-
-template<typename T>
-struct ActorGetWorldFunctionParams {
-    API::UWorld* return_value; //world
-};
-
-template<typename T>
-struct FunctionNameTraits<ActorGetWorldFunctionParams<T>> {
-    static constexpr const wchar_t* name = L"GetWorld";
-};
-
-
-template<typename T>
-struct WorldSpawnActorFunctionParams {
-    API::UClass* actor_class;
-    TVector<T> *location;
-    TRotator<T> *rotation;
-    FActorSpawnParameters &spawn_parameters;
-
-    API::UObject* return_value; //aactor
-
-    WorldSpawnActorFunctionParams(FActorSpawnParameters& InSpawnParameters)
-        : spawn_parameters(InSpawnParameters), actor_class(nullptr), location(nullptr), rotation(nullptr), return_value(nullptr)
-    {}
-};
-
-template<typename T>
-struct FunctionNameTraits<WorldSpawnActorFunctionParams<T>> {
-    static constexpr const wchar_t* name = L"SpawnActor";
-};
-
-
 template<typename T>
 struct ActorGetRootComponentFunctionParams {
     API::UObject* return_value{};
@@ -141,114 +49,6 @@ template<typename T>
 struct FunctionNameTraits<ActorGetRootComponentFunctionParams<T>> {
     static constexpr const wchar_t* name = L"K2_GetRootComponent";
 };
-
-
-template<typename T>
-struct ComponentAttachToComponentFunctionParams {
-    API::UObject* parent;
-    FAttachmentTransformRules attachmentRules = FAttachmentTransformRules::KeepRelativeTransform;
-    API::FName socket_name;
-    bool return_value{};
-};
-
-
-template<typename T>
-struct FunctionNameTraits<ComponentAttachToComponentFunctionParams<T>> {
-    static constexpr const wchar_t* name = L"AttachToComponent";
-};
-
-
-
-
-template<typename T>
-struct K2ComponentAttachToComponentFunctionParams {
-    API::UObject* parent;
-    API::FName socket_name;
-    EAttachmentRule location_rule;
-    EAttachmentRule rotation_rule;
-    EAttachmentRule scale_rule;
-    bool weld_simulated_bodies;
-    bool return_value{};
-};
-
-
-template<typename T>
-struct FunctionNameTraits<K2ComponentAttachToComponentFunctionParams<T>> {
-    static constexpr const wchar_t* name = L"K2_AttachToComponent";
-};
-
-
-
-template<typename T>
-struct K2AttachToActorFunctionParams {
-    API::UObject* parent;
-    API::FName socket_name;
-    EAttachmentRule location_rule;
-    EAttachmentRule rotation_rule;
-    EAttachmentRule scale_rule;
-    bool weld_simulated_bodies;
-    bool return_value;
-};
-
-
-template<typename T>
-struct FunctionNameTraits<K2AttachToActorFunctionParams<T>> {
-    static constexpr const wchar_t* name = L"K2_AttachToActor";
-};
-
-template<typename T>
-struct AttachToActorFunctionParams {
-    API::UObject* parent;
-    FAttachmentTransformRules attachmentRules = FAttachmentTransformRules::KeepRelativeTransform;
-    API::FName socket_name;
-    bool return_value;
-};
-
-
-template<typename T>
-struct FunctionNameTraits<AttachToActorFunctionParams<T>> {
-    static constexpr const wchar_t* name = L"AttachToActor";
-};
-
-
-
-
-template<typename T>
-struct ComponentSetRelativeLocationAndRotationFunctionParams {
-    TVector<T> new_location;
-    TRotator<T> new_rotation;
-    bool sweep;
-//    FHitResult outSweepHitResult; //dont care, always null
-    FHitResult* outSweepHitResult; //dont care, always null
-    ETeleportType teleport;
-};
-
-
-template<typename T>
-struct FunctionNameTraits<ComponentSetRelativeLocationAndRotationFunctionParams<T>> {
-    static constexpr const wchar_t* name = L"SetRelativeLocationAndRotation";
-};
-
-
-
-template<typename T>
-struct ObjectCreateDefaultSubobjectParams {
-    API::FName default_subobject_name;
-    API::UClass* return_type;
-    API::UClass* class_to_create_by_default;
-    bool required;
-    bool transient;
-    API::UObject* return_value{};
-};
-
-template<typename T>
-struct FunctionNameTraits<ObjectCreateDefaultSubobjectParams<T>> {
-    static constexpr const wchar_t* name = L"CreateDefaultSubobject";
-};
-
-
-
-
 
 // A templated helper function to wrap call_function
 // (Assumes your uobject type has a member function call_function that accepts a wchar_t* and a void pointer)
@@ -260,13 +60,6 @@ void call_function_on_uobject(API::UObject* object, FuncParams* params)
 
 
 
-
-
-void get_actor_transform(uevr::API::UObject* uobject, FVectorDouble* location, FRotatorDouble* rotation, bool doubles);
-
-void get_actor_transform_vectors(uevr::API::UObject* uobject, FVectorDouble* location, FVectorDouble* forward, FVectorDouble* up, FVectorDouble* right, bool doubles);
-
-//bool get_uobject_is_valid(uevr::API::UObject* uobject);
 
 
 template<typename T>
