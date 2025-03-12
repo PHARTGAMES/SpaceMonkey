@@ -32,10 +32,6 @@ bool GPSimple::is_correct_pawn(API::UObject* object)
 	if (object == nullptr)
 		return false;
 
-	//find m_pawn_display_name_substring within pawn name
-	if (object->get_full_name().find(string_to_wstring(m_game_config_gp_simple->m_pawn_display_name_substring)) == std::wstring::npos)
-		return false;
-
 	//is locally controlled?
 	PawnIsLocallyControlledFunctionParams<double> pawn_is_locally_controlled_params;
 	call_function_on_uobject<PawnIsLocallyControlledFunctionParams<double>>(object, &pawn_is_locally_controlled_params);
@@ -47,6 +43,15 @@ bool GPSimple::is_correct_pawn(API::UObject* object)
 	//local and player controlled?
 	if (pawn_is_locally_controlled_params.return_value != true || pawn_is_player_controlled_params.return_value != true)
 		return false;
+
+	//support empty substring; always use the pawn that passes the above checks
+	if (m_game_config_gp_simple->m_pawn_display_name_substring.empty())
+		return true;
+
+	//find m_pawn_display_name_substring within pawn name
+	if (object->get_full_name().find(string_to_wstring(m_game_config_gp_simple->m_pawn_display_name_substring)) == std::wstring::npos)
+		return false;
+
 
 	return true;
 }
