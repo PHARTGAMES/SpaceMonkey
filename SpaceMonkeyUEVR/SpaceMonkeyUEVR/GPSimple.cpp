@@ -12,6 +12,10 @@ GPSimple::GPSimple(UEVRGameConfig* a_game_config) : UEVRGamePlugin(a_game_config
 	m_systemTime = 0.0;
 	m_resolved_object = nullptr;
 	m_selected_pawn_name = L"";
+
+	m_scene_component_class = API::get()->find_uobject<API::UClass>(L"Class /Script/Engine.SceneComponent");
+	m_actor_class = API::get()->find_uobject<API::UClass>(L"Class /Script/Engine.Actor");
+
 	API::get()->log_info("Created GPSimple Instance");
 
 }
@@ -90,7 +94,7 @@ void GPSimple::on_post_engine_tick(API::UGameEngine* engine, float delta)
 				FVectorDouble forward;
 				FVectorDouble up;
 				FVectorDouble right;
-				get_actor_transform_vectors(m_resolved_object, &location, &forward, &up, &right, m_game_config_gp_simple->m_use_doubles, m_game_config_gp_simple->m_transform_offset);
+				get_scenecomponent_transform_vectors(m_resolved_object, &location, &forward, &up, &right, m_game_config_gp_simple->m_use_doubles, m_game_config_gp_simple->m_transform_offset);
 
 				memset(&m_frameData, 0, sizeof(SpaceMonkeyTelemetryFrameData));
 
@@ -133,18 +137,19 @@ void GPSimple::on_post_engine_tick(API::UGameEngine* engine, float delta)
 }
 
 
-
-
-API::UObject* GPSimple::get_child_object_for_path(API::UObject* a_object, std::vector<std::string>& a_object_path)
+//this returns a scenecomponent
+API::UObject* GPSimple::get_child_object_for_path(API::UObject* a_actor, std::vector<std::string>& a_object_path)
 {
+	API::UObject* actor_root_component = get_actor_root_component(a_actor);
+
 	if (a_object_path.size() == 0)
 	{
-		API::get()->log_info("get_child_object_for_path called with empty a_object_path");
+		API::get()->log_info("get_child_object_for_path called with empty a_object_path, resolving scene component: %s", wstring_to_string(actor_root_component->get_full_name()).c_str());
 		
-		return a_object;
+		return actor_root_component;
 	}
 
-	API::UObject* curr_object = a_object;
+	API::UObject* curr_object = a_actor;
 
 	try
 	{
@@ -233,12 +238,34 @@ API::UObject* GPSimple::get_child_object_for_path(API::UObject* a_object, std::v
 	{
 		//banana in the tail piep
 		API::get()->log_error("get_child_object_for_path exception: %s", e.what());
+
+		curr_object = actor_root_component;
 	}
 
-	//found something, log it
+	//found something, make sure if it's an actor we return it's root component
 	if (curr_object != nullptr)
 	{
-		API::get()->log_info("get_child_object_for_path resolved %s", wstring_to_string(curr_object->get_full_name()).c_str());
+		if (curr_object->is_a(m_scene_component_class))
+		{
+			API::get()->log_info("get_child_object_for_path resolved scene component %s", wstring_to_string(curr_object->get_full_name()).c_str());
+		} 
+		else
+		if (curr_object->is_a(m_actor_class)) //is an actor, return root component
+		{
+			API::UObject* curr_object_root_component = get_actor_root_component(curr_object);
+
+			//successfully got curr_object's root component
+			if (curr_object_root_component != nullptr)
+			{
+				curr_object = curr_object_root_component;
+				API::get()->log_info("get_child_object_for_path resolved scene component %s", wstring_to_string(curr_object->get_full_name()).c_str());
+			}
+			else //failed to get root component, use source actor's root
+			{
+				curr_object = actor_root_component;
+				API::get()->log_info("get_child_object_for_path failed to resolve scene component for actor %s", wstring_to_string(curr_object->get_full_name()).c_str());
+			}
+		}
 	}
 
 	return curr_object;
@@ -246,26 +273,26 @@ API::UObject* GPSimple::get_child_object_for_path(API::UObject* a_object, std::v
 
 
 template<typename T>
-void get_actor_transform_vectors_impl(uevr::API::UObject* uobject, TVector<T>* location, TVector<T>* forward, TVector<T>* up, TVector<T>* right, const TransformOffset& transform_offset)
+void get_scenecomponent_transform_vectors_impl(uevr::API::UObject* uobject, TVector<T>* location, TVector<T>* forward, TVector<T>* up, TVector<T>* right, const TransformOffset& transform_offset)
 {
 
 	struct
 	{
 		TVector<T> return_value;
 	} get_location_params;
-	uobject->call_function(L"K2_GetActorLocation", &get_location_params);
+	uobject->call_function(L"K2_GetComponentLocation", &get_location_params);
 
 	struct
 	{
 		TRotator<T> return_value;
 	} get_rotation_params;
-	uobject->call_function(L"K2_GetActorRotation", &get_rotation_params);
+	uobject->call_function(L"K2_GetComponentRotation", &get_rotation_params);
 
 	struct
 	{
 		TVector<T> return_value;
 	} get_scale_params;
-	uobject->call_function(L"GetActorScale3D", &get_scale_params);
+	uobject->call_function(L"K2_GetComponentScale", &get_scale_params);
 
 
 	TVector4<T> actor_location = TVector4<T>((T)get_location_params.return_value.X, (T)get_location_params.return_value.Y, (T)get_location_params.return_value.Z, (T)1.0);
@@ -289,11 +316,11 @@ void get_actor_transform_vectors_impl(uevr::API::UObject* uobject, TVector<T>* l
 }
 
 
-void GPSimple::get_actor_transform_vectors(uevr::API::UObject* uobject, FVectorDouble* location, FVectorDouble* forward, FVectorDouble* up, FVectorDouble* right, bool doubles, const TransformOffset& transform_offset)
+void GPSimple::get_scenecomponent_transform_vectors(uevr::API::UObject* uobject, FVectorDouble* location, FVectorDouble* forward, FVectorDouble* up, FVectorDouble* right, bool doubles, const TransformOffset& transform_offset)
 {
 	if (doubles)
 	{
-		get_actor_transform_vectors_impl<double>(uobject, location, forward, up, right, transform_offset);
+		get_scenecomponent_transform_vectors_impl<double>(uobject, location, forward, up, right, transform_offset);
 	}
 	else
 	{
@@ -302,7 +329,7 @@ void GPSimple::get_actor_transform_vectors(uevr::API::UObject* uobject, FVectorD
 		FVectorFloat upf;
 		FVectorFloat rightf;
 
-		get_actor_transform_vectors_impl<float>(uobject, &locationf, &forwardf, &upf, &rightf, transform_offset);
+		get_scenecomponent_transform_vectors_impl<float>(uobject, &locationf, &forwardf, &upf, &rightf, transform_offset);
 
 		*location = FVectorDouble(locationf);
 		*forward = FVectorDouble(forwardf);

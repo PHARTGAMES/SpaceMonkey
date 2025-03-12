@@ -58,6 +58,8 @@ protected:
 	API::UObject* m_resolved_object;
 	int m_pawn_index = 0;
 	std::wstring m_selected_pawn_name;
+	API::UClass* m_scene_component_class;
+	API::UClass* m_actor_class;
 
 public:
 	GPSimple(UEVRGameConfig* a_game_config);
@@ -68,11 +70,11 @@ public:
 
 	bool is_correct_pawn(API::UObject* object);
 
-	API::UObject* get_child_object_for_path(API::UObject* a_object, std::vector<std::string>& a_object_path);
+	API::UObject* get_child_object_for_path(API::UObject* a_actor, std::vector<std::string>& a_object_path);
 
 	void resolve_world(API::UGameEngine* engine);
 
-	void get_actor_transform_vectors(uevr::API::UObject* uobject, FVectorDouble* location, FVectorDouble* forward, FVectorDouble* up, FVectorDouble* right, bool doubles, const TransformOffset& transform_offset);
+	void get_scenecomponent_transform_vectors(uevr::API::UObject* uobject, FVectorDouble* location, FVectorDouble* forward, FVectorDouble* up, FVectorDouble* right, bool doubles, const TransformOffset& transform_offset);
 
 };
 

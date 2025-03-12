@@ -40,15 +40,7 @@ struct FunctionNameTraits<PawnIsPlayerControlledFunctionParams<T>> {
     static constexpr const wchar_t* name = L"IsPlayerControlled";
 };
 
-template<typename T>
-struct ActorGetRootComponentFunctionParams {
-    API::UObject* return_value{};
-};
 
-template<typename T>
-struct FunctionNameTraits<ActorGetRootComponentFunctionParams<T>> {
-    static constexpr const wchar_t* name = L"K2_GetRootComponent";
-};
 
 // A templated helper function to wrap call_function
 // (Assumes your uobject type has a member function call_function that accepts a wchar_t* and a void pointer)
@@ -242,3 +234,13 @@ inline TVector4<T> VectorQuaternionMultiply(const TVector4<T>& Quat1, const TVec
     return Result;
 }
 
+inline API::UObject* get_actor_root_component(API::UObject* a_actor)
+{
+    struct {
+        API::UObject* return_value{};
+    }actor_get_root_component_params;
+
+    a_actor->call_function(L"K2_GetRootComponent", &actor_get_root_component_params);
+
+    return actor_get_root_component_params.return_value;
+}
