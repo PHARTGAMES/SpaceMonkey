@@ -64,10 +64,11 @@ void GPSimple::on_post_engine_tick(API::UGameEngine* engine, float delta)
 	try
 	{
 
-		const auto pawn = API::get()->get_local_pawn(m_pawn_index);
+		auto pawn = API::get()->get_local_pawn(m_pawn_index);
 		if (pawn == nullptr) //null pawn, past the end of the local pawns
 		{
 			m_pawn_index = 0;
+			pawn = API::get()->get_local_pawn(m_pawn_index);
 		}
 
 		//valid pawn
