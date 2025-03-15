@@ -54,12 +54,15 @@ class GPSimple : public UEVRGamePlugin
 protected:
 	GPSimpleConfig* m_game_config_gp_simple;
 		
-	double m_systemTime;
+	double m_system_time;
 	API::UObject* m_resolved_object;
 	int m_pawn_index = 0;
 	std::wstring m_selected_pawn_name;
 	API::UClass* m_scene_component_class;
 	API::UClass* m_actor_class;
+
+	double m_last_present_time;
+
 
 public:
 	GPSimple(UEVRGameConfig* a_game_config);
@@ -68,6 +71,9 @@ public:
 
     virtual void on_post_engine_tick(API::UGameEngine* engine, float delta) override;
 
+	virtual void on_present() override;
+
+
 	bool is_correct_pawn(API::UObject* object);
 
 	API::UObject* get_child_object_for_path(API::UObject* a_actor, std::vector<std::string>& a_object_path);
@@ -75,6 +81,10 @@ public:
 	void resolve_world(API::UGameEngine* engine);
 
 	void get_scenecomponent_transform_vectors(uevr::API::UObject* uobject, FVectorDouble* location, FVectorDouble* forward, FVectorDouble* up, FVectorDouble* right, bool doubles, const TransformOffset& transform_offset);
+
+	void tick(float delta);
+
+	void reset_system_time();
 
 };
 

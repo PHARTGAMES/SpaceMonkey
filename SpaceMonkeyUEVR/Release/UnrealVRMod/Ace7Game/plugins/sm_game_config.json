@@ -1,0 +1,6 @@
+{
+	"m_plugin_type":"GPSimple",
+	"m_pawn_display_name_substring":"AcePlayerPawn",
+	"m_use_doubles":false,
+	"m_tick_on_present":true
+}

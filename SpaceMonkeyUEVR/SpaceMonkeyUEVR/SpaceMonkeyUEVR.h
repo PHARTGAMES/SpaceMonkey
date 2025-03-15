@@ -28,6 +28,8 @@ public:
 
     void load_game_plugin();
 
+    void on_present() override;
+
     static std::string get_module_path();
 };
 

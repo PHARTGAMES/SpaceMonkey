@@ -65,7 +65,13 @@ void SpaceMonkeyUEVR::on_post_slate_draw_window(UEVR_FSlateRHIRendererHandle ren
     //PLUGIN_LOG_ONCE("Post Slate Draw Window");
 }
 
-
+void SpaceMonkeyUEVR::on_present()
+{
+    if (m_game_plugin != nullptr)
+    {
+        m_game_plugin->on_present();
+    }
+}
 
 
 std::string SpaceMonkeyUEVR::get_module_path()

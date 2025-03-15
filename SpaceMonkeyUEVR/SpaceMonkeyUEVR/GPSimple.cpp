@@ -3,13 +3,14 @@
 #include "UObjectStructs.h"
 #include "UEVRFunctions.h"
 #include "SpaceMonkeyTelemetryAPI.h"
+#include "systemtime.h"
 
 
 GPSimple::GPSimple(UEVRGameConfig* a_game_config) : UEVRGamePlugin(a_game_config)
 {
 	m_game_config_gp_simple = static_cast<GPSimpleConfig*>(a_game_config);
 
-	m_systemTime = 0.0;
+	reset_system_time();
 	m_resolved_object = nullptr;
 	m_selected_pawn_name = L"";
 
@@ -60,7 +61,37 @@ bool GPSimple::is_correct_pawn(API::UObject* object)
 
 void GPSimple::on_post_engine_tick(API::UGameEngine* engine, float delta)
 {
+	if (m_game_config_gp_simple->m_tick_on_present)
+	{
+		return;
+	}
 
+	tick(delta);
+
+}
+
+void GPSimple::on_present()
+{
+	if (!m_game_config_gp_simple->m_tick_on_present)
+	{
+		return;
+	}
+
+	double system_time_now = SystemTime::GetInSeconds();
+	double delta = system_time_now - m_last_present_time;
+	m_last_present_time = system_time_now;
+
+	tick(delta);
+}
+
+void GPSimple::reset_system_time()
+{
+	m_system_time = 0.0f;
+	m_last_present_time = SystemTime::GetInSeconds();
+}
+
+void GPSimple::tick(float delta)
+{
 	try
 	{
 
@@ -84,7 +115,7 @@ void GPSimple::on_post_engine_tick(API::UGameEngine* engine, float delta)
 
 				m_selected_pawn_name = pawn_name;
 				m_resolved_object = nullptr;
-				m_systemTime = 0.0;
+				reset_system_time();
 			}
 
 			//resolve child object
@@ -104,8 +135,8 @@ void GPSimple::on_post_engine_tick(API::UGameEngine* engine, float delta)
 
 				memset(&m_frameData, 0, sizeof(SpaceMonkeyTelemetryFrameData));
 
-				m_systemTime += delta;
-				m_frameData.m_time = m_systemTime;
+				m_system_time += delta;
+				m_frameData.m_time = m_system_time;
 
 				double toMeters = 0.01;
 
@@ -126,7 +157,7 @@ void GPSimple::on_post_engine_tick(API::UGameEngine* engine, float delta)
 		}
 		else
 		{
-			m_systemTime = 0.0;
+			reset_system_time();
 			m_resolved_object = nullptr;
 			m_selected_pawn_name = L"";
 			m_pawn_index++; //try next local pawn
@@ -138,9 +169,10 @@ void GPSimple::on_post_engine_tick(API::UGameEngine* engine, float delta)
 		API::get()->log_error("on_post_engine_tick exception: %s", e.what());
 		m_pawn_index = 0;
 		m_resolved_object = nullptr;
-		m_systemTime = 0.0;
+		reset_system_time();
 	}
 }
+
 
 
 //this returns a scenecomponent

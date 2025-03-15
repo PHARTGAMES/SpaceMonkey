@@ -22,5 +22,7 @@ public:
     virtual void on_pre_engine_tick(API::UGameEngine * engine, float delta) = 0;
 
     virtual void on_post_engine_tick(API::UGameEngine* engine, float delta) = 0;
+
+    virtual void on_present() = 0;
 };
 
