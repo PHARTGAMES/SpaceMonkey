@@ -73,12 +73,9 @@ public:
 
 	virtual void on_present() override;
 
-
 	bool is_correct_pawn(API::UObject* object);
 
 	API::UObject* get_child_object_for_path(API::UObject* a_actor, std::vector<std::string>& a_object_path);
-
-	void resolve_world(API::UGameEngine* engine);
 
 	void get_scenecomponent_transform_vectors(uevr::API::UObject* uobject, FVectorDouble* location, FVectorDouble* forward, FVectorDouble* up, FVectorDouble* right, bool doubles, const TransformOffset& transform_offset);
 

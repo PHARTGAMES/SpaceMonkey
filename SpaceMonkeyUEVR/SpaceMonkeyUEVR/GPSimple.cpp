@@ -88,6 +88,7 @@ void GPSimple::reset_system_time()
 {
 	m_system_time = 0.0f;
 	m_last_present_time = SystemTime::GetInSeconds();
+
 }
 
 void GPSimple::tick(float delta)
@@ -111,7 +112,7 @@ void GPSimple::tick(float delta)
 			//pawn changed!
 			if (m_selected_pawn_name.compare(pawn_name) != 0)
 			{
-				API::get()->log_info("on_post_engine_tick pawn changed from %s to %s", wstring_to_string(m_selected_pawn_name).c_str(), wstring_to_string(pawn_name).c_str());
+				API::get()->log_info("tick: pawn changed from %s to %s", wstring_to_string(m_selected_pawn_name).c_str(), wstring_to_string(pawn_name).c_str());
 
 				m_selected_pawn_name = pawn_name;
 				m_resolved_object = nullptr;
@@ -166,7 +167,7 @@ void GPSimple::tick(float delta)
 	}
 	catch (const std::exception& e)
 	{
-		API::get()->log_error("on_post_engine_tick exception: %s", e.what());
+		API::get()->log_error("tick: exception: %s", e.what());
 		m_pawn_index = 0;
 		m_resolved_object = nullptr;
 		reset_system_time();
@@ -313,6 +314,7 @@ API::UObject* GPSimple::get_child_object_for_path(API::UObject* a_actor, std::ve
 template<typename T>
 void get_scenecomponent_transform_vectors_impl(uevr::API::UObject* uobject, TVector<T>* location, TVector<T>* forward, TVector<T>* up, TVector<T>* right, const TransformOffset& transform_offset)
 {
+//	API::get()->log_info("get_scenecomponent_transform_vectors_impl");
 
 	struct
 	{
@@ -320,17 +322,24 @@ void get_scenecomponent_transform_vectors_impl(uevr::API::UObject* uobject, TVec
 	} get_location_params;
 	uobject->call_function(L"K2_GetComponentLocation", &get_location_params);
 
+//	API::get()->log_info("K2_GetComponentLocation %f,%f,%f", get_location_params.return_value.X, get_location_params.return_value.Y, get_location_params.return_value.Z);
+
 	struct
 	{
 		TRotator<T> return_value;
 	} get_rotation_params;
 	uobject->call_function(L"K2_GetComponentRotation", &get_rotation_params);
 
+//	API::get()->log_info("K2_GetComponentRotation %f,%f,%f", get_rotation_params.return_value.Pitch, get_rotation_params.return_value.Yaw, get_rotation_params.return_value.Roll);
+
+
 	struct
 	{
 		TVector<T> return_value;
 	} get_scale_params;
 	uobject->call_function(L"K2_GetComponentScale", &get_scale_params);
+
+//	API::get()->log_info("K2_GetComponentScale %f,%f,%f", get_scale_params.return_value.X, get_scale_params.return_value.Y, get_scale_params.return_value.Z);
 
 
 	TVector4<T> actor_location = TVector4<T>((T)get_location_params.return_value.X, (T)get_location_params.return_value.Y, (T)get_location_params.return_value.Z, (T)1.0);
