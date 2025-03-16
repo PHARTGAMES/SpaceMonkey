@@ -2,5 +2,5 @@
 	"m_plugin_type":"GPSimple",
 	"m_pawn_display_name_substring":"Vehicle",
 	"m_use_doubles":false,
-	"m_tick_on_present":true
+	"m_tick_on_present":false
 }
