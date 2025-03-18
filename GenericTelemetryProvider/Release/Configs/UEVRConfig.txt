@@ -1,6 +1,7 @@
 {
   "filterConfig": "Filters\\UEVRFilters.txt",
-  "outputConfig": "Outputs\\default_CB.txt",
+  "outputConfig": "Outputs\\default_MMF_UDP_CMED3.txt",
+  "hapticsConfig": "Haptics\\defaultHaptics.txt",
   "hotkey": {
     "key": 56,
     "enabled": true,
