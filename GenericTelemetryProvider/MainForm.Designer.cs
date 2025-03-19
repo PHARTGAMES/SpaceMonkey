@@ -63,7 +63,7 @@
             this.OutputsBtn = new System.Windows.Forms.Button();
             this.EAWRCBtn = new System.Windows.Forms.Button();
             this.HapticsBtn = new System.Windows.Forms.Button();
-            this.SMTBtn = new System.Windows.Forms.Button();
+            this.UEVRBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // Dirt5Button
@@ -259,7 +259,7 @@
             // WRCButton
             // 
             this.WRCButton.Location = new System.Drawing.Point(166, 114);
-            this.WRCButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.WRCButton.Margin = new System.Windows.Forms.Padding(2);
             this.WRCButton.Name = "WRCButton";
             this.WRCButton.Size = new System.Drawing.Size(148, 46);
             this.WRCButton.TabIndex = 33;
@@ -270,7 +270,7 @@
             // RBRButton
             // 
             this.RBRButton.Location = new System.Drawing.Point(166, 63);
-            this.RBRButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.RBRButton.Margin = new System.Windows.Forms.Padding(2);
             this.RBRButton.Name = "RBRButton";
             this.RBRButton.Size = new System.Drawing.Size(148, 46);
             this.RBRButton.TabIndex = 34;
@@ -281,7 +281,7 @@
             // SquadronsBtn
             // 
             this.SquadronsBtn.Location = new System.Drawing.Point(166, 11);
-            this.SquadronsBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.SquadronsBtn.Margin = new System.Windows.Forms.Padding(2);
             this.SquadronsBtn.Name = "SquadronsBtn";
             this.SquadronsBtn.Size = new System.Drawing.Size(148, 46);
             this.SquadronsBtn.TabIndex = 35;
@@ -292,7 +292,7 @@
             // il2Btn
             // 
             this.il2Btn.Location = new System.Drawing.Point(166, 217);
-            this.il2Btn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.il2Btn.Margin = new System.Windows.Forms.Padding(2);
             this.il2Btn.Name = "il2Btn";
             this.il2Btn.Size = new System.Drawing.Size(148, 46);
             this.il2Btn.TabIndex = 36;
@@ -303,7 +303,7 @@
             // warplanesWW1Btn
             // 
             this.warplanesWW1Btn.Location = new System.Drawing.Point(14, 268);
-            this.warplanesWW1Btn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.warplanesWW1Btn.Margin = new System.Windows.Forms.Padding(2);
             this.warplanesWW1Btn.Name = "warplanesWW1Btn";
             this.warplanesWW1Btn.Size = new System.Drawing.Size(148, 46);
             this.warplanesWW1Btn.TabIndex = 37;
@@ -314,7 +314,7 @@
             // vtolvrBtn
             // 
             this.vtolvrBtn.Location = new System.Drawing.Point(165, 268);
-            this.vtolvrBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.vtolvrBtn.Margin = new System.Windows.Forms.Padding(2);
             this.vtolvrBtn.Name = "vtolvrBtn";
             this.vtolvrBtn.Size = new System.Drawing.Size(148, 46);
             this.vtolvrBtn.TabIndex = 38;
@@ -369,7 +369,7 @@
             // tinyCombatArenaButton
             // 
             this.tinyCombatArenaButton.Location = new System.Drawing.Point(165, 371);
-            this.tinyCombatArenaButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tinyCombatArenaButton.Margin = new System.Windows.Forms.Padding(2);
             this.tinyCombatArenaButton.Name = "tinyCombatArenaButton";
             this.tinyCombatArenaButton.Size = new System.Drawing.Size(148, 46);
             this.tinyCombatArenaButton.TabIndex = 44;
@@ -408,7 +408,7 @@
             // EAWRCBtn
             // 
             this.EAWRCBtn.Location = new System.Drawing.Point(14, 421);
-            this.EAWRCBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.EAWRCBtn.Margin = new System.Windows.Forms.Padding(2);
             this.EAWRCBtn.Name = "EAWRCBtn";
             this.EAWRCBtn.Size = new System.Drawing.Size(148, 46);
             this.EAWRCBtn.TabIndex = 48;
@@ -426,23 +426,23 @@
             this.HapticsBtn.UseVisualStyleBackColor = true;
             this.HapticsBtn.Click += new System.EventHandler(this.HapticsBtn_Click);
             // 
-            // SMTBtn
+            // UEVRBtn
             // 
-            this.SMTBtn.Location = new System.Drawing.Point(167, 421);
-            this.SMTBtn.Margin = new System.Windows.Forms.Padding(2);
-            this.SMTBtn.Name = "SMTBtn";
-            this.SMTBtn.Size = new System.Drawing.Size(148, 46);
-            this.SMTBtn.TabIndex = 50;
-            this.SMTBtn.Text = "SpaceMonkey Telemetry";
-            this.SMTBtn.UseVisualStyleBackColor = true;
-            this.SMTBtn.Click += new System.EventHandler(this.SMTBtn_Click);
+            this.UEVRBtn.Location = new System.Drawing.Point(167, 421);
+            this.UEVRBtn.Margin = new System.Windows.Forms.Padding(2);
+            this.UEVRBtn.Name = "UEVRBtn";
+            this.UEVRBtn.Size = new System.Drawing.Size(148, 46);
+            this.UEVRBtn.TabIndex = 50;
+            this.UEVRBtn.Text = "UEVR";
+            this.UEVRBtn.UseVisualStyleBackColor = true;
+            this.UEVRBtn.Click += new System.EventHandler(this.UEVRBtn_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(548, 519);
-            this.Controls.Add(this.SMTBtn);
+            this.Controls.Add(this.UEVRBtn);
             this.Controls.Add(this.HapticsBtn);
             this.Controls.Add(this.EAWRCBtn);
             this.Controls.Add(this.OutputsBtn);
@@ -525,7 +525,7 @@
         private System.Windows.Forms.Button OutputsBtn;
         private System.Windows.Forms.Button EAWRCBtn;
         private System.Windows.Forms.Button HapticsBtn;
-        private System.Windows.Forms.Button SMTBtn;
+        private System.Windows.Forms.Button UEVRBtn;
     }
 }
 

@@ -46,6 +46,7 @@ namespace GenericTelemetryProvider
         OutputUI outputUI;
         HapticsUI hapticsUI;
         SMTUI smtUI;
+        UEVRUI uevrUI;
         public static MainForm Instance;
         public string versionString = "v1.1.1";
 
@@ -782,7 +783,7 @@ namespace GenericTelemetryProvider
             x.Start(hapticsUI);
         }
 
-        private void SMTBtn_Click(object sender, EventArgs e)
+        private void UEVRBtn_Click(object sender, EventArgs e)
         {
             if (smtUI != null && !smtUI.IsDisposed)
             {
@@ -795,6 +796,21 @@ namespace GenericTelemetryProvider
             Thread x = new Thread(new ParameterizedThreadStart((form) => ((SMTUI)form).ShowDialog()));
             x.IsBackground = true;
             x.Start(smtUI);
+
+
+            if (uevrUI != null && !uevrUI.IsDisposed)
+            {
+                uevrUI.Dispose();
+                uevrUI = null;
+            }
+
+            uevrUI = new UEVRUI();
+
+            Thread y = new Thread(new ParameterizedThreadStart((form) => ((UEVRUI)form).ShowDialog()));
+            y.IsBackground = true;
+            y.Start(uevrUI);
+
+
         }
 
     }

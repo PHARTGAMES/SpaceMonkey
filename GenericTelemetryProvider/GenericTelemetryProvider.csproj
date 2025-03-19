@@ -73,6 +73,12 @@
     </Compile>
     <Compile Include="EAWRCAPI.cs" />
     <Compile Include="SMTTelemetryProvider.cs" />
+    <Compile Include="UEVRUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UEVRUI.Designer.cs">
+      <DependentUpon>UEVRUI.cs</DependentUpon>
+    </Compile>
     <Compile Include="SMTUI.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -320,6 +326,9 @@
     <Compile Include="XInputController.cs" />
     <EmbeddedResource Include="EAWRCUI.resx">
       <DependentUpon>EAWRCUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UEVRUI.resx">
+      <DependentUpon>UEVRUI.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SMTUI.resx">
       <DependentUpon>SMTUI.cs</DependentUpon>

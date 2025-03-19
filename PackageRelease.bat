@@ -10,6 +10,9 @@ REM Copy the directories/files
 echo Copying WWReshadeAddon/Release...
 robocopy "GenericTelemetryProvider\Release" "%TARGET_DIR%" /E
 
+robocopy "SpaceMonkeyUEVR\Release" "%TARGET_DIR%\SpaceMonkeyUEVR" /E
+robocopy "UEVRRelease" "%TARGET_DIR%\SpaceMonkeyUEVR\UEVRRelease" /E
+
 echo Copying Readme...
 copy "README.md" "%TARGET_DIR%"
 
