@@ -64,7 +64,8 @@ namespace GenericTelemetryProvider
         {
 
             string SpaceMonkeyUEVRSourcePath = Path.Combine(MainConfig.installPath, "SpaceMonkeyUEVR");
-            string SpaceMonkeyUEVRModPath = Path.Combine(MainConfig.installPath, "SpaceMonkeyUEVR\\UnrealVRMod");
+            string SpaceMonkeyUEVRPath = Path.Combine(MainConfig.installPath, "SpaceMonkeyUEVR");
+            string SpaceMonkeyUEVRModPath = Path.Combine(SpaceMonkeyUEVRPath, "UnrealVRMod");
             string UEVRUserPath = GetCurrentUserUnrealVRModPath();
             string selectedItem = (string)gameComboBox.Items[gameComboBox.SelectedIndex];
 
@@ -79,6 +80,7 @@ namespace GenericTelemetryProvider
 
             //copy config
             string sourceConfigPath = Path.Combine(Path.Combine(Path.Combine(SpaceMonkeyUEVRModPath, selectedItem), "plugins"), "sm_game_config.json");
+            string defaultConfigPath = Path.Combine(Path.Combine(SpaceMonkeyUEVRPath, "DefaultProfile"), "sm_game_config.json");
 
             //check if source config file exists
             if (File.Exists(sourceConfigPath))
@@ -86,7 +88,16 @@ namespace GenericTelemetryProvider
                 //copy file to install path
                 File.Copy(sourceConfigPath, Path.Combine(installPath, "sm_game_config.json"), true);
 
+            } 
+            else
+            {
+                //copy file to install path
+                if (File.Exists(defaultConfigPath))
+                {
+                    File.Copy(defaultConfigPath, Path.Combine(installPath, "sm_game_config.json"), true);
+                }
             }
+
 
             //copy dlls
             string sourcePluginPath = Path.Combine(SpaceMonkeyUEVRSourcePath, "x64");
