@@ -48,7 +48,7 @@ namespace GenericTelemetryProvider
         SMTUI smtUI;
         UEVRUI uevrUI;
         public static MainForm Instance;
-        public string versionString = "v1.1.1";
+        public string versionString = "v1.2.0";
 
         bool ignoreConfigChanges = false;
         public bool integrated = false;
