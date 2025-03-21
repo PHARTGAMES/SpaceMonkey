@@ -38,15 +38,15 @@ SpaceMonkey has been tested with Sim Racing Studio (motion, wind, shakers and le
 - WRC Generations
 - Tiny Combat Arena
 - EA Sports WRC
+- UEVR
+- Wreckfest 2
 
 
 ## Installation
 
-The latest installer for SpaceMonkey is here (v1.1.1)
-
-https://github.com/PHARTGAMES/SpaceMonkey/raw/main/GenericTelemetryProvider/Installer/SpaceMonkeyTP-SetupFiles/SpaceMonkeyTP.msi
-
-Install anywhere to your local drive.
+1. Download the latest release of SpaceMonkey from https://github.com/PHARTGAMES/SpaceMonkey/releases
+2. Extract anywhere to your local drive.
+3. Run Register.bat as administrator.
 
 
 ## Main Interface
@@ -59,8 +59,9 @@ Install anywhere to your local drive.
 3. Filter Config; Extra filter configs can be created by copying a filter config in the Filters folder.
 4. Telemetry Ouput; Choose how you want telemetry to be output from SpaceMonkey. These configs are modified by pressing the Outputs button (6)
 5. Hotkey;  The hotkey can be used to pause and resume telemetry globally when the app is not in focus.
-6. Outputs; Press this button to load the Outputs Interface.
-7. Filters Button; press this to load the filters interface.
+6. Outputs; Press this button to load the Outputs interface.
+7. Filters; press this to load the filters interface.
+8. Haptics; press this to load the haptics interface.
 
 
 All changes to config options are saved as they are changed.
@@ -88,6 +89,7 @@ The default output configs are as follows
 
 
 ---
+
 # Games
 
 ## DIRT5
@@ -102,6 +104,7 @@ The default output configs are as follows
 
 
 ---
+
 ## Wreckfest
 
 ### Usage
@@ -114,10 +117,42 @@ The default output configs are as follows
 6. Click the Initialize button and wait for the game's memory to be scanned. If successful the status message will change to Success! and you will see debug output in the text box.
 7. Space Monkey will now be outputting telemetry.
 
-### Notes
-- Adam Sawkins has made some changes to Wreckfest to make it work better with SRS. Those changes are available under the new Wreckfest Experimental button (v1.0.5).
 
 ---
+
+## Wreckfest 2
+
+### Usage (Single Player)
+
+1. Load Wreckfest 2.
+2. Setup a session and get to the stage where you have the START option on the left and the selected vehicle in the centre of the screen. (session start menu)
+3. Go to the main interface of Space Monkey and select a main config for Wreckfest 2.
+4. Go to the main interface of Space Monkey and press the Wreckfest 2 button.
+5. Select a value for Max Cars. This is the number of cars to search for, setting this to 1 will just find the first car and is a quicker Scan for solo play with no ai. Max Cars set to 24 will find up to 24 cars if your grid size is set to 24, if grid size is not set to 24 you may find some garbage also.
+6. Click the Scan button and wait. You only need to Scan as many times as you change the grid size in the game settings and/or Max Cars in Wreckfest2UI.
+7. Once the Scan is complete select your car in the dropdown on the right. Knowing which car is yours can be tricky but this can also be changed after initialization. If you do a single player race with 1 car and Max Cars set to 1 you can know the number of your car because it's the only car that will show in the results. Once you know this number you can use it in other races with bigger grids as long as you don't change the car type and don't restart the entire application. You can also infer which car is yours by changing the Selected Car dropdown after initialization and looking at the speed value in the debug window; if you're stopped, speed will be almost 0. You can also infer which car is yours by 
+8. Click the Initialize button to start sending telemetry.
+
+
+### Usage (Multiplayer)
+
+1. Go to the main interface of Space Monkey and select a main config for Wreckfest 2.
+2. Go to the main interface of Space Monkey and press the Wreckfest 2 button.
+3. Load Wreckfest 2.
+4. Join multiplayer and wait for the session to start.
+5. In the Wreckfest2UI select a value for Max Cars, whatever the grid size is for the session.
+6. Click the Scan button and wait, this could take longer than an entire race.. 
+7. Once the Scan is complete select your car in the dropdown on the right. Knowing which car is yours can be tricky but this can also be changed after initialization. Once you have found your car number you can continue using it as long as you stay in the same session, don't change vehicles or track.
+8. Click the Initialize button to start sending telemetry.
+
+### Finding my car
+
+- Often it's the first car in the list after a clean start as long as you don't change cars.
+- Look in the debug window for the speed, match this speed to your actual speed.
+- In single player on the session start menu, look at the yaw value in the debug window; your car will have a yaw of approximately -2, all others will be almost 0. (I haven't automated this because it's not the case in multiplayer).
+
+---
+
 ## BeamNG.Drive
 
 ### Setup
@@ -395,7 +430,7 @@ WRC.Telemetry.TelemetryPort = 20777;
 4. Space Monkey will now wait for a connection from WRC Generations and output telemetry automatically. You can launch WRC Generations and any other software at this point.
 
 ---
-## Trail Out
+## Trail Out (deprecated use UEVR)
 
 ### Setup
 
@@ -414,7 +449,7 @@ WRC.Telemetry.TelemetryPort = 20777;
 7. Launch Trail Out
 
 ---
-## Mech Warrior 5 Mercenaries
+## Mech Warrior 5 Mercenaries (deprecated use UEVR)
 
 ### Setup
 
@@ -433,7 +468,7 @@ WRC.Telemetry.TelemetryPort = 20777;
 7. Launch MW5
 
 ---
-## Dakar Desert Rally
+## Dakar Desert Rally (deprecated use UEVR)
 
 ### Setup
 
@@ -462,6 +497,71 @@ WRC.Telemetry.TelemetryPort = 20777;
 3. Go to the main interface of Space Monkey and press the Tiny Combat Arena button which will load the Tiny Combat Arena UI.
 4. In the Tiny Combat Arena UI, click the Initialize button and wait for a message box to appear in the top left corner of the game window stating that SpaceMonkey is injected.
 5. Space Monkey will now be outputting telemetry. Load any other software at this point.
+
+---
+
+## UEVR https://github.com/praydog/UEVR  
+
+**The list of UEVR supported games is available on the [Flat to VR Modding Discord](https://discord.gg/Zr9qXePX) under the Unreal Engine VR section, in the ue-games channel**
+
+### Setup for each game (needed once, or potentially at every new release)
+
+1. Inject UEVR at least once into the game you want to play so UEVR creates a user data folder for the game. (A nightly build is included with SpaceMonkey in the UEVRRelease folder, for newer builds of UEVR get one directly from the UEVR github).
+2. Stop the game and UEVR.
+3. Launch Space Monkey.
+4. Go to the main interface of Space Monkey and press the UEVR button.
+5. In the UEVRUI that loads, select the name of the game you want to install SpaceMonkeyUEVR for in the combo box.
+6. In the UEVRUI click the Install button. This will overwrite any existing SpaceMonkeyUEVR profile you have in your user data folder for the game; if you want to keep what you have in user data make a backup of the plugins/sm_game_config.json file.
+
+
+### Usage (needed every time you want motion from UEVR)
+
+1. Go to the main interface of Space Monkey and select a main config for UEVR.
+2. Go to the main interface of Space Monkey and press the UEVR button.
+3. In the SMTUI Press the Initialize! button.
+4. Space Monkey will now wait for a connection from UEVR and output telemetry automatically. 
+5. Run the game.
+6. Launch UEVR and inject.
+7. The output in UEVRUI should populate when you are recieving telemetry while in gameplay.
+
+
+### Configuration (sm_game_config.json)
+
+- For any new profiles or to request profile changes please post in the SpaceMonkey Discord. 
+- These live in the SpaceMonkeyUEVR\UnrealVRMod folder and are copied into your user folder when installing through UEVRUI.
+- They are json formatted files so editing them in a json editor that can tell you when there is errors in the formatting is preferred.
+- If no profile exists for a game, installing will copy the default profile from the SpaceMonkeyUEVR\DefaultProfile folder. You can use the default profile or any of the other profiles as a starting point for a new game.
+
+### Configuration Fields
+- "m_plugin_type":"GPSimple" **This specifies the type of SpaceMonkeyUEVR plugin to use to generate motion, currently this should always be "GPSimple".**
+- "m_pawn_display_name_substring":"DerivedMech_C" **This specifies a substring to match against the pawn name in the case where you want to ensure that you only recieve motion from a pawn who's name that contains this substring. (for example on the main menu). Leave this as an empty string "" to get any pawn.**
+- "m_use_doubles":true **This tells SpaceMonkeyUEVR to expect double precision floats for transformations. Double precision was on by default in version 5.0 and up however it's still possible to use single precision in the engine, so this flag is required.**
+- "m_object_path":[
+	"Components",
+	"ChildActorComponent",
+	"Properties",
+	"ChildActor",
+	"Components",
+	"Pilot_ChildActor",
+	"Properties",
+	"ChildActor"
+	] **This is the path to an object which is a child of the pawn. This example is from MW Mercs and is used to find the pilot actor so that motion comes from the pilot transform and not just the pawn. You can figure this out in UEVR by turning on advanced settings and walking the tree of objects under the AcknowledgedPawn in the UObjectHook settings. Supports actors and sceneobjects at the bottom of the tree. Supports 'Components' and 'Properties' similar to UEVR UObjectHook.**
+	  **The way this reads from bottom to top is: ChildActor is a Property of Pilot_ChildActor, which is a Component of ChildActor, which is a Property of ChildActorComponent, which is a Component of the Pawn**
+- "m_transform_offset":{
+		"m_locationX":0.0,
+		"m_locationY":0.0,
+		"m_locationZ":0.0,
+		"m_rotationPitch": 0.0,
+		"m_rotationYaw": -90.0,
+		"m_rotationRoll": 0.0
+	} **This is a transform offset applied in local space of the final transform to offset rotations/translation of the transform. m_locationX/Y/Z is in centimetres, m_rotationPitch/Yaw/Roll in degrees. In this example the pilot actor in MW Mercs is attached at a 90 degree rotation, so that needs to be corrected otherwise pitch and roll are swapped. This can also be used to do things like offsetting the transform to the position the player is in the vehicle so that motion is felt from the pilot's seat and not just the centre of rotation of the vehicle.**
+- "m_tick_on_present":true **This is for if you want to tick in sync with the game's render thread instead of the game's update thread for whatever reason, usually just leave this to false or omit it from the file as motion performance is worse in this mode.**
+
+### Running UEVR without VR
+
+- In your UEVR release folder rename openvr_api.dll and openxr_loader.dll to something else. This prevents VR from starting, but only if the game doesn't already support VR.
+- Inject UEVR; ignore the warning that openvr_api.dll is missing.
+- Under VR/Debug options in the UEVR ingame UI tick "Stereo Emulation Mode".
 
 ---
 
@@ -621,6 +721,13 @@ Release v1.1.1
 1. Add slip_angle and slip_angle2 to output; use defaultPacketFormat_SlipAngle when outputting mmf or udp if you would like to use these values.
 2. Fix race conditions in WRC and BeamNG that started to break with "2023-11 Cumulative Update for .NET Framework 3.5, 4.8 and 4.8.1 for Windows 10 Version 22H2 for x64 (KB5032339)"
 
+
+Release v1.2.0
+
+1. Add UEVR support.
+2. Update VTOL VR.
+
+
 ---
 
 
@@ -636,9 +743,16 @@ Enter an issue here https://github.com/PHARTGAMES/SpaceMonkey/issues
 
 
  [Discord](https://discord.gg/gGUufTdpgG)
+
 ---
 
+# Support Me
+
+- [Patreon](https://patreon.com/PHARTGAMES)
+
 # Contributors
+
+---
 
 https://github.com/PHARTGAMES/SpaceMonkey/graphs/contributors
 
