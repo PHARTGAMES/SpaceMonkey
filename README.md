@@ -726,6 +726,7 @@ Release v1.2.0
 
 1. Add UEVR support.
 2. Update VTOL VR.
+3. Add Wreckfest 2 support.
 
 
 ---
