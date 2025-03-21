@@ -47,6 +47,7 @@ namespace GenericTelemetryProvider
         HapticsUI hapticsUI;
         SMTUI smtUI;
         UEVRUI uevrUI;
+        Wreckfest2UI wreckfest2UI;
         public static MainForm Instance;
         public string versionString = "v1.2.0";
 
@@ -446,6 +447,22 @@ namespace GenericTelemetryProvider
             x.Start(wreckfestUI);
         }
 
+        private void wreckfest2Button_Click(object sender, EventArgs e)
+        {
+
+            if (wreckfest2UI != null && !wreckfest2UI.IsDisposed)
+            {
+                wreckfest2UI.Dispose();
+                wreckfest2UI = null;
+            }
+
+            wreckfest2UI = new Wreckfest2UI();
+
+            Thread x = new Thread(new ParameterizedThreadStart((form) => ((Wreckfest2UI)form).ShowDialog()));
+            x.IsBackground = true;
+            x.Start(wreckfest2UI);
+        }
+
         private void wreckfestExperimentsButton_Click(object sender, EventArgs e)
         {
             return;
@@ -812,6 +829,7 @@ namespace GenericTelemetryProvider
 
 
         }
+
 
     }
 }

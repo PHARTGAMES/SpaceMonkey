@@ -93,6 +93,19 @@ namespace GenericTelemetryProvider
 
         }
 
+        public static void UIThreadSafeLambda(Control control, Action lambda)
+        {
+            if(control.InvokeRequired)
+            {
+                control.BeginInvoke(lambda);
+            }
+            else
+            {
+                lambda.Invoke(); 
+            }
+        }
+
+
         public static int TextBoxSafeParseInt(TextBox textBox, int safeValue)
         {
             int value = safeValue;
@@ -114,7 +127,6 @@ namespace GenericTelemetryProvider
 
             return safeValue;
         }
-
 
         public static float CalculateAngularChange(float sourceA, float targetA)
         {

@@ -54,7 +54,7 @@ namespace GenericTelemetryProvider
         protected int droppedSampleCount = 0;
         protected Vector3 currRawPos = Vector3.Zero;
 
-        bool isStopped = false;
+        bool isStopped = true;
         Mutex isStoppedMutex = new Mutex(false);
         protected Matrix4x4 lastTransform = Matrix4x4.Identity;
         protected Matrix4x4 rotInv = Matrix4x4.Identity;

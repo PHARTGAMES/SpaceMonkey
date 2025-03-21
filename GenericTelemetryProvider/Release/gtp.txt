@@ -1,1 +1,1 @@
-Configs\UEVRConfig.txt
+Configs\Wreckfest2Config.txt

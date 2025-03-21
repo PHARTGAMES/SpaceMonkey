@@ -1,13 +1,13 @@
 {
   "filterConfig": "Filters\\UEVRFilters.txt",
-  "outputConfig": "Outputs\\default_MMF_UDP_CMED3.txt",
+  "outputConfig": "Outputs\\default_MMF_UDP.txt",
   "hapticsConfig": "Haptics\\defaultHaptics.txt",
   "hotkey": {
-    "key": 56,
-    "enabled": true,
+    "key": 0,
+    "enabled": false,
     "windows": false,
-    "alt": true,
-    "ctrl": true,
+    "alt": false,
+    "ctrl": false,
     "shift": false
   }
 }

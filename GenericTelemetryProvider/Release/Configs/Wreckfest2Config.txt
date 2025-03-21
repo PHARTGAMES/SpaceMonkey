@@ -1,0 +1,13 @@
+{
+  "filterConfig": "Filters\\Wreckfest2Filters.txt",
+  "outputConfig": "Outputs\\default_MMF_UDP.txt",
+  "hapticsConfig": "Haptics\\defaultHaptics.txt",
+  "hotkey": {
+    "key": 0,
+    "enabled": false,
+    "windows": false,
+    "alt": false,
+    "ctrl": false,
+    "shift": false
+  }
+}

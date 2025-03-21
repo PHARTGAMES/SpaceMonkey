@@ -53,7 +53,6 @@
             this.il2Btn = new System.Windows.Forms.Button();
             this.warplanesWW1Btn = new System.Windows.Forms.Button();
             this.vtolvrBtn = new System.Windows.Forms.Button();
-            this.wreckfestExperimentsButton = new System.Windows.Forms.Button();
             this.overloadButton = new System.Windows.Forms.Button();
             this.OpenMotionBtn = new System.Windows.Forms.Button();
             this.WRCGenBtn = new System.Windows.Forms.Button();
@@ -64,6 +63,7 @@
             this.EAWRCBtn = new System.Windows.Forms.Button();
             this.HapticsBtn = new System.Windows.Forms.Button();
             this.UEVRBtn = new System.Windows.Forms.Button();
+            this.wreckfest2Button = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // Dirt5Button
@@ -78,7 +78,7 @@
             // 
             // Filters
             // 
-            this.Filters.Location = new System.Drawing.Point(344, 370);
+            this.Filters.Location = new System.Drawing.Point(344, 304);
             this.Filters.Name = "Filters";
             this.Filters.Size = new System.Drawing.Size(186, 44);
             this.Filters.TabIndex = 1;
@@ -322,17 +322,6 @@
             this.vtolvrBtn.UseVisualStyleBackColor = true;
             this.vtolvrBtn.Click += new System.EventHandler(this.vtolvrBtn_Click);
             // 
-            // wreckfestExperimentsButton
-            // 
-            this.wreckfestExperimentsButton.Location = new System.Drawing.Point(167, 472);
-            this.wreckfestExperimentsButton.Name = "wreckfestExperimentsButton";
-            this.wreckfestExperimentsButton.Size = new System.Drawing.Size(146, 46);
-            this.wreckfestExperimentsButton.TabIndex = 39;
-            this.wreckfestExperimentsButton.Text = "Wreckfest\r\nExperimental";
-            this.wreckfestExperimentsButton.UseVisualStyleBackColor = true;
-            this.wreckfestExperimentsButton.Visible = false;
-            this.wreckfestExperimentsButton.Click += new System.EventHandler(this.wreckfestExperimentsButton_Click);
-            // 
             // overloadButton
             // 
             this.overloadButton.Location = new System.Drawing.Point(14, 319);
@@ -397,7 +386,7 @@
             // 
             // OutputsBtn
             // 
-            this.OutputsBtn.Location = new System.Drawing.Point(344, 319);
+            this.OutputsBtn.Location = new System.Drawing.Point(344, 253);
             this.OutputsBtn.Name = "OutputsBtn";
             this.OutputsBtn.Size = new System.Drawing.Size(186, 44);
             this.OutputsBtn.TabIndex = 47;
@@ -418,7 +407,7 @@
             // 
             // HapticsBtn
             // 
-            this.HapticsBtn.Location = new System.Drawing.Point(344, 420);
+            this.HapticsBtn.Location = new System.Drawing.Point(344, 354);
             this.HapticsBtn.Name = "HapticsBtn";
             this.HapticsBtn.Size = new System.Drawing.Size(186, 44);
             this.HapticsBtn.TabIndex = 49;
@@ -437,11 +426,23 @@
             this.UEVRBtn.UseVisualStyleBackColor = true;
             this.UEVRBtn.Click += new System.EventHandler(this.UEVRBtn_Click);
             // 
+            // wreckfest2Button
+            // 
+            this.wreckfest2Button.Location = new System.Drawing.Point(14, 471);
+            this.wreckfest2Button.Margin = new System.Windows.Forms.Padding(2);
+            this.wreckfest2Button.Name = "wreckfest2Button";
+            this.wreckfest2Button.Size = new System.Drawing.Size(148, 46);
+            this.wreckfest2Button.TabIndex = 51;
+            this.wreckfest2Button.Text = "Wreckfest 2";
+            this.wreckfest2Button.UseVisualStyleBackColor = true;
+            this.wreckfest2Button.Click += new System.EventHandler(this.wreckfest2Button_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(548, 519);
+            this.ClientSize = new System.Drawing.Size(548, 528);
+            this.Controls.Add(this.wreckfest2Button);
             this.Controls.Add(this.UEVRBtn);
             this.Controls.Add(this.HapticsBtn);
             this.Controls.Add(this.EAWRCBtn);
@@ -452,7 +453,6 @@
             this.Controls.Add(this.WRCGenBtn);
             this.Controls.Add(this.OpenMotionBtn);
             this.Controls.Add(this.overloadButton);
-            this.Controls.Add(this.wreckfestExperimentsButton);
             this.Controls.Add(this.vtolvrBtn);
             this.Controls.Add(this.warplanesWW1Btn);
             this.Controls.Add(this.il2Btn);
@@ -515,7 +515,6 @@
         private System.Windows.Forms.Button il2Btn;
         private System.Windows.Forms.Button warplanesWW1Btn;
         private System.Windows.Forms.Button vtolvrBtn;
-        private System.Windows.Forms.Button wreckfestExperimentsButton;
         private System.Windows.Forms.Button overloadButton;
         private System.Windows.Forms.Button OpenMotionBtn;
         private System.Windows.Forms.Button WRCGenBtn;
@@ -526,6 +525,7 @@
         private System.Windows.Forms.Button EAWRCBtn;
         private System.Windows.Forms.Button HapticsBtn;
         private System.Windows.Forms.Button UEVRBtn;
+        private System.Windows.Forms.Button wreckfest2Button;
     }
 }
 
