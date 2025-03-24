@@ -49,7 +49,7 @@ namespace GenericTelemetryProvider
         UEVRUI uevrUI;
         Wreckfest2UI wreckfest2UI;
         public static MainForm Instance;
-        public string versionString = "v1.2.0";
+        public string versionString = "v1.2.1";
 
         bool ignoreConfigChanges = false;
         public bool integrated = false;

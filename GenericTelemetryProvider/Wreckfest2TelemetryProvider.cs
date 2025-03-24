@@ -55,11 +55,7 @@ namespace GenericTelemetryProvider
             }
 
 
-            //For current WF2 builds we can start at //1400000000 safely. 
-            long lStart = 1400000000;
-            lStart -= 1000000;//skip a meg back
-            if (lStart < 0) lStart = 0;
-
+            long lStart = 0;
             long lEnd = 140737488355327;
 
             RegularMemoryScan scan = new RegularMemoryScan(mainProcess, lStart, lEnd);
@@ -210,6 +206,7 @@ namespace GenericTelemetryProvider
         void scan_ScanCompleted(object sender, ScanCompletedEventArgs e)
         {
             ui.InitButtonStatusChanged(true);
+            ui.scanning = false;
 
             if (e.MemoryAddresses == null || e.MemoryAddresses.Length == 0)
             {

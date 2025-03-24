@@ -21,6 +21,7 @@ namespace GenericTelemetryProvider
         List<WF2CarAddress> carList;
         string saveFilename = "Wreckfest2\\Wreckfest2Config.txt";
         bool ignoreUIChanges = false;
+        public bool scanning = false;
 
         public Wreckfest2UI()
         {
@@ -45,10 +46,36 @@ namespace GenericTelemetryProvider
             vehicleSelector.Enabled = false;
             initializeButton.Enabled = false;
             scanButton.Enabled = true;
+            scanning = false;
+
+            // Create and configure the timer
+            Timer progressTimer = new Timer();
+            progressTimer.Interval = 100; // update every 100ms (adjust as needed)
+            progressTimer.Tick += ProgressTimer_Tick;
+            progressTimer.Start();
 
 
             FilterModuleCustom.Instance.InitFromConfig(MainConfig.Instance.configData.filterConfig); 
 
+        }
+
+        private void ProgressTimer_Tick(object sender, EventArgs e)
+        {
+            Utils.UIThreadSafeLambda(progressBar1, () =>
+             {
+                 if (scanning)
+                 {
+                    // Increase by 5%
+                    if (progressBar1.Value >= progressBar1.Maximum)
+                     {
+                         progressBar1.Value = progressBar1.Minimum;
+                     }
+                     else
+                     {
+                         progressBar1.Value = Math.Min(progressBar1.Value + 5, progressBar1.Maximum);
+                     }
+                 }
+             });
         }
 
         public void RefreshCars(List<WF2CarAddress> cars)
@@ -83,6 +110,7 @@ namespace GenericTelemetryProvider
             vehicleSelector.Enabled = false;
             statusLabel.Text = "Please Wait";
             progressBar1.Value = 0;
+            scanning = true;
 
             provider.vehicleString = vehicleSelector.Text;
             provider.Stop();

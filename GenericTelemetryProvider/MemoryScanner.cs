@@ -4,6 +4,8 @@ using System.Text;
 using System.Diagnostics;
 using System.Threading;
 using System.Runtime.InteropServices;
+using System.Collections.Concurrent;
+using System.Threading.Tasks;
 
 namespace GenericTelemetryProvider
 {
@@ -122,7 +124,7 @@ namespace GenericTelemetryProvider
             //Set the thread object as a new instant of the Thread class and pass
             //a new ParameterizedThreadStart class object with the needed method passed to it
             //to run in the new thread.
-            thread = new Thread(new ParameterizedThreadStart(ByteArrayScanner));
+            thread = new Thread(new ParameterizedThreadStart(MultiThreadedByteArrayScanner));
             thread.IsBackground = true;
 
             //Start the new thread and set the 32 bit value to look for.
@@ -192,271 +194,158 @@ namespace GenericTelemetryProvider
             newParams.target = bytes;
             newParams.maxResults = parameters.maxResults;
 
-            ByteArrayScanner(newParams);
+            MultiThreadedByteArrayScanner(newParams);
         }
 
-        private void ByteArrayScanner(object _parameters)
+
+        private void MultiThreadedByteArrayScanner(object _parameters)
         {
             ScanThreadParams parameters = (ScanThreadParams)_parameters;
+            byte[] pattern = (byte[])parameters.target;
+            int patternLength = pattern.Length;
+            if (patternLength == 0)
+                return;
 
-
-            byte[] bytes = (byte[])parameters.target;
-            int bytesCount = bytes.Length;
-
-            //The difference of scan start point in all loops except first loop,
-            //that doesn't have any difference, is type's Bytes count minus 1.
-            int arraysDifference = bytesCount - 1;
-
-            //prealloc buffer
-            byte[] buffer = new byte[ReadStackSize + arraysDifference];
-
-            //Define a List object to hold the found memory addresses.
-            List<Int64> finalList = new List<Int64>();
-
-            //Open the pocess to read the memory.
             reader.OpenProcess();
 
-            //Create a new instant of the ScanProgressEventArgs class to be used to raise the
-            //ScanProgressed event and pass the percentage of scan, during the scan progress.
-            ScanProgressChangedEventArgs scanProgressEventArgs;
+            int arraysDifference = patternLength - 1;
 
-            Int64 MaxAddress = (Int64)lastAddress;//last as in 'final' not as in 'previous'
-            Int64 address = (Int64)startAddress;
-            Int64 totalScanned = 0;
-            do
+            // Step 1: Enumerate all committed memory regions.
+            List<MemoryRegion> regions = new List<MemoryRegion>();
+            long currentAddress = (long)startAddress;
+            long maxAddress = (long)lastAddress;
+            while (currentAddress <= maxAddress)
             {
                 uint infoSize = (uint)Marshal.SizeOf(typeof(ProcessMemoryReader.ProcessMemoryReaderApi.MEMORY_BASIC_INFORMATION64));
                 ProcessMemoryReader.ProcessMemoryReaderApi.MEMORY_BASIC_INFORMATION64 m = new ProcessMemoryReader.ProcessMemoryReaderApi.MEMORY_BASIC_INFORMATION64();
-                int result = ProcessMemoryReader.ProcessMemoryReaderApi.VirtualQueryEx(reader.ReadProcess.Handle, (IntPtr)address, out m, infoSize);
-
+                int result = ProcessMemoryReader.ProcessMemoryReaderApi.VirtualQueryEx(reader.ReadProcess.Handle, (IntPtr)currentAddress, out m, infoSize);
                 if (result != infoSize)
-                {
-                    int lastError = Marshal.GetLastWin32Error();
-                    break;
-                }
-
-
-                // Console.WriteLine("{0}-{1} : {2} bytes {3}", m.BaseAddress.ToString("X"), ((uint)m.BaseAddress + (uint)m.RegionSize - 1).ToString("X"), m.RegionSize, m.State == (int)ProcessMemoryReader.ProcessMemoryReaderApi.InfoState.MEM_COMMIT ? "COMMIT" : "FREE");
-
-                //Start and end of this sub-scan
-                startAddress = (IntPtr)(Int64)address;// m.BaseAddress;
-                lastAddress = (IntPtr)((Int64)address + (Int64)m.RegionSize);
-
-                //m.BaseAddress doesn't appear to be set, and baseAddress is a member of this class
-                address = (Int64)m.BaseAddress + (Int64)m.RegionSize;//A better name is 'StartAddress'
-                /*
-                if (!(m.State == (int)ProcessMemoryReader.ProcessMemoryReaderApi.InfoState.MEM_COMMIT &&
-                    (m.Type == (int)ProcessMemoryReader.ProcessMemoryReaderApi.InfoType.MEM_MAPPED || m.Type == (int)ProcessMemoryReader.ProcessMemoryReaderApi.InfoType.MEM_PRIVATE)))
-                    continue;
-
-                */
-
-                if (m.State != (int)ProcessMemoryReader.ProcessMemoryReaderApi.InfoState.MEM_COMMIT)
-                    continue;
-
-                totalScanned += (Int64)m.RegionSize;
-
-                //Calculate the size of memory to scan.
-                Int64 memorySize = (Int64)((Int64)lastAddress - (Int64)startAddress);
-                bool found = false;
-
-                //If more that one block of memory is requered to be read,
-                if (memorySize >= ReadStackSize)
-                {
-                    //Count of loops to read the memory blocks.
-                    Int64 loopsCount = memorySize / ReadStackSize;
-
-                    //Look to see if there is any other bytes let after the loops.
-                    Int64 outOfBounds = memorySize % ReadStackSize;
-
-                    if (outOfBounds != 0)
-                        loopsCount++;
-
-                    //Set the currentAddress to first address.
-                    Int64 currentAddress = (Int64)startAddress;
-
-                    //This will be used to check if any bytes have been read from the memory.
-                    Int64 bytesReadSize;
-
-                    //Set the size of the bytes blocks.
-                    Int64 bytesToRead = ReadStackSize;
-
-                    //An array to hold the bytes read from the memory.
-                    byte[] array;
-
-                    //Progress percentage.
-                    int progress;
-
-                    for (Int64 i = 0; i < loopsCount; i++)
-                    {
-                        if (found)
-                            break;
-
-                        //Calculate and set the progress percentage.
-                        progress = (int)(((double)(currentAddress - (Int64)startAddress) / (double)memorySize) * 100d);
-
-                        //Prepare and set the ScanProgressed event and raise the event.
-                        scanProgressEventArgs = new ScanProgressChangedEventArgs(progress, currentAddress);
-                        ScanProgressChanged(this, scanProgressEventArgs);
-
-                        //Read the bytes from the memory.
-                        reader.ReadProcessMemory((IntPtr)currentAddress, (UInt64)((i == loopsCount - 1) && outOfBounds != 0 ? outOfBounds : bytesToRead), out bytesReadSize, buffer);
-                        array = buffer;
-
-                        //If any byte is read from the memory (there has been any bytes in the memory block),
-                        if (bytesReadSize > 0)
-                        {
-                            //Loop through the bytes one by one to look for the values.
-                            for (Int64 j = 0; j < array.Length - arraysDifference; j++)
-                            {
-                                int matches = 0;
-                                for (Int64 b = 0; b < bytes.Length && (j + b) < array.Length - arraysDifference; b++)
-                                {
-                                    if (bytes[b] != array[j + b])
-                                    {
-                                        found = false;
-                                        break;
-                                    }
-                                    else
-                                    {
-                                        matches++;
-                                    }
-                                }
-
-                                if (matches == bytes.Length)
-                                {
-                                    Debug.WriteLine("Found string: " + System.Text.Encoding.ASCII.GetString(array, (int)j, bytes.Length).Replace(Convert.ToChar(0x0).ToString(), " "));
-                                    finalList.Add(j + (Int64)currentAddress);
-                                    Debug.Flush();
-                                    found = true;
-                                    j += matches-1;
-
-                                    if (finalList.Count >= parameters.maxResults && parameters.maxResults != -1)
-                                        break;
-                                }
-
-                            }
-                        }
-                        //Move currentAddress after the block already scaned, but
-                        //move it back some steps backward (as much as arraysDifference)
-                        //to avoid loosing any values at the end of the array.
-                        currentAddress += array.Length - arraysDifference;
-
-                        //Set the size of the read block, bigger, to  the steps backward.
-                        //Set the size of the read block, to fit the back steps.
-                        bytesToRead = ReadStackSize + arraysDifference;
-
-                        if (found == true && finalList.Count >= parameters.maxResults && parameters.maxResults != -1)
-                            break;
-                    }
-/*
-                    //If there is any more bytes than the loops read,
-                    if (!found && outOfBounds > 0)
-                    {
-                        //Read the additional bytes.
-                        reader.ReadProcessMemory((IntPtr)currentAddress, (UInt64)((Int64)lastAddress - currentAddress), out bytesReadSize, buffer);
-                        byte[] outOfBoundsBytes = buffer;
-
-                        //If any byte is read from the memory (there has been any bytes in the memory block),
-                        if (bytesReadSize > 0)
-                        {
-                            //Loop through the bytes one by one to look for the values.
-                            for (Int64 j = 0; j < outOfBoundsBytes.Length - arraysDifference; j++)
-                            {
-                                int matches = 0;
-                                for (Int64 b = 0; b < bytes.Length && (j + b) < outOfBoundsBytes.Length - arraysDifference; b++)
-                                {
-                                    if (bytes[b] != outOfBoundsBytes[j + b])
-                                    {
-                                        found = false;
-                                        break;
-                                    }
-                                    else
-                                    {
-                                        matches++;
-                                    }
-                                }
-
-                                if (matches == bytes.Length)
-                                {
-                                    finalList.Add(j + currentAddress);
-                                    j = j + b;
-                                }
-
-                            }
-                        }
-                    }
-                    */
-                }
-                //If the block could be read in just one read,
-                else
-                {
-                    //Calculate the memory block's size.
-                    Int64 blockSize = memorySize % ReadStackSize;
-
-                    //Set the currentAddress to first address.
-                    Int64 currentAddress = (Int64)startAddress;
-
-                    //Holds the count of bytes read from the memory.
-                    Int64 bytesReadSize;
-
-                    //If the memory block can contain at least one 64 bit variable.
-                    if (blockSize > bytesCount)
-                    {
-                        //Read the bytes to the array.
-                        reader.ReadProcessMemory((IntPtr)currentAddress, (UInt64)blockSize, out bytesReadSize, buffer);
-                        byte[] array = buffer;
-
-                        //If any byte is read,
-                        if (bytesReadSize > 0)
-                        {
-                            //Loop through the array to find the values.
-                            for (int j = 0; j < array.Length - arraysDifference; j++)
-                            {
-                                int matches = 0;
-                                for (int b = 0; b < bytes.Length && (j + b) < array.Length - arraysDifference; b++)
-                                {
-                                    if (bytes[b] != array[j + b])
-                                    {
-                                        found = false;
-                                        break;
-                                    }
-                                    else
-                                    {
-                                        matches++;
-                                    }
-                                }
-                                if (matches == bytes.Length)
-                                {
-                                    Debug.WriteLine("Found string: " + System.Text.Encoding.ASCII.GetString(array, j, bytes.Length));
-                                    finalList.Add(j + currentAddress);
-                                    Debug.Flush();
-                                    found = true;
-                                    j += matches-1;
-                                    if (finalList.Count >= parameters.maxResults && parameters.maxResults != -1)
-                                        break;
-                                }
-                            }
-                        }
-                    }
-                }
-                if (found == true && finalList.Count >= parameters.maxResults && parameters.maxResults != -1)
                     break;
 
-            } while (address <= MaxAddress);
+                if (m.State == (int)ProcessMemoryReader.ProcessMemoryReaderApi.InfoState.MEM_COMMIT)
+                {
+                    regions.Add(new MemoryRegion { Start = (long)m.BaseAddress, Size = (long)m.RegionSize });
+                }
+                currentAddress = (long)m.BaseAddress + (long)m.RegionSize;
+            }
 
-            Console.WriteLine("Total Bytes Scanned = " + totalScanned);
+            // Step 2: Use a thread-safe collection for results.
+            ConcurrentBag<long> finalResults = new ConcurrentBag<long>();
 
-            //Close the handle to the process to avoid process errors.
+            // Precompute the Boyer–Moore–Horspool shift table.
+            int[] shiftTable = new int[256];
+            for (int i = 0; i < shiftTable.Length; i++)
+                shiftTable[i] = patternLength;
+            for (int i = 0; i < patternLength - 1; i++)
+                shiftTable[pattern[i]] = patternLength - i - 1;
+
+            // Set up cancellation.
+            CancellationTokenSource cts = new CancellationTokenSource();
+
+            try
+            {
+                // Step 3: Process memory regions in parallel.
+                Parallel.ForEach(regions, new ParallelOptions { CancellationToken = cts.Token }, region =>
+                {
+                    // Each thread gets its own buffer.
+                    byte[] buffer = new byte[ReadStackSize + arraysDifference];
+
+                    long regionStart = region.Start;
+                    long regionEnd = region.Start + region.Size;
+                    // Use a while loop to ensure we cover the entire region.
+                    bool firstBlock = true;
+                    long currentRegionAddress = regionStart;
+
+                    while (currentRegionAddress < regionEnd)
+                    {
+                        // Determine block size.
+                        int blockSize = firstBlock ? (int)ReadStackSize : ((int)ReadStackSize + arraysDifference);
+                        int readSize = (int)Math.Min((long)blockSize, regionEnd - currentRegionAddress);
+                        // If the remaining block is smaller than the pattern, nothing more can match.
+                        if (readSize < patternLength)
+                            break;
+
+                        long bytesRead;
+                        reader.ReadProcessMemory((IntPtr)currentRegionAddress, (UInt64)readSize, out bytesRead, buffer);
+                        if (bytesRead > 0)
+                        {
+                            int searchStart = 0;
+                            // Look for all occurrences in this block.
+                            while (searchStart <= bytesRead - patternLength)
+                            {
+                                int index = BMH_Search(buffer, (int)bytesRead, pattern, shiftTable, searchStart);
+                                if (index < 0)
+                                    break;
+
+                                long foundAddress = currentRegionAddress + index;
+                                finalResults.Add(foundAddress);
+
+                                // Cancel if we've reached max results.
+                                if (parameters.maxResults != -1 && finalResults.Count >= parameters.maxResults)
+                                {
+                                    cts.Cancel();
+                                    break;
+                                }
+                                searchStart = index + 1;
+                            }
+                        }
+
+                        if (cts.IsCancellationRequested)
+                            break;
+
+                        // Update address:
+                        // For the first block, we shift by ReadStackSize minus the overlap,
+                        // so the next block re-scans the last arraysDifference bytes.
+                        if (firstBlock)
+                        {
+                            currentRegionAddress += ReadStackSize - arraysDifference;
+                            firstBlock = false;
+                        }
+                        else
+                        {
+                            currentRegionAddress += ReadStackSize;
+                        }
+                    }
+                });
+            }
+            catch (OperationCanceledException)
+            {
+                // Expected when cancellation is triggered.
+            }
+
+            // Report completion.
+            ScanProgressChanged(this, new ScanProgressChangedEventArgs(100, 0));
             reader.CloseHandle();
+            ScanCompleted(this, new ScanCompletedEventArgs(finalResults.ToArray()));
+        }
 
-            //Prepare the ScanProgressed and set the progress percentage to 100% and raise the event.
-            scanProgressEventArgs = new ScanProgressChangedEventArgs(100, 0);
-            ScanProgressChanged(this, scanProgressEventArgs);
+        /// <summary>
+        /// Represents a memory region with a starting address and size.
+        /// </summary>
+        private class MemoryRegion
+        {
+            public long Start { get; set; }
+            public long Size { get; set; }
+        }
 
-            //Prepare and raise the ScanCompleted event.
-            ScanCompletedEventArgs scanCompleteEventArgs = new ScanCompletedEventArgs(finalList.ToArray());
-            ScanCompleted(this, scanCompleteEventArgs);
+        /// <summary>
+        /// Searches for the first occurrence of the pattern in the buffer using the Boyer–Moore–Horspool algorithm.
+        /// Returns the index if found; otherwise, returns -1.
+        /// </summary>
+        private int BMH_Search(byte[] buffer, int length, byte[] pattern, int[] shiftTable, int startIndex = 0)
+        {
+            int patternLength = pattern.Length;
+            int last = length - patternLength;
+            for (int i = startIndex; i <= last;)
+            {
+                int j = patternLength - 1;
+                while (j >= 0 && pattern[j] == buffer[i + j])
+                    j--;
+                if (j < 0)
+                    return i;
+                i += shiftTable[buffer[i + patternLength - 1]];
+            }
+            return -1;
         }
 
         public class FloatPatternStep
@@ -992,8 +881,11 @@ namespace GenericTelemetryProvider
         {
             try
             {
-                int iRetValue;
-                iRetValue = ProcessMemoryReaderApi.CloseHandle(m_hProcess);
+                int iRetValue = 1;
+                if (m_hProcess != IntPtr.Zero)
+                {
+                    iRetValue = ProcessMemoryReaderApi.CloseHandle(m_hProcess);
+                }
                 if (iRetValue == 0)
                 {
                     throw new Exception("CloseHandle failed");
