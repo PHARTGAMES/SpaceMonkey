@@ -729,6 +729,10 @@ Release v1.2.0
 3. Add Wreckfest 2 support.
 
 
+Release v1.2.1
+
+1. 50x faster scan in Wreckfest and Wreckfest 2
+
 ---
 
 
