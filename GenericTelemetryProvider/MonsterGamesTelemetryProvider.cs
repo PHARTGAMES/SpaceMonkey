@@ -162,7 +162,12 @@ namespace GenericTelemetryProvider
             return true;
         }
 
-        
+        public override void ProcessFwdUpRht()
+        {
+
+        }
+
+
         public override void FilterDT()
         {
             if (dt <= 0)
