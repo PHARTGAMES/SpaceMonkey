@@ -733,6 +733,11 @@ Release v1.2.1
 
 1. 50x faster scan in Wreckfest and Wreckfest 2
 
+
+Release v1.2.2
+
+1. Fix Monster Games telemetry not working. (Nascar heat 5 etc)
+
 ---
 
 
