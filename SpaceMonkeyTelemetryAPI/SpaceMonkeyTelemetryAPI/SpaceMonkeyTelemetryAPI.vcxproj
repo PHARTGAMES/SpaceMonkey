@@ -72,9 +72,11 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <TargetName>$(ProjectName)32</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <TargetName>$(ProjectName)32</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -98,8 +100,7 @@
       <EnableUAC>false</EnableUAC>
     </Link>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>$(SolutionDir)PostBuild.bat $(OutDir) $(Platform)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -122,8 +123,7 @@
       <EnableUAC>false</EnableUAC>
     </Link>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>$(SolutionDir)PostBuild.bat $(OutDir) $(Platform)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

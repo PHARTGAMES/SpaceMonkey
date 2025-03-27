@@ -1,3 +1,10 @@
 [submodule "UEVR"]
 	path = UEVR
 	url = https://github.com/PHARTGAMES/UEVR.git
+[submodule "CP2077SMMod/CP2077SMMod/deps/red4ext.sdk"]
+	path = CP2077SMMod/CP2077SMMod/deps/red4ext.sdk
+	url = https://github.com/WopsS/RED4ext.SDK.git
+	branch = master
+[submodule "CP2077SMMod/CP2077SMMod/deps/cp2077-red-lib"]
+	path = CP2077SMMod/CP2077SMMod/deps/cp2077-red-lib
+	url = https://github.com/psiberx/cp2077-red-lib.git
