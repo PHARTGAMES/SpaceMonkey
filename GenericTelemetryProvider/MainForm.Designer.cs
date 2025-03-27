@@ -64,6 +64,7 @@
             this.HapticsBtn = new System.Windows.Forms.Button();
             this.UEVRBtn = new System.Windows.Forms.Button();
             this.wreckfest2Button = new System.Windows.Forms.Button();
+            this.cyberpunk2077Button = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // Dirt5Button
@@ -417,7 +418,7 @@
             // 
             // UEVRBtn
             // 
-            this.UEVRBtn.Location = new System.Drawing.Point(167, 421);
+            this.UEVRBtn.Location = new System.Drawing.Point(165, 421);
             this.UEVRBtn.Margin = new System.Windows.Forms.Padding(2);
             this.UEVRBtn.Name = "UEVRBtn";
             this.UEVRBtn.Size = new System.Drawing.Size(148, 46);
@@ -437,11 +438,23 @@
             this.wreckfest2Button.UseVisualStyleBackColor = true;
             this.wreckfest2Button.Click += new System.EventHandler(this.wreckfest2Button_Click);
             // 
+            // cyberpunk2077Button
+            // 
+            this.cyberpunk2077Button.Location = new System.Drawing.Point(165, 471);
+            this.cyberpunk2077Button.Margin = new System.Windows.Forms.Padding(2);
+            this.cyberpunk2077Button.Name = "cyberpunk2077Button";
+            this.cyberpunk2077Button.Size = new System.Drawing.Size(148, 46);
+            this.cyberpunk2077Button.TabIndex = 52;
+            this.cyberpunk2077Button.Text = "Cyberpunk 2077";
+            this.cyberpunk2077Button.UseVisualStyleBackColor = true;
+            this.cyberpunk2077Button.Click += new System.EventHandler(this.cyberpunk2077Button_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(548, 528);
+            this.Controls.Add(this.cyberpunk2077Button);
             this.Controls.Add(this.wreckfest2Button);
             this.Controls.Add(this.UEVRBtn);
             this.Controls.Add(this.HapticsBtn);
@@ -526,6 +539,7 @@
         private System.Windows.Forms.Button HapticsBtn;
         private System.Windows.Forms.Button UEVRBtn;
         private System.Windows.Forms.Button wreckfest2Button;
+        private System.Windows.Forms.Button cyberpunk2077Button;
     }
 }
 

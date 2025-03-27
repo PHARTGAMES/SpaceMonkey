@@ -1,1 +1,1 @@
-Configs\Wreckfest2Config.txt
+Configs\Cyberpunk2077Config.txt

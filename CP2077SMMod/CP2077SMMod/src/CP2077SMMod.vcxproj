@@ -46,12 +46,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
-    <IncludePath>../deps/cp2077-red-lib/vendor;../deps/cp2077-red-lib/include;../deps/red4ext.sdk/include;$(IncludePath)</IncludePath>
+    <IncludePath>../../../SpaceMonkeyTelemetryAPI/SpaceMonkeyTelemetryAPI;../deps/cp2077-red-lib/vendor;../deps/cp2077-red-lib/include;../deps/red4ext.sdk/include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
-    <IncludePath>../deps/cp2077-red-lib/vendor;../deps/cp2077-red-lib/include;../deps/red4ext.sdk/include;$(IncludePath)</IncludePath>
+    <IncludePath>../../../SpaceMonkeyTelemetryAPI/SpaceMonkeyTelemetryAPI;../deps/cp2077-red-lib/vendor;../deps/cp2077-red-lib/include;../deps/red4ext.sdk/include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>

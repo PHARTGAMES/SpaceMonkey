@@ -6,104 +6,6 @@
 #include "SpaceMonkeySystem.h"
 
 
-
-bool BaseInit_OnEnter(RED4ext::CGameApplication* aApp)
-{
-
-
-    return true;
-}
-
-bool BaseInit_OnUpdate(RED4ext::CGameApplication* aApp)
-{
-    return true;
-}
-
-bool BaseInit_OnExit(RED4ext::CGameApplication* aApp)
-{
-    return true;
-}
-
-
-
-bool Running_OnEnter(RED4ext::CGameApplication* aApp)
-{
-    auto system = Red::GetGameSystem<SpaceMonkeySystem>();
-
-    if (system)
-    {
-        gSdk->logger->Trace(gPluginHandle, "Running_OnEnter");
-    }
-
-    return true;
-}
-
-bool Running_OnUpdate(RED4ext::CGameApplication* aApp)
-{
-//    gSdk->logger->Trace(gPluginHandle, "Running_OnUpdate");
-//
-//    RED4ext::ScriptGameInstance gameInstance;
-//    RED4ext::Handle<RED4ext::IScriptable> playerHandle;
-//    RED4ext::ExecuteGlobalFunction("GetPlayer;GameInstance", &playerHandle, gameInstance);
-//
-//    if (playerHandle)
-//    {
-//
-//        gSdk->logger->Trace(gPluginHandle, "Got player handle");
-//
-//        auto rtti = RED4ext::CRTTISystem::Get();
-//        auto playerPuppetCls = rtti->GetClass("PlayerPuppet");
-////        auto inCrouch = playerPuppetCls->GetProperty("inCrouch");
-////        auto value = inCrouch->GetValue<bool>(handle.instance);
-//
-//
-////        auto getHudManagerFunc = playerPuppetCls->GetFunction("GetHudManager");
-//        auto getMountedVehicleFunc = playerPuppetCls->GetFunction("GetMountedVehicle");
-//
-//        RED4ext::Handle<RED4ext::IScriptable> mountedVehicle;
-//        RED4ext::ExecuteFunction(playerHandle, getMountedVehicleFunc, &mountedVehicle);
-//
-//        if (mountedVehicle)
-//        {
-//            auto vehicleObjectCls = rtti->GetClass("VehicleObject");
-//            gSdk->logger->Trace(gPluginHandle, "Player vehicle mounted");
-//        }
-//        else
-//        {
-//            gSdk->logger->Trace(gPluginHandle, "Player vehicle not-mounted");
-//        }
-//    }
-
-    return false;
-}
-
-bool Running_OnExit(RED4ext::CGameApplication* aApp)
-{
-    return true;
-}
-
-bool Shutdown_OnEnter(RED4ext::CGameApplication* aApp)
-{
-    return true;
-}
-
-bool Shutdown_OnUpdate(RED4ext::CGameApplication* aApp)
-{
-    return true;
-}
-
-bool Shutdown_OnExit(RED4ext::CGameApplication* aApp)
-{
-    return true;
-}
-
-RED4ext::UpdateRegistrar updateRegistrar;
-
-
-
-//SpaceMonkeyUpdatableSystem updateSystem;
-
-
 RED4EXT_C_EXPORT bool RED4EXT_CALL Main(RED4ext::PluginHandle aHandle, RED4ext::EMainReason aReason,
                                         const RED4ext::Sdk* aSdk)
 {
@@ -114,6 +16,9 @@ RED4EXT_C_EXPORT bool RED4EXT_CALL Main(RED4ext::PluginHandle aHandle, RED4ext::
 
         gSdk = aSdk;
         gPluginHandle = aHandle;
+
+        TypeInfoRegistrar::RegisterDiscovered();
+
         /*
          * Here you can register your custom functions, initalize variable, create hooks and so on.
          *
@@ -124,31 +29,7 @@ RED4EXT_C_EXPORT bool RED4EXT_CALL Main(RED4ext::PluginHandle aHandle, RED4ext::
          * called with "Unload" reason.
          */
         
-
-        RED4ext::GameState initState;
-        initState.OnEnter = &BaseInit_OnEnter;
-        initState.OnUpdate = &BaseInit_OnUpdate;
-        initState.OnExit = &BaseInit_OnExit;
-
-        aSdk->gameStates->Add(aHandle, RED4ext::EGameStateType::BaseInitialization, &initState);
-
-
-        RED4ext::GameState runningState;
-        runningState.OnEnter = &Running_OnEnter;
-        runningState.OnUpdate = &Running_OnUpdate;
-        runningState.OnExit = &Running_OnExit;
-
-        aSdk->gameStates->Add(aHandle, RED4ext::EGameStateType::Running, &runningState);
-
-        RED4ext::GameState shutdownState;
-        shutdownState.OnEnter = Shutdown_OnEnter;
-        shutdownState.OnUpdate = &Shutdown_OnUpdate;
-        shutdownState.OnExit = Shutdown_OnExit;
-
-        aSdk->gameStates->Add(aHandle, RED4ext::EGameStateType::Shutdown, &shutdownState);
-
-
-        break;
+                break;
     }
     case RED4ext::EMainReason::Unload:
     {

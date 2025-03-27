@@ -830,6 +830,20 @@ namespace GenericTelemetryProvider
 
         }
 
+        private void cyberpunk2077Button_Click(object sender, EventArgs e)
+        {
+            if (smtUI != null && !smtUI.IsDisposed)
+            {
+                smtUI.Dispose();
+                smtUI = null;
+            }
 
+            smtUI = new SMTUI();
+
+            Thread x = new Thread(new ParameterizedThreadStart((form) => ((SMTUI)form).ShowDialog()));
+            x.IsBackground = true;
+            x.Start(smtUI);
+
+        }
     }
 }
