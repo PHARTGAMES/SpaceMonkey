@@ -565,6 +565,23 @@ WRC.Telemetry.TelemetryPort = 20777;
 
 ---
 
+## Cyberpunk 2077
+
+### Setup
+
+1. Copy the contents of the CP2077SMMod sub folder into the Cyberpunk 2077 game folder; this will install the mod.
+
+### Usage
+
+1. Go to the main interface of Space Monkey and select a main config for Cyberpunk 2077.
+2. Go to the main interface of Space Monkey and press the Cyberpunk 2077 button.
+3. Press the Initialize! button.
+4. Space Monkey will now wait for a connection from Cyberpunk 2077 and output telemetry automatically. 
+5. Launch Cyberpunk 2077.
+6. Enter a vehicle; you should now be receiving telemetry in SpaceMonkey.
+
+---
+
 # Sim Racing Studio
 
 More info here
@@ -737,6 +754,12 @@ Release v1.2.1
 Release v1.2.2
 
 1. Fix Monster Games telemetry not working. (Nascar heat 5 etc)
+
+
+Release v1.2.3
+
+1. Cyberpunk 2077 support
+
 
 ---
 

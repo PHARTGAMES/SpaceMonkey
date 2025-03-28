@@ -51,10 +51,10 @@ namespace GenericTelemetryProvider
         void MonitorThread()
         {
 
-            Utils.DebugLog("Before StartSending");
+//            Utils.DebugLog("Before StartSending");
             StartSending();
 
-            Utils.DebugLog("Before socket.Client.Bind");
+//            Utils.DebugLog("Before socket.Client.Bind");
 
             try
             {
@@ -67,14 +67,14 @@ namespace GenericTelemetryProvider
                 Utils.DebugLog($"Exception while setting up socket - {e.Message}\n {e.StackTrace}");
             }
 
-            Utils.DebugLog("after socket.BeginReceive");
+//            Utils.DebugLog("after socket.BeginReceive");
 
             while (!IsStopped)
             {
                 Thread.Sleep(1000);
             }
 
-            Utils.DebugLog("after while (!IsStopped)");
+//            Utils.DebugLog("after while (!IsStopped)");
 
             StopSending();
 
