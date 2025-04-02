@@ -40,7 +40,7 @@ SpaceMonkey has been tested with Sim Racing Studio (motion, wind, shakers and le
 - EA Sports WRC
 - UEVR
 - Wreckfest 2
-
+- Cyberpunk 2077
 
 ## Installation
 
@@ -121,6 +121,10 @@ The default output configs are as follows
 ---
 
 ## Wreckfest 2
+
+### Setup
+
+1. If your display refresh rate is less than 60hz (59.9hz and lower) you need to disable v-sync in the game settings otherwise you will get big spikes in the telemetry.
 
 ### Usage (Single Player)
 
@@ -569,7 +573,8 @@ WRC.Telemetry.TelemetryPort = 20777;
 
 ### Setup
 
-1. Copy the contents of the CP2077SMMod sub folder into the Cyberpunk 2077 game folder; this will install the mod.
+1. Download and extract the contents of the red4Ext_1.27.0.zip into your Cyberpunk 2077 game folder. [Get Red4Ext here](https://github.com/WopsS/RED4ext/releases/tag/v1.27.0)
+2. Copy the contents of the CP2077SMMod sub folder into the Cyberpunk 2077 game folder; this will install the mod.
 
 ### Usage
 
@@ -759,6 +764,7 @@ Release v1.2.2
 Release v1.2.3
 
 1. Cyberpunk 2077 support
+2. Fix UEVR debug dll issue that caused a crash at initialization time on some systems.
 
 
 ---
