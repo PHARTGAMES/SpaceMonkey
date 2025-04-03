@@ -17,30 +17,30 @@ SpaceMonkey has been tested with Sim Racing Studio (motion, wind, shakers and le
 
 ### Supported Games
 
-- Dirt 5
-- Wreckfest
-- BeamNG.Drive
-- GTA 5
-- Digital Combat Simulator
-- Nascar Heat 4/5 (MonsterGames)
-- All American Racing (MonsterGames)
-- Sprint Car Racing (MonsterGames)
-- WRC 7/8/9
-- Richard Burns Rally (NGP 6)
-- STAR WARS: Squadrons (Note: broken; requires pointer change)
-- Warplanes: WW1
-- VTOL VR
-- IL-2 Sturmovik
-- Overload
-- Trail Out
-- Mechwarrior 5 Mercenaries
-- Dakar Desert Rally
-- WRC Generations
-- Tiny Combat Arena
-- EA Sports WRC
-- UEVR
-- Wreckfest 2
-- Cyberpunk 2077
+- [Dirt 5](https://github.com/PHARTGAMES/SpaceMonkey#dirt5)
+- [Wreckfest](https://github.com/PHARTGAMES/SpaceMonkey#wreckfest)
+- [BeamNG.Drive](https://github.com/PHARTGAMES/SpaceMonkey#beamngdrive)
+- [GTA 5](https://github.com/PHARTGAMES/SpaceMonkey#gtav)
+- [Digital Combat Simulator](https://github.com/PHARTGAMES/SpaceMonkey#digital-combat-simulator)
+- [Nascar Heat 4/5 (MonsterGames)](https://github.com/PHARTGAMES/SpaceMonkey#nascar-heat-45-all-american-racing-and-sprint-car-racing)
+- [All American Racing (MonsterGames)](https://github.com/PHARTGAMES/SpaceMonkey#nascar-heat-45-all-american-racing-and-sprint-car-racing)
+- [Sprint Car Racing (MonsterGames)](https://github.com/PHARTGAMES/SpaceMonkey#nascar-heat-45-all-american-racing-and-sprint-car-racing)
+- [WRC 7/8/9](https://github.com/PHARTGAMES/SpaceMonkey#wrc-789)
+- [Richard Burns Rally (NGP 6)](https://github.com/PHARTGAMES/SpaceMonkey#richard-burns-rally-ngp-6)
+- [STAR WARS: Squadrons (Note: broken; requires pointer change)](https://github.com/PHARTGAMES/SpaceMonkey#star-wars-squadrons)
+- [Warplanes: WW1](https://github.com/PHARTGAMES/SpaceMonkey#warplanes-ww1)
+- [VTOL VR](https://github.com/PHARTGAMES/SpaceMonkey#vtol-vr)
+- [IL-2 Sturmovik](https://github.com/PHARTGAMES/SpaceMonkey#il-2-sturmovik)
+- [Overload](https://github.com/PHARTGAMES/SpaceMonkey#overload)
+- [Trail Out](https://github.com/PHARTGAMES/SpaceMonkey#trail-out-deprecated-use-uevr)
+- [Mechwarrior 5 Mercenaries](https://github.com/PHARTGAMES/SpaceMonkey#mech-warrior-5-mercenaries-deprecated-use-uevr)
+- [Dakar Desert Rally](https://github.com/PHARTGAMES/SpaceMonkey#dakar-desert-rally-deprecated-use-uevr)
+- [WRC Generations](https://github.com/PHARTGAMES/SpaceMonkey#wrc-generations)
+- [Tiny Combat Arena](https://github.com/PHARTGAMES/SpaceMonkey#tiny-combat-arena)
+- [EA Sports WRC](https://github.com/PHARTGAMES/SpaceMonkey#ea-sports-wrc)
+- [UEVR](https://github.com/PHARTGAMES/SpaceMonkey#uevr-httpsgithubcompraydoguevr)
+- [Wreckfest 2](https://github.com/PHARTGAMES/SpaceMonkey#wreckfest-2)
+- [Cyberpunk 2077](https://github.com/PHARTGAMES/SpaceMonkey#cyberpunk-2077)
 
 ## Installation
 
