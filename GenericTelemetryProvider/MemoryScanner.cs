@@ -71,6 +71,25 @@ namespace GenericTelemetryProvider
             //and progresses up to EndAddress.
         }
 
+        ~RegularMemoryScan()
+        {
+            if (thread != null)
+            {
+                //If the thread is already defined and is Alive,
+                if (thread.IsAlive)
+                {
+                    //raise the event that shows that the last scan task is canceled
+                    //(because a new task is going to be started as wanted),
+                    ScanCanceledEventArgs cancelEventArgs = new ScanCanceledEventArgs();
+                    ScanCanceled?.Invoke(this, cancelEventArgs);
+
+                    //and then abort the alive thread and so cancel last scan task.
+                    thread.Abort();
+                }
+            }
+            thread = null;
+        }
+
         #region Public methods
 
         //Get ready to scan the memory for the string value.
@@ -85,7 +104,7 @@ namespace GenericTelemetryProvider
                     //raise the event that shows that the last scan task is canceled
                     //(because a new task is going to be started as wanted),
                     ScanCanceledEventArgs cancelEventArgs = new ScanCanceledEventArgs();
-                    ScanCanceled(this, cancelEventArgs);
+                    ScanCanceled?.Invoke(this, cancelEventArgs);
 
                     //and then abort the alive thread and so cancel last scan task.
                     thread.Abort();
@@ -115,7 +134,7 @@ namespace GenericTelemetryProvider
                     //raise the event that shows that the last scan task is canceled
                     //(because a new task is going to be started as wanted),
                     ScanCanceledEventArgs cancelEventArgs = new ScanCanceledEventArgs();
-                    ScanCanceled(this, cancelEventArgs);
+                    ScanCanceled?.Invoke(this, cancelEventArgs);
 
                     //and then abort the alive thread and so cancel last scan task.
                     thread.Abort();
@@ -145,7 +164,7 @@ namespace GenericTelemetryProvider
                     //raise the event that shows that the last scan task is canceled
                     //(because a new task is going to be started as wanted),
                     ScanCanceledEventArgs cancelEventArgs = new ScanCanceledEventArgs();
-                    ScanCanceled(this, cancelEventArgs);
+                    ScanCanceled?.Invoke(this, cancelEventArgs);
 
                     //and then abort the alive thread and so cancel last scan task.
                     thread.Abort();
@@ -169,7 +188,7 @@ namespace GenericTelemetryProvider
         {
             //Raise the event that shows that the last scan task is canceled as user asked,
             ScanCanceledEventArgs cancelEventArgs = new ScanCanceledEventArgs();
-            ScanCanceled(this, cancelEventArgs);
+            ScanCanceled?.Invoke(this, cancelEventArgs);
 
             //and then abort the thread that scanes the memory.
             thread.Abort();
@@ -214,7 +233,7 @@ namespace GenericTelemetryProvider
             List<MemoryRegion> regions = new List<MemoryRegion>();
             long currentAddress = (long)startAddress;
             long maxAddress = (long)lastAddress;
-            while (currentAddress <= maxAddress)
+            while (currentAddress <= maxAddress && !reader.ReadProcess.HasExited)
             {
                 uint infoSize = (uint)Marshal.SizeOf(typeof(ProcessMemoryReader.ProcessMemoryReaderApi.MEMORY_BASIC_INFORMATION64));
                 ProcessMemoryReader.ProcessMemoryReaderApi.MEMORY_BASIC_INFORMATION64 m = new ProcessMemoryReader.ProcessMemoryReaderApi.MEMORY_BASIC_INFORMATION64();
@@ -314,7 +333,7 @@ namespace GenericTelemetryProvider
             }
 
             // Report completion.
-            ScanProgressChanged(this, new ScanProgressChangedEventArgs(100, 0));
+            ScanProgressChanged?.Invoke(this, new ScanProgressChangedEventArgs(100, 0));
             reader.CloseHandle();
             ScanCompleted(this, new ScanCompletedEventArgs(finalResults.ToArray()));
         }
@@ -487,7 +506,7 @@ namespace GenericTelemetryProvider
 
                         //Prepare and set the ScanProgressed event and raise the event.
                         scanProgressEventArgs = new ScanProgressChangedEventArgs(progress, currentAddress);
-                        ScanProgressChanged(this, scanProgressEventArgs);
+                        ScanProgressChanged?.Invoke(this, scanProgressEventArgs);
 
                         
 
@@ -759,7 +778,7 @@ namespace GenericTelemetryProvider
 
             //Prepare the ScanProgressed and set the progress percentage to 100% and raise the event.
             scanProgressEventArgs = new ScanProgressChangedEventArgs(100,0);
-            ScanProgressChanged(this, scanProgressEventArgs);
+            ScanProgressChanged?.Invoke(this, scanProgressEventArgs);
 
             //Prepare and raise the ScanCompleted event.
             ScanCompletedEventArgs scanCompleteEventArgs = new ScanCompletedEventArgs(finalList.ToArray());
