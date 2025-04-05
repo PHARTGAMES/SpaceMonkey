@@ -214,7 +214,8 @@ namespace GenericTelemetryProvider
             {
                 Console.WriteLine("BaseProcessTransform: " + e);
                 droppedSampleCount++;
-                filteredData.Copy(lastFilteredData);
+                if(lastFilteredData != null)
+                    filteredData.Copy(lastFilteredData);
             };
 
             lastTransform = transform;
@@ -560,7 +561,8 @@ namespace GenericTelemetryProvider
         {
             OutputModule.Instance.SendData(filteredData);
 
-            lastFilteredData.Copy(filteredData);
+            if(lastFilteredData != null)
+                lastFilteredData.Copy(filteredData);
         }
 
         public virtual void CalcCMExtraData3()

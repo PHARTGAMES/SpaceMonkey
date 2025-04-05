@@ -33,6 +33,8 @@ namespace GenericTelemetryProvider
         Thread thread;
         #endregion
 
+        bool threadRunning = true;
+
         #region Delegate and Event objects
         //Delegate and Event objects for raising the ScanProgressChanged event.
         public delegate void ScanProgressedEventHandler(object sender, ScanProgressChangedEventArgs e);
@@ -46,6 +48,7 @@ namespace GenericTelemetryProvider
         public delegate void ScanCanceledEventHandler(object sender, ScanCanceledEventArgs e);
         public event ScanCanceledEventHandler ScanCanceled;
         #endregion
+
 
         class ScanThreadParams
         {
@@ -84,10 +87,16 @@ namespace GenericTelemetryProvider
                     ScanCanceled?.Invoke(this, cancelEventArgs);
 
                     //and then abort the alive thread and so cancel last scan task.
-                    thread.Abort();
+                    //                    thread.Abort();
+                    StopThread();
                 }
             }
             thread = null;
+        }
+
+        void StopThread()
+        {
+            threadRunning = false;
         }
 
         #region Public methods
@@ -107,7 +116,8 @@ namespace GenericTelemetryProvider
                     ScanCanceled?.Invoke(this, cancelEventArgs);
 
                     //and then abort the alive thread and so cancel last scan task.
-                    thread.Abort();
+                    //                    thread.Abort();
+                    StopThread();
                 }
             }
             //Set the thread object as a new instant of the Thread class and pass
@@ -137,8 +147,8 @@ namespace GenericTelemetryProvider
                     ScanCanceled?.Invoke(this, cancelEventArgs);
 
                     //and then abort the alive thread and so cancel last scan task.
-                    thread.Abort();
-                }
+                    //thread.Abort();
+                    StopThread();                }
             }
             //Set the thread object as a new instant of the Thread class and pass
             //a new ParameterizedThreadStart class object with the needed method passed to it
@@ -167,7 +177,8 @@ namespace GenericTelemetryProvider
                     ScanCanceled?.Invoke(this, cancelEventArgs);
 
                     //and then abort the alive thread and so cancel last scan task.
-                    thread.Abort();
+                    StopThread();
+//                    thread.Abort();
                 }
             }
             //Set the thread object as a new instant of the Thread class and pass
@@ -190,8 +201,10 @@ namespace GenericTelemetryProvider
             ScanCanceledEventArgs cancelEventArgs = new ScanCanceledEventArgs();
             ScanCanceled?.Invoke(this, cancelEventArgs);
 
-            //and then abort the thread that scanes the memory.
-            thread.Abort();
+            ////and then abort the thread that scanes the memory.
+            //thread.Abort();
+            StopThread();
+
         }
         #endregion
 
@@ -233,7 +246,7 @@ namespace GenericTelemetryProvider
             List<MemoryRegion> regions = new List<MemoryRegion>();
             long currentAddress = (long)startAddress;
             long maxAddress = (long)lastAddress;
-            while (currentAddress <= maxAddress && !reader.ReadProcess.HasExited)
+            while (currentAddress <= maxAddress && !reader.ReadProcess.HasExited && threadRunning)
             {
                 uint infoSize = (uint)Marshal.SizeOf(typeof(ProcessMemoryReader.ProcessMemoryReaderApi.MEMORY_BASIC_INFORMATION64));
                 ProcessMemoryReader.ProcessMemoryReaderApi.MEMORY_BASIC_INFORMATION64 m = new ProcessMemoryReader.ProcessMemoryReaderApi.MEMORY_BASIC_INFORMATION64();
@@ -266,6 +279,9 @@ namespace GenericTelemetryProvider
                 // Step 3: Process memory regions in parallel.
                 Parallel.ForEach(regions, new ParallelOptions { CancellationToken = cts.Token }, region =>
                 {
+                    if (!threadRunning)
+                        cts.Cancel();
+
                     // Each thread gets its own buffer.
                     byte[] buffer = new byte[ReadStackSize + arraysDifference];
 
@@ -277,6 +293,11 @@ namespace GenericTelemetryProvider
 
                     while (currentRegionAddress < regionEnd)
                     {
+                        if(!threadRunning)
+                        {
+                            cts.Cancel();
+                            break;
+                        }
                         // Determine block size.
                         int blockSize = firstBlock ? (int)ReadStackSize : ((int)ReadStackSize + arraysDifference);
                         int readSize = (int)Math.Min((long)blockSize, regionEnd - currentRegionAddress);
@@ -332,10 +353,19 @@ namespace GenericTelemetryProvider
                 // Expected when cancellation is triggered.
             }
 
-            // Report completion.
-            ScanProgressChanged?.Invoke(this, new ScanProgressChangedEventArgs(100, 0));
-            reader.CloseHandle();
-            ScanCompleted(this, new ScanCompletedEventArgs(finalResults.ToArray()));
+            if (threadRunning)
+            {
+                // Report completion.
+                ScanProgressChanged?.Invoke(this, new ScanProgressChangedEventArgs(100, 0));
+                reader.CloseHandle();
+                ScanCompleted(this, new ScanCompletedEventArgs(finalResults.ToArray()));
+            }
+            else
+            {
+                reader.CloseHandle();
+            }
+
+            Thread.CurrentThread.Join();
         }
 
         /// <summary>
@@ -497,6 +527,8 @@ namespace GenericTelemetryProvider
                     Int64 jStart = 0;
                     for (Int64 i = 0; i < loopsCount; i++)
                     {
+                        if (!threadRunning)
+                            break;
                         bool skipAddressOffset = false;
                         //if (found)
                         //    break;
@@ -694,7 +726,7 @@ namespace GenericTelemetryProvider
                     Int64 bytesReadSize;
 
                     //If the memory block can contain at least one 64 bit variable.
-                    if (blockSize > bytesCount)
+                    if (blockSize > bytesCount && threadRunning)
                     {
                         //Read the bytes to the array.
                         reader.ReadProcessMemory((IntPtr)currentAddress, (UInt64)blockSize, out bytesReadSize, buffer);
@@ -769,20 +801,26 @@ namespace GenericTelemetryProvider
                     }
                 }
 
-            } while (address <= MaxAddress);
+            } while (address <= MaxAddress && threadRunning);
 
             Console.WriteLine("Total Bytes Scanned = " + totalScanned);
 
             //Close the handle to the process to avoid process errors.
             reader.CloseHandle();
 
-            //Prepare the ScanProgressed and set the progress percentage to 100% and raise the event.
-            scanProgressEventArgs = new ScanProgressChangedEventArgs(100,0);
-            ScanProgressChanged?.Invoke(this, scanProgressEventArgs);
+            if (threadRunning)
+            {
+                //Prepare the ScanProgressed and set the progress percentage to 100% and raise the event.
+                scanProgressEventArgs = new ScanProgressChangedEventArgs(100, 0);
+                ScanProgressChanged?.Invoke(this, scanProgressEventArgs);
 
-            //Prepare and raise the ScanCompleted event.
-            ScanCompletedEventArgs scanCompleteEventArgs = new ScanCompletedEventArgs(finalList.ToArray());
-            ScanCompleted(this, scanCompleteEventArgs);
+                //Prepare and raise the ScanCompleted event.
+                ScanCompletedEventArgs scanCompleteEventArgs = new ScanCompletedEventArgs(finalList.ToArray());
+                ScanCompleted(this, scanCompleteEventArgs);
+            }
+
+            Thread.CurrentThread.Join();
+
         }
         
         #endregion

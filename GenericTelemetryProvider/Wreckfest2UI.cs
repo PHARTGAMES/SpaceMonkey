@@ -27,97 +27,46 @@ namespace GenericTelemetryProvider
         {
             InitializeComponent();
 
-            statusLabel.Text = "1. Click Scan";
-
-            LoadConfig();
-
             provider = new Wreckfest2TelemetryProvider();
             provider.gameUI = provider.ui = this;
 
-            maxCarsComboBox.Items.Clear();
-            for (int i = 1; i <= 24; ++i)
-            {
-                maxCarsComboBox.Items.Add("" + i);
-            }
-
-            maxCarsComboBox.SelectedIndex = maxCarsComboBox.Items.Count - 1;
-
             ignoreUIChanges = true;
-            vehicleSelector.Enabled = false;
-            initializeButton.Enabled = false;
-            scanButton.Enabled = true;
-            scanning = false;
+            initializeLobbyButton.Enabled = false;
 
-            // Create and configure the timer
+
             Timer progressTimer = new Timer();
             progressTimer.Interval = 100; // update every 100ms (adjust as needed)
             progressTimer.Tick += ProgressTimer_Tick;
             progressTimer.Start();
 
+            FilterModuleCustom.Instance.InitFromConfig(MainConfig.Instance.configData.filterConfig);
 
-            FilterModuleCustom.Instance.InitFromConfig(MainConfig.Instance.configData.filterConfig); 
+            statusLabel.Text = "Enter Gamer Tag";
 
+            provider.Stop();
+            provider.Run();
+
+            LoadConfig();
         }
 
         private void ProgressTimer_Tick(object sender, EventArgs e)
         {
             Utils.UIThreadSafeLambda(progressBar1, () =>
-             {
-                 if (scanning)
-                 {
+            {
+                if (scanning)
+                {
                     // Increase by 5%
                     if (progressBar1.Value >= progressBar1.Maximum)
-                     {
-                         progressBar1.Value = progressBar1.Minimum;
-                     }
-                     else
-                     {
-                         progressBar1.Value = Math.Min(progressBar1.Value + 5, progressBar1.Maximum);
-                     }
-                 }
-             });
-        }
-
-        public void RefreshCars(List<WF2CarAddress> cars)
-        {
-            carList = cars;
-
-            Utils.UIThreadSafeLambda(vehicleSelector, () => {
-                ignoreUIChanges = true;
-                vehicleSelector.Items.Clear();
-
-                ignoreUIChanges = true;
-                vehicleSelector.Enabled = true;
-
-                foreach (WF2CarAddress car in carList)
-                {
-                    ignoreUIChanges = true;
-                    vehicleSelector.Items.Add(car.id);
-                }
-
-                if (vehicleSelector.Items.Count > 0)
-                {
-                    ignoreUIChanges = true;
-                    vehicleSelector.SelectedIndex = 0;
+                    {
+                        progressBar1.Value = progressBar1.Minimum;
+                    }
+                    else
+                    {
+                        progressBar1.Value = Math.Min(progressBar1.Value + 5, progressBar1.Maximum);
+                    }
                 }
             });
-
         }
-
-        public void ScanButtonClicked(object sender, EventArgs e)
-        {
-            initializeButton.Enabled = false;
-            vehicleSelector.Enabled = false;
-            statusLabel.Text = "Please Wait";
-            progressBar1.Value = 0;
-            scanning = true;
-
-            provider.vehicleString = vehicleSelector.Text;
-            provider.Stop();
-            provider.Run();
-        }
-
-
 
         void LoadConfig()
         {
@@ -128,6 +77,12 @@ namespace GenericTelemetryProvider
 
                 Wreckfest2Config config = JsonConvert.DeserializeObject<Wreckfest2Config>(text);
 
+                if(!string.IsNullOrEmpty(config.gamerTag))
+                {
+                    provider.GamerTagChanged(config.gamerTag);
+                    ignoreUIChanges = true;
+                    Utils.SetTextBoxThreadSafe(gamerTagTextBox, config.gamerTag);
+                }
             }
 
         }
@@ -135,6 +90,8 @@ namespace GenericTelemetryProvider
         void SaveConfig()
         {
             Wreckfest2Config save = new Wreckfest2Config();
+
+            save.gamerTag = provider.player.name;
 
             string output = JsonConvert.SerializeObject(save, Formatting.Indented);
 
@@ -154,7 +111,7 @@ namespace GenericTelemetryProvider
 
         public void InitButtonStatusChanged(bool enable)
         {
-            Utils.EnableButtonThreadSafe(initializeButton, enable);
+            Utils.EnableButtonThreadSafe(initializeLobbyButton, enable);
         }
 
         public void DebugTextChanged(string text)
@@ -162,24 +119,10 @@ namespace GenericTelemetryProvider
             Utils.SetRichTextBoxThreadSafe(matrixBox, text);
         }
 
-
-        private void vehicleSelector_SelectedIndexChanged(object sender, EventArgs e)
+        public void GamerTagTextChanged(string text)
         {
-            if (ignoreUIChanges)
-            {
-                ignoreUIChanges = false;
-                return;
-            }
-
-            if (vehicleSelector.SelectedIndex < carList.Count)
-            {
-                provider.SetSelectedCarAddress(carList[vehicleSelector.SelectedIndex]);
-            }
-            if (provider.IsStopped)
-            {
-                StatusTextChanged("3. Click Initialize");
-            }
-            SaveConfig();
+            ignoreUIChanges = true;
+            Utils.SetTextBoxThreadSafe(gamerTagTextBox, text);
         }
 
         private void statusLabel_TextChanged(object sender, EventArgs e)
@@ -189,17 +132,12 @@ namespace GenericTelemetryProvider
 
         private void initializeButton_Click(object sender, EventArgs e)
         {
-            if (vehicleSelector.SelectedIndex >= carList.Count)
-                return;
+            provider.Initialize(true);
+        }
 
-            initializeButton.Enabled = false;
-            scanButton.Enabled = true;
-
-            StatusTextChanged("Running!");
-
-            WF2CarAddress foundAddress = carList[vehicleSelector.SelectedIndex];
-
-            provider.Initialize(foundAddress);
+        private void initializeIngameButton_Click(object sender, EventArgs e)
+        {
+            provider.Initialize(false);
         }
 
         private void progressBar1_Click(object sender, EventArgs e)
@@ -224,25 +162,26 @@ namespace GenericTelemetryProvider
             Application.ExitThread();
         }
 
-        private void scanButton_Click(object sender, EventArgs e)
-        {
-            ScanButtonClicked(sender, e);
 
+        private void gamerTagTextBox_TextChanged(object sender, EventArgs e)
+        {
+            if (ignoreUIChanges)
+            {
+                ignoreUIChanges = false;
+                return;
+            }
+
+            provider.GamerTagChanged(gamerTagTextBox.Text);
+
+            SaveConfig();
         }
 
-        private void maxCarsComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
 
-        }
-
-        public int GetMaxCarsCount()
-        {
-            return maxCarsComboBox.SelectedIndex + 1;
-        }
     }
 
     public class Wreckfest2Config
     {
+        public string gamerTag;
     }
 
 

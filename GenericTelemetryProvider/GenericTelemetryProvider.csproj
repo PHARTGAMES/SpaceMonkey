@@ -73,6 +73,7 @@
     </Compile>
     <Compile Include="EAWRCAPI.cs" />
     <Compile Include="SMTTelemetryProvider.cs" />
+    <Compile Include="StateMachineBase.cs" />
     <Compile Include="UEVRUI.cs">
       <SubType>Form</SubType>
     </Compile>

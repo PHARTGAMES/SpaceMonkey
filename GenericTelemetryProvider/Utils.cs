@@ -258,6 +258,25 @@ namespace GenericTelemetryProvider
             return x * x * (3 - 2 * x);
         }
 
+        //converts ordinal string to two digit string; mostly for wreckfest
+        public static string ConvertOrdinalToTwoDigit(string ordinal, int minValue, int maxValue)
+        {
+            if (string.IsNullOrWhiteSpace(ordinal))
+                return null;
+
+            // Extract all digits from the input (e.g., "1st" becomes "1")
+            string digits = new string(ordinal.Where(char.IsDigit).ToArray());
+            if (!int.TryParse(digits, out int number))
+                return null;
+
+            //sanity check range
+            if (number - 1 < minValue || number - 1 > maxValue)
+                return null;
+
+            // Subtract one and format as a two-digit string.
+            return (number - 1).ToString("D2");
+        }
+
 
     }
 }
