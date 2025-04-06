@@ -542,8 +542,22 @@ namespace GenericTelemetryProvider
             UInt64 readSize = 4 * 4 * 4;
             byte[] readBuffer = new byte[readSize];
             byte[] lastReadBuffer = new byte[readSize];
+            byte[] differenceBuffer = new byte[readSize];
             float frameRateSecs = 1.0f / 60.0f;
+            //float frameRateSecs = 1.0f / 120.0f;
             Stopwatch missedFrameSW = new Stopwatch();
+            Stopwatch dtSW = new Stopwatch();
+            dtSW.Start();
+            Stopwatch readWaitSW = new Stopwatch();
+            readWaitSW.Start();
+            Stopwatch differenceSW = new Stopwatch();
+            differenceSW.Start();
+
+
+            Stopwatch someOtherSW = new Stopwatch();
+            someOtherSW.Start();
+
+            float dt = 0.0f;
             while (!IsStopped)
             {
                 try
@@ -558,6 +572,8 @@ namespace GenericTelemetryProvider
                         bool different = false;
                         bool validFrame = true;
                         missedFrameSW.Restart();
+                        float useDT = frameRateSecs;
+
                         do
                         {
                             //read
@@ -579,10 +595,85 @@ namespace GenericTelemetryProvider
                                 }
                             }
 
+
                             //sleep until the end of the frame
                             if (different)
                             {
-                                Thread.Sleep(1);
+
+
+                                //                                float extraWait = 16.0f / 1000.0f;
+                                ////                                float waitDuration = extraWait;// Math.Max(0.0f, (frameRateSecs - dt)) + extraWait;
+                                //                                float waitDuration = Math.Max(0.0f, ((frameRateSecs + extraWait) - dt)) ;
+
+                                //                                //Thread.Sleep(1);
+                                //                                readWaitSW.Restart();
+                                //                                while (readWaitSW.Elapsed.TotalSeconds < waitDuration)
+                                //                                {
+
+                                //                                }
+
+                                //                                //                                useDT = (float)Math.Max(1, Math.Ceiling((double)(dt / frameRateSecs))) * frameRateSecs;
+                                //                                useDT = frameRateSecs;
+
+                                Buffer.BlockCopy(readBuffer, 0, differenceBuffer, 0, readBuffer.Length);
+                                
+                                float notDifferentDuration = 2.0f / 1000.0f;
+                                differenceSW.Restart();
+                                someOtherSW.Restart();
+                                bool notDifferent = false;
+                                //wait until transform stops being different for at least notDifferentDuration
+                                do
+                                {
+                                    notDifferent = true;
+                                    //read
+                                    player.ReadProcessMemory((long)player.transformAddress, readSize, out byteReadSize, readBuffer);
+
+                                    if (byteReadSize == 0)
+                                    {
+                                        validFrame = false;
+                                        break;
+                                    }
+
+                                    //check if different
+                                    for (int i = 0; i < (int)readSize; ++i)
+                                    {
+                                        if (readBuffer[i] != differenceBuffer[i])
+                                        {
+                                            notDifferent = false;
+                                            break;
+                                        }
+                                    }
+
+                                    //data changed, reset timer
+                                    if(!notDifferent)
+                                    {
+                                        Buffer.BlockCopy(readBuffer, 0, differenceBuffer, 0, readBuffer.Length);
+//                                        Console.WriteLine("S");
+                                        differenceSW.Restart();
+                                        notDifferent = true;
+                                    }
+                                    else
+                                    {
+                                        float notDiffDurationSecs = (float)differenceSW.Elapsed.TotalSeconds;
+                                        if (notDiffDurationSecs >= notDifferentDuration)
+                                        {
+                                            notDifferent = false;
+                                            Console.WriteLine($"Time taken to stop being different MS: {someOtherSW.Elapsed.TotalMilliseconds}");
+
+                                            if(notDiffDurationSecs >= (notDifferentDuration * 2.0f))
+                                            {
+                                                Console.WriteLine($"--------------------------TOO LONG Secs: {notDiffDurationSecs}-------------------------");
+                                            }
+
+                                        }
+
+                                    }
+
+                                } while (notDifferent);
+
+                                dt = (float)dtSW.Elapsed.TotalSeconds;
+                                dtSW.Restart();
+
                             }
                             else // check if memory is unchanged for maxMissedFrames, if it is we need to go to invalid state
                             {
@@ -620,7 +711,11 @@ namespace GenericTelemetryProvider
                                     , floats[8], floats[9], floats[10], floats[11]
                                     , floats[12], floats[13], floats[14], floats[15]);
 
-                        ProcessTransform(newTransform, frameRateSecs);
+
+
+                        ProcessTransform(newTransform, useDT);// /*(float)dt);// */frameRateSecs);
+                        Console.WriteLine($"dt: {dt}");
+                        //Console.WriteLine($"useDT: {useDT}");
                     }
                 }
                 catch (Exception e)
