@@ -61,6 +61,12 @@ namespace GenericTelemetryProvider
 
         }
 
+
+        public bool IsProcessAlive()
+        {
+            return wf2Process != null && wf2Process.HasExited;
+        }
+
         public bool IsReadyToRead()
         {
             return activeState == State.TransformFound;
@@ -536,6 +542,43 @@ namespace GenericTelemetryProvider
             }
         }
 
+        void LogDifferences(UInt64 readSize, byte[] readBuffer, byte[] differenceBuffer)
+        {
+            return;
+            string differenceLog = "";
+
+            for (int i = 0; i < (int)readSize; ++i)
+            {
+                if (readBuffer[i] != differenceBuffer[i])
+                {
+                    if(i >= 0 && i <= 15)
+                    {
+                        differenceLog += "forward\n";
+                    } else
+                    if (i >= 16 && i <= 31)
+                    {
+                        differenceLog += "up\n";
+                    }
+                    else
+                    if (i >= 32 && i <= 47)
+                    {
+                        differenceLog += "right\n";
+                    }
+                    else
+                    if (i >= 48 && i <= 63)
+                    {
+                        differenceLog += "translation\n";
+                    }
+                    
+                }
+            }
+
+            if (!string.IsNullOrEmpty(differenceLog))
+                Console.WriteLine($"Differences: \n {differenceLog}");
+
+        }
+
+
         void ThreadUpdate()
         {
             StartSending();
@@ -554,8 +597,9 @@ namespace GenericTelemetryProvider
             differenceSW.Start();
 
 
-            Stopwatch someOtherSW = new Stopwatch();
-            someOtherSW.Start();
+
+            Stopwatch actualNotDifferentSW = new Stopwatch();
+            actualNotDifferentSW.Start();
 
             float dt = 0.0f;
             while (!IsStopped)
@@ -599,28 +643,17 @@ namespace GenericTelemetryProvider
                             //sleep until the end of the frame
                             if (different)
                             {
+                                actualNotDifferentSW.Restart();
+//                                Console.WriteLine("-----------------New Frame------------------\n");
 
-
-                                //                                float extraWait = 16.0f / 1000.0f;
-                                ////                                float waitDuration = extraWait;// Math.Max(0.0f, (frameRateSecs - dt)) + extraWait;
-                                //                                float waitDuration = Math.Max(0.0f, ((frameRateSecs + extraWait) - dt)) ;
-
-                                //                                //Thread.Sleep(1);
-                                //                                readWaitSW.Restart();
-                                //                                while (readWaitSW.Elapsed.TotalSeconds < waitDuration)
-                                //                                {
-
-                                //                                }
-
-                                //                                //                                useDT = (float)Math.Max(1, Math.Ceiling((double)(dt / frameRateSecs))) * frameRateSecs;
-                                //                                useDT = frameRateSecs;
+                                LogDifferences(readSize, readBuffer, lastReadBuffer);
 
                                 Buffer.BlockCopy(readBuffer, 0, differenceBuffer, 0, readBuffer.Length);
                                 
-                                float notDifferentDuration = 2.0f / 1000.0f;
+                                float maxNotDifferentDuration = 2.0f / 1000.0f;
                                 differenceSW.Restart();
-                                someOtherSW.Restart();
                                 bool notDifferent = false;
+                                float actualNotDifferentDuration = 0;
                                 //wait until transform stops being different for at least notDifferentDuration
                                 do
                                 {
@@ -647,20 +680,28 @@ namespace GenericTelemetryProvider
                                     //data changed, reset timer
                                     if(!notDifferent)
                                     {
+                                        LogDifferences(readSize, readBuffer, differenceBuffer);
+
                                         Buffer.BlockCopy(readBuffer, 0, differenceBuffer, 0, readBuffer.Length);
-//                                        Console.WriteLine("S");
                                         differenceSW.Restart();
                                         notDifferent = true;
+                                        actualNotDifferentDuration = 0;
                                     }
                                     else
                                     {
+//                                        Console.WriteLine("Transform unchanged while waiting for unchanged");
+                                        if(actualNotDifferentDuration == 0)
+                                        {
+                                            actualNotDifferentDuration = (float)actualNotDifferentSW.Elapsed.TotalMilliseconds;
+                                        }
+
                                         float notDiffDurationSecs = (float)differenceSW.Elapsed.TotalSeconds;
-                                        if (notDiffDurationSecs >= notDifferentDuration)
+                                        if (notDiffDurationSecs >= maxNotDifferentDuration)
                                         {
                                             notDifferent = false;
-                                            Console.WriteLine($"Time taken to stop being different MS: {someOtherSW.Elapsed.TotalMilliseconds}");
+  //                                          Console.WriteLine($"Time taken to stop being different MS: {actualNotDifferentDuration}");
 
-                                            if(notDiffDurationSecs >= (notDifferentDuration * 2.0f))
+                                            if(notDiffDurationSecs >= (maxNotDifferentDuration * 2.0f))
                                             {
                                                 Console.WriteLine($"--------------------------TOO LONG Secs: {notDiffDurationSecs}-------------------------");
                                             }
@@ -677,7 +718,7 @@ namespace GenericTelemetryProvider
                             }
                             else // check if memory is unchanged for maxMissedFrames, if it is we need to go to invalid state
                             {
-                                if(((float)missedFrameSW.Elapsed.TotalSeconds / frameRateSecs) > maxMissedFrames)
+                                if(((float)missedFrameSW.Elapsed.TotalSeconds / frameRateSecs) > maxMissedFrames && !player.IsProcessAlive())
                                 {
                                     byteReadSize = 0;
                                     validFrame = false;
@@ -713,8 +754,14 @@ namespace GenericTelemetryProvider
 
 
 
-                        ProcessTransform(newTransform, useDT);// /*(float)dt);// */frameRateSecs);
-                        Console.WriteLine($"dt: {dt}");
+                        ProcessTransform(newTransform, useDT);
+
+                        if(dt > useDT * 1.6f)
+                        {
+//                            Console.WriteLine("-----------long frame, laaame----------");
+                        }
+
+//                        Console.WriteLine($"dt: {dt}");
                         //Console.WriteLine($"useDT: {useDT}");
                     }
                 }
