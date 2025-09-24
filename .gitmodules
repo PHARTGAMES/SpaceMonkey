@@ -8,3 +8,6 @@
 [submodule "CP2077SMMod/CP2077SMMod/deps/cp2077-red-lib"]
 	path = CP2077SMMod/CP2077SMMod/deps/cp2077-red-lib
 	url = https://github.com/psiberx/cp2077-red-lib.git
+[submodule "GTAIVSDK"]
+	path = GTAIVSDK
+	url = https://github.com/PHARTGAMES/iv-sdk.git
