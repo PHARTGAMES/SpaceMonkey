@@ -110,6 +110,8 @@ namespace GenericTelemetryProvider
 
         public string hapticsConfig = "Haptics\\defaultHaptics.txt";
 
+        public string ffbSourceConfig = "FFBSource\\defaultFFBSource.txt";
+
         public class HotkeyConfig
         {
             public Keys key;

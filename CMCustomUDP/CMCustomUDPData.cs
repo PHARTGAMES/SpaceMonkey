@@ -14,13 +14,26 @@ namespace CMCustomUDP
         [System.NonSerialized]
         public string formatFilename = "PacketFormats\\defaultPacketFormat.xml";
 
+        [System.NonSerialized]
         Dictionary<DataKey, CMChannelMap> channels = new Dictionary<DataKey, CMChannelMap>();
-        byte[] packet;
+
+        [System.NonSerialized]
+        public byte[] packet;
+
+        public enum VehicleType
+        {
+            Car,
+            Bike,
+            Aircraft,
+            Boat,
+            Pedestrian
+        }
 
         public enum DataKey
         {
             total_time,
             paused,
+            vehicle_type,
             yaw,
             pitch,
             roll,
@@ -115,11 +128,16 @@ namespace CMCustomUDP
             idle_rpm_div10,
             slip_angle,
             slip_angle2,
+            ffb_wheel_steer_constant,
+            ffb_wheel_steer_damper,
+            ffb_wheel_steer_collision,
+            ffb_wheel_steer_axis,
 
             Max
         }
 
         public object total_time;
+        public object vehicle_type; //map to VehicleType 
         public object paused;
         public object yaw;
         public object pitch;
@@ -215,11 +233,16 @@ namespace CMCustomUDP
         public object idle_rpm_div10;
         public object slip_angle;
         public object slip_angle2;
+        public object ffb_wheel_steer_constant;
+        public object ffb_wheel_steer_damper;
+        public object ffb_wheel_steer_collision;
+        public object ffb_wheel_steer_axis;
 
         public CMCustomUDPData()
         {
             total_time = 0.0f;
             paused = 0.0f;
+            vehicle_type = 0.0f;
             yaw = 0.0f;
             pitch = 0.0f;
             roll = 0.0f;
@@ -314,11 +337,13 @@ namespace CMCustomUDP
             idle_rpm_div10 = 0.0f;
             slip_angle = 0.0f;
             slip_angle2 = 0.0f;
+            ffb_wheel_steer_constant = 0.0f;
+            ffb_wheel_steer_damper = 0.0f;
+            ffb_wheel_steer_collision = 0.0f;
+            ffb_wheel_steer_axis = -1.0f;
+        }
 
-
-    }
-
-    public void Init(string _formatFilename = null)
+        public void Init(string _formatFilename = null)
         {
 
             if (!string.IsNullOrEmpty(_formatFilename))
@@ -421,6 +446,7 @@ namespace CMCustomUDP
         {
             total_time = other.total_time;
             paused = other.paused;
+            vehicle_type = other.vehicle_type;
             yaw = other.yaw;
             pitch = other.pitch;
             roll = other.roll;
@@ -515,6 +541,11 @@ namespace CMCustomUDP
             idle_rpm_div10 = other.idle_rpm_div10;
             slip_angle = other.slip_angle;
             slip_angle2 = other.slip_angle2;
+            ffb_wheel_steer_constant = other.ffb_wheel_steer_constant;
+            ffb_wheel_steer_damper = other.ffb_wheel_steer_damper;
+            ffb_wheel_steer_collision = other.ffb_wheel_steer_collision;
+            ffb_wheel_steer_axis = other.ffb_wheel_steer_axis;
+
 
             if (copyChannels)
                 channels = other.channels;
@@ -645,7 +676,9 @@ namespace CMCustomUDP
             idle_rpm_div10 = Lerp(0.0f, (float)idle_rpm_div10, lerp);
             slip_angle = Lerp(0.0f, (float)slip_angle, lerp);
             slip_angle2 = Lerp(0.0f, (float)slip_angle2, lerp);
-
+            ffb_wheel_steer_constant = Lerp(0.0f, (float)ffb_wheel_steer_constant, lerp);
+            ffb_wheel_steer_damper = Lerp(0.0f, (float)ffb_wheel_steer_damper, lerp);
+            ffb_wheel_steer_collision = Lerp(0.0f, (float)ffb_wheel_steer_collision, lerp);
 
         }
 
@@ -723,6 +756,11 @@ namespace CMCustomUDP
 
             slip_angle = Lerp((float)from.slip_angle, (float)slip_angle, lerp);
             slip_angle2 = Lerp((float)from.slip_angle2, (float)slip_angle2, lerp);
+
+            ffb_wheel_steer_constant = Lerp((float)from.ffb_wheel_steer_constant, (float)ffb_wheel_steer_constant, lerp);
+            ffb_wheel_steer_damper = Lerp((float)from.ffb_wheel_steer_damper, (float)ffb_wheel_steer_damper, lerp);
+            ffb_wheel_steer_collision = Lerp((float)from.ffb_wheel_steer_collision, (float)ffb_wheel_steer_collision, lerp);
+
         }
 
 

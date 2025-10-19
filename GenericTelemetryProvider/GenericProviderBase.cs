@@ -42,7 +42,7 @@ namespace GenericTelemetryProvider
         protected int posKeyMask = CMCustomUDPData.GetKeyMask(CMCustomUDPData.DataKey.position_x, CMCustomUDPData.DataKey.position_y, CMCustomUDPData.DataKey.position_z);
         protected int velKeyMask = CMCustomUDPData.GetKeyMask(CMCustomUDPData.DataKey.local_velocity_x, CMCustomUDPData.DataKey.local_velocity_y, CMCustomUDPData.DataKey.local_velocity_z);
         protected int angVelKeyMask = CMCustomUDPData.GetKeyMask(CMCustomUDPData.DataKey.yaw_velocity, CMCustomUDPData.DataKey.roll_velocity, CMCustomUDPData.DataKey.pitch_velocity);
-        protected int suspVelKeyMask = CMCustomUDPData.GetKeyMask(CMCustomUDPData.DataKey.suspension_velocity_bl, CMCustomUDPData.DataKey.suspension_velocity_br, CMCustomUDPData.DataKey.suspension_velocity_fl, CMCustomUDPData.DataKey.suspension_velocity_fr);
+        protected int suspVelKeyMask = CMCustomUDPData.GetKeyMask(CMCustomUDPData.DataKey.suspension_velocity_bl, CMCustomUDPData.DataKey.suspension_velocity_br, CMCustomUDPData.DataKey.suspension_velocity_fl, CMCustomUDPData.DataKey.suspension_velocity_fr, CMCustomUDPData.DataKey.suspension_position_bl, CMCustomUDPData.DataKey.suspension_position_br, CMCustomUDPData.DataKey.suspension_position_fl, CMCustomUDPData.DataKey.suspension_position_fr, CMCustomUDPData.DataKey.suspension_acceleration_bl, CMCustomUDPData.DataKey.suspension_acceleration_br, CMCustomUDPData.DataKey.suspension_acceleration_fl, CMCustomUDPData.DataKey.suspension_acceleration_fr);
         protected int accelKeyMask = CMCustomUDPData.GetKeyMask(CMCustomUDPData.DataKey.gforce_lateral, CMCustomUDPData.DataKey.gforce_vertical, CMCustomUDPData.DataKey.gforce_longitudinal);
 
         protected Hotkey hotkey;
@@ -200,6 +200,8 @@ namespace GenericTelemetryProvider
                 CalcSlipAngle();
 
                 CalcSlipAngle2();
+
+                CalcFFBData();
 
                 ProcessInputs();
 
@@ -617,6 +619,11 @@ namespace GenericTelemetryProvider
             }
         }
 
+        public virtual void CalcFFBData()
+        {
+            filteredData.vehicle_type = rawData.vehicle_type = 0;
+        }
+
         public virtual void HandleTelemetryPaused()
         {
             filteredData.paused = rawData.paused = telemetryPaused ? 1 : 0;
@@ -632,6 +639,7 @@ namespace GenericTelemetryProvider
                 filteredData.LerpAll(telemetryPaused ? lerp : 1.0f - lerp);
             }
         }
+        
 
         public virtual void StopAllThreads()
         {

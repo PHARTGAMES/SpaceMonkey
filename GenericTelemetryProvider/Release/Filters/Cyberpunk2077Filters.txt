@@ -216,6 +216,14 @@
             }
           ]
         }
+      },
+      {
+        "$type": "GenericTelemetryProvider.FilterDataKey, SpaceMonkeyTP",
+        "key": 21,
+        "filters": {
+          "$type": "System.Collections.Generic.List`1[[GenericTelemetryProvider.FilterData, SpaceMonkeyTP]], mscorlib",
+          "$values": []
+        }
       }
     ]
   }

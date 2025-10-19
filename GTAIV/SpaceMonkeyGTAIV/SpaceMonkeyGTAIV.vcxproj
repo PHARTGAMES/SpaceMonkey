@@ -88,7 +88,7 @@
       <ConformanceMode>Default</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>..\..\SpaceMonkeyTelemetryAPI\SpaceMonkeyTelemetryAPI;..\..\GTAIVSDK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\SMXInputFFB\SMXInputFFBHost;..\..\SMXInputFFB\SMXInputFFBClient;..\..\SpaceMonkeyTelemetryAPI\SpaceMonkeyTelemetryAPI;..\..\CMCustomUDPNative;..\..\tinyxml2;..\..\GTAIVSDK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <StringPooling>true</StringPooling>
     </ClCompile>
@@ -111,7 +111,7 @@
       <ConformanceMode>Default</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>..\..\SpaceMonkeyTelemetryAPI\SpaceMonkeyTelemetryAPI;..\..\GTAIVSDK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\SMXInputFFB\SMXInputFFBHost;..\..\SMXInputFFB\SMXInputFFBClient;..\..\SpaceMonkeyTelemetryAPI\SpaceMonkeyTelemetryAPI;..\..\CMCustomUDPNative;..\..\tinyxml2;..\..\GTAIVSDK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <StringPooling>true</StringPooling>
     </ClCompile>
@@ -132,7 +132,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>..\..\SpaceMonkeyTelemetryAPI\SpaceMonkeyTelemetryAPI;..\..\GTAIVSDK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\SMXInputFFB\SMXInputFFBHost;..\..\SMXInputFFB\SMXInputFFBClient;..\..\SpaceMonkeyTelemetryAPI\SpaceMonkeyTelemetryAPI;..\..\CMCustomUDPNative;..\..\tinyxml2;..\..\GTAIVSDK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -153,7 +153,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>..\..\SpaceMonkeyTelemetryAPI\SpaceMonkeyTelemetryAPI;..\..\GTAIVSDK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\SMXInputFFB\SMXInputFFBHost;..\..\SMXInputFFB\SMXInputFFBClient;..\..\SpaceMonkeyTelemetryAPI\SpaceMonkeyTelemetryAPI;..\..\CMCustomUDPNative;..\..\tinyxml2;..\..\GTAIVSDK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -178,6 +178,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\SMXInputFFB\SMXInputFFBHost\SMXInputFFBHost.vcxproj">
+      <Project>{8a26172d-7fea-4b75-8a9d-c0b19eff374a}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\SpaceMonkeyTelemetryAPI\SpaceMonkeyTelemetryAPI\SpaceMonkeyTelemetryAPI.vcxproj">
       <Project>{6fcc3d66-9c0e-4061-bab3-cb3bd2a074dd}</Project>
     </ProjectReference>

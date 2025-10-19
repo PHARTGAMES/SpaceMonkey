@@ -11,3 +11,10 @@
 [submodule "GTAIVSDK"]
 	path = GTAIVSDK
 	url = https://github.com/PHARTGAMES/iv-sdk.git
+	branch = main
+[submodule "minhook"]
+	path = minhook
+	url = https://github.com/PHARTGAMES/minhook.git
+[submodule "tinyxml2"]
+	path = tinyxml2
+	url = https://github.com/leethomason/tinyxml2.git

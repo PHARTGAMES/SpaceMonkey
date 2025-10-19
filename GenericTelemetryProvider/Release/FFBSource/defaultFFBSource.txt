@@ -1,0 +1,13 @@
+{
+  "$type": "SMFFBSource.SMFFBSourceManagerConfig, SMFFBSource",
+  "effects": {
+    "$type": "System.Collections.Generic.List`1[[SMFFBSource.SMFFBEffectConfig, SMFFBSource]], mscorlib",
+    "$values": [
+      {
+        "$type": "SMFFBSource.SMFFBWheelSteerEffectConfig, SMFFBSource",
+        "id": "SMFFBSource.SMFFBWheelSteerEffect",
+        "enabled": true
+      }
+    ]
+  }
+}

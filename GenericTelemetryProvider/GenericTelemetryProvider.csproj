@@ -486,6 +486,10 @@
       <Project>{19b64a51-6be5-45c4-90e8-f31a1ada6be0}</Project>
       <Name>SMHaptics</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SMXInputFFB\SMFFBSource\SMFFBSource.csproj">
+      <Project>{948cfd88-66c2-4fee-8e7d-7497f46852b4}</Project>
+      <Name>SMFFBSource</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TCAAPI\TCAAPI.csproj">
       <Project>{ba2c6b52-5ea7-4e5b-862e-632e1152693e}</Project>
       <Name>TCAAPI</Name>

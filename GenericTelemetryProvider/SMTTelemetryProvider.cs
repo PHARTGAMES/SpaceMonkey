@@ -9,6 +9,7 @@ using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.IO;
 using System.IO.MemoryMappedFiles;
+using CMCustomUDP;
 
 
 namespace GenericTelemetryProvider
@@ -18,11 +19,13 @@ namespace GenericTelemetryProvider
         Thread t;
 
         public SMTUI ui;
-        SpaceMonkeyTelemetryFrameData frameData;
         MemoryMappedFile dataMMF;
         Mutex dataMutex;
         double lastFrameTime = 0.0f;
         SpaceMonkeyTelemetryAPI SMTAPI;
+        CMCustomUDPData frameData = new CMCustomUDPData();
+        string packetFormatPath = "PacketFormats\\SpaceMonkeyTelemetryDefault.xml";
+        Vector3 worldVelocity;
 
 
         public override void Run()
@@ -53,8 +56,12 @@ namespace GenericTelemetryProvider
 
             StartSending();
 
+            frameData.Init(packetFormatPath);
+            
             SMTAPI = new SpaceMonkeyTelemetryAPI();
-            SMTAPI.InitRecieveSharedMemory();
+            SMTAPI.InitRecieveSharedMemory(packetFormatPath);
+            var handle = GCHandle.Alloc(frameData.packet, GCHandleType.Pinned);
+            SMTAPI.SetPacket(handle.AddrOfPinnedObject());
 
             Stopwatch sw = new Stopwatch();
             sw.Start();
@@ -66,22 +73,22 @@ namespace GenericTelemetryProvider
                 {
                     double timeNow = sw.Elapsed.TotalSeconds;
 
-                    SMTAPI.RecieveFrame(ref frameData);
+                    SMTAPI.RecieveFrame();
+                    frameData.FromBytes(frameData.packet);
 
-                    if ((lastFrameTime == 0.0f && frameData.m_time != 0.0f) || frameData.m_time < lastFrameTime)
+                    if ((lastFrameTime == 0.0f && (float)frameData.total_time != 0.0f) || (float)frameData.total_time < lastFrameTime)
                     {
-                        lastFrameTime = frameData.m_time;
+                        lastFrameTime = (float)frameData.total_time;
                         continue;
                     }
 
-                    double calcDT = frameData.m_time - lastFrameTime;
+                    double calcDT = (float)frameData.total_time - lastFrameTime;
 
-                    if (calcDT != 0)
+                    if (calcDT > 0)
                     {
-                        lastFrameTime = frameData.m_time;
+                        lastFrameTime = (float)frameData.total_time;
 
                         ProcessFrameData((float)calcDT);
-
                     }
                 }
                 catch (Exception e)
@@ -93,6 +100,8 @@ namespace GenericTelemetryProvider
 
             StopSending();
 
+            handle.Free();
+
             Thread.CurrentThread.Join();
         }
 
@@ -100,11 +109,9 @@ namespace GenericTelemetryProvider
 
         void ProcessFrameData(float _dt)
         {
-            transform = new Matrix4x4();
-
-            fwd = new Vector3((float)frameData.m_fwdX, (float)frameData.m_fwdY, (float)frameData.m_fwdZ);
-            up = new Vector3((float)frameData.m_upX, (float)frameData.m_upY, (float)frameData.m_upZ);
-            rht = Vector3.Cross(up, fwd);
+            fwd = new Vector3((float)frameData.world_dir_fwd_x, (float)frameData.world_dir_fwd_y, (float)frameData.world_dir_fwd_z);
+            rht = new Vector3((float)frameData.world_dir_rht_x, (float)frameData.world_dir_rht_y, (float)frameData.world_dir_rht_z);
+            up = Vector3.Cross(fwd, rht);
 
             transform = new Matrix4x4();
             transform.M11 = rht.X;
@@ -119,9 +126,9 @@ namespace GenericTelemetryProvider
             transform.M32 = fwd.Y;
             transform.M33 = fwd.Z;
             transform.M34 = 0.0f;
-            transform.M41 = (float)frameData.m_posX;
-            transform.M42 = (float)frameData.m_posY;
-            transform.M43 = (float)frameData.m_posZ;
+            transform.M41 = (float)frameData.position_x;
+            transform.M42 = (float)frameData.position_y;
+            transform.M43 = (float)frameData.position_z;
             transform.M44 = 1.0f;
 
             ProcessTransform(transform, _dt);
@@ -132,7 +139,7 @@ namespace GenericTelemetryProvider
             if (!base.ProcessTransform(newTransform, inDT))
                 return false;
 
-            ui.DebugTextChanged(JsonConvert.SerializeObject(filteredData, Formatting.Indented) + "\n dt: " + dt + "\n steer: " + InputModule.Instance.controller.leftThumb.X + "\n accel: " + InputModule.Instance.controller.rightTrigger + "\n brake: " + InputModule.Instance.controller.leftTrigger + "\n frametime: " + frameData.m_time + "\n Pitch: " + filteredData.pitch + ", " + "\n Yaw: " + filteredData.yaw + ", " + "\n Roll: " + filteredData.roll + ", " + "\n rht: " + rht.X + ", " + rht.Y + ", " + rht.Z + "\n up: " + up.X + ", " + up.Y + ", " + up.Z + "\n fwd: " + fwd.X + ", " + fwd.Y + ", " + fwd.Z);
+            ui.DebugTextChanged(JsonConvert.SerializeObject(filteredData, Formatting.Indented) + "\n dt: " + dt + "\n steer: " + InputModule.Instance.controller.leftThumb.X + "\n accel: " + InputModule.Instance.controller.rightTrigger + "\n brake: " + InputModule.Instance.controller.leftTrigger + "\n frametime: " + frameData.total_time + "\n Pitch: " + filteredData.pitch + ", " + "\n Yaw: " + filteredData.yaw + ", " + "\n Roll: " + filteredData.roll + ", " + "\n rht: " + rht.X + ", " + rht.Y + ", " + rht.Z + "\n up: " + up.X + ", " + up.Y + ", " + up.Z + "\n fwd: " + fwd.X + ", " + fwd.Y + ", " + fwd.Z);
 
             SendFilteredData();
 
@@ -163,8 +170,7 @@ namespace GenericTelemetryProvider
 
         public override void CalcVelocity()
         {
-            Vector3 worldVelocity = (worldPosition - lastPosition) / dt;
-            lastWorldVelocity = worldVelocity;
+            worldVelocity = (worldPosition - lastPosition) / dt;
 
             lastPosition = transform.Translation = worldPosition;
 
@@ -194,7 +200,31 @@ namespace GenericTelemetryProvider
 
         public override void CalcAcceleration()
         {
-            base.CalcAcceleration();
+            //   base.CalcAcceleration();
+
+//            Vector3 worldAcceleration = ((worldVelocity - lastWorldVelocity) / dt) * 0.10197162129779283f; //convert to g accel
+
+            lastWorldVelocity = worldVelocity;
+
+
+
+            //assign filtered local velocity
+            Vector3 localVelocity = new Vector3((float)filteredData.local_velocity_x, (float)filteredData.local_velocity_y, (float)filteredData.local_velocity_z);
+
+            //calculate local acceleration
+            Vector3 localAcceleration = ((localVelocity - lastVelocity) / dt) * 0.10197162129779283f; //convert to g accel
+
+            lastVelocity = localVelocity;
+
+            //            Vector3 localAcceleration = Vector3.Transform(worldAcceleration, rotInv);
+
+            rawData.gforce_lateral = localAcceleration.X;
+            rawData.gforce_vertical = localAcceleration.Y;
+            rawData.gforce_longitudinal = localAcceleration.Z;
+
+            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, accelKeyMask, false);
+
+
         }
 
         public override void CalcAngles()
@@ -222,15 +252,41 @@ namespace GenericTelemetryProvider
 
         public override void ProcessInputs()
         {
-            base.ProcessInputs();
+            filteredData.steering_input = rawData.steering_input = frameData.steering_input;
+            filteredData.brake_input = rawData.brake_input = frameData.brake_input;
+            filteredData.clutch_input = rawData.clutch_input = frameData.clutch_input;
 
-            filteredData.engine_rate = 700;// Math.Max(700, Math.Min(6000, 700 + (frameData.engineRPM * (6000-700))));
+//            base.ProcessInputs();
+
+//            filteredData.engine_rate = 700;// Math.Max(700, Math.Min(6000, 700 + (frameData.engineRPM * (6000-700))));
         }
 
         public override void SimulateSuspension()
         {
+            rawData.suspension_position_bl = frameData.suspension_position_bl;
+            rawData.suspension_position_br = frameData.suspension_position_br;
+            rawData.suspension_position_fl = frameData.suspension_position_fl;
+            rawData.suspension_position_fr = frameData.suspension_position_fr;
+
+            rawData.suspension_velocity_bl = frameData.suspension_velocity_bl;
+            rawData.suspension_velocity_br = frameData.suspension_velocity_br;
+            rawData.suspension_velocity_fl = frameData.suspension_velocity_fl;
+            rawData.suspension_velocity_fr = frameData.suspension_velocity_fr;
+
+            rawData.suspension_acceleration_bl = frameData.suspension_acceleration_bl;
+            rawData.suspension_acceleration_br = frameData.suspension_acceleration_br;
+            rawData.suspension_acceleration_fl = frameData.suspension_acceleration_fl;
+            rawData.suspension_acceleration_fr = frameData.suspension_acceleration_fr;
+
+            FilterModuleCustom.Instance.Filter(rawData, ref filteredData, suspVelKeyMask, false);
 
         }
+
+        public override void CalcFFBData()
+        {
+            filteredData.vehicle_type = rawData.vehicle_type = frameData.vehicle_type;
+        }
+
 
 
         public override void CalcAngularVelocityAndAccel()

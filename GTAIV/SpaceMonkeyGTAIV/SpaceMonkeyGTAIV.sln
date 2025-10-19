@@ -7,6 +7,14 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SpaceMonkeyGTAIV", "SpaceMo
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SpaceMonkeyTelemetryAPI", "..\..\SpaceMonkeyTelemetryAPI\SpaceMonkeyTelemetryAPI\SpaceMonkeyTelemetryAPI.vcxproj", "{6FCC3D66-9C0E-4061-BAB3-CB3BD2A074DD}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libMinHook", "..\..\minhook\build\VC17\libMinHook.vcxproj", "{F142A341-5EE0-442D-A15F-98AE9B48DBAE}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SMXInputFFBHost", "..\..\SMXInputFFB\SMXInputFFBHost\SMXInputFFBHost.vcxproj", "{8A26172D-7FEA-4B75-8A9D-C0B19EFF374A}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CMCustomUDPNative", "..\..\CMCustomUDPNative\CMCustomUDPNative.vcxproj", "{A6D874AB-4B5D-4EC1-89C4-BEF85CB20A95}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SMXInputFFBClient", "..\..\SMXInputFFB\SMXInputFFBClient\SMXInputFFBClient.vcxproj", "{AAD0042C-29F1-4023-ACCC-FD20212DDAA6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -31,6 +39,38 @@ Global
 		{6FCC3D66-9C0E-4061-BAB3-CB3BD2A074DD}.Release|x64.Build.0 = Release|x64
 		{6FCC3D66-9C0E-4061-BAB3-CB3BD2A074DD}.Release|x86.ActiveCfg = Release|Win32
 		{6FCC3D66-9C0E-4061-BAB3-CB3BD2A074DD}.Release|x86.Build.0 = Release|Win32
+		{F142A341-5EE0-442D-A15F-98AE9B48DBAE}.Debug|x64.ActiveCfg = Debug|x64
+		{F142A341-5EE0-442D-A15F-98AE9B48DBAE}.Debug|x64.Build.0 = Debug|x64
+		{F142A341-5EE0-442D-A15F-98AE9B48DBAE}.Debug|x86.ActiveCfg = Debug|Win32
+		{F142A341-5EE0-442D-A15F-98AE9B48DBAE}.Debug|x86.Build.0 = Debug|Win32
+		{F142A341-5EE0-442D-A15F-98AE9B48DBAE}.Release|x64.ActiveCfg = Release|x64
+		{F142A341-5EE0-442D-A15F-98AE9B48DBAE}.Release|x64.Build.0 = Release|x64
+		{F142A341-5EE0-442D-A15F-98AE9B48DBAE}.Release|x86.ActiveCfg = Release|Win32
+		{F142A341-5EE0-442D-A15F-98AE9B48DBAE}.Release|x86.Build.0 = Release|Win32
+		{8A26172D-7FEA-4B75-8A9D-C0B19EFF374A}.Debug|x64.ActiveCfg = Debug|x64
+		{8A26172D-7FEA-4B75-8A9D-C0B19EFF374A}.Debug|x64.Build.0 = Debug|x64
+		{8A26172D-7FEA-4B75-8A9D-C0B19EFF374A}.Debug|x86.ActiveCfg = Debug|Win32
+		{8A26172D-7FEA-4B75-8A9D-C0B19EFF374A}.Debug|x86.Build.0 = Debug|Win32
+		{8A26172D-7FEA-4B75-8A9D-C0B19EFF374A}.Release|x64.ActiveCfg = Release|x64
+		{8A26172D-7FEA-4B75-8A9D-C0B19EFF374A}.Release|x64.Build.0 = Release|x64
+		{8A26172D-7FEA-4B75-8A9D-C0B19EFF374A}.Release|x86.ActiveCfg = Release|Win32
+		{8A26172D-7FEA-4B75-8A9D-C0B19EFF374A}.Release|x86.Build.0 = Release|Win32
+		{A6D874AB-4B5D-4EC1-89C4-BEF85CB20A95}.Debug|x64.ActiveCfg = Debug|x64
+		{A6D874AB-4B5D-4EC1-89C4-BEF85CB20A95}.Debug|x64.Build.0 = Debug|x64
+		{A6D874AB-4B5D-4EC1-89C4-BEF85CB20A95}.Debug|x86.ActiveCfg = Debug|Win32
+		{A6D874AB-4B5D-4EC1-89C4-BEF85CB20A95}.Debug|x86.Build.0 = Debug|Win32
+		{A6D874AB-4B5D-4EC1-89C4-BEF85CB20A95}.Release|x64.ActiveCfg = Release|x64
+		{A6D874AB-4B5D-4EC1-89C4-BEF85CB20A95}.Release|x64.Build.0 = Release|x64
+		{A6D874AB-4B5D-4EC1-89C4-BEF85CB20A95}.Release|x86.ActiveCfg = Release|Win32
+		{A6D874AB-4B5D-4EC1-89C4-BEF85CB20A95}.Release|x86.Build.0 = Release|Win32
+		{AAD0042C-29F1-4023-ACCC-FD20212DDAA6}.Debug|x64.ActiveCfg = Debug|x64
+		{AAD0042C-29F1-4023-ACCC-FD20212DDAA6}.Debug|x64.Build.0 = Debug|x64
+		{AAD0042C-29F1-4023-ACCC-FD20212DDAA6}.Debug|x86.ActiveCfg = Debug|Win32
+		{AAD0042C-29F1-4023-ACCC-FD20212DDAA6}.Debug|x86.Build.0 = Debug|Win32
+		{AAD0042C-29F1-4023-ACCC-FD20212DDAA6}.Release|x64.ActiveCfg = Release|x64
+		{AAD0042C-29F1-4023-ACCC-FD20212DDAA6}.Release|x64.Build.0 = Release|x64
+		{AAD0042C-29F1-4023-ACCC-FD20212DDAA6}.Release|x86.ActiveCfg = Release|Win32
+		{AAD0042C-29F1-4023-ACCC-FD20212DDAA6}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

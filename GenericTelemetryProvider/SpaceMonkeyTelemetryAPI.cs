@@ -7,34 +7,6 @@ using System.Runtime.InteropServices;
 
 namespace GenericTelemetryProvider
 {
-
-    // Managed representation of the native SpaceMonkeyTelemetryFrameData structure.
-//    [StructLayout(LayoutKind.Sequential)]
-    [StructLayout(LayoutKind.Sequential, Pack = 0, CharSet = CharSet.Ansi)]
-    public struct SpaceMonkeyTelemetryFrameData
-    {
-        public int m_version;         // Version number
-        public double m_time;         // Absolute time (for calculating frame time delta)
-        public double m_posX;         // World position X (meters)
-        public double m_posY;         // World position Y (meters)
-        public double m_posZ;         // World position Z (meters)
-        public double m_fwdX;         // World forward direction X
-        public double m_fwdY;         // World forward direction Y
-        public double m_fwdZ;         // World forward direction Z
-        public double m_upX;          // World up direction X
-        public double m_upY;          // World up direction Y
-        public double m_upZ;          // World up direction Z
-        public float m_idleRPM;       // Engine idle RPM
-        public float m_maxRPM;        // Engine max RPM
-        public float m_rpm;           // Engine RPM
-        public float m_gear;          // Gear
-        public float m_throttleInput; // Throttle input (0 to 1)
-        public float m_brakeInput;    // Brake input (0 to 1)
-        public float m_steeringInput; // Steering input (-1 to 1)
-        public float m_clutchInput;   // Clutch input (0 to 1)
-    }
-
-    // Managed wrapper for the native SpaceMonkeyTelemetryAPI.
     public class SpaceMonkeyTelemetryAPI : IDisposable
     {
         // Pointer to the native instance.
@@ -47,20 +19,25 @@ namespace GenericTelemetryProvider
         [DllImport("SpaceMonkeyTelemetryAPI.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void SpaceMonkeyTelemetryAPI_Destroy(IntPtr instance);
 
-        [DllImport("SpaceMonkeyTelemetryAPI.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void SpaceMonkeyTelemetryAPI_InitSendSharedMemory(IntPtr instance);
+        [DllImport("SpaceMonkeyTelemetryAPI.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private static extern IntPtr SpaceMonkeyTelemetryAPI_InitSendSharedMemory(IntPtr instance, [MarshalAs(UnmanagedType.LPStr)] string packetFormatPath);
+
+        [DllImport("SpaceMonkeyTelemetryAPI.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        private static extern IntPtr SpaceMonkeyTelemetryAPI_InitRecieveSharedMemory(IntPtr instance, [MarshalAs(UnmanagedType.LPStr)] string packetFormatPath);
 
         [DllImport("SpaceMonkeyTelemetryAPI.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void SpaceMonkeyTelemetryAPI_InitRecieveSharedMemory(IntPtr instance);
+        private static extern void SpaceMonkeyTelemetryAPI_SendFrame(IntPtr instance);
 
         [DllImport("SpaceMonkeyTelemetryAPI.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void SpaceMonkeyTelemetryAPI_SendFrame(IntPtr instance, ref SpaceMonkeyTelemetryFrameData frame);
-
-        [DllImport("SpaceMonkeyTelemetryAPI.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void SpaceMonkeyTelemetryAPI_RecieveFrame(IntPtr instance, ref SpaceMonkeyTelemetryFrameData frame);
+        private static extern void SpaceMonkeyTelemetryAPI_RecieveFrame(IntPtr instance);
 
         [DllImport("SpaceMonkeyTelemetryAPI.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void SpaceMonkeyTelemetryAPI_Deinit(IntPtr instance);
+
+        [DllImport("SpaceMonkeyTelemetryAPI.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void SpaceMonkeyTelemetryAPI_SetPacket(IntPtr instance, IntPtr packet);
+
+        
 
 
 
@@ -75,27 +52,32 @@ namespace GenericTelemetryProvider
         }
 
         // Initialize the shared memory for sending.
-        public void InitSendSharedMemory()
+        public void InitSendSharedMemory(string packetFormatPath)
         {
-            SpaceMonkeyTelemetryAPI_InitSendSharedMemory(nativeHandle);
+            SpaceMonkeyTelemetryAPI_InitSendSharedMemory(nativeHandle, packetFormatPath);
         }
 
         // Initialize the shared memory for receiving.
-        public void InitRecieveSharedMemory()
+        public void InitRecieveSharedMemory(string packetFormatPath)
         {
-            SpaceMonkeyTelemetryAPI_InitRecieveSharedMemory(nativeHandle);
+            SpaceMonkeyTelemetryAPI_InitRecieveSharedMemory(nativeHandle, packetFormatPath);
+        }
+
+        public void SetPacket(IntPtr packet)
+        {
+            SpaceMonkeyTelemetryAPI_SetPacket(nativeHandle, packet);
         }
 
         // Send a telemetry frame.
-        public void SendFrame(ref SpaceMonkeyTelemetryFrameData frame)
+        public void SendFrame()
         {
-            SpaceMonkeyTelemetryAPI_SendFrame(nativeHandle, ref frame);
+            SpaceMonkeyTelemetryAPI_SendFrame(nativeHandle);
         }
 
         // Receive a telemetry frame.
-        public void RecieveFrame(ref SpaceMonkeyTelemetryFrameData frame)
+        public void RecieveFrame()
         {
-            SpaceMonkeyTelemetryAPI_RecieveFrame(nativeHandle, ref frame);
+            SpaceMonkeyTelemetryAPI_RecieveFrame(nativeHandle);
         }
 
         // Deinitialize the API.

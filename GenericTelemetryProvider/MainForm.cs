@@ -16,6 +16,7 @@ using CMCustomUDP;
 using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Reflection;
+using SMFFBSource;
 using SMHaptics;
 
 namespace GenericTelemetryProvider
@@ -89,6 +90,8 @@ namespace GenericTelemetryProvider
             loadCallback?.Invoke(true);
 
             InitHaptics();
+
+            InitSMFFB();
         }
 
         // Handles exceptions that occur in non-UI threads (e.g., background workers)
@@ -760,6 +763,35 @@ namespace GenericTelemetryProvider
             SMHapticsManager.instance.InitFromConfig(MainConfig.Instance.configData.hapticsConfig);
 
             RegisterTelemetryCallback(SMHapticsManager.instance.Input);
+
+            //SMHEngineEffectConfig engineConfig = new SMHEngineEffectConfig();
+
+            //engineConfig.enabled = true;
+            //engineConfig.gain = 1.0;
+            //engineConfig.outputChannelIndex = 1;
+            //engineConfig.outputDeviceModuleName = "{0.0.0.00000000}.{e0f80a10-91f6-46ee-878f-477f7c3aa586}";
+            //engineConfig.waveform = 3;
+            //engineConfig.id = "SMHaptics.SMHEngineEffect";
+            //engineConfig.minFrequency = 10;
+            //engineConfig.maxFrequency = 80;
+
+            //SMHapticsManager.instance.CreateEffect(engineConfig);
+
+            //SMHOutputDevice outputDevice = SMHOutputManager.instance.GetDeviceByModuleName(engineConfig.outputDeviceModuleName);
+            //if(outputDevice != null)
+            //{
+            //    outputDevice.Enable(true);
+            //}
+
+        }
+
+
+        public void InitSMFFB()
+        {
+            SMFFBSourceManager.instance.Init(MainConfig.installPath);
+            SMFFBSourceManager.instance.InitFromConfig(MainConfig.Instance.configData.ffbSourceConfig);
+
+            RegisterTelemetryCallback(SMFFBSourceManager.instance.Input);
 
             //SMHEngineEffectConfig engineConfig = new SMHEngineEffectConfig();
 
