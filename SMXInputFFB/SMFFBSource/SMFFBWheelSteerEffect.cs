@@ -65,8 +65,6 @@ namespace SMFFBSource
             if (!effectConfig.enabled)
                 return;
 
-            outputs.ffb_wheel_steer_axis = wheelSteerEffectConfig.xInputAxisIndex;
-
             float suspensionOffset = 0.0f;
 
             switch((CMCustomUDPData.VehicleType)(float)inputs.vehicle_type)

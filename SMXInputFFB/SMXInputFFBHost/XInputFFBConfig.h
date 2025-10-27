@@ -18,6 +18,16 @@ enum class XInputFFBVehicleType : uint32_t
     Helicopter = 1u << 5
 };
 
+enum class XInputFFBEffectType : uint32_t
+{
+    Steering = 1u,
+    Aileron = 1u << 1,
+    Elevator = 1u << 2,
+    Rudder = 1u << 3,
+    Brake = 1u << 4,
+    Clutch = 1u << 5
+};
+
 inline XInputFFBVehicleType VehicleIndexToFlag(unsigned index)
 {
     // Optionally guard against out-of-range values
@@ -36,6 +46,7 @@ struct AxisMapping
     bool invert;          // flip sign
     bool pedal;            // pedal 
     uint32_t vehicleTypeMask; //mask of vehicle types that enable this binding
+    uint32_t ffbEffectMask; //mask of ffb effects on this binding
 };
 
 struct ButtonMapping
@@ -97,8 +108,12 @@ public:
     static bool StringToGuidA(const char* s, GUID& out);
 
     int AddAxisMapping(int deviceIndex, int axisIndex);
-    void DeleteAxisMapping(int deviceIndex, int axisIndex);
+    void DeleteAxisMapping(int deviceIndex, int axisIndex, int mappingIndex);
     AxisMapping* GetAxisMapping(int deviceIndex, int axisIndex, int mappingIndex);
+
+    float GetXInputAxisValueForEffectType(const XInputFFBEffectType& EffectType);
+
+    int AddEmptyMapping(int deviceIndex, int axisIndex);
 
 
 private:

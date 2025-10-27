@@ -127,7 +127,8 @@ const XINPUT_STATE& XInputFFBDevice::UpdateState(uint32_t vehicleTypeMask)
     }
 
     // Axes
-    float acc[6] = { 0 }; // LX,LY,RX,RY,LT,RT
+    // LX,LY,RX,RY,LT,RT
+    memset(m_axisState, 0, sizeof(float) * 6);
     for (int a = 0; a < 6; ++a)
     {
         const std::vector<AxisMapping>* bucket = cfg.GetAxisBucket(a);
@@ -154,45 +155,76 @@ const XINPUT_STATE& XInputFFBDevice::UpdateState(uint32_t vehicleTypeMask)
         {
             if (vsum < -1.0f) vsum = -1.0f;
             if (vsum > 1.0f) vsum = 1.0f;
-            acc[a] = vsum;
+            m_axisState[a] = vsum;
         }
     }
 
     XINPUT_GAMEPAD& gp = m_state.Gamepad;
     gp.wButtons = buttons;
-    gp.sThumbLX = ToXInputStick(acc[0]);
-    gp.sThumbLY = ToXInputStick(acc[1]);
-    gp.sThumbRX = ToXInputStick(acc[2]);
-    gp.sThumbRY = ToXInputStick(acc[3]);
-    gp.bLeftTrigger = ToXInputTrigger(acc[4]);
-    gp.bRightTrigger = ToXInputTrigger(acc[5]);
+    gp.sThumbLX = ToXInputStick(m_axisState[0]);
+    gp.sThumbLY = ToXInputStick(m_axisState[1]);
+    gp.sThumbRX = ToXInputStick(m_axisState[2]);
+    gp.sThumbRY = ToXInputStick(m_axisState[3]);
+    gp.bLeftTrigger = ToXInputTrigger(m_axisState[4]);
+    gp.bRightTrigger = ToXInputTrigger(m_axisState[5]);
 
     ++m_state.dwPacketNumber;
     return m_state;
 }
 
-bool XInputFFBDevice::SetAxisForce(XInputAxis axis, long magnitude)
+
+bool XInputFFBDevice::SetAxisForce(XInputFFBEffectType effectType, long magnitude)
 {
-    if (!m_cfg) return false;
+    if (!m_cfg)
+        return false;
 
     XInputFFBDeviceConfig& cfg = m_cfg->GetDeviceConfig(m_user);
-    int ai = (int)axis;
-    std::vector<AxisMapping>* bucket = cfg.GetAxisBucket(ai);
-    if (!bucket) return false;
+    const uint32_t effectMask = static_cast<uint32_t>(effectType);
 
-    long mag = magnitude; if (mag < -10000) mag = -10000; if (mag > 10000) mag = 10000;
+    // Clamp magnitude to DirectInput constant force limits
+    long mag = magnitude;
+    if (mag < -10000) mag = -10000;
+    if (mag > 10000)  mag = 10000;
 
     bool ok = false;
-    for (size_t i = 0; i < bucket->size(); ++i)
+
+    // Iterate all XInput axis buckets (LX, LY, RX, RY, LT, RT, etc.)
+    for (int axisIndex = 0; axisIndex < XInputFFBDeviceConfig::XInputAxisCount; ++axisIndex)
     {
-        const AxisMapping& am = (*bucket)[i];
-        DISourceDevice* dev = FindDevice(am.deviceId);
-        if (!dev) continue;
+        std::vector<AxisMapping>* bucket = cfg.GetAxisBucket(axisIndex);
+        if (!bucket)
+            continue;
 
-        int diAxis = am.diAxis;
-        if (diAxis < 0 || diAxis > 7) continue;
+        for (size_t i = 0; i < bucket->size(); ++i)
+        {
+            const AxisMapping& am = (*bucket)[i];
 
-        ok |= dev->SetConstantForce((DIAxis)diAxis, mag);
+            // Skip mappings that don't include this effect type
+            if ((am.ffbEffectMask & effectMask) == 0)
+                continue;
+
+            DISourceDevice* dev = FindDevice(am.deviceId);
+            if (!dev)
+                continue;
+
+            const int diAxis = am.diAxis;
+            if (diAxis < 0 || diAxis > 7)
+                continue;
+
+            // Apply the force
+            ok |= dev->SetConstantForce((DIAxis)diAxis, mag);
+        }
     }
+
     return ok;
 }
+
+
+float XInputFFBDevice::GetAxisValue(XInputAxis axis)
+{
+    if (axis >= XInputAxis::COUNT || (int)axis < 0)
+        return 0;
+
+    return m_axisState[(int)axis];
+}
+

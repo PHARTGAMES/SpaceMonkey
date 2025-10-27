@@ -131,7 +131,6 @@ namespace CMCustomUDP
             ffb_wheel_steer_constant,
             ffb_wheel_steer_damper,
             ffb_wheel_steer_collision,
-            ffb_wheel_steer_axis,
 
             Max
         }
@@ -236,7 +235,6 @@ namespace CMCustomUDP
         public object ffb_wheel_steer_constant;
         public object ffb_wheel_steer_damper;
         public object ffb_wheel_steer_collision;
-        public object ffb_wheel_steer_axis;
 
         public CMCustomUDPData()
         {
@@ -340,7 +338,6 @@ namespace CMCustomUDP
             ffb_wheel_steer_constant = 0.0f;
             ffb_wheel_steer_damper = 0.0f;
             ffb_wheel_steer_collision = 0.0f;
-            ffb_wheel_steer_axis = -1.0f;
         }
 
         public void Init(string _formatFilename = null)
@@ -544,7 +541,6 @@ namespace CMCustomUDP
             ffb_wheel_steer_constant = other.ffb_wheel_steer_constant;
             ffb_wheel_steer_damper = other.ffb_wheel_steer_damper;
             ffb_wheel_steer_collision = other.ffb_wheel_steer_collision;
-            ffb_wheel_steer_axis = other.ffb_wheel_steer_axis;
 
 
             if (copyChannels)

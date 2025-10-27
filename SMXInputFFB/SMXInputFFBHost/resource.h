@@ -24,9 +24,11 @@
 #define IDC_AT_XINPUT_MAPPING_COMBO     1014
 #define IDC_AT_AXIS_LBL                 1015
 #define IDC_AT_MAPPING_LBL              1016
-#define IDC_AT_XINPUT_LBL               1017
+#define IDC_AT_DI_AXIS_LBL              1017
 #define IDC_AT_DINPUT_LBL               1018
 #define IDC_AT_PEDAL_CHECK              1019
+#define IDC_AT_MAPPING_LBL2             1020
+#define IDC_AT_MAP_RENAME_LBL           1020
 #define IDC_AT_VEHICLE_MASK_GROUP       1021
 #define IDC_AT_VEHICLE_CAR_CHECK        1022
 #define IDC_AT_VEHICLE_BIKE_CHECK       1023
@@ -39,8 +41,14 @@
 #define IDC_AT_DEADZONE_LBL             1030
 #define IDC_AT_DEADZONE_EDIT            1031
 #define IDC_AT_SCALE_LBL                1032
-#define IDC_EDIT4                       1033
 #define IDC_AT_SCALE_EDIT               1033
+#define IDC_AT_EFFECT_GROUP             1034
+#define IDC_AT_EFFECT_STEERING_CHECK    1035
+#define IDC_AT_EFFECT_AILERON_CHECK     1036
+#define IDC_AT_EFFECT_ELEVATOR_CHECK    1037
+#define IDC_AT_EFFECT_RUDDER_CHECK      1038
+#define IDC_AT_EFFECT_BRAKE_CHECK       1039
+#define IDC_AT_EFFECT_CLUTCH_CHECK      1040
 
 // Next default values for new objects
 // 
@@ -48,7 +56,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        104
 #define _APS_NEXT_COMMAND_VALUE         40002
-#define _APS_NEXT_CONTROL_VALUE         1034
+#define _APS_NEXT_CONTROL_VALUE         1041
 #define _APS_NEXT_SYMED_VALUE           102
 #endif
 #endif

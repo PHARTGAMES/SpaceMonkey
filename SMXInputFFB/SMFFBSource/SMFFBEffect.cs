@@ -30,7 +30,6 @@ namespace SMFFBSource
                     defaultConfig = new SMFFBWheelSteerEffectConfig
                     {
                         id = "SMFFBSource.SMFFBWheelSteerEffect",
-                        xInputAxisIndex = -1,
                         enabled = true
                     }
                 }
@@ -60,7 +59,6 @@ namespace SMFFBSource
     {
         public string id;
         public bool enabled = false;
-        public int xInputAxisIndex = 0;
 
         public delegate void ConfigChangedHandler(SMFFBEffectConfig config, string fieldName);
 
@@ -86,19 +84,7 @@ namespace SMFFBSource
         }
 
 
-        [JsonIgnore]
-        public int XInputAxisIndex
-        {
-            get => xInputAxisIndex;
-            set
-            {
-                if (xInputAxisIndex != value)
-                {
-                    xInputAxisIndex = value;
-                    OnConfigChanged("xInputAxisIndex");
-                }
-            }
-        }
+
 
 
 
@@ -130,10 +116,6 @@ namespace SMFFBSource
             switch(fieldName)
             {
                 case "enabled":
-                    {
-                        break;
-                    }
-                case "xInputAxisIndex":
                     {
                         break;
                     }

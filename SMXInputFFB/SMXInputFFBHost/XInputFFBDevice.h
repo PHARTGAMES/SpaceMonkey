@@ -1,5 +1,6 @@
 #pragma once
 #include "SMXInputFFBHostDefines.h"
+#include "XInputFFBConfig.h"
 
 #include <Xinput.h>
 #include <guiddef.h>
@@ -31,9 +32,11 @@ public:
     const XINPUT_STATE& UpdateState(uint32_t vehicleTypeMask);
 
     // Force feedback across all DI axes mapped to this XInput axis in the current user config
-    bool SetAxisForce(XInputAxis axis, long magnitude);
+    bool SetAxisForce(XInputFFBEffectType effectType, long magnitude);
 
     const XINPUT_STATE& GetCachedState() const { return m_state; }
+
+    float GetAxisValue(XInputAxis axis);
 
 private:
     // Helpers
@@ -50,4 +53,5 @@ private:
     XInputFFBConfig* m_cfg = nullptr;
     unsigned        m_user = 0; // which virtual controller (0..XUSER_MAX_COUNT-1)
     XINPUT_STATE    m_state;
+    float m_axisState[6];
 };

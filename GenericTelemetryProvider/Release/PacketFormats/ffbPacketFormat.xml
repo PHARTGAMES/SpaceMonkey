@@ -3,5 +3,4 @@
   <float scale="1.0" channel="ffb_wheel_steer_constant" />
   <float scale="1.0" channel="ffb_wheel_steer_damper" />
   <float scale="1.0" channel="ffb_wheel_steer_collision" />
-  <float scale="1.0" channel="ffb_wheel_steer_axis" />
 </custom_udp>

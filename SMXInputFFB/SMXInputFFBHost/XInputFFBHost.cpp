@@ -19,17 +19,12 @@ void XInputFFBHost::ProcessFFBTelemetry(CMCustomUDPData* frameData)
 {
     m_ffbFrameData.Copy(*frameData);
 
-
-    if (m_ffbFrameData.ffb_wheel_steer_axis != -1)
+    for (size_t i = 0; i < m_xInputFFBDevices.size(); ++i)
     {
-        for (size_t i = 0; i < m_xInputFFBDevices.size(); ++i)
-        {
-            XInputFFBDevice* device = m_xInputFFBDevices[i];
+        XInputFFBDevice* device = m_xInputFFBDevices[i];
 
-            device->SetAxisForce((XInputAxis)m_ffbFrameData.ffb_wheel_steer_axis, (long)m_ffbFrameData.ffb_wheel_steer_constant);
-        }
+        device->SetAxisForce(XInputFFBEffectType::Steering, (long)m_ffbFrameData.ffb_wheel_steer_constant);
     }
-
 }
 
 
@@ -135,7 +130,6 @@ void XInputFFBHost::EnumerateSourceDevices()
         return;
     }
 
-    // Clear previous list (if re-enumerating)
     for (size_t i = 0; i < m_sourceDevices.size(); ++i)
     {
         delete m_sourceDevices[i];
@@ -343,5 +337,65 @@ const std::vector<std::string>& XInputFFBHost::GetDIDeviceIdentifiers()
 }
 
 
+const std::vector<std::string>& XInputFFBHost::GetDIDeviceGUIDs()
+{
+    m_diDeviceGUIDs.clear();
+
+    for (DISourceDevice *diDevice : m_sourceDevices)
+    {
+        m_diDeviceGUIDs.push_back(std::string(diDevice->GetInstanceGUIDString()));
+    }
+    
+    return m_diDeviceGUIDs;
+}
 
 
+
+float XInputFFBHost::GetXInputAxisValueForEffectType(const XInputFFBEffectType& effectType)
+{
+    if (!m_config)
+        return 0.0f;
+
+    const uint32_t effectMask = static_cast<uint32_t>(effectType);
+    float maxMagnitude = 0.0f;
+    float returnValue = 0.0f;
+
+    // Iterate through all virtual XInput devices
+    for (size_t deviceIndex = 0; deviceIndex < m_xInputFFBDevices.size(); ++deviceIndex)
+    {
+        XInputFFBDevice* device = m_xInputFFBDevices[deviceIndex];
+        if (!device)
+            continue;
+
+        XInputFFBDeviceConfig& deviceConfig = m_config->GetDeviceConfig((unsigned)deviceIndex);
+
+        // For each XInput axis bucket (LX, LY, RX, RY, LT, RT)
+        for (int axis = 0; axis < XInputFFBDeviceConfig::XInputAxisCount; ++axis)
+        {
+            auto axisMappings = deviceConfig.GetAxisBucket(axis);
+            if (!axisMappings)
+                continue;
+
+            for (const AxisMapping& mapping : *axisMappings)
+            {
+                // Skip if this mapping doesn't include the effect type
+                if ((mapping.ffbEffectMask & effectMask) == 0)
+                    continue;
+
+                // Retrieve cached axis value
+                float val = device->GetAxisValue((XInputAxis)axis);
+
+                float absVal = std::fabsf(val);
+
+                // Track the maximum magnitude
+                if (absVal > maxMagnitude)
+                {
+                    maxMagnitude = absVal;
+                    returnValue = val;
+                }
+            }
+        }
+    }
+
+    return returnValue;
+}

@@ -130,7 +130,6 @@ public:
         ffb_wheel_steer_constant,
         ffb_wheel_steer_damper,
         ffb_wheel_steer_collision,
-        ffb_wheel_steer_axis,
 
         Max
     };
@@ -236,7 +235,6 @@ public:
     float ffb_wheel_steer_constant;
     float ffb_wheel_steer_damper;
     float ffb_wheel_steer_collision;
-    float ffb_wheel_steer_axis = -1.0f;
 
     std::string formatFilename = "PacketFormats\\defaultPacketFormat.xml";
 
@@ -722,7 +720,6 @@ private:
         case DK::ffb_wheel_steer_constant: return &CMCustomUDPData::ffb_wheel_steer_constant;
         case DK::ffb_wheel_steer_damper: return &CMCustomUDPData::ffb_wheel_steer_damper;
         case DK::ffb_wheel_steer_collision: return &CMCustomUDPData::ffb_wheel_steer_collision;
-        case DK::ffb_wheel_steer_axis: return &CMCustomUDPData::ffb_wheel_steer_axis;
 
         case DK::Max: default: return nullptr;
         }
@@ -863,7 +860,6 @@ private:
         ADD(ffb_wheel_steer_constant);
         ADD(ffb_wheel_steer_damper);
         ADD(ffb_wheel_steer_collision);
-        ADD(ffb_wheel_steer_axis);
 #undef ADD
         return m;
     }
@@ -926,7 +922,7 @@ private:
             FLD fuel_in_tank, fuel_capacity, in_pits, team_info, session_type, drs_allowed, track_number, vehicle_fia_flags;
             FLD engine_rate_div10, max_rpm_div10, idle_rpm_div10;
             FLD slip_angle, slip_angle2;
-            FLD ffb_wheel_steer_constant, ffb_wheel_steer_damper, ffb_wheel_steer_collision, ffb_wheel_steer_axis;
+            FLD ffb_wheel_steer_constant, ffb_wheel_steer_damper, ffb_wheel_steer_collision;
 #undef FLD
         };
         return sizeof(LayoutProbe);

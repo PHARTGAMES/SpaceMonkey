@@ -44,6 +44,7 @@ void XInputFFBDeviceConfig::ToJson(nlohmann::json& j) const
             jm["invert"] = m.invert ? 1 : 0;
             jm["pedal"] = m.pedal ? 1 : 0;
             jm["vehicleTypeMask"] = m.vehicleTypeMask;
+            jm["ffbEffectMask"] = m.ffbEffectMask;
             ja.push_back(jm);
         }
     }
@@ -63,7 +64,7 @@ void XInputFFBDeviceConfig::ToJson(nlohmann::json& j) const
 
     j = nlohmann::json::object();
     j["axisMappings"] = ja;
-    j["button_mappings"] = jb;
+    j["buttonMappings"] = jb;
 }
 
 void XInputFFBDeviceConfig::FromJson(const nlohmann::json& j)
@@ -85,14 +86,15 @@ void XInputFFBDeviceConfig::FromJson(const nlohmann::json& j)
             m.invert = jm.value("invert", 0) != 0;
             m.pedal = jm.value("pedal", 0) != 0;
             m.vehicleTypeMask = jm.value("vehicleTypeMask", 0);
+            m.ffbEffectMask = jm.value("ffbEffectMask", 0);
             if (xi >= 0 && xi < (int)XInputFFBDeviceConfig::XInputAxisCount)
                 Axis[xi].push_back(m);
         }
     }
 
-    if (j.contains("button_mappings") && j["button_mappings"].is_array())
+    if (j.contains("buttonMappings") && j["buttonMappings"].is_array())
     {
-        for (const auto& jm : j["button_mappings"])
+        for (const auto& jm : j["buttonMappings"])
         {
             ButtonMapping m;
             m.mappingName = jm.value("mappingName", std::string());
@@ -206,7 +208,7 @@ int XInputFFBConfig::AddAxisMapping(int deviceIndex, int axisIndex)
 
 }
 
-void XInputFFBConfig::DeleteAxisMapping(int deviceIndex, int axisIndex)
+void XInputFFBConfig::DeleteAxisMapping(int deviceIndex, int axisIndex, int mappingIndex)
 {
     if (deviceIndex >= XUSER_MAX_COUNT || deviceIndex < 0)
         return;
@@ -214,6 +216,17 @@ void XInputFFBConfig::DeleteAxisMapping(int deviceIndex, int axisIndex)
     if (axisIndex >= XInputFFBDeviceConfig::XInputAxisCount || axisIndex < 0)
         return;
 
+    XInputFFBDeviceConfig& deviceConfig = Devices[deviceIndex];
+
+    std::vector<AxisMapping>* axisBucket = deviceConfig.GetAxisBucket(axisIndex);
+
+    if (mappingIndex < 0 || mappingIndex >= axisBucket->size())
+        return;
+
+    if (axisBucket)
+    {
+        axisBucket->erase(axisBucket->begin() + mappingIndex);
+    }
 }
 
 AxisMapping* XInputFFBConfig::GetAxisMapping(int deviceIndex, int axisIndex, int mappingIndex)
@@ -236,6 +249,8 @@ AxisMapping* XInputFFBConfig::GetAxisMapping(int deviceIndex, int axisIndex, int
     return &(*axisBucket)[mappingIndex];
 
 }
+
+
 
 
 

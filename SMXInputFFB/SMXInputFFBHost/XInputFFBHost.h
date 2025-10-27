@@ -6,9 +6,9 @@
 #include <guiddef.h>
 #include "CMCustomUDPData.h"
 #include "XInput.h"
+#include "XInputFFBConfig.h"
 
 class XInputHook;
-class XInputFFBConfig;
 class XInputFFBDevice;
 class SMXInputFFBClient;
 
@@ -66,8 +66,12 @@ public:
     const XINPUT_STATE& GetXInputState(int deviceID);
 
     const std::vector<std::string>& GetDIDeviceIdentifiers();
+    const std::vector<std::string>& GetDIDeviceGUIDs();
 
     XInputFFBConfig* GetConfig();
+
+    float GetXInputAxisValueForEffectType(const XInputFFBEffectType& effectType);
+
 
 private:
     static BOOL CALLBACK EnumCb(const DIDEVICEINSTANCE* inst, VOID* ctx);
@@ -84,6 +88,7 @@ private:
     CMCustomUDPData m_ffbFrameData;
 
     std::vector<std::string> m_diDeviceIdentifiers;
+    std::vector<std::string> m_diDeviceGUIDs;
 
 
 

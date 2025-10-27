@@ -91,9 +91,7 @@ void SpaceMonkeyLoop()
 			CPed* playerPed = FindPlayerPed();
 			CVehicle* vehicle = playerPed != nullptr && playerPed->m_pVehicle && playerPed->m_pVehicle->IsDriver(playerPed) ? playerPed->m_pVehicle : nullptr;
 
-			const XINPUT_STATE& inputState = s_xInputFFBHost->GetXInputState(0);
-
-			m_frameData->steering_input = (inputState.Gamepad.sThumbLX / 32767.0f);
+			m_frameData->steering_input = s_xInputFFBHost->GetXInputAxisValueForEffectType(XInputFFBEffectType::Steering);
 
 			//if (playerPed != nullptr && vehicle != nullptr && vehicle->IsDriver(playerPed))
 			//{
@@ -167,7 +165,6 @@ void SpaceMonkeyLoop()
 				else
 				{
 					m_frameData->vehicle_type = (float)CMCustomUDPData::VehicleType::Pedestrian;
-
 				}
 
 

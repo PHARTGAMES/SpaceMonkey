@@ -57,7 +57,11 @@ private:
     void PopulateComboBoxFromVector(HWND hDlg, int comboID, const std::vector<std::string>& items);
     void PopulateXInputAxisMappingUI();
     void PopulateXInputButtonMappingUI();
-    void PopulateXInputMappingNames();
+    void PopulateXInputMappingNames(bool updateSelectedNameEdit = true);
+    void PopulateXInputMappingContext();
+    void PopulateXInputFFBEffects();
+    void ApplyEffectCheckToCurrentMapping(const XInputFFBEffectType& effectType, int checkboxId);
+
 
     void AddComboItem(HWND hCombo, const char* text, int value = -1);
 
@@ -94,6 +98,8 @@ private:
     HWND m_hAxisTab;
     HWND m_hButtonTab;
     XInputFFBHost* m_host;
+
+    HDEVNOTIFY m_hDeviceNotify = nullptr;
 };
 
 // DLL exports
