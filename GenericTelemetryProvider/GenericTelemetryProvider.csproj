@@ -72,6 +72,24 @@
       <DependentUpon>EAWRCUI.cs</DependentUpon>
     </Compile>
     <Compile Include="EAWRCAPI.cs" />
+    <Compile Include="FFBUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FFBUI.Designer.cs">
+      <DependentUpon>FFBUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SMFFBEffectPicker.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SMFFBEffectPicker.Designer.cs">
+      <DependentUpon>SMFFBEffectPicker.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SMFFBWheelSteerEffectControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SMFFBWheelSteerEffectControl.Designer.cs">
+      <DependentUpon>SMFFBWheelSteerEffectControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="SMTTelemetryProvider.cs" />
     <Compile Include="StateMachineBase.cs" />
     <Compile Include="UEVRUI.cs">
@@ -334,6 +352,15 @@
     <Compile Include="XInputController.cs" />
     <EmbeddedResource Include="EAWRCUI.resx">
       <DependentUpon>EAWRCUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FFBUI.resx">
+      <DependentUpon>FFBUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SMFFBEffectPicker.resx">
+      <DependentUpon>SMFFBEffectPicker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SMFFBWheelSteerEffectControl.resx">
+      <DependentUpon>SMFFBWheelSteerEffectControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UEVRUI.resx">
       <DependentUpon>UEVRUI.cs</DependentUpon>

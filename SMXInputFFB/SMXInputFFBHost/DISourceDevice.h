@@ -48,7 +48,11 @@ public:
     bool SetDamper(DIAxis axis, LONG coeff, LONG saturation);    // 0..10000 each
     bool FireCollisionPulse(DIAxis axis, LONG magnitude, DWORD durationMs);
 
+    long GetAxisValue(DIAxis axis);
+    float GetAxisValueNorm(DIAxis axis);
+
 private:
+    float NormalizeDIValue(long v);
     bool CreateDevice();
     bool SetupDataFormatAndRange();
     bool SetupCooperativeLevel(); // requires HWND

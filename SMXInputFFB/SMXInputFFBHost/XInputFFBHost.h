@@ -41,6 +41,7 @@ public:
 
     // Lookup by Instance GUID
     DISourceDevice* GetDeviceByGUID(const std::string instanceGuid) const;
+    int GetDeviceIndexByGUID(const std::string instanceGuid) const;
 
     // Poll/refresh all cached states
     void UpdateSourceDeviceState();
@@ -71,6 +72,8 @@ public:
     XInputFFBConfig* GetConfig();
 
     float GetXInputAxisValueForEffectType(const XInputFFBEffectType& effectType);
+    float GetDInputAxisValue(int diDeviceIndex, int diAxisIndex);
+    float GetXInputAxisValue(int xiDeviceIndex, int xiAxisIndex);
 
 
 private:

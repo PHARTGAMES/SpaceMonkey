@@ -37,11 +37,11 @@ public:
     const XINPUT_STATE& GetCachedState() const { return m_state; }
 
     float GetAxisValue(XInputAxis axis);
+    float GetDIAxisValue(DISourceDevice* dev, int diAxis);
 
 private:
     // Helpers
     DISourceDevice* FindDevice(const std::string &guid) const;
-    bool SampleAxis(DISourceDevice* dev, int diAxis, long& outValue) const;
 
     static float NormalizeDIValue(long v);
     static float FilterAxis(float v, const AxisMapping& axisMapping);

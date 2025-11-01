@@ -46,6 +46,7 @@ namespace GenericTelemetryProvider
         FilterUI filterUI;
         OutputUI outputUI;
         HapticsUI hapticsUI;
+        FFBUI ffbUI;
         SMTUI smtUI;
         UEVRUI uevrUI;
         Wreckfest2UI wreckfest2UI;
@@ -876,6 +877,24 @@ namespace GenericTelemetryProvider
             x.IsBackground = true;
             x.Start(smtUI);
 
+        }
+
+        private void FFBBtn_Click(object sender, EventArgs e)
+        {
+            if (ffbUI != null && !ffbUI.IsDisposed)
+            {
+                ffbUI.Dispose();
+                ffbUI = null;
+            }
+
+            ffbUI = new FFBUI();
+
+            Thread x = new Thread(new ParameterizedThreadStart((form) =>
+            {
+                ((FFBUI)form).ShowDialog();
+            }));
+            x.IsBackground = true;
+            x.Start(ffbUI);
         }
     }
 }

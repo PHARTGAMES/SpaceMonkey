@@ -13,6 +13,9 @@ HMODULE XInputFFBConfigUI::s_dllHModule = nullptr;
 
 static XInputFFBConfigUI g_ui;
 
+#define AXIS_UPDATE_TIMER_ID  1
+#define AXIS_UPDATE_INTERVAL  16  // ~60Hz
+
 SMXINPUTFFBHOST_API bool StartInputConfigUI(UIChangeCallback callback, XInputFFBHost* host)
 {
     return g_ui.Start(callback, host);
@@ -248,6 +251,43 @@ INT_PTR XInputFFBConfigUI::AxisTabProc(HWND hDlg, UINT msg, WPARAM wParam, LPARA
         InitAxisTab();
         return TRUE;
 
+    case WM_DESTROY:
+        DeinitAxisTab();
+        return TRUE;
+
+    case WM_TIMER:
+        if (wParam == AXIS_UPDATE_TIMER_ID)
+        {
+            HWND hForeground = GetForegroundWindow();
+            if (hForeground == m_hDialog)
+            {
+                uint32_t vehicleTypeMask = 0;
+
+                XInputFFBConfig* config = m_host->GetConfig();
+
+                if (config != nullptr)
+                {
+                    AxisMapping* axisMapping = config->GetAxisMapping(m_selectedXInputDevice, m_selectedXInputAxis, m_selectedXInputMapping);
+
+                    if (axisMapping != nullptr)
+                    {
+                        vehicleTypeMask = axisMapping->vehicleTypeMask;
+                    }
+                }
+
+                m_host->Update(1.0f / 60.0f, vehicleTypeMask);
+
+                float diAxisValue = m_host->GetDInputAxisValue(m_selectedDIDevice, m_selectedDIAxis);
+                SetProgressBarValue(hDlg, IDC_AT_DI_PROGRESS, diAxisValue);
+                SetStaticTextFromFloat(hDlg, IDC_AT_DI_VALUE_LBL, diAxisValue);
+
+                float xiAxisValue = m_host->GetXInputAxisValue(m_selectedXInputDevice, m_selectedXInputAxis);
+                SetProgressBarValue(hDlg, IDC_AT_XI_AXIS_PROGRESS, xiAxisValue);
+                SetStaticTextFromFloat(hDlg, IDC_AT_XI_VALUE_LBL, xiAxisValue);
+            }
+        }
+        return TRUE;
+
     case WM_COMMAND:
     {
         const int ctrlId = LOWORD(wParam);
@@ -348,7 +388,6 @@ INT_PTR XInputFFBConfigUI::AxisTabProc(HWND hDlg, UINT msg, WPARAM wParam, LPARA
 
                 if (config != nullptr)
                 {
-
                     AxisMapping* axisMapping = config->GetAxisMapping(m_selectedXInputDevice, m_selectedXInputAxis, m_selectedXInputMapping);
 
                     if (axisMapping != nullptr)
@@ -361,6 +400,93 @@ INT_PTR XInputFFBConfigUI::AxisTabProc(HWND hDlg, UINT msg, WPARAM wParam, LPARA
                 }
             }
             break;
+
+        case IDC_AT_DEADZONE_EDIT:
+            if (notif == EN_CHANGE)
+            {
+                XInputFFBConfig* config = m_host->GetConfig();
+
+                if (config != nullptr)
+                {
+                    AxisMapping* axisMapping = config->GetAxisMapping(m_selectedXInputDevice, m_selectedXInputAxis, m_selectedXInputMapping);
+
+                    if (axisMapping != nullptr)
+                    {
+                        axisMapping->deadzone = GetFloatFromEdit(hDlg, IDC_AT_DEADZONE_EDIT, axisMapping->deadzone);
+
+                        config->Save();
+
+                    }
+                }
+            }
+            break;
+
+        case IDC_AT_SCALE_EDIT:
+            if (notif == EN_CHANGE)
+            {
+                XInputFFBConfig* config = m_host->GetConfig();
+
+                if (config != nullptr)
+                {
+
+                    AxisMapping* axisMapping = config->GetAxisMapping(m_selectedXInputDevice, m_selectedXInputAxis, m_selectedXInputMapping);
+
+                    if (axisMapping != nullptr)
+                    {
+                        axisMapping->scale = GetFloatFromEdit(hDlg, IDC_AT_SCALE_EDIT, axisMapping->scale);
+
+                        config->Save();
+
+                    }
+                }
+            }
+            break;
+
+            
+
+        case IDC_AT_INVERT_CHECK:
+            if (notif == BN_CLICKED)
+            {
+                XInputFFBConfig* config = m_host->GetConfig();
+
+                if (config != nullptr)
+                {
+                    AxisMapping* axisMapping = config->GetAxisMapping(m_selectedXInputDevice, m_selectedXInputAxis, m_selectedXInputMapping);
+
+                    if (axisMapping != nullptr)
+                    {
+                        bool checked = GetCheckBox(m_hAxisTab, IDC_AT_INVERT_CHECK);
+
+                        axisMapping->invert = checked;
+
+                        config->Save();
+                    }
+                }
+
+            }
+            break;
+
+        case IDC_AT_PEDAL_CHECK:
+            if (notif == BN_CLICKED)
+            {
+                XInputFFBConfig* config = m_host->GetConfig();
+
+                if (config != nullptr)
+                {
+                    AxisMapping* axisMapping = config->GetAxisMapping(m_selectedXInputDevice, m_selectedXInputAxis, m_selectedXInputMapping);
+
+                    if (axisMapping != nullptr)
+                    {
+                        bool checked = GetCheckBox(m_hAxisTab, IDC_AT_PEDAL_CHECK);
+
+                        axisMapping->pedal = checked;
+
+                        config->Save();
+                    }
+                }
+            }
+            break;
+
 
         case IDC_AT_EFFECT_STEERING_CHECK:
             if (notif == BN_CLICKED)
@@ -398,6 +524,46 @@ INT_PTR XInputFFBConfigUI::AxisTabProc(HWND hDlg, UINT msg, WPARAM wParam, LPARA
                 ApplyEffectCheckToCurrentMapping(XInputFFBEffectType::Clutch, IDC_AT_EFFECT_CLUTCH_CHECK);
             }
             break;
+
+
+        case IDC_AT_VEHICLE_CAR_CHECK:
+            if (notif == BN_CLICKED)
+            {
+                ApplyVehicleCheckToCurrentMapping(XInputFFBVehicleType::Car, IDC_AT_VEHICLE_CAR_CHECK);
+            }
+            break;
+        case IDC_AT_VEHICLE_BIKE_CHECK:
+            if (notif == BN_CLICKED)
+            {
+                ApplyVehicleCheckToCurrentMapping(XInputFFBVehicleType::Bike, IDC_AT_VEHICLE_BIKE_CHECK);
+            }
+            break;
+        case IDC_AT_VEHICLE_AIRCRAFT_CHECK:
+            if (notif == BN_CLICKED)
+            {
+                ApplyVehicleCheckToCurrentMapping(XInputFFBVehicleType::Aircraft, IDC_AT_VEHICLE_AIRCRAFT_CHECK);
+            }
+            break;
+        case IDC_AT_VEHICLE_BOAT_CHECK:
+            if (notif == BN_CLICKED)
+            {
+                ApplyVehicleCheckToCurrentMapping(XInputFFBVehicleType::Boat, IDC_AT_VEHICLE_BOAT_CHECK);
+            }
+            break;
+        case IDC_AT_VEHICLE_PEDESTRIAN_CHECK:
+            if (notif == BN_CLICKED)
+            {
+                ApplyVehicleCheckToCurrentMapping(XInputFFBVehicleType::Pedestrian, IDC_AT_VEHICLE_PEDESTRIAN_CHECK);
+            }
+            break;
+        case IDC_AT_VEHICLE_HELICOPTER_CHECK:
+            if (notif == BN_CLICKED)
+            {
+                ApplyVehicleCheckToCurrentMapping(XInputFFBVehicleType::Helicopter, IDC_AT_VEHICLE_HELICOPTER_CHECK);
+            }
+            break;
+
+
 
         case IDC_AT_ADD_MAPPING_BTN:
             if (notif == BN_CLICKED)
@@ -489,6 +655,34 @@ void XInputFFBConfigUI::ApplyEffectCheckToCurrentMapping(const XInputFFBEffectTy
 }
 
 
+void XInputFFBConfigUI::ApplyVehicleCheckToCurrentMapping(const XInputFFBVehicleType& vehicleType, int checkboxId)
+{
+    XInputFFBConfig* config = m_host->GetConfig();
+
+    if (config != nullptr)
+    {
+        AxisMapping* axisMapping = config->GetAxisMapping(m_selectedXInputDevice, m_selectedXInputAxis, m_selectedXInputMapping);
+
+        if (axisMapping != nullptr)
+        {
+            bool checked = GetCheckBox(m_hAxisTab, checkboxId);
+
+            if (checked)
+            {
+                axisMapping->vehicleTypeMask |= (uint32_t)vehicleType;
+            }
+            else
+            {
+                axisMapping->vehicleTypeMask &= ~(uint32_t)vehicleType;
+            }
+
+            config->Save();
+        }
+    }
+
+}
+
+
 
 INT_PTR XInputFFBConfigUI::ButtonTabProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -546,7 +740,6 @@ void XInputFFBConfigUI::InitializeTabs(HWND hDlg)
 
 void XInputFFBConfigUI::InitAxisTab()
 {
-
     std::vector<std::string> xInputDevices = { "0", "1", "2", "3"};
     PopulateComboBoxFromVector(m_hAxisTab, IDC_AT_XINPUT_DEVICE_COMBO, xInputDevices);
     PopulateComboBoxXInputAxes(m_hAxisTab, IDC_AT_XINPUT_AXIS_COMBO);
@@ -557,8 +750,15 @@ void XInputFFBConfigUI::InitAxisTab()
 
     PopulateXInputMappingNames();
 
-    PopulateXInputAxisMappingUI();
+    ChangeXInputMapping(0);
 
+    SetTimer(m_hAxisTab, AXIS_UPDATE_TIMER_ID, AXIS_UPDATE_INTERVAL, nullptr);
+
+}
+
+void XInputFFBConfigUI::DeinitAxisTab()
+{
+    KillTimer(m_hAxisTab, AXIS_UPDATE_TIMER_ID);
 }
 
 void XInputFFBConfigUI::InitButtonTab()
@@ -725,12 +925,11 @@ void XInputFFBConfigUI::ChangeXInputDevice(int newIndex)
 {
     m_selectedXInputDevice = newIndex;
     ChangeXInputMapping(0);
-
-
 }
 
 void XInputFFBConfigUI::ChangeDInputDevice(int newIndex)
 {
+    m_selectedDIDevice = newIndex;
 
     XInputFFBConfig* config = m_host->GetConfig();
 
@@ -743,7 +942,7 @@ void XInputFFBConfigUI::ChangeDInputDevice(int newIndex)
 
     if (axisMapping != nullptr)
     {
-        const std::vector<std::string>& deviceIDs = m_host->GetDIDeviceIdentifiers();
+        const std::vector<std::string>& deviceIDs = m_host->GetDIDeviceGUIDs();
 
         axisMapping->deviceId = deviceIDs[newIndex];
 
@@ -760,6 +959,8 @@ void XInputFFBConfigUI::ChangeXInputAxis(int newIndex)
 
 void XInputFFBConfigUI::ChangeDInputAxis(int newIndex)
 {
+    m_selectedDIAxis = newIndex;
+
     XInputFFBConfig* config = m_host->GetConfig();
 
     if (config == nullptr)
@@ -792,6 +993,22 @@ void XInputFFBConfigUI::ChangeXInputMapping(int newIndex)
 {
     m_selectedXInputMapping = newIndex;
 
+
+    XInputFFBConfig* config = m_host->GetConfig();
+
+    if (config == nullptr)
+    {
+        return;
+    }
+
+    AxisMapping* axisMapping = config->GetAxisMapping(m_selectedXInputDevice, m_selectedXInputAxis, m_selectedXInputMapping);
+
+    if (axisMapping != nullptr)
+    {
+        m_selectedDIDevice = m_host->GetDeviceIndexByGUID(axisMapping->deviceId);
+        m_selectedDIAxis = axisMapping->diAxis;
+    }
+
     PopulateXInputAxisMappingUI();
 }
 
@@ -816,6 +1033,8 @@ void XInputFFBConfigUI::PopulateXInputAxisMappingUI()
         SetFloatToEdit(m_hAxisTab, IDC_AT_CURVE_EDIT, axisMapping->curve);
         SetFloatToEdit(m_hAxisTab, IDC_AT_DEADZONE_EDIT, axisMapping->deadzone);
         SetFloatToEdit(m_hAxisTab, IDC_AT_SCALE_EDIT, axisMapping->scale);
+
+        SetComboBoxSelection(m_hAxisTab, IDC_AT_DINPUT_AXIS_COMBO, axisMapping->diAxis);
 
     }
     else
@@ -1034,4 +1253,42 @@ void XInputFFBConfigUI::SetStringToEdit(HWND hDlg, int editControlID, const std:
         return;
 
     SetWindowTextA(hEdit, value.c_str());
+}
+
+
+void XInputFFBConfigUI::SetProgressBarValue(HWND hDlg, int controlId, float normalizedValue)
+{
+    HWND hBar = GetDlgItem(hDlg, controlId);
+    if (!hBar) return;
+
+    int pos = static_cast<int>((normalizedValue * 0.5f + 0.5f) * 100.0f);
+    SendMessage(hBar, PBM_SETPOS, pos, 0);
+}
+
+
+void XInputFFBConfigUI::SetComboBoxSelection(HWND hDlg, int comboId, int selectionIndex)
+{
+    HWND hCombo = GetDlgItem(hDlg, comboId);
+    if (!hCombo) return;
+
+    SendMessage(hCombo, CB_SETCURSEL, selectionIndex, 0);
+}
+
+
+void XInputFFBConfigUI::SetStaticTextFromFloat(HWND hParent, int controlId, float value, int precision)
+{
+    // Validate the handle and control
+    if (!hParent)
+        return;
+
+    HWND hCtrl = GetDlgItem(hParent, controlId);
+    if (!hCtrl)
+        return;
+
+    // Format the float value to string
+    char buffer[64];
+    sprintf_s(buffer, "%.*f", precision, value);
+
+    // Set the text to the static control
+    SetWindowTextA(hCtrl, buffer);
 }

@@ -65,13 +65,15 @@
             this.UEVRBtn = new System.Windows.Forms.Button();
             this.wreckfest2Button = new System.Windows.Forms.Button();
             this.cyberpunk2077Button = new System.Windows.Forms.Button();
+            this.FFBBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // Dirt5Button
             // 
-            this.Dirt5Button.Location = new System.Drawing.Point(12, 11);
+            this.Dirt5Button.Location = new System.Drawing.Point(18, 17);
+            this.Dirt5Button.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Dirt5Button.Name = "Dirt5Button";
-            this.Dirt5Button.Size = new System.Drawing.Size(148, 46);
+            this.Dirt5Button.Size = new System.Drawing.Size(222, 71);
             this.Dirt5Button.TabIndex = 0;
             this.Dirt5Button.Text = "DIRT5";
             this.Dirt5Button.UseVisualStyleBackColor = true;
@@ -79,9 +81,10 @@
             // 
             // Filters
             // 
-            this.Filters.Location = new System.Drawing.Point(344, 304);
+            this.Filters.Location = new System.Drawing.Point(516, 468);
+            this.Filters.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Filters.Name = "Filters";
-            this.Filters.Size = new System.Drawing.Size(186, 44);
+            this.Filters.Size = new System.Drawing.Size(279, 68);
             this.Filters.TabIndex = 1;
             this.Filters.Text = "Filters";
             this.Filters.UseVisualStyleBackColor = true;
@@ -90,26 +93,29 @@
             // configComboBox
             // 
             this.configComboBox.FormattingEnabled = true;
-            this.configComboBox.Location = new System.Drawing.Point(343, 27);
+            this.configComboBox.Location = new System.Drawing.Point(514, 42);
+            this.configComboBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.configComboBox.Name = "configComboBox";
-            this.configComboBox.Size = new System.Drawing.Size(157, 21);
+            this.configComboBox.Size = new System.Drawing.Size(234, 28);
             this.configComboBox.TabIndex = 14;
             this.configComboBox.SelectedIndexChanged += new System.EventHandler(this.configComboBox_SelectedIndexChanged);
             // 
             // configLabel
             // 
             this.configLabel.AutoSize = true;
-            this.configLabel.Location = new System.Drawing.Point(339, 11);
+            this.configLabel.Location = new System.Drawing.Point(508, 17);
+            this.configLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.configLabel.Name = "configLabel";
-            this.configLabel.Size = new System.Drawing.Size(70, 13);
+            this.configLabel.Size = new System.Drawing.Size(104, 20);
             this.configLabel.TabIndex = 15;
             this.configLabel.Text = "Select Config";
             // 
             // addConfigButton
             // 
-            this.addConfigButton.Location = new System.Drawing.Point(506, 24);
+            this.addConfigButton.Location = new System.Drawing.Point(759, 37);
+            this.addConfigButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.addConfigButton.Name = "addConfigButton";
-            this.addConfigButton.Size = new System.Drawing.Size(26, 24);
+            this.addConfigButton.Size = new System.Drawing.Size(39, 37);
             this.addConfigButton.TabIndex = 16;
             this.addConfigButton.Text = "+";
             this.addConfigButton.UseVisualStyleBackColor = true;
@@ -118,45 +124,50 @@
             // filtersComboBox
             // 
             this.filtersComboBox.FormattingEnabled = true;
-            this.filtersComboBox.Location = new System.Drawing.Point(343, 69);
+            this.filtersComboBox.Location = new System.Drawing.Point(514, 106);
+            this.filtersComboBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.filtersComboBox.Name = "filtersComboBox";
-            this.filtersComboBox.Size = new System.Drawing.Size(188, 21);
+            this.filtersComboBox.Size = new System.Drawing.Size(280, 28);
             this.filtersComboBox.TabIndex = 19;
             this.filtersComboBox.SelectedIndexChanged += new System.EventHandler(this.filtersComboBox_SelectedIndexChanged);
             // 
             // filterConfigLabel
             // 
             this.filterConfigLabel.AutoSize = true;
-            this.filterConfigLabel.Location = new System.Drawing.Point(339, 53);
+            this.filterConfigLabel.Location = new System.Drawing.Point(508, 82);
+            this.filterConfigLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.filterConfigLabel.Name = "filterConfigLabel";
-            this.filterConfigLabel.Size = new System.Drawing.Size(62, 13);
+            this.filterConfigLabel.Size = new System.Drawing.Size(94, 20);
             this.filterConfigLabel.TabIndex = 20;
             this.filterConfigLabel.Text = "Filter Config";
             // 
             // hkComboBox
             // 
             this.hkComboBox.FormattingEnabled = true;
-            this.hkComboBox.Location = new System.Drawing.Point(344, 166);
+            this.hkComboBox.Location = new System.Drawing.Point(516, 255);
+            this.hkComboBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.hkComboBox.Name = "hkComboBox";
-            this.hkComboBox.Size = new System.Drawing.Size(114, 21);
+            this.hkComboBox.Size = new System.Drawing.Size(169, 28);
             this.hkComboBox.TabIndex = 21;
             this.hkComboBox.SelectedIndexChanged += new System.EventHandler(this.hkComboBox_SelectedIndexChanged);
             // 
             // hotkeyLabel
             // 
             this.hotkeyLabel.AutoSize = true;
-            this.hotkeyLabel.Location = new System.Drawing.Point(340, 150);
+            this.hotkeyLabel.Location = new System.Drawing.Point(510, 231);
+            this.hotkeyLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.hotkeyLabel.Name = "hotkeyLabel";
-            this.hotkeyLabel.Size = new System.Drawing.Size(81, 13);
+            this.hotkeyLabel.Size = new System.Drawing.Size(117, 20);
             this.hotkeyLabel.TabIndex = 22;
             this.hotkeyLabel.Text = "Toggle Hot Key";
             // 
             // hkWindowsCheckbox
             // 
             this.hkWindowsCheckbox.AutoSize = true;
-            this.hkWindowsCheckbox.Location = new System.Drawing.Point(344, 193);
+            this.hkWindowsCheckbox.Location = new System.Drawing.Point(516, 297);
+            this.hkWindowsCheckbox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.hkWindowsCheckbox.Name = "hkWindowsCheckbox";
-            this.hkWindowsCheckbox.Size = new System.Drawing.Size(79, 17);
+            this.hkWindowsCheckbox.Size = new System.Drawing.Size(112, 24);
             this.hkWindowsCheckbox.TabIndex = 23;
             this.hkWindowsCheckbox.Text = "+ Windows";
             this.hkWindowsCheckbox.UseVisualStyleBackColor = true;
@@ -165,9 +176,10 @@
             // hkAltCheckbox
             // 
             this.hkAltCheckbox.AutoSize = true;
-            this.hkAltCheckbox.Location = new System.Drawing.Point(344, 218);
+            this.hkAltCheckbox.Location = new System.Drawing.Point(516, 335);
+            this.hkAltCheckbox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.hkAltCheckbox.Name = "hkAltCheckbox";
-            this.hkAltCheckbox.Size = new System.Drawing.Size(47, 17);
+            this.hkAltCheckbox.Size = new System.Drawing.Size(67, 24);
             this.hkAltCheckbox.TabIndex = 24;
             this.hkAltCheckbox.Text = "+ Alt";
             this.hkAltCheckbox.UseVisualStyleBackColor = true;
@@ -176,9 +188,10 @@
             // hkShiftCheckBox
             // 
             this.hkShiftCheckBox.AutoSize = true;
-            this.hkShiftCheckBox.Location = new System.Drawing.Point(430, 193);
+            this.hkShiftCheckBox.Location = new System.Drawing.Point(645, 297);
+            this.hkShiftCheckBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.hkShiftCheckBox.Name = "hkShiftCheckBox";
-            this.hkShiftCheckBox.Size = new System.Drawing.Size(56, 17);
+            this.hkShiftCheckBox.Size = new System.Drawing.Size(81, 24);
             this.hkShiftCheckBox.TabIndex = 25;
             this.hkShiftCheckBox.Text = "+ Shift";
             this.hkShiftCheckBox.UseVisualStyleBackColor = true;
@@ -187,9 +200,10 @@
             // hkCtrlCheckbox
             // 
             this.hkCtrlCheckbox.AutoSize = true;
-            this.hkCtrlCheckbox.Location = new System.Drawing.Point(430, 218);
+            this.hkCtrlCheckbox.Location = new System.Drawing.Point(645, 335);
+            this.hkCtrlCheckbox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.hkCtrlCheckbox.Name = "hkCtrlCheckbox";
-            this.hkCtrlCheckbox.Size = new System.Drawing.Size(50, 17);
+            this.hkCtrlCheckbox.Size = new System.Drawing.Size(72, 24);
             this.hkCtrlCheckbox.TabIndex = 26;
             this.hkCtrlCheckbox.Text = "+ Ctrl";
             this.hkCtrlCheckbox.UseVisualStyleBackColor = true;
@@ -198,9 +212,10 @@
             // hkEnabledCheckbox
             // 
             this.hkEnabledCheckbox.AutoSize = true;
-            this.hkEnabledCheckbox.Location = new System.Drawing.Point(466, 167);
+            this.hkEnabledCheckbox.Location = new System.Drawing.Point(699, 257);
+            this.hkEnabledCheckbox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.hkEnabledCheckbox.Name = "hkEnabledCheckbox";
-            this.hkEnabledCheckbox.Size = new System.Drawing.Size(65, 17);
+            this.hkEnabledCheckbox.Size = new System.Drawing.Size(94, 24);
             this.hkEnabledCheckbox.TabIndex = 27;
             this.hkEnabledCheckbox.Text = "Enabled";
             this.hkEnabledCheckbox.UseVisualStyleBackColor = true;
@@ -208,9 +223,10 @@
             // 
             // wreckfestButton
             // 
-            this.wreckfestButton.Location = new System.Drawing.Point(14, 63);
+            this.wreckfestButton.Location = new System.Drawing.Point(21, 97);
+            this.wreckfestButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.wreckfestButton.Name = "wreckfestButton";
-            this.wreckfestButton.Size = new System.Drawing.Size(148, 46);
+            this.wreckfestButton.Size = new System.Drawing.Size(222, 71);
             this.wreckfestButton.TabIndex = 28;
             this.wreckfestButton.Text = "Wreckfest";
             this.wreckfestButton.UseVisualStyleBackColor = true;
@@ -218,9 +234,10 @@
             // 
             // beamNGButton
             // 
-            this.beamNGButton.Location = new System.Drawing.Point(14, 114);
+            this.beamNGButton.Location = new System.Drawing.Point(21, 175);
+            this.beamNGButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.beamNGButton.Name = "beamNGButton";
-            this.beamNGButton.Size = new System.Drawing.Size(148, 46);
+            this.beamNGButton.Size = new System.Drawing.Size(222, 71);
             this.beamNGButton.TabIndex = 29;
             this.beamNGButton.Text = "BeamNG Drive";
             this.beamNGButton.UseVisualStyleBackColor = true;
@@ -228,9 +245,10 @@
             // 
             // gtavButton
             // 
-            this.gtavButton.Location = new System.Drawing.Point(14, 166);
+            this.gtavButton.Location = new System.Drawing.Point(21, 255);
+            this.gtavButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.gtavButton.Name = "gtavButton";
-            this.gtavButton.Size = new System.Drawing.Size(148, 46);
+            this.gtavButton.Size = new System.Drawing.Size(222, 71);
             this.gtavButton.TabIndex = 30;
             this.gtavButton.Text = "GTA V";
             this.gtavButton.UseVisualStyleBackColor = true;
@@ -238,9 +256,10 @@
             // 
             // dcsButton
             // 
-            this.dcsButton.Location = new System.Drawing.Point(14, 217);
+            this.dcsButton.Location = new System.Drawing.Point(21, 334);
+            this.dcsButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.dcsButton.Name = "dcsButton";
-            this.dcsButton.Size = new System.Drawing.Size(148, 46);
+            this.dcsButton.Size = new System.Drawing.Size(222, 71);
             this.dcsButton.TabIndex = 31;
             this.dcsButton.Text = "Digital Combat Simulator";
             this.dcsButton.UseVisualStyleBackColor = true;
@@ -248,10 +267,9 @@
             // 
             // mgButton
             // 
-            this.mgButton.Location = new System.Drawing.Point(166, 166);
-            this.mgButton.Margin = new System.Windows.Forms.Padding(2);
+            this.mgButton.Location = new System.Drawing.Point(249, 255);
             this.mgButton.Name = "mgButton";
-            this.mgButton.Size = new System.Drawing.Size(148, 46);
+            this.mgButton.Size = new System.Drawing.Size(222, 71);
             this.mgButton.TabIndex = 32;
             this.mgButton.Text = "Nascar Heat 4/5\r\nAll American Racing\r\nSprint Car Racing";
             this.mgButton.UseVisualStyleBackColor = true;
@@ -259,10 +277,9 @@
             // 
             // WRCButton
             // 
-            this.WRCButton.Location = new System.Drawing.Point(166, 114);
-            this.WRCButton.Margin = new System.Windows.Forms.Padding(2);
+            this.WRCButton.Location = new System.Drawing.Point(249, 175);
             this.WRCButton.Name = "WRCButton";
-            this.WRCButton.Size = new System.Drawing.Size(148, 46);
+            this.WRCButton.Size = new System.Drawing.Size(222, 71);
             this.WRCButton.TabIndex = 33;
             this.WRCButton.Text = "WRC 7/8/9";
             this.WRCButton.UseVisualStyleBackColor = true;
@@ -270,10 +287,9 @@
             // 
             // RBRButton
             // 
-            this.RBRButton.Location = new System.Drawing.Point(166, 63);
-            this.RBRButton.Margin = new System.Windows.Forms.Padding(2);
+            this.RBRButton.Location = new System.Drawing.Point(249, 97);
             this.RBRButton.Name = "RBRButton";
-            this.RBRButton.Size = new System.Drawing.Size(148, 46);
+            this.RBRButton.Size = new System.Drawing.Size(222, 71);
             this.RBRButton.TabIndex = 34;
             this.RBRButton.Text = "Richard Burns Rally\r\nNGP6";
             this.RBRButton.UseVisualStyleBackColor = true;
@@ -281,10 +297,9 @@
             // 
             // SquadronsBtn
             // 
-            this.SquadronsBtn.Location = new System.Drawing.Point(166, 11);
-            this.SquadronsBtn.Margin = new System.Windows.Forms.Padding(2);
+            this.SquadronsBtn.Location = new System.Drawing.Point(249, 17);
             this.SquadronsBtn.Name = "SquadronsBtn";
-            this.SquadronsBtn.Size = new System.Drawing.Size(148, 46);
+            this.SquadronsBtn.Size = new System.Drawing.Size(222, 71);
             this.SquadronsBtn.TabIndex = 35;
             this.SquadronsBtn.Text = "STAR WARS Squadrons";
             this.SquadronsBtn.UseVisualStyleBackColor = true;
@@ -292,10 +307,9 @@
             // 
             // il2Btn
             // 
-            this.il2Btn.Location = new System.Drawing.Point(166, 217);
-            this.il2Btn.Margin = new System.Windows.Forms.Padding(2);
+            this.il2Btn.Location = new System.Drawing.Point(249, 334);
             this.il2Btn.Name = "il2Btn";
-            this.il2Btn.Size = new System.Drawing.Size(148, 46);
+            this.il2Btn.Size = new System.Drawing.Size(222, 71);
             this.il2Btn.TabIndex = 36;
             this.il2Btn.Text = "IL-2 Sturmovik";
             this.il2Btn.UseVisualStyleBackColor = true;
@@ -303,10 +317,9 @@
             // 
             // warplanesWW1Btn
             // 
-            this.warplanesWW1Btn.Location = new System.Drawing.Point(14, 268);
-            this.warplanesWW1Btn.Margin = new System.Windows.Forms.Padding(2);
+            this.warplanesWW1Btn.Location = new System.Drawing.Point(21, 412);
             this.warplanesWW1Btn.Name = "warplanesWW1Btn";
-            this.warplanesWW1Btn.Size = new System.Drawing.Size(148, 46);
+            this.warplanesWW1Btn.Size = new System.Drawing.Size(222, 71);
             this.warplanesWW1Btn.TabIndex = 37;
             this.warplanesWW1Btn.Text = "Warplanes WW1";
             this.warplanesWW1Btn.UseVisualStyleBackColor = true;
@@ -314,10 +327,9 @@
             // 
             // vtolvrBtn
             // 
-            this.vtolvrBtn.Location = new System.Drawing.Point(165, 268);
-            this.vtolvrBtn.Margin = new System.Windows.Forms.Padding(2);
+            this.vtolvrBtn.Location = new System.Drawing.Point(248, 412);
             this.vtolvrBtn.Name = "vtolvrBtn";
-            this.vtolvrBtn.Size = new System.Drawing.Size(148, 46);
+            this.vtolvrBtn.Size = new System.Drawing.Size(222, 71);
             this.vtolvrBtn.TabIndex = 38;
             this.vtolvrBtn.Text = "VTOL VR";
             this.vtolvrBtn.UseVisualStyleBackColor = true;
@@ -325,10 +337,9 @@
             // 
             // overloadButton
             // 
-            this.overloadButton.Location = new System.Drawing.Point(14, 319);
-            this.overloadButton.Margin = new System.Windows.Forms.Padding(2);
+            this.overloadButton.Location = new System.Drawing.Point(21, 491);
             this.overloadButton.Name = "overloadButton";
-            this.overloadButton.Size = new System.Drawing.Size(148, 46);
+            this.overloadButton.Size = new System.Drawing.Size(222, 71);
             this.overloadButton.TabIndex = 40;
             this.overloadButton.Text = "Overload";
             this.overloadButton.UseVisualStyleBackColor = true;
@@ -336,10 +347,9 @@
             // 
             // OpenMotionBtn
             // 
-            this.OpenMotionBtn.Location = new System.Drawing.Point(14, 371);
-            this.OpenMotionBtn.Margin = new System.Windows.Forms.Padding(2);
+            this.OpenMotionBtn.Location = new System.Drawing.Point(21, 571);
             this.OpenMotionBtn.Name = "OpenMotionBtn";
-            this.OpenMotionBtn.Size = new System.Drawing.Size(148, 46);
+            this.OpenMotionBtn.Size = new System.Drawing.Size(222, 71);
             this.OpenMotionBtn.TabIndex = 42;
             this.OpenMotionBtn.Text = "Open Motion";
             this.OpenMotionBtn.UseVisualStyleBackColor = true;
@@ -347,10 +357,9 @@
             // 
             // WRCGenBtn
             // 
-            this.WRCGenBtn.Location = new System.Drawing.Point(166, 319);
-            this.WRCGenBtn.Margin = new System.Windows.Forms.Padding(2);
+            this.WRCGenBtn.Location = new System.Drawing.Point(249, 491);
             this.WRCGenBtn.Name = "WRCGenBtn";
-            this.WRCGenBtn.Size = new System.Drawing.Size(148, 46);
+            this.WRCGenBtn.Size = new System.Drawing.Size(222, 71);
             this.WRCGenBtn.TabIndex = 43;
             this.WRCGenBtn.Text = "WRC Generations";
             this.WRCGenBtn.UseVisualStyleBackColor = true;
@@ -358,10 +367,9 @@
             // 
             // tinyCombatArenaButton
             // 
-            this.tinyCombatArenaButton.Location = new System.Drawing.Point(165, 371);
-            this.tinyCombatArenaButton.Margin = new System.Windows.Forms.Padding(2);
+            this.tinyCombatArenaButton.Location = new System.Drawing.Point(248, 571);
             this.tinyCombatArenaButton.Name = "tinyCombatArenaButton";
-            this.tinyCombatArenaButton.Size = new System.Drawing.Size(148, 46);
+            this.tinyCombatArenaButton.Size = new System.Drawing.Size(222, 71);
             this.tinyCombatArenaButton.TabIndex = 44;
             this.tinyCombatArenaButton.Text = "Tiny Combat Arena";
             this.tinyCombatArenaButton.UseVisualStyleBackColor = true;
@@ -370,26 +378,29 @@
             // outputConfigLabel
             // 
             this.outputConfigLabel.AutoSize = true;
-            this.outputConfigLabel.Location = new System.Drawing.Point(340, 100);
+            this.outputConfigLabel.Location = new System.Drawing.Point(510, 154);
+            this.outputConfigLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.outputConfigLabel.Name = "outputConfigLabel";
-            this.outputConfigLabel.Size = new System.Drawing.Size(72, 13);
+            this.outputConfigLabel.Size = new System.Drawing.Size(108, 20);
             this.outputConfigLabel.TabIndex = 46;
             this.outputConfigLabel.Text = "Output Config";
             // 
             // outputsComboBox
             // 
             this.outputsComboBox.FormattingEnabled = true;
-            this.outputsComboBox.Location = new System.Drawing.Point(344, 116);
+            this.outputsComboBox.Location = new System.Drawing.Point(516, 178);
+            this.outputsComboBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.outputsComboBox.Name = "outputsComboBox";
-            this.outputsComboBox.Size = new System.Drawing.Size(188, 21);
+            this.outputsComboBox.Size = new System.Drawing.Size(280, 28);
             this.outputsComboBox.TabIndex = 45;
             this.outputsComboBox.SelectedIndexChanged += new System.EventHandler(this.outputsComboBox_SelectedIndexChanged);
             // 
             // OutputsBtn
             // 
-            this.OutputsBtn.Location = new System.Drawing.Point(344, 253);
+            this.OutputsBtn.Location = new System.Drawing.Point(516, 389);
+            this.OutputsBtn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.OutputsBtn.Name = "OutputsBtn";
-            this.OutputsBtn.Size = new System.Drawing.Size(186, 44);
+            this.OutputsBtn.Size = new System.Drawing.Size(279, 68);
             this.OutputsBtn.TabIndex = 47;
             this.OutputsBtn.Text = "Outputs";
             this.OutputsBtn.UseVisualStyleBackColor = true;
@@ -397,10 +408,9 @@
             // 
             // EAWRCBtn
             // 
-            this.EAWRCBtn.Location = new System.Drawing.Point(14, 421);
-            this.EAWRCBtn.Margin = new System.Windows.Forms.Padding(2);
+            this.EAWRCBtn.Location = new System.Drawing.Point(21, 648);
             this.EAWRCBtn.Name = "EAWRCBtn";
-            this.EAWRCBtn.Size = new System.Drawing.Size(148, 46);
+            this.EAWRCBtn.Size = new System.Drawing.Size(222, 71);
             this.EAWRCBtn.TabIndex = 48;
             this.EAWRCBtn.Text = "EA WRC";
             this.EAWRCBtn.UseVisualStyleBackColor = true;
@@ -408,9 +418,10 @@
             // 
             // HapticsBtn
             // 
-            this.HapticsBtn.Location = new System.Drawing.Point(344, 354);
+            this.HapticsBtn.Location = new System.Drawing.Point(516, 545);
+            this.HapticsBtn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.HapticsBtn.Name = "HapticsBtn";
-            this.HapticsBtn.Size = new System.Drawing.Size(186, 44);
+            this.HapticsBtn.Size = new System.Drawing.Size(279, 68);
             this.HapticsBtn.TabIndex = 49;
             this.HapticsBtn.Text = "Haptics";
             this.HapticsBtn.UseVisualStyleBackColor = true;
@@ -418,10 +429,9 @@
             // 
             // UEVRBtn
             // 
-            this.UEVRBtn.Location = new System.Drawing.Point(165, 421);
-            this.UEVRBtn.Margin = new System.Windows.Forms.Padding(2);
+            this.UEVRBtn.Location = new System.Drawing.Point(248, 648);
             this.UEVRBtn.Name = "UEVRBtn";
-            this.UEVRBtn.Size = new System.Drawing.Size(148, 46);
+            this.UEVRBtn.Size = new System.Drawing.Size(222, 71);
             this.UEVRBtn.TabIndex = 50;
             this.UEVRBtn.Text = "UEVR";
             this.UEVRBtn.UseVisualStyleBackColor = true;
@@ -429,10 +439,9 @@
             // 
             // wreckfest2Button
             // 
-            this.wreckfest2Button.Location = new System.Drawing.Point(14, 471);
-            this.wreckfest2Button.Margin = new System.Windows.Forms.Padding(2);
+            this.wreckfest2Button.Location = new System.Drawing.Point(21, 725);
             this.wreckfest2Button.Name = "wreckfest2Button";
-            this.wreckfest2Button.Size = new System.Drawing.Size(148, 46);
+            this.wreckfest2Button.Size = new System.Drawing.Size(222, 71);
             this.wreckfest2Button.TabIndex = 51;
             this.wreckfest2Button.Text = "Wreckfest 2";
             this.wreckfest2Button.UseVisualStyleBackColor = true;
@@ -440,20 +449,31 @@
             // 
             // cyberpunk2077Button
             // 
-            this.cyberpunk2077Button.Location = new System.Drawing.Point(165, 471);
-            this.cyberpunk2077Button.Margin = new System.Windows.Forms.Padding(2);
+            this.cyberpunk2077Button.Location = new System.Drawing.Point(248, 725);
             this.cyberpunk2077Button.Name = "cyberpunk2077Button";
-            this.cyberpunk2077Button.Size = new System.Drawing.Size(148, 46);
+            this.cyberpunk2077Button.Size = new System.Drawing.Size(222, 71);
             this.cyberpunk2077Button.TabIndex = 52;
             this.cyberpunk2077Button.Text = "Cyberpunk 2077";
             this.cyberpunk2077Button.UseVisualStyleBackColor = true;
             this.cyberpunk2077Button.Click += new System.EventHandler(this.cyberpunk2077Button_Click);
             // 
+            // FFBBtn
+            // 
+            this.FFBBtn.Location = new System.Drawing.Point(515, 623);
+            this.FFBBtn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.FFBBtn.Name = "FFBBtn";
+            this.FFBBtn.Size = new System.Drawing.Size(279, 68);
+            this.FFBBtn.TabIndex = 53;
+            this.FFBBtn.Text = "Force Feedback";
+            this.FFBBtn.UseVisualStyleBackColor = true;
+            this.FFBBtn.Click += new System.EventHandler(this.FFBBtn_Click);
+            // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(548, 528);
+            this.ClientSize = new System.Drawing.Size(822, 812);
+            this.Controls.Add(this.FFBBtn);
             this.Controls.Add(this.cyberpunk2077Button);
             this.Controls.Add(this.wreckfest2Button);
             this.Controls.Add(this.UEVRBtn);
@@ -492,6 +512,7 @@
             this.Controls.Add(this.Filters);
             this.Controls.Add(this.Dirt5Button);
             this.Icon = global::GenericTelemetryProvider.Properties.Resources.GTPIcon;
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "MainForm";
             this.Text = "SpaceMonkey";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
@@ -540,6 +561,7 @@
         private System.Windows.Forms.Button UEVRBtn;
         private System.Windows.Forms.Button wreckfest2Button;
         private System.Windows.Forms.Button cyberpunk2077Button;
+        private System.Windows.Forms.Button FFBBtn;
     }
 }
 

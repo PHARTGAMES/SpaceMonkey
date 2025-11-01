@@ -202,7 +202,18 @@ int XInputFFBConfig::AddAxisMapping(int deviceIndex, int axisIndex)
 
     std::vector<AxisMapping>* axisBucket = deviceConfig.GetAxisBucket(axisIndex);
 
-    axisBucket->push_back(AxisMapping{});
+    AxisMapping newMapping{};
+    newMapping.curve = 1.0f;
+    newMapping.deadzone = 0.001f;
+    newMapping.deviceId = "";
+    newMapping.diAxis = 0;
+    newMapping.ffbEffectMask = 0;
+    newMapping.invert = false;
+    newMapping.mappingName = "New Mapping";
+    newMapping.pedal = false;
+    newMapping.scale = 1.0f;
+    newMapping.vehicleTypeMask = 0;
+    axisBucket->push_back(newMapping);
 
     return axisBucket->size() - 1;
 

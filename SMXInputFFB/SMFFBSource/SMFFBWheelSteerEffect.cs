@@ -15,29 +15,87 @@ namespace SMFFBSource
 
     public class SMFFBWheelSteerEffectConfig : SMFFBEffectConfig
     {
-        public float maxWheelAngle = 35.0f; // localWheelAngle = maxWheelAngle * steeringInput
-        public float maxWorldVelocity = 10.0f;
-        public float constantForceScale = 7000.0f;
-        public float maxWheelAngleDiff = 35.0f;
-        public float suspensionConstantForceContrib = 10.0f;
-        public float velocityConstantForceContrib = 1.0f;
+
+        public float maxWheelAngle = 35.0f;
+        public float constantForceAngleCurve = 1.0f;
+
+        public float minConstantForce = 1000.0f;
+        public float maxConstantForce = 10000.0f;
+        public float constantForceSpeedCurve = 1.0f;
+
+        public float minDampForce = 1000.0f;
+        public float maxDampForce = 10000.0f;
+        public float dampForceSpeedCurve = 1.0f;
+
+        private void SetFloat(ref float field, float value, string key)
+        {
+            if (field != value)
+            {
+                field = value;
+                OnConfigChanged(key);
+            }
+        }
+
+        [JsonIgnore]
+        public float ConstantForceAngleCurve
+        {
+            get => constantForceAngleCurve;
+            set => SetFloat(ref constantForceAngleCurve, value, "constantForceAngleCurve");
+        }
 
 
         [JsonIgnore]
         public float MaxWheelAngle
         {
-            get => MaxWheelAngle;
-            set
-            {
-                if (MaxWheelAngle != value)
-                {
-                    MaxWheelAngle = value;
-                    OnConfigChanged("maxWheelAngle");
-                }
-            }
+            get => maxWheelAngle;
+            set => SetFloat(ref maxWheelAngle, value, "maxWheelAngle");
         }
 
+        [JsonIgnore]
+        public float MinConstantForce
+        {
+            get => minConstantForce;
+            set => SetFloat(ref minConstantForce, value, "minConstantForce");
+        }
+
+        [JsonIgnore]
+        public float MaxConstantForce
+        {
+            get => maxConstantForce;
+            set => SetFloat(ref maxConstantForce, value, "maxConstantForce");
+        }
+
+
+        [JsonIgnore]
+        public float ConstantForceSpeedCurve
+        {
+            get => constantForceSpeedCurve;
+            set => SetFloat(ref constantForceSpeedCurve, value, "constantForceSpeedCurve");
+        }
+
+        [JsonIgnore]
+        public float MinDampForce
+        {
+            get => minDampForce;
+            set => SetFloat(ref minDampForce, value, "minDampForce");
+        }
+
+        [JsonIgnore]
+        public float MaxDampForce
+        {
+            get => maxDampForce;
+            set => SetFloat(ref maxDampForce, value, "maxDampForce");
+        }
+
+        [JsonIgnore]
+        public float DampForceSpeedCurve
+        {
+            get => dampForceSpeedCurve;
+            set => SetFloat(ref dampForceSpeedCurve, value, "dampForceSpeedCurve");
+        }
     }
+
+
 
     public class SMFFBWheelSteerEffect : SMFFBEffect
     {
@@ -77,7 +135,7 @@ namespace SMFFBSource
                     float suspensionDiffFl = suspensionFl - (float)lastFrame.suspension_position_fl;
                     float suspensionDiffFr = suspensionFr - (float)lastFrame.suspension_position_fr;
 
-                    suspensionOffset = (suspensionDiffFl + suspensionDiffFr);// / 2.0f;
+                    suspensionOffset = (suspensionDiffFl + suspensionDiffFr);
 
                     break;
                 }
@@ -102,6 +160,9 @@ namespace SMFFBSource
 
             float worldVelocityMag = worldVelocityXZ.Length();
             float minWorldVelocity = 0.001f;
+            float maxWorldVelocity = 10.0f;
+            float maxWheelAngleDiff = 35.0f;
+
 
             if(worldVelocityMag < minWorldVelocity)
             {
@@ -109,9 +170,7 @@ namespace SMFFBSource
             }
             else
             {
-                float velocityScalar = Math.Min(worldVelocityMag / wheelSteerEffectConfig.maxWorldVelocity, 1.0f);
-
-                float constantForceFromVelocity = (float)Math.Pow(wheelSteerEffectConfig.velocityConstantForceContrib * velocityScalar, 1.5f);
+                float velocityScalar = Math.Min(worldVelocityMag / maxWorldVelocity, 1.0f);
 
                 float localWheelAngle = (float)inputs.steering_input * wheelSteerEffectConfig.maxWheelAngle;
 
@@ -123,16 +182,24 @@ namespace SMFFBSource
                 float vehicleVelocityWorldYaw = SMMath.YawDegreesFromXZ(worldVelXZNorm);
                 float wheelWorldYaw = (SMMath.YawDegreesFromXZ(vehicleWorldForwardXZ) + localWheelAngle) % 360.0f;
 
-                float angleDiff = SMMath.Clamp(SMMath.SignedYawDelta(vehicleVelocityWorldYaw, wheelWorldYaw), -wheelSteerEffectConfig.maxWheelAngleDiff, wheelSteerEffectConfig.maxWheelAngleDiff);
+                float angleDiff = SMMath.Clamp(SMMath.SignedYawDelta(vehicleVelocityWorldYaw, wheelWorldYaw), -maxWheelAngleDiff, maxWheelAngleDiff);
 
-                float constantForceFromAngle = (angleDiff / wheelSteerEffectConfig.maxWheelAngleDiff);
+                float constantForceFromAngle = (angleDiff / maxWheelAngleDiff);
 
-                float constantForceFromSuspension = 1.0f + SMMath.Clamp(suspensionOffset * wheelSteerEffectConfig.suspensionConstantForceContrib, -1.0f, 1.0f);
+                float constantForceFromSuspension = 1.0f + SMMath.Clamp(suspensionOffset, -1.0f, 1.0f);
 
-                outputs.ffb_wheel_steer_constant = constantForceFromAngle * constantForceFromSuspension * constantForceFromVelocity * wheelSteerEffectConfig.constantForceScale;
+                float constantForceScalar = (float)Math.Pow((double)velocityScalar, (double)wheelSteerEffectConfig.constantForceSpeedCurve) * (float)Math.Pow((double)constantForceFromAngle, (double)wheelSteerEffectConfig.constantForceAngleCurve);
 
+                //tweak by suspension
+                constantForceScalar *= constantForceFromSuspension;
 
-                Debug.WriteLine($"suspensionOffset = {suspensionOffset}");
+                outputs.ffb_wheel_steer_constant = SMMath.Map(constantForceScalar, 0.0f, 1.0f, wheelSteerEffectConfig.minConstantForce, wheelSteerEffectConfig.maxConstantForce);
+
+                float dampForceScalar = (float)Math.Pow((double)velocityScalar, (double)wheelSteerEffectConfig.dampForceSpeedCurve);
+
+                outputs.ffb_wheel_steer_damper = SMMath.Map(dampForceScalar, 0.0f, 1.0f, wheelSteerEffectConfig.minDampForce, wheelSteerEffectConfig.maxDampForce);
+
+//                Debug.WriteLine($"suspensionOffset = {suspensionOffset}");
                 //Debug.WriteLine($"vehicleVelocityWorldYaw = {vehicleVelocityWorldYaw}");
                 //Debug.WriteLine($"wheelWorldYaw = {wheelWorldYaw}");
                 //Debug.WriteLine($"localWheelAngle = {localWheelAngle}");

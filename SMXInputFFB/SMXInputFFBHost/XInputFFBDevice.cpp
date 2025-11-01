@@ -10,8 +10,7 @@
 #include <Rpc.h>
 #pragma comment(lib, "Rpcrt4.lib")
 
-static const long DI_AXIS_MIN = -10000;
-static const long DI_AXIS_MAX = 10000;
+
 
 XInputFFBDevice::XInputFFBDevice() { std::memset(&m_state, 0, sizeof(m_state)); }
 XInputFFBDevice::~XInputFFBDevice() {}
@@ -20,10 +19,9 @@ void XInputFFBDevice::SetHost(XInputFFBHost* host) { m_host = host; }
 void XInputFFBDevice::SetConfig(XInputFFBConfig* c) { m_cfg = c; }
 void XInputFFBDevice::SetUserIndex(unsigned idx) { m_user = (idx < XUSER_MAX_COUNT) ? idx : 0; }
 
-static long ClampLong(long v, long lo, long hi) { if (v < lo) return lo; if (v > hi) return hi; return v; }
-float XInputFFBDevice::NormalizeDIValue(long v) { v = ClampLong(v, DI_AXIS_MIN, DI_AXIS_MAX); return (float)v / 10000.0f; }
 float XInputFFBDevice::FilterAxis(float v, const AxisMapping& axisMapping)
 {
+
     //invert
     if (axisMapping.invert)
     {
@@ -35,9 +33,6 @@ float XInputFFBDevice::FilterAxis(float v, const AxisMapping& axisMapping)
     {
         v = (v + 1) * 0.5f;
     }
-
-    //curve
-    v = copysign(powf(fabs(v), axisMapping.curve), v);
     
     //deadzone
     float absv = v < 0.0f ? -v : v;
@@ -53,6 +48,9 @@ float XInputFFBDevice::FilterAxis(float v, const AxisMapping& axisMapping)
         float t = (absv - axisMapping.deadzone) / (1.0f - axisMapping.deadzone);
         v = sign * t;
     }
+
+    //curve
+    v = copysign(powf(fabs(v), axisMapping.curve), v);
 
     //scale
     v *= axisMapping.scale;
@@ -78,23 +76,9 @@ static bool GuidFromIdString(const std::string& id, GUID& out)
     return XInputFFBConfig::StringToGuidA(id.c_str(), out);
 }
 
-bool XInputFFBDevice::SampleAxis(DISourceDevice* dev, int diAxis, long& outValue) const
+float XInputFFBDevice::GetDIAxisValue(DISourceDevice* dev, int diAxis)
 {
-    if (!dev) return false;
-    const DIJOYSTATE2& js = dev->GetCachedState();
-    switch (diAxis)
-    {
-    case 0: outValue = js.lX; break;
-    case 1: outValue = js.lY; break;
-    case 2: outValue = js.lZ; break;
-    case 3: outValue = js.lRx; break;
-    case 4: outValue = js.lRy; break;
-    case 5: outValue = js.lRz; break;
-    case 6: outValue = js.rglSlider[0]; break;
-    case 7: outValue = js.rglSlider[1]; break;
-    default: return false;
-    }
-    return true;
+    return dev->GetAxisValueNorm((DIAxis)diAxis);
 }
 
 const XINPUT_STATE& XInputFFBDevice::UpdateState(uint32_t vehicleTypeMask)
@@ -145,9 +129,7 @@ const XINPUT_STATE& XInputFFBDevice::UpdateState(uint32_t vehicleTypeMask)
             DISourceDevice* dev = FindDevice(am.deviceId);
             if (!dev) continue;
 
-            long raw = 0;
-            if (!SampleAxis(dev, am.diAxis, raw)) continue;
-            float vn = NormalizeDIValue(raw);
+            float vn = GetDIAxisValue(dev, am.diAxis);
             float vf = FilterAxis(vn, am);
             vsum += vf; any = true;
         }

@@ -49,6 +49,11 @@
 #define IDC_AT_EFFECT_RUDDER_CHECK      1038
 #define IDC_AT_EFFECT_BRAKE_CHECK       1039
 #define IDC_AT_EFFECT_CLUTCH_CHECK      1040
+#define IDC_AT_DI_PROGRESS              1041
+#define IDC_AT_XI_AXIS_PROGRESS         1042
+#define IDC_AT_XI_AXIS_LBL              1045
+#define IDC_AT_DI_VALUE_LBL             1046
+#define IDC_AT_XI_VALUE_LBL             1047
 
 // Next default values for new objects
 // 
@@ -56,7 +61,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        104
 #define _APS_NEXT_COMMAND_VALUE         40002
-#define _APS_NEXT_CONTROL_VALUE         1041
+#define _APS_NEXT_CONTROL_VALUE         1048
 #define _APS_NEXT_SYMED_VALUE           102
 #endif
 #endif

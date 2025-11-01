@@ -82,12 +82,6 @@ namespace SMFFBSource
                 }
             }
         }
-
-
-
-
-
-
     }
 
     public class SMFFBEffect
@@ -103,6 +97,7 @@ namespace SMFFBSource
 
         public virtual void Destroy()
         {
+
         }
 
         public virtual void Update(CMCustomUDPData inputs, CMCustomUDPData outputs)
@@ -120,6 +115,7 @@ namespace SMFFBSource
                         break;
                     }
             }
+
         }
 
     }

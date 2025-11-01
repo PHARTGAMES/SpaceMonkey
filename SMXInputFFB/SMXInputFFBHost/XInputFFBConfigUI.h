@@ -61,6 +61,7 @@ private:
     void PopulateXInputMappingContext();
     void PopulateXInputFFBEffects();
     void ApplyEffectCheckToCurrentMapping(const XInputFFBEffectType& effectType, int checkboxId);
+    void ApplyVehicleCheckToCurrentMapping(const XInputFFBVehicleType& vehicleType, int checkboxId);
 
 
     void AddComboItem(HWND hCombo, const char* text, int value = -1);
@@ -68,6 +69,7 @@ private:
     void PopulateDIDeviceIDs();
 
     void InitAxisTab();
+    void DeinitAxisTab();
     void InitButtonTab();
 
     void ChangeXInputDevice(int newIndex);
@@ -86,6 +88,12 @@ private:
 
     void SetCheckBox(HWND hDlg, int checkBoxID, bool checked);
     bool GetCheckBox(HWND hDlg, int checkBoxID);
+
+    void SetProgressBarValue(HWND hDlg, int controlId, float normalizedValue);
+
+    void SetComboBoxSelection(HWND hDlg, int comboId, int selectionIndex);
+
+    void SetStaticTextFromFloat(HWND hParent, int controlId, float value, int precision = 2);
 
     UIChangeCallback m_callback;
     HINSTANCE m_hInstance;

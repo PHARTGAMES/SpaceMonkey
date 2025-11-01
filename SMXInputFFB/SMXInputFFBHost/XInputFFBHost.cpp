@@ -36,7 +36,6 @@ XInputFFBHost::XInputFFBHost()
 
     m_ffbClient = new SMXInputFFBClient();
     m_ffbClient->StartRecieving(&FFBClientRecieve, this);
-
 }
 
 XInputFFBHost::~XInputFFBHost()
@@ -147,6 +146,17 @@ DISourceDevice* XInputFFBHost::GetDeviceByGUID(const std::string instanceGuid) c
             return m_sourceDevices[i];
     }
     return nullptr;
+}
+
+
+int XInputFFBHost::GetDeviceIndexByGUID(const std::string instanceGuid) const
+{
+    for (size_t i = 0; i < m_sourceDevices.size(); ++i)
+    {
+        if (instanceGuid == m_sourceDevices[i]->GetInstanceGUIDString())
+            return i;
+    }
+    return 0;
 }
 
 
@@ -399,3 +409,31 @@ float XInputFFBHost::GetXInputAxisValueForEffectType(const XInputFFBEffectType& 
 
     return returnValue;
 }
+
+float XInputFFBHost::GetXInputAxisValue(int xiDeviceIndex, int xiAxisIndex)
+{
+    if (xiDeviceIndex < 0 || xiDeviceIndex >= m_xInputFFBDevices.size())
+        return 0;
+
+    XInputFFBDevice* device = m_xInputFFBDevices[xiDeviceIndex];
+    if (device == nullptr)
+        return 0;
+
+    return device->GetAxisValue((XInputAxis)xiAxisIndex);
+}
+
+
+
+float XInputFFBHost::GetDInputAxisValue(int diDeviceIndex, int diAxisIndex)
+{
+    if (diDeviceIndex < 0 || diDeviceIndex >= m_sourceDevices.size())
+        return 0;
+
+    DISourceDevice* diDevice = m_sourceDevices[diDeviceIndex];
+
+    if (diDevice == nullptr)
+        return 0;
+
+    return diDevice->GetAxisValueNorm((DIAxis)diAxisIndex);
+}
+

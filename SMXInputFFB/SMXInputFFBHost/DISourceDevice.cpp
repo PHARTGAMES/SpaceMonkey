@@ -1,6 +1,11 @@
 #include "DISourceDevice.h"
 #include <string>
 
+static const long DI_AXIS_MIN = -10000;
+static const long DI_AXIS_MAX = 10000;
+static long ClampLong(long v, long lo, long hi) { if (v < lo) return lo; if (v > hi) return hi; return v; }
+
+
 
 bool GuidToString(const GUID& g, std::string& out)
 {
@@ -357,4 +362,37 @@ bool DISourceDevice::CreateAllAxisEffects()
         ok = EnsureAxisEffect(DIFfbType::Collision, (DIAxis)i) && ok;
     }
     return ok;
+}
+
+
+long DISourceDevice::GetAxisValue(DIAxis diAxis)
+{
+    long outValue = 0;
+
+    const DIJOYSTATE2& js = GetCachedState();
+    switch (diAxis)
+    {
+    case DIAxis::X: outValue = js.lX; break;
+    case DIAxis::Y: outValue = js.lY; break;
+    case DIAxis::Z: outValue = js.lZ; break;
+    case DIAxis::RX: outValue = js.lRx; break;
+    case DIAxis::RY: outValue = js.lRy; break;
+    case DIAxis::RZ: outValue = js.lRz; break;
+    case DIAxis::SLIDER0: outValue = js.rglSlider[0]; break;
+    case DIAxis::SLIDER1: outValue = js.rglSlider[1]; break;
+    }
+    return outValue;
+
+}
+
+float DISourceDevice::NormalizeDIValue(long v)
+{
+    v = ClampLong(v, DI_AXIS_MIN, DI_AXIS_MAX);
+    return (float)v / 10000.0f;
+}
+
+
+float DISourceDevice::GetAxisValueNorm(DIAxis axis)
+{
+    return NormalizeDIValue(GetAxisValue(axis));
 }
