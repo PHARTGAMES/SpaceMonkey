@@ -23,7 +23,9 @@ void XInputFFBHost::ProcessFFBTelemetry(CMCustomUDPData* frameData)
     {
         XInputFFBDevice* device = m_xInputFFBDevices[i];
 
-        device->SetAxisForce(XInputFFBEffectType::Steering, (long)m_ffbFrameData.ffb_wheel_steer_constant);
+        device->SetAxisConstantForce(XInputFFBEffectType::Steering, (long)m_ffbFrameData.ffb_wheel_steer_constant);
+        device->SetAxisDamperForce(XInputFFBEffectType::Steering, (long)m_ffbFrameData.ffb_wheel_steer_damper);
+        device->SetAxisVibration(XInputFFBEffectType::Steering, (long)m_ffbFrameData.ffb_wheel_steer_vibration_freq, (long)m_ffbFrameData.ffb_wheel_steer_vibration_gain);
     }
 }
 

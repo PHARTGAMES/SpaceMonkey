@@ -129,7 +129,8 @@ public:
         slip_angle2,
         ffb_wheel_steer_constant,
         ffb_wheel_steer_damper,
-        ffb_wheel_steer_collision,
+        ffb_wheel_steer_vibration_gain,
+        ffb_wheel_steer_vibration_freq,
 
         Max
     };
@@ -234,7 +235,8 @@ public:
     float slip_angle2;
     float ffb_wheel_steer_constant;
     float ffb_wheel_steer_damper;
-    float ffb_wheel_steer_collision;
+    float ffb_wheel_steer_vibration_gain;
+    float ffb_wheel_steer_vibration_freq;
 
     std::string formatFilename = "PacketFormats\\defaultPacketFormat.xml";
 
@@ -516,7 +518,8 @@ public:
         slip_angle2 = Lerp(0.0f, slip_angle2, t);
         ffb_wheel_steer_constant = Lerp(0.0f, ffb_wheel_steer_constant, t);
         ffb_wheel_steer_damper = Lerp(0.0f, ffb_wheel_steer_damper, t);
-        ffb_wheel_steer_collision = Lerp(0.0f, ffb_wheel_steer_collision, t);
+        ffb_wheel_steer_vibration_gain = Lerp(0.0f, ffb_wheel_steer_vibration_gain, t);
+        ffb_wheel_steer_vibration_freq = Lerp(0.0f, ffb_wheel_steer_vibration_freq, t);
     }
 
     void LerpAllFrom(const CMCustomUDPData& from, float t)
@@ -594,7 +597,8 @@ public:
         slip_angle2 = L(from.slip_angle2, slip_angle2);
         ffb_wheel_steer_constant = L(from.ffb_wheel_steer_constant, ffb_wheel_steer_constant);
         ffb_wheel_steer_damper = L(from.ffb_wheel_steer_damper, ffb_wheel_steer_damper);
-        ffb_wheel_steer_collision = L(from.ffb_wheel_steer_collision, ffb_wheel_steer_collision);
+        ffb_wheel_steer_vibration_gain = L(from.ffb_wheel_steer_vibration_gain, ffb_wheel_steer_vibration_gain);
+        ffb_wheel_steer_vibration_freq = L(from.ffb_wheel_steer_vibration_freq, ffb_wheel_steer_vibration_freq);
     }
 
 private:
@@ -719,7 +723,8 @@ private:
         case DK::slip_angle2: return &CMCustomUDPData::slip_angle2;
         case DK::ffb_wheel_steer_constant: return &CMCustomUDPData::ffb_wheel_steer_constant;
         case DK::ffb_wheel_steer_damper: return &CMCustomUDPData::ffb_wheel_steer_damper;
-        case DK::ffb_wheel_steer_collision: return &CMCustomUDPData::ffb_wheel_steer_collision;
+        case DK::ffb_wheel_steer_vibration_gain: return &CMCustomUDPData::ffb_wheel_steer_vibration_gain;
+        case DK::ffb_wheel_steer_vibration_freq: return &CMCustomUDPData::ffb_wheel_steer_vibration_freq;
 
         case DK::Max: default: return nullptr;
         }
@@ -859,7 +864,8 @@ private:
         ADD(slip_angle2);
         ADD(ffb_wheel_steer_constant);
         ADD(ffb_wheel_steer_damper);
-        ADD(ffb_wheel_steer_collision);
+        ADD(ffb_wheel_steer_vibration_gain);
+        ADD(ffb_wheel_steer_vibration_freq);
 #undef ADD
         return m;
     }
@@ -893,7 +899,7 @@ private:
 
     static size_t sizeofPublicNumeric()
     {
-        // Everything up to (and including) ffb_wheel_steer_collision is float fields.
+        // Everything up to (and including) ffb_wheel_steer_vibration_freq is float fields.
         // Return the offset past the last float field.
         struct LayoutProbe
         {
@@ -922,7 +928,7 @@ private:
             FLD fuel_in_tank, fuel_capacity, in_pits, team_info, session_type, drs_allowed, track_number, vehicle_fia_flags;
             FLD engine_rate_div10, max_rpm_div10, idle_rpm_div10;
             FLD slip_angle, slip_angle2;
-            FLD ffb_wheel_steer_constant, ffb_wheel_steer_damper, ffb_wheel_steer_collision;
+            FLD ffb_wheel_steer_constant, ffb_wheel_steer_damper, ffb_wheel_steer_vibration_gain, ffb_wheel_steer_vibration_freq;
 #undef FLD
         };
         return sizeof(LayoutProbe);

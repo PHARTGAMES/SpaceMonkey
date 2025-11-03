@@ -2,5 +2,6 @@
   <float scale="1.0" channel="total_time" />
   <float scale="1.0" channel="ffb_wheel_steer_constant" />
   <float scale="1.0" channel="ffb_wheel_steer_damper" />
-  <float scale="1.0" channel="ffb_wheel_steer_collision" />
+  <float scale="1.0" channel="ffb_wheel_steer_vibration_gain" />
+  <float scale="1.0" channel="ffb_wheel_steer_vibration_freq" />
 </custom_udp>

@@ -39,7 +39,7 @@ DISourceDevice::DISourceDevice(IDirectInput8* di, const DIDEVICEINSTANCE& inst)
     {
         m_constant[i] = nullptr;
         m_damper[i] = nullptr;
-        m_collision[i] = nullptr;
+        m_vibration[i] = nullptr;
     }
     std::memset(&m_cachedState, 0, sizeof(m_cachedState));
 }
@@ -50,7 +50,7 @@ DISourceDevice::~DISourceDevice()
     {
         if (m_constant[i]) { m_constant[i]->Release();  m_constant[i] = nullptr; }
         if (m_damper[i]) { m_damper[i]->Release();    m_damper[i] = nullptr; }
-        if (m_collision[i]) { m_collision[i]->Release(); m_collision[i] = nullptr; }
+        if (m_vibration[i]) { m_vibration[i]->Release(); m_vibration[i] = nullptr; }
     }
     SafeReleaseIUnknown((IUnknown*&)m_dev);
 }
@@ -196,7 +196,7 @@ bool DISourceDevice::EnsureAxisEffect(DIFfbType type, DIAxis axis)
     IDirectInputEffect** slot = nullptr;
     if (type == DIFfbType::Constant) slot = &m_constant[(int)axis];
     else if (type == DIFfbType::Damper) slot = &m_damper[(int)axis];
-    else slot = &m_collision[(int)axis];
+    else slot = &m_vibration[(int)axis];
 
     if (*slot) return true; // already exists
 
@@ -251,26 +251,36 @@ bool DISourceDevice::EnsureAxisEffect(DIFfbType type, DIAxis axis)
 
         return SUCCEEDED(m_dev->CreateEffect(GUID_Damper, &eff, slot, nullptr));
     }
-    else // Collision pulse as short constant-force burst
+    else // vibration
     {
-        DICONSTANTFORCE cf;
-        std::memset(&cf, 0, sizeof(cf));
-        cf.lMagnitude = 0;
 
+        // --- Define a periodic (sine wave) vibration effect ---
+        DIPERIODIC periodic;
+        std::memset(&periodic, 0, sizeof(periodic));
+
+        // Frequency (period is in microseconds = 1/frequency)
+        float frequencyHz = 10000;
+        if (frequencyHz <= 0.0f) frequencyHz = 1.0f;
+        periodic.dwMagnitude = 0; // full amplitude
+        periodic.lOffset = 0;
+        periodic.dwPhase = 0;
+        periodic.dwPeriod = static_cast<DWORD>(1000000.0f / frequencyHz); // microseconds per cycle
+
+        // --- Setup general effect parameters ---
         DIEFFECT eff;
         std::memset(&eff, 0, sizeof(eff));
         eff.dwSize = sizeof(eff);
         eff.dwFlags = DIEFF_CARTESIAN | DIEFF_OBJECTOFFSETS;
-        eff.dwDuration = 100000; // 100ms (unit is 100ns)
-        eff.dwGain = 10000;
+        eff.dwDuration = INFINITE;
+        eff.dwGain = Clamp10000(0);
         eff.dwTriggerButton = DIEB_NOTRIGGER;
         eff.cAxes = 1;
         eff.rgdwAxes = rgdwAxes;
         eff.rglDirection = rglDirection;
-        eff.cbTypeSpecificParams = sizeof(DICONSTANTFORCE);
-        eff.lpvTypeSpecificParams = &cf;
+        eff.cbTypeSpecificParams = sizeof(DIPERIODIC);
+        eff.lpvTypeSpecificParams = &periodic;
 
-        return SUCCEEDED(m_dev->CreateEffect(GUID_ConstantForce, &eff, slot, nullptr));
+        return SUCCEEDED(m_dev->CreateEffect(GUID_Sine, &eff, slot, nullptr));
     }
 }
 
@@ -279,7 +289,7 @@ IDirectInputEffect* DISourceDevice::GetAxisEffect(DIFfbType type, DIAxis axis)
     if (!EnsureAxisEffect(type, axis)) return nullptr;
     if (type == DIFfbType::Constant) return m_constant[(int)axis];
     if (type == DIFfbType::Damper)   return m_damper[(int)axis];
-    return m_collision[(int)axis];
+    return m_vibration[(int)axis];
 }
 
 bool DISourceDevice::SetConstantForce(DIAxis axis, LONG magnitude)
@@ -331,24 +341,39 @@ bool DISourceDevice::SetDamper(DIAxis axis, LONG coeff, LONG saturation)
     return true;
 }
 
-bool DISourceDevice::FireCollisionPulse(DIAxis axis, LONG magnitude, DWORD durationMs)
+bool DISourceDevice::SetVibration(DIAxis axis, LONG frequencyHz, LONG gain)
 {
-    IDirectInputEffect* fx = GetAxisEffect(DIFfbType::Collision, axis);
-    if (!fx) return false;
+    IDirectInputEffect* fx = GetAxisEffect(DIFfbType::Vibration, axis);
+    if (!fx)
+        return false;
 
-    DICONSTANTFORCE cf;
-    std::memset(&cf, 0, sizeof(cf));
-    cf.lMagnitude = Clamp10000(magnitude);
+    // Clamp parameters to safe ranges
+    if (frequencyHz <= 0) frequencyHz = 1;
+    if (gain > 10000) gain = 10000;
 
+    // Configure the periodic vibration
+    DIPERIODIC periodic;
+    std::memset(&periodic, 0, sizeof(periodic));
+
+    periodic.dwMagnitude = 10000;  // Full amplitude
+    periodic.lOffset = 0;
+    periodic.dwPhase = 0;
+    periodic.dwPeriod = static_cast<DWORD>(1000000.0f / (double)frequencyHz); // microseconds per cycle
+
+    // Prepare the effect parameters
     DIEFFECT eff;
     std::memset(&eff, 0, sizeof(eff));
     eff.dwSize = sizeof(eff);
-    eff.dwDuration = (DWORD)durationMs * 10000U; // ms -> 100ns units
-    eff.cbTypeSpecificParams = sizeof(DICONSTANTFORCE);
-    eff.lpvTypeSpecificParams = &cf;
+    eff.dwGain = Clamp10000(gain);
+    eff.dwDuration = INFINITE;
+    eff.cbTypeSpecificParams = sizeof(DIPERIODIC);
+    eff.lpvTypeSpecificParams = &periodic;
 
-    if (FAILED(fx->SetParameters(&eff, DIEP_DURATION | DIEP_TYPESPECIFICPARAMS))) return false;
-    fx->Stop(); // ensure restart
+    // Update the effect with new parameters
+    if (FAILED(fx->SetParameters(&eff, DIEP_GAIN | DIEP_TYPESPECIFICPARAMS)))
+        return false;
+
+    fx->Stop();  // Ensure restart to apply changes
     return SUCCEEDED(fx->Start(1, 0));
 }
 
@@ -359,7 +384,7 @@ bool DISourceDevice::CreateAllAxisEffects()
     {
         ok = EnsureAxisEffect(DIFfbType::Constant, (DIAxis)i) && ok;
         ok = EnsureAxisEffect(DIFfbType::Damper, (DIAxis)i) && ok;
-        ok = EnsureAxisEffect(DIFfbType::Collision, (DIAxis)i) && ok;
+        ok = EnsureAxisEffect(DIFfbType::Vibration, (DIAxis)i) && ok;
     }
     return ok;
 }

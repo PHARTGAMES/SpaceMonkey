@@ -5,6 +5,19 @@
     "$values": [
       {
         "$type": "SMFFBSource.SMFFBWheelSteerEffectConfig, SMFFBSource",
+        "maxWheelAngle": 35.0,
+        "constantForceAngleCurve": 1.0,
+        "minConstantForce": 0.0,
+        "maxConstantForce": 10000.0,
+        "constantForceSpeedCurve": 0.2,
+        "minDampForce": 10000.0,
+        "maxDampForce": 10000.0,
+        "dampForceSpeedCurve": 0.2,
+        "minVibrationFrequency": 15.0,
+        "maxVibrationFrequency": 50.0,
+        "minVibrationGain": 10000.0,
+        "maxVibrationGain": 10000.0,
+        "vibrationSpeedCurve": 0.2,
         "id": "SMFFBSource.SMFFBWheelSteerEffect",
         "enabled": true
       }

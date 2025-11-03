@@ -32,6 +32,16 @@
             this.maxWheelAngle = new System.Windows.Forms.TextBox();
             this.maxWheelAngleLabel = new System.Windows.Forms.Label();
             this.effectGroupBox = new System.Windows.Forms.GroupBox();
+            this.vibrationSpeedCurveLbl = new System.Windows.Forms.Label();
+            this.vibrationSpeedCurve = new System.Windows.Forms.TextBox();
+            this.maxVibrationGainLbl = new System.Windows.Forms.Label();
+            this.maxVibrationGain = new System.Windows.Forms.TextBox();
+            this.minVibrationGainLbl = new System.Windows.Forms.Label();
+            this.minVibrationGain = new System.Windows.Forms.TextBox();
+            this.maxVibrationFrequencyLbl = new System.Windows.Forms.Label();
+            this.maxVibrationFrequency = new System.Windows.Forms.TextBox();
+            this.minVibrationFrequencyLbl = new System.Windows.Forms.Label();
+            this.minVibrationFrequency = new System.Windows.Forms.TextBox();
             this.dampForceSpeedCurveLbl = new System.Windows.Forms.Label();
             this.dampForceSpeedCurve = new System.Windows.Forms.TextBox();
             this.maxDampForceLbl = new System.Windows.Forms.Label();
@@ -81,6 +91,16 @@
             // 
             // effectGroupBox
             // 
+            this.effectGroupBox.Controls.Add(this.vibrationSpeedCurveLbl);
+            this.effectGroupBox.Controls.Add(this.vibrationSpeedCurve);
+            this.effectGroupBox.Controls.Add(this.maxVibrationGainLbl);
+            this.effectGroupBox.Controls.Add(this.maxVibrationGain);
+            this.effectGroupBox.Controls.Add(this.minVibrationGainLbl);
+            this.effectGroupBox.Controls.Add(this.minVibrationGain);
+            this.effectGroupBox.Controls.Add(this.maxVibrationFrequencyLbl);
+            this.effectGroupBox.Controls.Add(this.maxVibrationFrequency);
+            this.effectGroupBox.Controls.Add(this.minVibrationFrequencyLbl);
+            this.effectGroupBox.Controls.Add(this.minVibrationFrequency);
             this.effectGroupBox.Controls.Add(this.dampForceSpeedCurveLbl);
             this.effectGroupBox.Controls.Add(this.dampForceSpeedCurve);
             this.effectGroupBox.Controls.Add(this.maxDampForceLbl);
@@ -100,10 +120,105 @@
             this.effectGroupBox.Controls.Add(this.maxWheelAngle);
             this.effectGroupBox.Location = new System.Drawing.Point(14, 13);
             this.effectGroupBox.Name = "effectGroupBox";
-            this.effectGroupBox.Size = new System.Drawing.Size(585, 400);
+            this.effectGroupBox.Size = new System.Drawing.Size(1170, 400);
             this.effectGroupBox.TabIndex = 14;
             this.effectGroupBox.TabStop = false;
             this.effectGroupBox.Text = "Wheel Steer Effect";
+            // 
+            // vibrationSpeedCurveLbl
+            // 
+            this.vibrationSpeedCurveLbl.AutoSize = true;
+            this.vibrationSpeedCurveLbl.Location = new System.Drawing.Point(540, 350);
+            this.vibrationSpeedCurveLbl.Name = "vibrationSpeedCurveLbl";
+            this.vibrationSpeedCurveLbl.Size = new System.Drawing.Size(168, 20);
+            this.vibrationSpeedCurveLbl.TabIndex = 32;
+            this.vibrationSpeedCurveLbl.Text = "Vibration Speed Curve";
+            // 
+            // vibrationSpeedCurve
+            // 
+            this.vibrationSpeedCurve.Location = new System.Drawing.Point(543, 374);
+            this.vibrationSpeedCurve.Margin = new System.Windows.Forms.Padding(4);
+            this.vibrationSpeedCurve.Name = "vibrationSpeedCurve";
+            this.vibrationSpeedCurve.Size = new System.Drawing.Size(115, 25);
+            this.vibrationSpeedCurve.TabIndex = 31;
+            this.vibrationSpeedCurve.Text = "0";
+            this.vibrationSpeedCurve.TextChanged += new System.EventHandler(this.vibrationSpeedCurve_TextChanged);
+            // 
+            // maxVibrationGainLbl
+            // 
+            this.maxVibrationGainLbl.AutoSize = true;
+            this.maxVibrationGainLbl.Location = new System.Drawing.Point(540, 273);
+            this.maxVibrationGainLbl.Name = "maxVibrationGainLbl";
+            this.maxVibrationGainLbl.Size = new System.Drawing.Size(143, 20);
+            this.maxVibrationGainLbl.TabIndex = 30;
+            this.maxVibrationGainLbl.Text = "Max Vibration Gain";
+            // 
+            // maxVibrationGain
+            // 
+            this.maxVibrationGain.Location = new System.Drawing.Point(543, 297);
+            this.maxVibrationGain.Margin = new System.Windows.Forms.Padding(4);
+            this.maxVibrationGain.Name = "maxVibrationGain";
+            this.maxVibrationGain.Size = new System.Drawing.Size(115, 25);
+            this.maxVibrationGain.TabIndex = 29;
+            this.maxVibrationGain.Text = "0";
+            this.maxVibrationGain.TextChanged += new System.EventHandler(this.maxVibrationGain_TextChanged);
+            // 
+            // minVibrationGainLbl
+            // 
+            this.minVibrationGainLbl.AutoSize = true;
+            this.minVibrationGainLbl.Location = new System.Drawing.Point(540, 197);
+            this.minVibrationGainLbl.Name = "minVibrationGainLbl";
+            this.minVibrationGainLbl.Size = new System.Drawing.Size(139, 20);
+            this.minVibrationGainLbl.TabIndex = 28;
+            this.minVibrationGainLbl.Text = "Min Vibration Gain";
+            // 
+            // minVibrationGain
+            // 
+            this.minVibrationGain.Location = new System.Drawing.Point(543, 221);
+            this.minVibrationGain.Margin = new System.Windows.Forms.Padding(4);
+            this.minVibrationGain.Name = "minVibrationGain";
+            this.minVibrationGain.Size = new System.Drawing.Size(115, 25);
+            this.minVibrationGain.TabIndex = 27;
+            this.minVibrationGain.Text = "0";
+            this.minVibrationGain.TextChanged += new System.EventHandler(this.minVibrationGain_TextChanged);
+            // 
+            // maxVibrationFrequencyLbl
+            // 
+            this.maxVibrationFrequencyLbl.AutoSize = true;
+            this.maxVibrationFrequencyLbl.Location = new System.Drawing.Point(540, 123);
+            this.maxVibrationFrequencyLbl.Name = "maxVibrationFrequencyLbl";
+            this.maxVibrationFrequencyLbl.Size = new System.Drawing.Size(184, 20);
+            this.maxVibrationFrequencyLbl.TabIndex = 26;
+            this.maxVibrationFrequencyLbl.Text = "Max Vibration Frequency";
+            // 
+            // maxVibrationFrequency
+            // 
+            this.maxVibrationFrequency.Location = new System.Drawing.Point(543, 147);
+            this.maxVibrationFrequency.Margin = new System.Windows.Forms.Padding(4);
+            this.maxVibrationFrequency.Name = "maxVibrationFrequency";
+            this.maxVibrationFrequency.Size = new System.Drawing.Size(115, 25);
+            this.maxVibrationFrequency.TabIndex = 25;
+            this.maxVibrationFrequency.Text = "0";
+            this.maxVibrationFrequency.TextChanged += new System.EventHandler(this.maxVibrationFrequency_TextChanged);
+            // 
+            // minVibrationFrequencyLbl
+            // 
+            this.minVibrationFrequencyLbl.AutoSize = true;
+            this.minVibrationFrequencyLbl.Location = new System.Drawing.Point(540, 50);
+            this.minVibrationFrequencyLbl.Name = "minVibrationFrequencyLbl";
+            this.minVibrationFrequencyLbl.Size = new System.Drawing.Size(180, 20);
+            this.minVibrationFrequencyLbl.TabIndex = 24;
+            this.minVibrationFrequencyLbl.Text = "Min Vibration Frequency";
+            // 
+            // minVibrationFrequency
+            // 
+            this.minVibrationFrequency.Location = new System.Drawing.Point(543, 74);
+            this.minVibrationFrequency.Margin = new System.Windows.Forms.Padding(4);
+            this.minVibrationFrequency.Name = "minVibrationFrequency";
+            this.minVibrationFrequency.Size = new System.Drawing.Size(115, 25);
+            this.minVibrationFrequency.TabIndex = 23;
+            this.minVibrationFrequency.Text = "0";
+            this.minVibrationFrequency.TextChanged += new System.EventHandler(this.minVibrationFrequency_TextChanged);
             // 
             // dampForceSpeedCurveLbl
             // 
@@ -246,7 +361,7 @@
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "SMFFBWheelSteerEffectControl";
-            this.Size = new System.Drawing.Size(614, 432);
+            this.Size = new System.Drawing.Size(1201, 432);
             this.effectGroupBox.ResumeLayout(false);
             this.effectGroupBox.PerformLayout();
             this.ResumeLayout(false);
@@ -272,5 +387,15 @@
         private System.Windows.Forms.TextBox maxDampForce;
         private System.Windows.Forms.Label minDampForceLbl;
         private System.Windows.Forms.TextBox minDampForce;
+        private System.Windows.Forms.Label minVibrationFrequencyLbl;
+        private System.Windows.Forms.TextBox minVibrationFrequency;
+        private System.Windows.Forms.Label vibrationSpeedCurveLbl;
+        private System.Windows.Forms.TextBox vibrationSpeedCurve;
+        private System.Windows.Forms.Label maxVibrationGainLbl;
+        private System.Windows.Forms.TextBox maxVibrationGain;
+        private System.Windows.Forms.Label minVibrationGainLbl;
+        private System.Windows.Forms.TextBox minVibrationGain;
+        private System.Windows.Forms.Label maxVibrationFrequencyLbl;
+        private System.Windows.Forms.TextBox maxVibrationFrequency;
     }
 }

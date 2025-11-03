@@ -27,6 +27,13 @@ namespace SMFFBSource
         public float maxDampForce = 10000.0f;
         public float dampForceSpeedCurve = 1.0f;
 
+        public float minVibrationFrequency = 1000.0f;
+        public float maxVibrationFrequency = 10000.0f;
+        public float minVibrationGain = 1000.0f;
+        public float maxVibrationGain = 10000.0f;
+        public float vibrationSpeedCurve = 1.0f;
+
+
         private void SetFloat(ref float field, float value, string key)
         {
             if (field != value)
@@ -93,6 +100,41 @@ namespace SMFFBSource
             get => dampForceSpeedCurve;
             set => SetFloat(ref dampForceSpeedCurve, value, "dampForceSpeedCurve");
         }
+
+        [JsonIgnore]
+        public float MinVibrationFrequency
+        {
+            get => minVibrationFrequency;
+            set => SetFloat(ref minVibrationFrequency, value, "minVibrationFreq");
+        }
+
+        [JsonIgnore]
+        public float MaxVibrationFrequency
+        {
+            get => maxVibrationFrequency;
+            set => SetFloat(ref maxVibrationFrequency, value, "maxVibrationFrequency");
+        }
+
+        [JsonIgnore]
+        public float MinVibrationGain
+        {
+            get => minVibrationGain;
+            set => SetFloat(ref minVibrationGain, value, "minVibrationGain");
+        }
+
+        [JsonIgnore]
+        public float MaxVibrationGain
+        {
+            get => maxVibrationGain;
+            set => SetFloat(ref maxVibrationGain, value, "maxVibrationGain");
+        }
+
+        [JsonIgnore]
+        public float VibrationSpeedCurve
+        {
+            get => vibrationSpeedCurve;
+            set => SetFloat(ref vibrationSpeedCurve, value, "vibrationSpeedCurve");
+        }
     }
 
 
@@ -132,8 +174,8 @@ namespace SMFFBSource
                     float suspensionFr = (float)inputs.suspension_position_fr;
                     float suspensionFl = (float)inputs.suspension_position_fl;
 
-                    float suspensionDiffFl = suspensionFl - (float)lastFrame.suspension_position_fl;
                     float suspensionDiffFr = suspensionFr - (float)lastFrame.suspension_position_fr;
+                    float suspensionDiffFl = suspensionFl - (float)lastFrame.suspension_position_fl;
 
                     suspensionOffset = (suspensionDiffFl + suspensionDiffFr);
 
@@ -150,7 +192,8 @@ namespace SMFFBSource
                 case CMCustomUDPData.VehicleType.Pedestrian:
                 {
                     outputs.ffb_wheel_steer_constant = 0.0f;
-                    outputs.ffb_wheel_steer_collision = 0.0f;
+                    outputs.ffb_wheel_steer_vibration_gain = 0.0f;
+                    outputs.ffb_wheel_steer_vibration_freq = 0.0f;
                     outputs.ffb_wheel_steer_damper = 0.0f;
                     return;
                }
@@ -164,11 +207,14 @@ namespace SMFFBSource
             float maxWheelAngleDiff = 35.0f;
 
 
-            if(worldVelocityMag < minWorldVelocity)
-            {
-                outputs.ffb_wheel_steer_constant = 0.0f;
-            }
-            else
+            //if(worldVelocityMag < minWorldVelocity)
+            //{
+            //    outputs.ffb_wheel_steer_constant = 0.0f;
+            //    outputs.ffb_wheel_steer_vibration_gain = 0.0f;
+            //    outputs.ffb_wheel_steer_vibration_freq = 0.0f;
+            //    outputs.ffb_wheel_steer_damper = 0.0f;
+            //}
+            //else
             {
                 float velocityScalar = Math.Min(worldVelocityMag / maxWorldVelocity, 1.0f);
 
@@ -186,29 +232,42 @@ namespace SMFFBSource
 
                 float constantForceFromAngle = (angleDiff / maxWheelAngleDiff);
 
-                float constantForceFromSuspension = 1.0f + SMMath.Clamp(suspensionOffset, -1.0f, 1.0f);
+                float constantForceFromSuspensionScalar = 1.0f + SMMath.Clamp(suspensionOffset, -1.0f, 1.0f);
 
-                float constantForceScalar = (float)Math.Pow((double)velocityScalar, (double)wheelSteerEffectConfig.constantForceSpeedCurve) * (float)Math.Pow((double)constantForceFromAngle, (double)wheelSteerEffectConfig.constantForceAngleCurve);
+                float constantForceScalar = (float)Math.Pow((double)velocityScalar, (double)wheelSteerEffectConfig.constantForceSpeedCurve) * ((float)Math.Pow((double)Math.Abs(constantForceFromAngle), (double)wheelSteerEffectConfig.constantForceAngleCurve) * Math.Sign(constantForceFromAngle));
 
                 //tweak by suspension
-                constantForceScalar *= constantForceFromSuspension;
+                constantForceScalar *= constantForceFromSuspensionScalar;
 
-                outputs.ffb_wheel_steer_constant = SMMath.Map(constantForceScalar, 0.0f, 1.0f, wheelSteerEffectConfig.minConstantForce, wheelSteerEffectConfig.maxConstantForce);
+                //constant force
+                constantForceScalar = Math.Sign(constantForceScalar) * SMMath.Map(Math.Abs(constantForceScalar), 0.0f, 1.0f, wheelSteerEffectConfig.minConstantForce, wheelSteerEffectConfig.maxConstantForce);
 
-                float dampForceScalar = (float)Math.Pow((double)velocityScalar, (double)wheelSteerEffectConfig.dampForceSpeedCurve);
+                outputs.ffb_wheel_steer_constant = constantForceScalar;
+
+                //damper force
+                float dampForceScalar = (float)Math.Pow((double)(1.0f-velocityScalar), (double)wheelSteerEffectConfig.dampForceSpeedCurve);
 
                 outputs.ffb_wheel_steer_damper = SMMath.Map(dampForceScalar, 0.0f, 1.0f, wheelSteerEffectConfig.minDampForce, wheelSteerEffectConfig.maxDampForce);
 
-//                Debug.WriteLine($"suspensionOffset = {suspensionOffset}");
+                //vibration
+                float vibrationScalar = (float)Math.Pow((double)velocityScalar, (double)wheelSteerEffectConfig.vibrationSpeedCurve);
+
+                outputs.ffb_wheel_steer_vibration_gain = SMMath.Map(vibrationScalar, 0.0f, 1.0f, wheelSteerEffectConfig.minVibrationGain, wheelSteerEffectConfig.maxVibrationGain);
+
+                outputs.ffb_wheel_steer_vibration_freq = SMMath.Map(vibrationScalar * constantForceFromSuspensionScalar, 0.0f, 1.0f, wheelSteerEffectConfig.minVibrationFrequency, wheelSteerEffectConfig.maxVibrationFrequency);
+
+
+                //                Debug.WriteLine($"suspensionOffset = {suspensionOffset}");
                 //Debug.WriteLine($"vehicleVelocityWorldYaw = {vehicleVelocityWorldYaw}");
                 //Debug.WriteLine($"wheelWorldYaw = {wheelWorldYaw}");
                 //Debug.WriteLine($"localWheelAngle = {localWheelAngle}");
-//                Debug.WriteLine($"angleDiff = {angleDiff}");
+                //                Debug.WriteLine($"angleDiff = {angleDiff}");
 
 
             }
 
-//            Debug.WriteLine($"ffb_wheel_steer_constant = {outputs.ffb_wheel_steer_constant}");
+            //                        Debug.WriteLine($"ffb_wheel_steer_constant = {outputs.ffb_wheel_steer_constant}");
+            //                        Debug.WriteLine($"ffb_wheel_steer_damper = {outputs.ffb_wheel_steer_damper}");
 
             lastFrame.Copy(inputs, false);
         }

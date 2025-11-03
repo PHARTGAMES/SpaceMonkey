@@ -31,8 +31,9 @@ public:
     // State population (reads cached DIJOYSTATE2 via host and current config)
     const XINPUT_STATE& UpdateState(uint32_t vehicleTypeMask);
 
-    // Force feedback across all DI axes mapped to this XInput axis in the current user config
-    bool SetAxisForce(XInputFFBEffectType effectType, long magnitude);
+    bool SetAxisConstantForce(XInputFFBEffectType effectType, long magnitude);
+    bool SetAxisDamperForce(XInputFFBEffectType effectType, long magnitude);
+    bool SetAxisVibration(XInputFFBEffectType effectType, long frequencyHz, long gain);
 
     const XINPUT_STATE& GetCachedState() const { return m_state; }
 

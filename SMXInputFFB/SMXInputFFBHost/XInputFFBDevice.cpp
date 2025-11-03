@@ -155,7 +155,7 @@ const XINPUT_STATE& XInputFFBDevice::UpdateState(uint32_t vehicleTypeMask)
 }
 
 
-bool XInputFFBDevice::SetAxisForce(XInputFFBEffectType effectType, long magnitude)
+bool XInputFFBDevice::SetAxisConstantForce(XInputFFBEffectType effectType, long magnitude)
 {
     if (!m_cfg)
         return false;
@@ -195,6 +195,105 @@ bool XInputFFBDevice::SetAxisForce(XInputFFBEffectType effectType, long magnitud
 
             // Apply the force
             ok |= dev->SetConstantForce((DIAxis)diAxis, mag);
+        }
+    }
+
+    return ok;
+}
+
+
+bool XInputFFBDevice::SetAxisDamperForce(XInputFFBEffectType effectType, long magnitude)
+{
+    if (!m_cfg)
+        return false;
+
+    XInputFFBDeviceConfig& cfg = m_cfg->GetDeviceConfig(m_user);
+    const uint32_t effectMask = static_cast<uint32_t>(effectType);
+
+    // Clamp coefficient and saturation values to valid DirectInput range
+    long coeff = magnitude;
+    if (coeff < -10000) coeff = -10000;
+    if (coeff > 10000)  coeff = 10000;
+
+    // Use saturation equal to |magnitude|, fully clamped
+    long saturation = std::abs(coeff);
+    if (saturation > 10000)
+        saturation = 10000;
+
+    bool ok = false;
+
+    // Iterate all XInput axis buckets (LX, LY, RX, RY, LT, RT, etc.)
+    for (int axisIndex = 0; axisIndex < XInputFFBDeviceConfig::XInputAxisCount; ++axisIndex)
+    {
+        std::vector<AxisMapping>* bucket = cfg.GetAxisBucket(axisIndex);
+        if (!bucket)
+            continue;
+
+        for (size_t i = 0; i < bucket->size(); ++i)
+        {
+            const AxisMapping& am = (*bucket)[i];
+
+            // Skip mappings that don't include this effect type
+            if ((am.ffbEffectMask & effectMask) == 0)
+                continue;
+
+            DISourceDevice* dev = FindDevice(am.deviceId);
+            if (!dev)
+                continue;
+
+            const int diAxis = am.diAxis;
+            if (diAxis < 0 || diAxis > 7)
+                continue;
+
+            // Apply damper force via DirectInput device
+            ok |= dev->SetDamper((DIAxis)diAxis, coeff, saturation);
+        }
+    }
+
+    return ok;
+}
+
+bool XInputFFBDevice::SetAxisVibration(XInputFFBEffectType effectType, long frequencyHz, long gain)
+{
+    if (!m_cfg)
+        return false;
+
+    XInputFFBDeviceConfig& cfg = m_cfg->GetDeviceConfig(m_user);
+    const uint32_t effectMask = static_cast<uint32_t>(effectType);
+
+    // Clamp frequency and gain to valid ranges
+    if (frequencyHz < 1) frequencyHz = 1;
+    if (frequencyHz > 1000) frequencyHz = 1000; // upper bound for safety
+    if (gain < 0) gain = 0;
+    if (gain > 10000) gain = 10000;
+
+    bool ok = false;
+
+    // Iterate all XInput axis buckets (LX, LY, RX, RY, LT, RT, etc.)
+    for (int axisIndex = 0; axisIndex < XInputFFBDeviceConfig::XInputAxisCount; ++axisIndex)
+    {
+        std::vector<AxisMapping>* bucket = cfg.GetAxisBucket(axisIndex);
+        if (!bucket)
+            continue;
+
+        for (size_t i = 0; i < bucket->size(); ++i)
+        {
+            const AxisMapping& am = (*bucket)[i];
+
+            // Skip mappings that don't include this effect type
+            if ((am.ffbEffectMask & effectMask) == 0)
+                continue;
+
+            DISourceDevice* dev = FindDevice(am.deviceId);
+            if (!dev)
+                continue;
+
+            const int diAxis = am.diAxis;
+            if (diAxis < 0 || diAxis > 7)
+                continue;
+
+            // Apply vibration effect on this mapped DirectInput axis
+            ok |= dev->SetVibration((DIAxis)diAxis, frequencyHz, gain);
         }
     }
 

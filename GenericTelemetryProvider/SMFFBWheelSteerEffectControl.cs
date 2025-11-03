@@ -36,6 +36,11 @@ namespace GenericTelemetryProvider
             minDampForce.Text = "" + config.MinDampForce;
             maxDampForce.Text = "" + config.MaxDampForce;
             dampForceSpeedCurve.Text = "" + config.DampForceSpeedCurve;
+            minVibrationFrequency.Text = "" + config.MinVibrationFrequency;
+            maxVibrationFrequency.Text = "" + config.MaxVibrationFrequency;
+            minVibrationGain.Text = "" + config.MinVibrationGain;
+            maxVibrationGain.Text = "" + config.MaxVibrationGain;
+            vibrationSpeedCurve.Text = "" + config.vibrationSpeedCurve;
 
             ignoreChanges = false;
         }
@@ -77,6 +82,7 @@ namespace GenericTelemetryProvider
         {
             config.ConstantForceSpeedCurve = Utils.TextBoxSafeParseFloat(constantForceSpeedCurve, (int)config.ConstantForceSpeedCurve);
         }
+
         private void minDampForce_TextChanged(object sender, EventArgs e)
         {
             config.MinDampForce = Utils.TextBoxSafeParseFloat(minDampForce, (int)config.MinDampForce);
@@ -90,6 +96,31 @@ namespace GenericTelemetryProvider
         private void dampForceSpeedCurve_TextChanged(object sender, EventArgs e)
         {
             config.DampForceSpeedCurve = Utils.TextBoxSafeParseFloat(dampForceSpeedCurve, (int)config.DampForceSpeedCurve);
+        }
+
+        private void minVibrationFrequency_TextChanged(object sender, EventArgs e)
+        {
+            config.MinVibrationFrequency = Utils.TextBoxSafeParseFloat(minVibrationFrequency, (int)config.MinVibrationFrequency);
+        }
+
+        private void maxVibrationFrequency_TextChanged(object sender, EventArgs e)
+        {
+            config.MaxVibrationFrequency = Utils.TextBoxSafeParseFloat(maxVibrationFrequency, (int)config.MaxVibrationFrequency);
+        }
+
+        private void minVibrationGain_TextChanged(object sender, EventArgs e)
+        {
+            config.MinVibrationGain = Utils.TextBoxSafeParseFloat(minVibrationGain, (int)config.MinVibrationGain);
+        }
+
+        private void maxVibrationGain_TextChanged(object sender, EventArgs e)
+        {
+            config.MaxVibrationGain = Utils.TextBoxSafeParseFloat(maxVibrationGain, (int)config.MaxVibrationGain);
+        }
+
+        private void vibrationSpeedCurve_TextChanged(object sender, EventArgs e)
+        {
+            config.VibrationSpeedCurve = Utils.TextBoxSafeParseFloat(vibrationSpeedCurve, (int)config.VibrationSpeedCurve);
         }
     }
 }

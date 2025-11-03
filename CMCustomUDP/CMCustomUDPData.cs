@@ -130,7 +130,8 @@ namespace CMCustomUDP
             slip_angle2,
             ffb_wheel_steer_constant,
             ffb_wheel_steer_damper,
-            ffb_wheel_steer_collision,
+            ffb_wheel_steer_vibration_gain,
+            ffb_wheel_steer_vibration_freq,
 
             Max
         }
@@ -234,7 +235,8 @@ namespace CMCustomUDP
         public object slip_angle2;
         public object ffb_wheel_steer_constant;
         public object ffb_wheel_steer_damper;
-        public object ffb_wheel_steer_collision;
+        public object ffb_wheel_steer_vibration_gain;
+        public object ffb_wheel_steer_vibration_freq;
 
         public CMCustomUDPData()
         {
@@ -337,7 +339,8 @@ namespace CMCustomUDP
             slip_angle2 = 0.0f;
             ffb_wheel_steer_constant = 0.0f;
             ffb_wheel_steer_damper = 0.0f;
-            ffb_wheel_steer_collision = 0.0f;
+            ffb_wheel_steer_vibration_gain = 0.0f;
+            ffb_wheel_steer_vibration_freq = 0.0f;
         }
 
         public void Init(string _formatFilename = null)
@@ -540,7 +543,8 @@ namespace CMCustomUDP
             slip_angle2 = other.slip_angle2;
             ffb_wheel_steer_constant = other.ffb_wheel_steer_constant;
             ffb_wheel_steer_damper = other.ffb_wheel_steer_damper;
-            ffb_wheel_steer_collision = other.ffb_wheel_steer_collision;
+            ffb_wheel_steer_vibration_gain = other.ffb_wheel_steer_vibration_gain;
+            ffb_wheel_steer_vibration_freq = other.ffb_wheel_steer_vibration_freq;
 
 
             if (copyChannels)
@@ -674,7 +678,8 @@ namespace CMCustomUDP
             slip_angle2 = Lerp(0.0f, (float)slip_angle2, lerp);
             ffb_wheel_steer_constant = Lerp(0.0f, (float)ffb_wheel_steer_constant, lerp);
             ffb_wheel_steer_damper = Lerp(0.0f, (float)ffb_wheel_steer_damper, lerp);
-            ffb_wheel_steer_collision = Lerp(0.0f, (float)ffb_wheel_steer_collision, lerp);
+            ffb_wheel_steer_vibration_gain = Lerp(0.0f, (float)ffb_wheel_steer_vibration_gain, lerp);
+            ffb_wheel_steer_vibration_freq = Lerp(0.0f, (float)ffb_wheel_steer_vibration_freq, lerp);
 
         }
 
@@ -755,7 +760,8 @@ namespace CMCustomUDP
 
             ffb_wheel_steer_constant = Lerp((float)from.ffb_wheel_steer_constant, (float)ffb_wheel_steer_constant, lerp);
             ffb_wheel_steer_damper = Lerp((float)from.ffb_wheel_steer_damper, (float)ffb_wheel_steer_damper, lerp);
-            ffb_wheel_steer_collision = Lerp((float)from.ffb_wheel_steer_collision, (float)ffb_wheel_steer_collision, lerp);
+            ffb_wheel_steer_vibration_gain = Lerp((float)from.ffb_wheel_steer_vibration_gain, (float)ffb_wheel_steer_vibration_gain, lerp);
+            ffb_wheel_steer_vibration_freq = Lerp((float)from.ffb_wheel_steer_vibration_freq, (float)ffb_wheel_steer_vibration_freq, lerp);
 
         }
 

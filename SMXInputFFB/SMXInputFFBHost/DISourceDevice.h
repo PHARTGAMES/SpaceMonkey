@@ -13,7 +13,7 @@ enum class DIFfbType : int
 {
     Constant = 0,
     Damper,
-    Collision
+    Vibration
 };
 
 class SMXINPUTFFBHOST_API DISourceDevice
@@ -46,7 +46,7 @@ public:
     // Convenience setters
     bool SetConstantForce(DIAxis axis, LONG magnitude);          // 0..10000
     bool SetDamper(DIAxis axis, LONG coeff, LONG saturation);    // 0..10000 each
-    bool FireCollisionPulse(DIAxis axis, LONG magnitude, DWORD durationMs);
+    bool SetVibration(DIAxis axis, LONG frequencyHz, LONG gain);
 
     long GetAxisValue(DIAxis axis);
     float GetAxisValueNorm(DIAxis axis);
@@ -77,8 +77,8 @@ private:
     DIJOYSTATE2           m_cachedState;
     bool                  m_hasState = false;
 
-    // per-axis effects (Constant, Damper, Collision)
+    // per-axis effects (Constant, Damper, Vibration)
     IDirectInputEffect* m_constant[(int)DIAxis::COUNT];
     IDirectInputEffect* m_damper[(int)DIAxis::COUNT];
-    IDirectInputEffect* m_collision[(int)DIAxis::COUNT];
+    IDirectInputEffect* m_vibration[(int)DIAxis::COUNT];
 };
