@@ -148,6 +148,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="DISourceDevice.h" />
+    <ClInclude Include="DISourceEffect.h" />
+    <ClInclude Include="FocusWinEventMonitor.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="nlohmann\json.hpp" />
     <ClInclude Include="pch.h" />
@@ -161,7 +163,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DISourceDevice.cpp" />
+    <ClCompile Include="DISourceEffect.cpp" />
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="FocusWinEventMonitor.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

@@ -140,6 +140,32 @@ void XInputFFBHost::EnumerateSourceDevices()
     m_di->EnumDevices(DI8DEVCLASS_GAMECTRL, EnumCb, this, DIEDFL_ATTACHEDONLY);
 }
 
+void FocusMonitorCallback(void* context)
+{
+    XInputFFBHost* host = static_cast<XInputFFBHost*>(context);
+
+    if(host)
+        host->HandleFocusGain();
+}
+
+void XInputFFBHost::EnableFocusMonitor(bool enable)
+{
+    m_focusWinEventMonitor.Start(this, FocusMonitorCallback);
+}
+
+void XInputFFBHost::HandleFocusGain()
+{
+    // On focus gain, forward the event to all DirectInput source devices
+    for (DISourceDevice* dev : m_sourceDevices)
+    {
+        if (dev)
+        {
+            dev->HandleFocusGain();
+        }
+    }
+}
+
+
 DISourceDevice* XInputFFBHost::GetDeviceByGUID(const std::string instanceGuid) const
 {
     for (size_t i = 0; i < m_sourceDevices.size(); ++i)

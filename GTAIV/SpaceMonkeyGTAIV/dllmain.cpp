@@ -56,10 +56,11 @@ void SpaceMonkeyLoop()
 		s_xInputFFBHost->ResolveHostWindow();
 		s_xInputFFBHost->SetInputFocus(XInputFFBHost::InputFocus::Host);
 		s_xInputFFBHost->EnumerateSourceDevices();
+		s_xInputFFBHost->EnableFocusMonitor(true);
+
 	}
 	else
 	{
-		
 		s_xInputFFBHost->Update(CTimer::ms_fTimeStep, (uint32_t)VehicleIndexToFlag(m_frameData->vehicle_type));
 	}
 

@@ -3,17 +3,15 @@
 #include <dinput.h>
 #include <guiddef.h>
 #include <string>
+#include "DISourceEffect.h"  
 
-enum class DIAxis : int
-{
-    X = 0, Y, Z, RX, RY, RZ, SLIDER0, SLIDER1, COUNT
-};
 
 enum class DIFfbType : int
 {
     Constant = 0,
     Damper,
-    Vibration
+    Vibration,
+    Friction
 };
 
 class SMXINPUTFFBHOST_API DISourceDevice
@@ -22,63 +20,61 @@ public:
     DISourceDevice(IDirectInput8* di, const DIDEVICEINSTANCE& inst);
     ~DISourceDevice();
 
-    bool Initialize();            // create device, set format, enumerate caps/effects
-    void SetHWND(HWND hwnd);      // set coop level target
+    bool Initialize();
+    void SetHWND(HWND hwnd);
 
-    // Acquire / Unacquire
     bool Acquire();
     void Unacquire();
 
-    // State
-    bool UpdateState();           // polls device and caches DIJOYSTATE2
+    bool UpdateState();
     const DIJOYSTATE2& GetCachedState() const { return m_cachedState; }
 
-    // Identity
     const GUID& GetInstanceGUID() const { return m_instanceGuid; }
     const GUID& GetProductGUID()  const { return m_productGuid; }
     const char* GetName() const { return m_name; }
     const std::string GetInstanceGUIDString() const { return m_instanceGuidString; }
 
-    // Effects API (create if needed, then retrieve)
-    bool EnsureAxisEffect(DIFfbType type, DIAxis axis);
-    IDirectInputEffect* GetAxisEffect(DIFfbType type, DIAxis axis);
-
-    // Convenience setters
-    bool SetConstantForce(DIAxis axis, LONG magnitude);          // 0..10000
-    bool SetDamper(DIAxis axis, LONG coeff, LONG saturation);    // 0..10000 each
+    // Convenience setters (delegate to managers)
+    bool SetConstantForce(DIAxis axis, LONG magnitude);
+    bool SetDamper(DIAxis axis, LONG coeff, LONG saturation);
     bool SetVibration(DIAxis axis, LONG frequencyHz, LONG gain);
+    bool SetFriction(DIAxis axis, LONG coeff, LONG saturation); // NEW
 
-    long GetAxisValue(DIAxis axis);
+    long  GetAxisValue(DIAxis axis);
     float GetAxisValueNorm(DIAxis axis);
+
+    // Fast arrays if you need to walk everything quickly
+    IDirectInputEffect* const* ConstantArray() const { return m_constant.RawArray(); }
+    IDirectInputEffect* const* DamperArray()   const { return m_damper.RawArray(); }
+    IDirectInputEffect* const* VibrationArray()const { return m_vibration.RawArray(); }
+    IDirectInputEffect* const* FrictionArray() const { return m_friction.RawArray(); }
+
+    void HandleFocusGain();
 
 private:
     float NormalizeDIValue(long v);
     bool CreateDevice();
     bool SetupDataFormatAndRange();
-    bool SetupCooperativeLevel(); // requires HWND
-    bool CreateAllAxisEffects();  // optional eager creation
-
-    // helpers
-    static DWORD AxisToOffset(DIAxis a);
-    static LONG  Clamp10000(LONG v);
+    bool SetupCooperativeLevel();
+    bool CreateAllAxisEffects();
 
 private:
     IDirectInput8* m_di = nullptr;
     IDirectInputDevice8* m_dev = nullptr;
-    GUID                  m_instanceGuid = {};
-    GUID                  m_productGuid = {};
-    std::string           m_instanceGuidString = {};
-    char                  m_name[256];
+    GUID                    m_instanceGuid = {};
+    GUID                    m_productGuid = {};
+    std::string             m_instanceGuidString = {};
+    char                    m_name[256];
 
-    HWND                  m_hwnd = nullptr;
-    bool                  m_ffbSupported = false;
+    HWND                    m_hwnd = nullptr;
+    bool                    m_ffbSupported = false;
 
-    // cached state
-    DIJOYSTATE2           m_cachedState;
-    bool                  m_hasState = false;
+    DIJOYSTATE2             m_cachedState{};
+    bool                    m_hasState = false;
 
-    // per-axis effects (Constant, Damper, Vibration)
-    IDirectInputEffect* m_constant[(int)DIAxis::COUNT];
-    IDirectInputEffect* m_damper[(int)DIAxis::COUNT];
-    IDirectInputEffect* m_vibration[(int)DIAxis::COUNT];
+    // Replaced raw parallel arrays with effect managers (still O(1) per axis under the hood)
+    DIConstantForceEffect   m_constant;
+    DIDamperEffect          m_damper;
+    DIVibrationEffect       m_vibration;
+    DIFrictionEffect        m_friction; // NEW
 };

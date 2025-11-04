@@ -232,7 +232,7 @@ namespace SMFFBSource
 
                 float constantForceFromAngle = (angleDiff / maxWheelAngleDiff);
 
-                float constantForceFromSuspensionScalar = 1.0f + SMMath.Clamp(suspensionOffset, -1.0f, 1.0f);
+                float constantForceFromSuspensionScalar = 1.0f + (SMMath.Clamp(suspensionOffset*2.0f, -4.0f, 4.0f));
 
                 float constantForceScalar = (float)Math.Pow((double)velocityScalar, (double)wheelSteerEffectConfig.constantForceSpeedCurve) * ((float)Math.Pow((double)Math.Abs(constantForceFromAngle), (double)wheelSteerEffectConfig.constantForceAngleCurve) * Math.Sign(constantForceFromAngle));
 

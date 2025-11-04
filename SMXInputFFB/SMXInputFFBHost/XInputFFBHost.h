@@ -7,6 +7,7 @@
 #include "CMCustomUDPData.h"
 #include "XInput.h"
 #include "XInputFFBConfig.h"
+#include "FocusWinEventMonitor.h"
 
 class XInputHook;
 class XInputFFBDevice;
@@ -33,6 +34,8 @@ public:
     bool Initialize();
     void Deinit();
     void EnumerateSourceDevices();
+    void EnableFocusMonitor(bool enable);
+    void HandleFocusGain();
 
     // Optional: needed for exclusive FFB cooperative level
     void SetHWND(HWND hwnd);
@@ -92,6 +95,8 @@ private:
 
     std::vector<std::string> m_diDeviceIdentifiers;
     std::vector<std::string> m_diDeviceGUIDs;
+
+    FocusWinEventMonitor m_focusWinEventMonitor;
 
 
 
