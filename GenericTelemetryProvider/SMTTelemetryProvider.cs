@@ -165,7 +165,8 @@ namespace GenericTelemetryProvider
             FilterModuleCustom.Instance.Filter(rawData, ref filteredData, posKeyMask, true);
 
             //assign
-            worldPosition = new Vector3((float)filteredData.position_x, (float)filteredData.position_y, (float)filteredData.position_z);
+            //worldPosition = new Vector3((float)filteredData.position_x, (float)filteredData.position_y, (float)filteredData.position_z);            ////worldPosition = new Vector3((float)filteredData.position_x, (float)filteredData.position_y, (float)filteredData.position_z);
+            worldPosition = new Vector3((float)rawData.position_x, (float)rawData.position_y, (float)rawData.position_z);            ////worldPosition = new Vector3((float)filteredData.position_x, (float)filteredData.position_y, (float)filteredData.position_z);
         }
 
         public override void CalcVelocity()
@@ -209,7 +210,8 @@ namespace GenericTelemetryProvider
 
 
             //assign filtered local velocity
-            Vector3 localVelocity = new Vector3((float)filteredData.local_velocity_x, (float)filteredData.local_velocity_y, (float)filteredData.local_velocity_z);
+            //Vector3 localVelocity = new Vector3((float)filteredData.local_velocity_x, (float)filteredData.local_velocity_y, (float)filteredData.local_velocity_z);
+            Vector3 localVelocity = new Vector3((float)rawData.local_velocity_x, (float)rawData.local_velocity_y, (float)rawData.local_velocity_z);
 
             //calculate local acceleration
             Vector3 localAcceleration = ((localVelocity - lastVelocity) / dt) * 0.10197162129779283f; //convert to g accel

@@ -39,7 +39,7 @@ namespace GenericTelemetryProvider
             if(effectDef != null)
             {
                 SMFFBSourceManager.instance.AddEffectToConfig(SMFFBSourceManager.instance.CreateEffect(effectDef.defaultConfig));
-                HapticsUI.Instance.InitFromConfig();
+                FFBUI.Instance.InitFromConfig();
             }
 
             this.Close();

@@ -151,11 +151,11 @@ namespace GenericTelemetryProvider
 
         public void AddButtonClick(object sender, EventArgs e)
         {
-            SMHEffectPicker picker = new SMHEffectPicker();
+            SMFFBEffectPicker picker = new SMFFBEffectPicker();
 
             Thread x = new Thread(new ParameterizedThreadStart((form) =>
             {
-                ((SMHEffectPicker)form).ShowDialog();
+                ((SMFFBEffectPicker)form).ShowDialog();
             }));
             x.IsBackground = true;
             x.Start(picker);
