@@ -220,6 +220,12 @@ namespace SMFFBSource
 
                 float localWheelAngle = (float)inputs.steering_input * wheelSteerEffectConfig.maxWheelAngle;
 
+                float noiseFreq = 0.5f;
+                //noise steer vibration
+                float steerNoise = Perlin2D.Noise(new Vector2((float)inputs.position_x, (float)inputs.position_z) * noiseFreq) * velocityScalar;
+
+
+
                 Vector3 vehicleWorldForwardXZ = new Vector3((float)inputs.world_dir_fwd_x, 0.0f, (float)inputs.world_dir_fwd_z);
                 vehicleWorldForwardXZ = Vector3.Normalize(vehicleWorldForwardXZ);
 
@@ -236,8 +242,17 @@ namespace SMFFBSource
 
                 float constantForceScalar = (float)Math.Pow((double)velocityScalar, (double)wheelSteerEffectConfig.constantForceSpeedCurve) * ((float)Math.Pow((double)Math.Abs(constantForceFromAngle), (double)wheelSteerEffectConfig.constantForceAngleCurve) * Math.Sign(constantForceFromAngle));
 
+                float verticalAccelScalar = 1.0f + (SMMath.Clamp((float)inputs.gforce_vertical / 0.25f, -1.0f, 1.0f) * 0.6f);
+
                 //tweak by suspension
-                constantForceScalar *= constantForceFromSuspensionScalar;
+//                constantForceScalar *= constantForceFromSuspensionScalar;
+
+                //tweak by steer noise
+//                constantForceScalar += constantForceScalar * 0.25f * steerNoise;
+
+
+                //tweak constant force by vertical velocity
+                constantForceScalar *= verticalAccelScalar;
 
                 //constant force
                 constantForceScalar = Math.Sign(constantForceScalar) * SMMath.Map(Math.Abs(constantForceScalar), 0.0f, 1.0f, wheelSteerEffectConfig.minConstantForce, wheelSteerEffectConfig.maxConstantForce);
@@ -247,14 +262,27 @@ namespace SMFFBSource
                 //damper force
                 float dampForceScalar = (float)Math.Pow((double)(1.0f-velocityScalar), (double)wheelSteerEffectConfig.dampForceSpeedCurve);
 
+                //tweak damper by vertical accel 
+                dampForceScalar *= verticalAccelScalar;
+
                 outputs.ffb_wheel_steer_damper = SMMath.Map(dampForceScalar, 0.0f, 1.0f, wheelSteerEffectConfig.minDampForce, wheelSteerEffectConfig.maxDampForce);
 
                 //vibration
                 float vibrationScalar = (float)Math.Pow((double)velocityScalar, (double)wheelSteerEffectConfig.vibrationSpeedCurve);
 
+                //tweak vibration by vertical accel
+                vibrationScalar *= verticalAccelScalar;
+
                 outputs.ffb_wheel_steer_vibration_gain = SMMath.Map(vibrationScalar, 0.0f, 1.0f, wheelSteerEffectConfig.minVibrationGain, wheelSteerEffectConfig.maxVibrationGain);
 
                 outputs.ffb_wheel_steer_vibration_freq = SMMath.Map(vibrationScalar * constantForceFromSuspensionScalar, 0.0f, 1.0f, wheelSteerEffectConfig.minVibrationFrequency, wheelSteerEffectConfig.maxVibrationFrequency);
+
+                float steerNoiseFreqRange = 40.0f;
+
+                outputs.ffb_wheel_steer_vibration_freq = (float)outputs.ffb_wheel_steer_vibration_freq + (steerNoise * steerNoiseFreqRange);
+
+                float steerNoiseGainRange = 60.0f;
+                outputs.ffb_wheel_steer_vibration_gain = (float)outputs.ffb_wheel_steer_vibration_gain + (steerNoise * steerNoiseGainRange);
 
 
                 //                Debug.WriteLine($"suspensionOffset = {suspensionOffset}");
@@ -262,6 +290,9 @@ namespace SMFFBSource
                 //Debug.WriteLine($"wheelWorldYaw = {wheelWorldYaw}");
                 //Debug.WriteLine($"localWheelAngle = {localWheelAngle}");
                 //                Debug.WriteLine($"angleDiff = {angleDiff}");
+//                Debug.WriteLine($"outputs.ffb_wheel_steer_vibration_gain = {outputs.ffb_wheel_steer_vibration_gain}");
+                //Debug.WriteLine($"steerNoise = {steerNoise}");
+//                Debug.WriteLine($"inputs.gforce_vertical = {inputs.gforce_vertical}");
 
 
             }
