@@ -42,6 +42,8 @@ public:
 
     long  GetAxisValue(DIAxis axis);
     float GetAxisValueNorm(DIAxis axis);
+    float GetButtonValueNorm(int button);
+
 
     // Fast arrays if you need to walk everything quickly
     IDirectInputEffect* const* ConstantArray() const { return m_constant.RawArray(); }

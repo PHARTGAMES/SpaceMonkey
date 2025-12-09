@@ -6,6 +6,7 @@
 #include "XInputFFBHost.h"
 #include "XInputFFBConfigUI.h"
 #include "SMMatrixReader.h"
+#include "Debug.h"
 #include "IVSDK.cpp"
 
 SpaceMonkeyTelemetryAPI* m_telemetryAPI = nullptr;
@@ -71,6 +72,8 @@ void PrepareFrame()
 				telemetryMatrix = playerPed->m_pMatrix;
 			}
 		}
+
+//		playerPed->GetVelocity();
 
 		float worldScale = 1.0f;
 
@@ -162,9 +165,41 @@ void PrepareFrame()
 
 }
 
+float s_fixedTimer = 0.0f;
+float s_lastGTATime = 0.0f;
+float s_lastRealTime = 0.0f;
+
 void SMMatrixReaderCallback(SMMatrixReader::Matrix m, double tSeconds)
 {
-	m_frameData->total_time = (float)tSeconds;
+
+	s_fixedTimer += 1.0f / 60.0f;
+	float nowGTATime = CTimer::m_snTimeInMilliseconds / 1000.0f;
+
+//	float timerValue = (float)tSeconds;
+//	float timerValue = nowGTATime;
+	float timerValue = s_fixedTimer;
+	
+
+	float timeDelta = timerValue - m_frameData->total_time;
+	Debug::Log("TimeDelta: %f\n", timeDelta);
+	float gtaTimeDelta = nowGTATime - s_lastGTATime;
+	Debug::Log("GTATimeDelta: %f\n", gtaTimeDelta);
+	float realTimeDelta = (float)tSeconds - s_lastRealTime;
+	s_lastRealTime = (float)tSeconds;
+	Debug::Log("RealTimeDelta: %f\n", realTimeDelta);
+
+	//if (timeDelta > ((1.0f / 60.0f)*1.5f))
+	//{
+	//	Debug::Log("--SPIKE--\n");
+	//}
+	Debug::Log("GTATime: %f\n", nowGTATime);
+	Debug::Log("RealTime: %f\n", tSeconds);
+	Debug::Log("FixedTime: %f\n", s_fixedTimer);
+
+	s_lastGTATime = nowGTATime;
+
+
+	m_frameData->total_time = timerValue;
 
 	float worldScale = 1.0f;
 
@@ -172,6 +207,10 @@ void SMMatrixReaderCallback(SMMatrixReader::Matrix m, double tSeconds)
 	//m[4] m[5] m[6] m[7] at
 	//m[8] m[9] m[10] m[11] up
 	//m[12] m[13] m[14] m[15] pos
+
+	float xPosDelta = (m[12] * worldScale) - m_frameData->position_x;
+	Debug::Log("XPosDelta: %f\n", xPosDelta);
+	Debug::Log("XVel: %f\n", xPosDelta / timeDelta);
 
 	m_frameData->position_x = m[12] * worldScale;
 	m_frameData->position_y = m[14] * worldScale;
@@ -207,7 +246,7 @@ void SpaceMonkeyLoop()
 
 		s_matrixReader = new SMMatrixReader();
 		s_matrixReader->SetPollIntervalMs(1);
-		s_matrixReader->SetStableDurationMs(15);
+		s_matrixReader->SetStableDurationMs(5);
 		s_matrixReader->Start(&SMMatrixReaderCallback);
 
 	}

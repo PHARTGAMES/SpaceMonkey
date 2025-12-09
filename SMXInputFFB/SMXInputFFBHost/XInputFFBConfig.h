@@ -8,6 +8,13 @@
 
 #include "nlohmann/json.hpp"
 
+#define XINPUT_AXIS_COUNT 6
+#define XINPUT_BUTTON_COUNT 14
+#define XINPUT_INPUT_COUNT (XINPUT_AXIS_COUNT + XINPUT_BUTTON_COUNT)
+#define DINPUT_AXIS_COUNT 6
+#define DINPUT_POV_COUNT 4
+#define DINPUT_BUTTON_COUNT 128
+
 enum class XInputFFBVehicleType : uint32_t
 {
     Car = 1u,
@@ -63,18 +70,17 @@ struct ButtonMapping
 class XInputFFBDeviceConfig
 {
 public:
-    enum { LX = 0, LY, RX, RY, LT, RT, XInputAxisCount };
 
     void Clear()
     {
-        for (int i = 0; i < (int)XInputAxisCount; ++i) Axis[i].clear();
+        for (int i = 0; i < (int)XINPUT_INPUT_COUNT; ++i) Axis[i].clear();
         Buttons.clear();
     }
 
     // Read
     std::vector<AxisMapping>* GetAxisBucket(int xinputAxis)
     {
-        return (xinputAxis >= 0 && xinputAxis < (int)XInputAxisCount) ? &Axis[xinputAxis] : nullptr;
+        return (xinputAxis >= 0 && xinputAxis < (int)XINPUT_INPUT_COUNT) ? &Axis[xinputAxis] : nullptr;
     }
     std::vector<ButtonMapping>& GetButtons() { return Buttons; }
 
@@ -83,7 +89,7 @@ public:
     void FromJson(const nlohmann::json& j);
 
 private:
-    std::vector<AxisMapping>   Axis[XInputAxisCount];
+    std::vector<AxisMapping>   Axis[XINPUT_INPUT_COUNT];
     std::vector<ButtonMapping> Buttons;
 };
 

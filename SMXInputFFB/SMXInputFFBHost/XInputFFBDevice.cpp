@@ -76,9 +76,26 @@ static bool GuidFromIdString(const std::string& id, GUID& out)
     return XInputFFBConfig::StringToGuidA(id.c_str(), out);
 }
 
-float XInputFFBDevice::GetDIAxisValue(DISourceDevice* dev, int diAxis)
+float XInputFFBDevice::GetDIInputValue(DISourceDevice* dev, int diInput)
 {
-    return dev->GetAxisValueNorm((DIAxis)diAxis);
+    float returnValue = 0;
+    //axis
+    if (diInput < DINPUT_AXIS_COUNT)
+    {
+        returnValue = dev->GetAxisValueNorm((DIAxis)diInput);
+    }
+    else //pov
+    if (diInput < DINPUT_POV_COUNT)
+    {
+
+    }
+    else //buttons
+    if (diInput < DINPUT_BUTTON_COUNT)
+    {
+        returnValue = dev->GetButtonValueNorm(diInput - (DINPUT_AXIS_COUNT + DINPUT_POV_COUNT));
+    }
+
+    return returnValue;
 }
 
 const XINPUT_STATE& XInputFFBDevice::UpdateState(uint32_t vehicleTypeMask)
@@ -88,32 +105,33 @@ const XINPUT_STATE& XInputFFBDevice::UpdateState(uint32_t vehicleTypeMask)
 
     XInputFFBDeviceConfig& cfg = m_cfg->GetDeviceConfig(m_user);
 
-    // Buttons
-    WORD buttons = 0;
-    const std::vector<ButtonMapping>& bmaps = cfg.GetButtons();
-    for (size_t i = 0; i < bmaps.size(); ++i)
-    {
-        const ButtonMapping& bm = bmaps[i];
+    //// Buttons
+//    WORD buttons = 0;
+    //const std::vector<ButtonMapping>& bmaps = cfg.GetButtons();
+    //for (size_t i = 0; i < bmaps.size(); ++i)
+    //{
+    //    const ButtonMapping& bm = bmaps[i];
 
-        if ((bm.vehicleTypeMask & vehicleTypeMask) == 0)
-            continue;
+    //    if ((bm.vehicleTypeMask & vehicleTypeMask) == 0)
+    //        continue;
 
-        DISourceDevice* dev = FindDevice(bm.deviceId);
-        if (!dev) continue;
+    //    DISourceDevice* dev = FindDevice(bm.deviceId);
+    //    if (!dev) continue;
 
-        const DIJOYSTATE2& js = dev->GetCachedState();
-        int idx = bm.diButtonIndex;
-        if (idx >= 0 && idx < 128)
-        {
-            BYTE pressed = js.rgbButtons[idx];
-            if (pressed & 0x80) buttons |= bm.xinputBit;
-        }
-    }
+    //    const DIJOYSTATE2& js = dev->GetCachedState();
+    //    int idx = bm.diButtonIndex;
+    //    if (idx >= 0 && idx < 128)
+    //    {
+    //        BYTE pressed = js.rgbButtons[idx];
+    //        if (pressed & 0x80) buttons |= bm.xinputBit;
+    //    }
+    //}
 
     // Axes
     // LX,LY,RX,RY,LT,RT
-    memset(m_axisState, 0, sizeof(float) * 6);
-    for (int a = 0; a < 6; ++a)
+    memset(m_axisState, 0, sizeof(float) * XINPUT_INPUT_COUNT);
+
+    for (int a = 0; a < XINPUT_INPUT_COUNT; ++a)
     {
         const std::vector<AxisMapping>* bucket = cfg.GetAxisBucket(a);
         if (!bucket) continue;
@@ -129,7 +147,7 @@ const XINPUT_STATE& XInputFFBDevice::UpdateState(uint32_t vehicleTypeMask)
             DISourceDevice* dev = FindDevice(am.deviceId);
             if (!dev) continue;
 
-            float vn = GetDIAxisValue(dev, am.diAxis);
+            float vn = GetDIInputValue(dev, am.diAxis);
             float vf = FilterAxis(vn, am);
             vsum += vf; any = true;
         }
@@ -141,8 +159,38 @@ const XINPUT_STATE& XInputFFBDevice::UpdateState(uint32_t vehicleTypeMask)
         }
     }
 
+    //process buttons
+    const WORD XINPUT_Buttons[] =
+    {
+        XINPUT_GAMEPAD_DPAD_UP,
+        XINPUT_GAMEPAD_DPAD_DOWN,
+        XINPUT_GAMEPAD_DPAD_LEFT,
+        XINPUT_GAMEPAD_DPAD_RIGHT,
+        XINPUT_GAMEPAD_START,
+        XINPUT_GAMEPAD_BACK,
+        XINPUT_GAMEPAD_LEFT_THUMB,
+        XINPUT_GAMEPAD_RIGHT_THUMB,
+        XINPUT_GAMEPAD_LEFT_SHOULDER,
+        XINPUT_GAMEPAD_RIGHT_SHOULDER,
+        XINPUT_GAMEPAD_A,
+        XINPUT_GAMEPAD_B,
+        XINPUT_GAMEPAD_X,
+        XINPUT_GAMEPAD_Y
+    };
+
+    m_buttonState = 0;
+    for (int b = XINPUT_AXIS_COUNT; b < XINPUT_INPUT_COUNT; ++b)
+    {
+        int btnIdx = b - XINPUT_AXIS_COUNT;
+
+        if (m_axisState[b] > 0.5f)
+        {
+            m_buttonState |= XINPUT_Buttons[btnIdx];
+        }
+    }
+
     XINPUT_GAMEPAD& gp = m_state.Gamepad;
-    gp.wButtons = buttons;
+    gp.wButtons = m_buttonState;
     gp.sThumbLX = ToXInputStick(m_axisState[0]);
     gp.sThumbLY = ToXInputStick(m_axisState[1]);
     gp.sThumbRX = ToXInputStick(m_axisState[2]);
@@ -171,7 +219,7 @@ bool XInputFFBDevice::SetAxisConstantForce(XInputFFBEffectType effectType, long 
     bool ok = false;
 
     // Iterate all XInput axis buckets (LX, LY, RX, RY, LT, RT, etc.)
-    for (int axisIndex = 0; axisIndex < XInputFFBDeviceConfig::XInputAxisCount; ++axisIndex)
+    for (int axisIndex = 0; axisIndex < XINPUT_AXIS_COUNT; ++axisIndex)
     {
         std::vector<AxisMapping>* bucket = cfg.GetAxisBucket(axisIndex);
         if (!bucket)
@@ -223,7 +271,7 @@ bool XInputFFBDevice::SetAxisDamperForce(XInputFFBEffectType effectType, long ma
     bool ok = false;
 
     // Iterate all XInput axis buckets (LX, LY, RX, RY, LT, RT, etc.)
-    for (int axisIndex = 0; axisIndex < XInputFFBDeviceConfig::XInputAxisCount; ++axisIndex)
+    for (int axisIndex = 0; axisIndex < XINPUT_AXIS_COUNT; ++axisIndex)
     {
         std::vector<AxisMapping>* bucket = cfg.GetAxisBucket(axisIndex);
         if (!bucket)
@@ -270,7 +318,7 @@ bool XInputFFBDevice::SetAxisVibration(XInputFFBEffectType effectType, long freq
     bool ok = false;
 
     // Iterate all XInput axis buckets (LX, LY, RX, RY, LT, RT, etc.)
-    for (int axisIndex = 0; axisIndex < XInputFFBDeviceConfig::XInputAxisCount; ++axisIndex)
+    for (int axisIndex = 0; axisIndex < XINPUT_AXIS_COUNT; ++axisIndex)
     {
         std::vector<AxisMapping>* bucket = cfg.GetAxisBucket(axisIndex);
         if (!bucket)
@@ -301,11 +349,11 @@ bool XInputFFBDevice::SetAxisVibration(XInputFFBEffectType effectType, long freq
 }
 
 
-float XInputFFBDevice::GetAxisValue(XInputAxis axis)
+float XInputFFBDevice::GetAxisValue(int axis)
 {
-    if (axis >= XInputAxis::COUNT || (int)axis < 0)
+    if (axis >= XINPUT_INPUT_COUNT || (int)axis < 0)
         return 0;
 
-    return m_axisState[(int)axis];
+    return m_axisState[axis];
 }
 

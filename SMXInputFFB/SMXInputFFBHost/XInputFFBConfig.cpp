@@ -28,7 +28,7 @@ void XInputFFBDeviceConfig::ToJson(nlohmann::json& j) const
 {
     using nlohmann::json;
     json ja = json::array();
-    for (int i = 0; i < (int)XInputAxisCount; ++i)
+    for (int i = 0; i < (int)XINPUT_INPUT_COUNT; ++i)
     {
         for (size_t k = 0; k < Axis[i].size(); ++k)
         {
@@ -87,7 +87,7 @@ void XInputFFBDeviceConfig::FromJson(const nlohmann::json& j)
             m.pedal = jm.value("pedal", 0) != 0;
             m.vehicleTypeMask = jm.value("vehicleTypeMask", 0);
             m.ffbEffectMask = jm.value("ffbEffectMask", 0);
-            if (xi >= 0 && xi < (int)XInputFFBDeviceConfig::XInputAxisCount)
+            if (xi >= 0 && xi < XINPUT_INPUT_COUNT)
                 Axis[xi].push_back(m);
         }
     }
@@ -195,7 +195,7 @@ int XInputFFBConfig::AddAxisMapping(int deviceIndex, int axisIndex)
     if (deviceIndex >= XUSER_MAX_COUNT ||deviceIndex < 0)
         return -1;
 
-    if (axisIndex >= XInputFFBDeviceConfig::XInputAxisCount || axisIndex < 0)
+    if (axisIndex >= XINPUT_INPUT_COUNT || axisIndex < 0)
         return -1;
 
     XInputFFBDeviceConfig& deviceConfig = Devices[deviceIndex];
@@ -224,7 +224,7 @@ void XInputFFBConfig::DeleteAxisMapping(int deviceIndex, int axisIndex, int mapp
     if (deviceIndex >= XUSER_MAX_COUNT || deviceIndex < 0)
         return;
 
-    if (axisIndex >= XInputFFBDeviceConfig::XInputAxisCount || axisIndex < 0)
+    if (axisIndex >= XINPUT_INPUT_COUNT || axisIndex < 0)
         return;
 
     XInputFFBDeviceConfig& deviceConfig = Devices[deviceIndex];
@@ -245,7 +245,7 @@ AxisMapping* XInputFFBConfig::GetAxisMapping(int deviceIndex, int axisIndex, int
     if (deviceIndex >= XUSER_MAX_COUNT || deviceIndex < 0)
         return nullptr;
 
-    if (axisIndex >= XInputFFBDeviceConfig::XInputAxisCount || axisIndex < 0)
+    if (axisIndex >= XINPUT_INPUT_COUNT || axisIndex < 0)
         return nullptr;
 
     XInputFFBDeviceConfig& deviceConfig = Devices[deviceIndex];

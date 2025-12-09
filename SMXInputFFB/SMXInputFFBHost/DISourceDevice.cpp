@@ -228,6 +228,17 @@ float DISourceDevice::GetAxisValueNorm(DIAxis axis)
     return NormalizeDIValue(GetAxisValue(axis));
 }
 
+float DISourceDevice::GetButtonValueNorm(int button)
+{
+    if (button < 0 || button >= 128)
+        return 0.0f;
+
+    const DIJOYSTATE2& js = GetCachedState();
+
+    return (float)js.rgbButtons[button] / 255.0f;
+
+}
+
 
 void DISourceDevice::HandleFocusGain()
 {

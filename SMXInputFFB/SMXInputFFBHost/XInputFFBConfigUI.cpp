@@ -810,7 +810,21 @@ void XInputFFBConfigUI::PopulateComboBoxXInputAxes(HWND hDlg, int comboID)
         "Right Stick X-Axis",
         "Right Stick Y-Axis",
         "Left Trigger",
-        "Right Trigger"
+        "Right Trigger",
+        "DPad Up",
+        "DPad Down",
+        "DPad Left",
+        "DPad Right",
+        "Start",
+        "Back",
+        "Left Thumb",
+        "Right Thumb",
+        "Left Shoulder",
+        "Right Shoulder",
+        "A Button",
+        "B Button",
+        "X Button",
+        "Y Button"
     };
 
     for (int i = 0; i < _countof(axes); ++i)
@@ -877,11 +891,34 @@ void XInputFFBConfigUI::PopulateComboBoxDirectInputAxes(HWND hDlg, int comboID)
         "Slider 2"
     };
 
+    int idx = 0;
+    // axes
     for (int i = 0; i < _countof(axes); ++i)
-        AddComboItem(hCombo, axes[i], i);
+    {
+        AddComboItem(hCombo, axes[i], idx++);
+    }
 
-    if (_countof(axes) > 0)
-        SendMessage(hCombo, CB_SETCURSEL, 0, 0);
+    // POVs (4 entries)
+    for (int povIndex = 0; povIndex < 4; ++povIndex)
+    {
+        char label[32];
+        // "POV 1", "POV 2", "POV 3", "POV 4"
+        sprintf_s(label, "POV %d", povIndex + 1);
+
+        AddComboItem(hCombo, label, idx++);
+    }
+
+    // Buttons (128 entries)
+    for (int buttonIndex = 0; buttonIndex < 128; ++buttonIndex)
+    {
+        char label[32];
+        // "Button 1", "Button 2", ..., "Button 128"
+        sprintf_s(label, "Button %d", buttonIndex + 1);
+
+        AddComboItem(hCombo, label, idx++);
+    }
+
+    SendMessage(hCombo, CB_SETCURSEL, 0, 0);
 }
 
 // --------------------------------------
@@ -1036,6 +1073,7 @@ void XInputFFBConfigUI::PopulateXInputAxisMappingUI()
 
         SetComboBoxSelection(m_hAxisTab, IDC_AT_DINPUT_AXIS_COMBO, axisMapping->diAxis);
 
+        SetComboBoxSelection(m_hAxisTab, IDC_AT_DINPUT_DEVICE_COMBO, m_selectedDIDevice);
     }
     else
     {
@@ -1047,7 +1085,11 @@ void XInputFFBConfigUI::PopulateXInputAxisMappingUI()
         SetFloatToEdit(m_hAxisTab, IDC_AT_CURVE_EDIT, 1.0f);
         SetFloatToEdit(m_hAxisTab, IDC_AT_DEADZONE_EDIT, 0.01f);
         SetFloatToEdit(m_hAxisTab, IDC_AT_SCALE_EDIT, 1.0f);
+
+        SetComboBoxSelection(m_hAxisTab, IDC_AT_DINPUT_DEVICE_COMBO, 0);
     }
+
+    PopulateXInputMappingNames();
 
     PopulateXInputMappingContext();
     PopulateXInputFFBEffects();

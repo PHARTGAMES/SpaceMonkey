@@ -141,10 +141,6 @@ void SMMatrixReader::ThreadLoop()
                     // Matrix is the same as previous sample
                     if (inChange)
                     {
-                        //SteadyClock::time_point nowSteady = SteadyClock::now();
-                        //auto stableDuration =
-                        //    std::chrono::duration_cast<std::chrono::milliseconds>(
-                        //        nowSteady - stableSince);
 
                         double timeNow = SystemTime::GetInMicroseconds();
                         double stableDuration = (timeNow - stableSince) / 1000.0;
