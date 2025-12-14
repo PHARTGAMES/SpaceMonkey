@@ -16,11 +16,14 @@ double m_sampleRate = 1.0 / 60.0;
 double m_realTime = 0.0;
 double m_gtaTime = 0.0;
 double m_fixedTime = 0.0;
+double m_realTimeQuant = 0.0;
 
 static XInputFFBHost *s_xInputFFBHost = nullptr;
 static XInputFFBConfigUI* s_xInputFFBConfigUI = nullptr;
 
 static SMMatrixReader* s_matrixReader = nullptr;
+
+//#define MATRIX_READER
 
 void __stdcall OnUIChange(const char* msg) {
 	printf("UI changed: %s\n", msg);
@@ -77,7 +80,10 @@ void PrepareFrame()
 
 		float worldScale = 1.0f;
 
-		s_matrixReader->SetSourceAddress(telemetryMatrix);
+		if (s_matrixReader != nullptr)
+		{
+			s_matrixReader->SetSourceAddress(telemetryMatrix);
+		}
 
 		m_frameData->steering_input = s_xInputFFBHost->GetXInputAxisValueForEffectType(XInputFFBEffectType::Steering);
 
@@ -165,6 +171,18 @@ void PrepareFrame()
 
 }
 
+inline double QuantizeTimeToStep(double absoluteSeconds, double stepSeconds)
+{
+	// Compute which step index we're closest to
+//	double stepIndex = std::round(absoluteSeconds / stepSeconds);
+	//	double stepIndex = std::ceil(absoluteSeconds / stepSeconds);
+	double stepIndex = std::floor(absoluteSeconds / stepSeconds);
+
+		// Convert that index back to seconds
+	return stepIndex * stepSeconds;
+}
+
+
 float s_fixedTimer = 0.0f;
 float s_lastGTATime = 0.0f;
 float s_lastRealTime = 0.0f;
@@ -177,24 +195,25 @@ void SMMatrixReaderCallback(SMMatrixReader::Matrix m, double tSeconds)
 
 //	float timerValue = (float)tSeconds;
 //	float timerValue = nowGTATime;
-	float timerValue = s_fixedTimer;
-	
+//	float timerValue = s_fixedTimer;
+//	float timerValue = QuantizeTimeToStep(tSeconds, m_sampleRate);
+	float timerValue = QuantizeTimeToStep(SystemTime::GetInSeconds(), m_sampleRate);
 
-	float timeDelta = timerValue - m_frameData->total_time;
-	Debug::Log("TimeDelta: %f\n", timeDelta);
-	float gtaTimeDelta = nowGTATime - s_lastGTATime;
-	Debug::Log("GTATimeDelta: %f\n", gtaTimeDelta);
-	float realTimeDelta = (float)tSeconds - s_lastRealTime;
-	s_lastRealTime = (float)tSeconds;
-	Debug::Log("RealTimeDelta: %f\n", realTimeDelta);
+	//float timeDelta = timerValue - m_frameData->total_time;
+	//Debug::Log("TimeDelta: %f\n", timeDelta);
+	//float gtaTimeDelta = nowGTATime - s_lastGTATime;
+	//Debug::Log("GTATimeDelta: %f\n", gtaTimeDelta);
+	//float realTimeDelta = (float)tSeconds - s_lastRealTime;
+	//s_lastRealTime = (float)tSeconds;
+	//Debug::Log("RealTimeDelta: %f\n", realTimeDelta);
 
 	//if (timeDelta > ((1.0f / 60.0f)*1.5f))
 	//{
 	//	Debug::Log("--SPIKE--\n");
 	//}
-	Debug::Log("GTATime: %f\n", nowGTATime);
-	Debug::Log("RealTime: %f\n", tSeconds);
-	Debug::Log("FixedTime: %f\n", s_fixedTimer);
+	//Debug::Log("GTATime: %f\n", nowGTATime);
+	//Debug::Log("RealTime: %f\n", tSeconds);
+	//Debug::Log("FixedTime: %f\n", s_fixedTimer);
 
 	s_lastGTATime = nowGTATime;
 
@@ -208,9 +227,9 @@ void SMMatrixReaderCallback(SMMatrixReader::Matrix m, double tSeconds)
 	//m[8] m[9] m[10] m[11] up
 	//m[12] m[13] m[14] m[15] pos
 
-	float xPosDelta = (m[12] * worldScale) - m_frameData->position_x;
-	Debug::Log("XPosDelta: %f\n", xPosDelta);
-	Debug::Log("XVel: %f\n", xPosDelta / timeDelta);
+	//float xPosDelta = (m[12] * worldScale) - m_frameData->position_x;
+	//Debug::Log("XPosDelta: %f\n", xPosDelta);
+	//Debug::Log("XVel: %f\n", xPosDelta / timeDelta);
 
 	m_frameData->position_x = m[12] * worldScale;
 	m_frameData->position_y = m[14] * worldScale;
@@ -228,42 +247,12 @@ void SMMatrixReaderCallback(SMMatrixReader::Matrix m, double tSeconds)
 
 }
 
-// every frame while in-game
-void SpaceMonkeyLoop()
-//void SpaceMonkeyLoop(CVehicle *procVeh)
-{
-
-	if (s_xInputFFBHost == nullptr)
-	{
-		s_xInputFFBHost = new XInputFFBHost();
-		s_xInputFFBHost->Initialize();
-		s_xInputFFBHost->LoadConfig();
-		s_xInputFFBHost->CreateXInputFFBDevices();
-		s_xInputFFBHost->ResolveHostWindow();
-		s_xInputFFBHost->SetInputFocus(XInputFFBHost::InputFocus::Host);
-		s_xInputFFBHost->EnumerateSourceDevices();
-		s_xInputFFBHost->EnableFocusMonitor(true);
-
-		s_matrixReader = new SMMatrixReader();
-		s_matrixReader->SetPollIntervalMs(1);
-		s_matrixReader->SetStableDurationMs(5);
-		s_matrixReader->Start(&SMMatrixReaderCallback);
-
-	}
-	else
-	{
-		s_xInputFFBHost->Update(CTimer::ms_fTimeStep, (uint32_t)VehicleIndexToFlag(m_frameData->vehicle_type));
-	}
-
-	UpdateInput();
-
-	PrepareFrame();
-//	SendFrame();
-}
 
 
 
-
+float s_gtaTimeDuplicate = 0.0f;
+int s_frameCounter = 0;
+CVector s_lastPos;
 
 void SendFrame()
 {
@@ -276,21 +265,18 @@ void SendFrame()
 		m_gtaTime = CTimer::m_snTimeInMilliseconds / 1000.0f;
 //		m_gtaTime += CTimer::ms_fTimeStep; //out of sync with camera event
 		m_realTime = SystemTime::GetInSeconds(); //use SystemTime for camera event.
+		m_fixedTime += CTimer::ms_fTimeStep;// m_sampleRate;
+		m_realTimeQuant = QuantizeTimeToStep(m_realTime, 1.0 / 60.0);
 
-		float activeTime = m_gtaTime;
-//		float activeTime = m_realTime;
 
-		if (m_lastSampleTime == 0.0f)
-		{
-			m_lastSampleTime = activeTime;
-			return;
-		}
 
+		//Debug::Log("s_frameCounter: %d\n", s_frameCounter++);
+		//Debug::Log("m_gtaTime: %f\n", m_gtaTime);
+		//Debug::Log("m_realTime: %f\n", m_realTime);
 
 		CMatrix* telemetryMatrix = nullptr;
 		CPed* playerPed = FindPlayerPed();
 		CVehicle* vehicle = playerPed != nullptr && playerPed->m_pVehicle && playerPed->m_pVehicle->IsDriver(playerPed) ? playerPed->m_pVehicle : nullptr;
-
 
 		//if (playerPed != nullptr && vehicle != nullptr && vehicle->IsDriver(playerPed))
 		//{
@@ -304,6 +290,44 @@ void SendFrame()
 			}
 		}
 
+
+		if(telemetryMatrix != nullptr)
+		{
+			CVector posNow = CVector(telemetryMatrix->pos.x, telemetryMatrix->pos.z, telemetryMatrix->pos.y);
+
+			//Debug::Log("posNow: %f, %f, %f\n", posNow.x, posNow.y, posNow.z);
+			//Debug::Log("posPrev: %f, %f, %f\n", s_lastPos.x, s_lastPos.y, s_lastPos.z);
+
+			s_lastPos = posNow;
+		}
+
+
+
+		//detect duplicate frame timing
+		//if (s_lastGTATime == m_gtaTime)
+		//{
+		//	//Debug::Log("GTATime duplicate delta: %f\n", m_gtaTime-s_gtaTimeDuplicate);
+		//	//Debug::Log("GTATime duplicate time: %f\n", m_gtaTime);
+		//	//Debug::Log("GTATime duplicate realtime: %f\n", m_realTime);
+		//	s_gtaTimeDuplicate = m_gtaTime;
+		//	return;
+		//}
+
+		float activeTime = m_gtaTime;
+//		float activeTime = m_realTimeQuant;
+//		float activeTime = s_lastGTATime == 0 ? m_gtaTime : s_lastGTATime;
+		//		float activeTime = m_realTime;
+//		float activeTime = m_fixedTime;
+
+
+		if (m_lastSampleTime == 0.0f)
+		{
+			m_lastSampleTime = activeTime;
+			s_lastGTATime = m_gtaTime;
+
+			return;
+		}
+
 		float worldScale = 1.0f;
 		bool positionChanged = false;
 		if (telemetryMatrix != nullptr)
@@ -315,19 +339,25 @@ void SendFrame()
 			positionChanged = diff != 0.0f;
 		}
 
+		if (!positionChanged)
+		{
+			//Debug::Log("!positionChanged gtatime: %f\n", m_gtaTime);
+			//Debug::Log("!positionChanged realtime: %f\n", m_realTime);
+		}
 
 		double timeDelta = activeTime - m_lastSampleTime;
+		double realTimeDelta = m_realTime - m_lastSampleTime;
 
 //		if(timeDelta >= m_sampleRate)
 //		if(m_lastSampleTime != activeTime && positionChanged)		
 //		if(m_lastSampleTime != activeTime || positionChanged)
 //		if(positionChanged)
-		if(m_lastSampleTime != activeTime)		
+		if(m_lastSampleTime != activeTime)	
+//		if(realTimeDelta >= m_sampleRate)
 		{
-			m_fixedTime += m_sampleRate;
 //			activeTime = m_fixedTime;
 			m_lastSampleTime = activeTime;
-
+//			m_lastSampleTime = m_realTime;
 
 			m_frameData->steering_input = s_xInputFFBHost->GetXInputAxisValueForEffectType(XInputFFBEffectType::Steering);
 
@@ -435,6 +465,8 @@ void SendFrame()
 		//{
 		//}
 
+		s_lastGTATime = m_gtaTime;
+
 	}
 
 	//// spawn an admiral if L is pressed
@@ -449,6 +481,42 @@ void SendFrame()
 	//	CVehicle* veh = VehicleFactory->CreateVehicle(index, RANDOM_VEHICLE, &mat, 1);
 	//	CWorld::Add(veh, 0);
 	//}
+}
+
+// every frame while in-game
+void SpaceMonkeyLoop()
+//void SpaceMonkeyLoop(CVehicle *procVeh)
+{
+
+	if (s_xInputFFBHost == nullptr)
+	{
+		s_xInputFFBHost = new XInputFFBHost();
+		s_xInputFFBHost->Initialize();
+		s_xInputFFBHost->LoadConfig();
+		s_xInputFFBHost->CreateXInputFFBDevices();
+		s_xInputFFBHost->ResolveHostWindow();
+		s_xInputFFBHost->SetInputFocus(XInputFFBHost::InputFocus::Host);
+		s_xInputFFBHost->EnumerateSourceDevices();
+		s_xInputFFBHost->EnableFocusMonitor(true);
+#ifdef MATRIX_READER
+		s_matrixReader = new SMMatrixReader();
+		s_matrixReader->SetPollIntervalMs(1);
+		s_matrixReader->SetStableDurationMs(5);
+		s_matrixReader->Start(&SMMatrixReaderCallback);
+#endif
+	}
+	else
+	{
+		s_xInputFFBHost->Update(CTimer::ms_fTimeStep, (uint32_t)VehicleIndexToFlag(m_frameData->vehicle_type));
+	}
+
+	UpdateInput();
+
+#ifdef MATRIX_READER
+	PrepareFrame();
+#else
+	SendFrame();
+#endif
 }
 
 // ran after the sdk initializes, add all your hooks/events/etc here
