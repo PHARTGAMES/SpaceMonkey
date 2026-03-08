@@ -34,6 +34,8 @@ public:
     bool SetAxisConstantForce(XInputFFBEffectType effectType, long magnitude);
     bool SetAxisDamperForce(XInputFFBEffectType effectType, long magnitude);
     bool SetAxisVibration(XInputFFBEffectType effectType, long frequencyHz, long gain);
+    bool SetAxisSpring(XInputFFBEffectType effectType, long magnitude);
+    bool SetAxisFriction(XInputFFBEffectType effectType, long magnitude);
 
     const XINPUT_STATE& GetCachedState() const { return m_state; }
 

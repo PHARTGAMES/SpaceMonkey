@@ -68,5 +68,33 @@ namespace SMUtil
             return value;
         }
 
+
+        public static float Lerp(float from, float to, float lerp)
+        {
+            return from + ((to - from) * lerp);
+        }
+
+        public static T MoveToward<T>(T current, T target, T maxStep) where T : struct, IComparable<T>
+        {
+            if (Comparer<T>.Default.Compare(maxStep, default(T)) < 0)
+                throw new ArgumentOutOfRangeException(nameof(maxStep), "maxStep must be non-negative.");
+
+            if (Comparer<T>.Default.Compare(target, current) > 0)
+            {
+                dynamic diff = (dynamic)target - current;
+                return Comparer<T>.Default.Compare((T)diff, maxStep) > 0
+                    ? (T)((dynamic)current + maxStep)
+                    : target;
+            }
+            else
+            {
+                dynamic diff = (dynamic)current - target;
+                return Comparer<T>.Default.Compare((T)diff, maxStep) > 0
+                    ? (T)((dynamic)current - maxStep)
+                    : target;
+            }
+        }
+
+
     }
 }

@@ -131,6 +131,8 @@ public:
         ffb_wheel_steer_damper,
         ffb_wheel_steer_vibration_gain,
         ffb_wheel_steer_vibration_freq,
+        ffb_wheel_steer_spring,
+        ffb_wheel_steer_friction,
 
         Max
     };
@@ -237,6 +239,8 @@ public:
     float ffb_wheel_steer_damper;
     float ffb_wheel_steer_vibration_gain;
     float ffb_wheel_steer_vibration_freq;
+    float ffb_wheel_steer_spring;
+    float ffb_wheel_steer_friction;
 
     std::string formatFilename = "PacketFormats\\defaultPacketFormat.xml";
 
@@ -520,6 +524,8 @@ public:
         ffb_wheel_steer_damper = Lerp(0.0f, ffb_wheel_steer_damper, t);
         ffb_wheel_steer_vibration_gain = Lerp(0.0f, ffb_wheel_steer_vibration_gain, t);
         ffb_wheel_steer_vibration_freq = Lerp(0.0f, ffb_wheel_steer_vibration_freq, t);
+        ffb_wheel_steer_spring = Lerp(0.0f, ffb_wheel_steer_spring, t);
+        ffb_wheel_steer_friction = Lerp(0.0f, ffb_wheel_steer_friction, t);
     }
 
     void LerpAllFrom(const CMCustomUDPData& from, float t)
@@ -599,6 +605,8 @@ public:
         ffb_wheel_steer_damper = L(from.ffb_wheel_steer_damper, ffb_wheel_steer_damper);
         ffb_wheel_steer_vibration_gain = L(from.ffb_wheel_steer_vibration_gain, ffb_wheel_steer_vibration_gain);
         ffb_wheel_steer_vibration_freq = L(from.ffb_wheel_steer_vibration_freq, ffb_wheel_steer_vibration_freq);
+        ffb_wheel_steer_spring = L(from.ffb_wheel_steer_spring, ffb_wheel_steer_spring);
+        ffb_wheel_steer_friction = L(from.ffb_wheel_steer_friction, ffb_wheel_steer_friction);
     }
 
 private:
@@ -725,6 +733,8 @@ private:
         case DK::ffb_wheel_steer_damper: return &CMCustomUDPData::ffb_wheel_steer_damper;
         case DK::ffb_wheel_steer_vibration_gain: return &CMCustomUDPData::ffb_wheel_steer_vibration_gain;
         case DK::ffb_wheel_steer_vibration_freq: return &CMCustomUDPData::ffb_wheel_steer_vibration_freq;
+        case DK::ffb_wheel_steer_spring: return &CMCustomUDPData::ffb_wheel_steer_spring;
+        case DK::ffb_wheel_steer_friction: return &CMCustomUDPData::ffb_wheel_steer_friction;
 
         case DK::Max: default: return nullptr;
         }
@@ -866,6 +876,8 @@ private:
         ADD(ffb_wheel_steer_damper);
         ADD(ffb_wheel_steer_vibration_gain);
         ADD(ffb_wheel_steer_vibration_freq);
+        ADD(ffb_wheel_steer_spring);
+        ADD(ffb_wheel_steer_friction);
 #undef ADD
         return m;
     }
@@ -928,7 +940,7 @@ private:
             FLD fuel_in_tank, fuel_capacity, in_pits, team_info, session_type, drs_allowed, track_number, vehicle_fia_flags;
             FLD engine_rate_div10, max_rpm_div10, idle_rpm_div10;
             FLD slip_angle, slip_angle2;
-            FLD ffb_wheel_steer_constant, ffb_wheel_steer_damper, ffb_wheel_steer_vibration_gain, ffb_wheel_steer_vibration_freq;
+            FLD ffb_wheel_steer_constant, ffb_wheel_steer_damper, ffb_wheel_steer_vibration_gain, ffb_wheel_steer_vibration_freq, ffb_wheel_steer_spring, ffb_wheel_steer_friction;
 #undef FLD
         };
         return sizeof(LayoutProbe);

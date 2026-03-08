@@ -38,7 +38,8 @@ public:
     bool SetConstantForce(DIAxis axis, LONG magnitude);
     bool SetDamper(DIAxis axis, LONG coeff, LONG saturation);
     bool SetVibration(DIAxis axis, LONG frequencyHz, LONG gain);
-    bool SetFriction(DIAxis axis, LONG coeff, LONG saturation); // NEW
+    bool SetFriction(DIAxis axis, LONG coeff, LONG saturation); 
+    bool SetSpring(DIAxis axis, LONG magnitude);
 
     long  GetAxisValue(DIAxis axis);
     float GetAxisValueNorm(DIAxis axis);
@@ -50,6 +51,7 @@ public:
     IDirectInputEffect* const* DamperArray()   const { return m_damper.RawArray(); }
     IDirectInputEffect* const* VibrationArray()const { return m_vibration.RawArray(); }
     IDirectInputEffect* const* FrictionArray() const { return m_friction.RawArray(); }
+    IDirectInputEffect* const* SpringArray() const { return m_spring.RawArray(); }
 
     void HandleFocusGain();
 
@@ -74,9 +76,9 @@ private:
     DIJOYSTATE2             m_cachedState{};
     bool                    m_hasState = false;
 
-    // Replaced raw parallel arrays with effect managers (still O(1) per axis under the hood)
     DIConstantForceEffect   m_constant;
     DIDamperEffect          m_damper;
     DIVibrationEffect       m_vibration;
-    DIFrictionEffect        m_friction; // NEW
+    DIFrictionEffect        m_friction; 
+    DISpringEffect          m_spring;
 };

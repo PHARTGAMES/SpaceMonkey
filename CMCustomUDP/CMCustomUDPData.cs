@@ -132,6 +132,8 @@ namespace CMCustomUDP
             ffb_wheel_steer_damper,
             ffb_wheel_steer_vibration_gain,
             ffb_wheel_steer_vibration_freq,
+            ffb_wheel_steer_spring,
+            ffb_wheel_steer_friction,
 
             Max
         }
@@ -237,6 +239,8 @@ namespace CMCustomUDP
         public object ffb_wheel_steer_damper;
         public object ffb_wheel_steer_vibration_gain;
         public object ffb_wheel_steer_vibration_freq;
+        public object ffb_wheel_steer_spring;
+        public object ffb_wheel_steer_friction;
 
         public CMCustomUDPData()
         {
@@ -341,6 +345,8 @@ namespace CMCustomUDP
             ffb_wheel_steer_damper = 0.0f;
             ffb_wheel_steer_vibration_gain = 0.0f;
             ffb_wheel_steer_vibration_freq = 0.0f;
+            ffb_wheel_steer_spring = 0.0f;
+            ffb_wheel_steer_friction = 0.0f;
         }
 
         public void Init(string _formatFilename = null)
@@ -545,6 +551,7 @@ namespace CMCustomUDP
             ffb_wheel_steer_damper = other.ffb_wheel_steer_damper;
             ffb_wheel_steer_vibration_gain = other.ffb_wheel_steer_vibration_gain;
             ffb_wheel_steer_vibration_freq = other.ffb_wheel_steer_vibration_freq;
+            ffb_wheel_steer_spring = other.ffb_wheel_steer_spring;
 
 
             if (copyChannels)
@@ -680,6 +687,8 @@ namespace CMCustomUDP
             ffb_wheel_steer_damper = Lerp(0.0f, (float)ffb_wheel_steer_damper, lerp);
             ffb_wheel_steer_vibration_gain = Lerp(0.0f, (float)ffb_wheel_steer_vibration_gain, lerp);
             ffb_wheel_steer_vibration_freq = Lerp(0.0f, (float)ffb_wheel_steer_vibration_freq, lerp);
+            ffb_wheel_steer_spring = Lerp(0.0f, (float)ffb_wheel_steer_spring, lerp);
+            ffb_wheel_steer_friction = Lerp(0.0f, (float)ffb_wheel_steer_friction, lerp);
 
         }
 
@@ -762,6 +771,8 @@ namespace CMCustomUDP
             ffb_wheel_steer_damper = Lerp((float)from.ffb_wheel_steer_damper, (float)ffb_wheel_steer_damper, lerp);
             ffb_wheel_steer_vibration_gain = Lerp((float)from.ffb_wheel_steer_vibration_gain, (float)ffb_wheel_steer_vibration_gain, lerp);
             ffb_wheel_steer_vibration_freq = Lerp((float)from.ffb_wheel_steer_vibration_freq, (float)ffb_wheel_steer_vibration_freq, lerp);
+            ffb_wheel_steer_spring = Lerp((float)from.ffb_wheel_steer_spring, (float)ffb_wheel_steer_spring, lerp);
+            ffb_wheel_steer_friction = Lerp((float)from.ffb_wheel_steer_friction, (float)ffb_wheel_steer_friction, lerp);
 
         }
 

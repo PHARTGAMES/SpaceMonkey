@@ -348,6 +348,98 @@ bool XInputFFBDevice::SetAxisVibration(XInputFFBEffectType effectType, long freq
     return ok;
 }
 
+bool XInputFFBDevice::SetAxisSpring(XInputFFBEffectType effectType, long magnitude)
+{
+    if (!m_cfg)
+        return false;
+
+    XInputFFBDeviceConfig& cfg = m_cfg->GetDeviceConfig(m_user);
+    const uint32_t effectMask = static_cast<uint32_t>(effectType);
+
+    // Clamp magnitude to DirectInput spring force limits
+    long mag = magnitude;
+    if (mag < -10000) mag = -10000;
+    if (mag > 10000)  mag = 10000;
+
+    bool ok = false;
+
+    // Iterate all XInput axis buckets (LX, LY, RX, RY, LT, RT, etc.)
+    for (int axisIndex = 0; axisIndex < XINPUT_AXIS_COUNT; ++axisIndex)
+    {
+        std::vector<AxisMapping>* bucket = cfg.GetAxisBucket(axisIndex);
+        if (!bucket)
+            continue;
+
+        for (size_t i = 0; i < bucket->size(); ++i)
+        {
+            const AxisMapping& am = (*bucket)[i];
+
+            // Skip mappings that don't include this effect type
+            if ((am.ffbEffectMask & effectMask) == 0)
+                continue;
+
+            DISourceDevice* dev = FindDevice(am.deviceId);
+            if (!dev)
+                continue;
+
+            const int diAxis = am.diAxis;
+            if (diAxis < 0 || diAxis > 7)
+                continue;
+
+            // Apply the force
+            ok |= dev->SetSpring((DIAxis)diAxis, mag);
+        }
+    }
+
+    return ok;
+}
+
+bool XInputFFBDevice::SetAxisFriction(XInputFFBEffectType effectType, long magnitude)
+{
+    if (!m_cfg)
+        return false;
+
+    XInputFFBDeviceConfig& cfg = m_cfg->GetDeviceConfig(m_user);
+    const uint32_t effectMask = static_cast<uint32_t>(effectType);
+
+    // Clamp magnitude to DirectInput friction force limits
+    long mag = magnitude;
+    if (mag < -10000) mag = -10000;
+    if (mag > 10000)  mag = 10000;
+
+    bool ok = false;
+
+    // Iterate all XInput axis buckets (LX, LY, RX, RY, LT, RT, etc.)
+    for (int axisIndex = 0; axisIndex < XINPUT_AXIS_COUNT; ++axisIndex)
+    {
+        std::vector<AxisMapping>* bucket = cfg.GetAxisBucket(axisIndex);
+        if (!bucket)
+            continue;
+
+        for (size_t i = 0; i < bucket->size(); ++i)
+        {
+            const AxisMapping& am = (*bucket)[i];
+
+            // Skip mappings that don't include this effect type
+            if ((am.ffbEffectMask & effectMask) == 0)
+                continue;
+
+            DISourceDevice* dev = FindDevice(am.deviceId);
+            if (!dev)
+                continue;
+
+            const int diAxis = am.diAxis;
+            if (diAxis < 0 || diAxis > 7)
+                continue;
+
+            // Apply the force
+            ok |= dev->SetFriction((DIAxis)diAxis, mag, 10000UL);
+        }
+    }
+
+    return ok;
+}
+
 
 float XInputFFBDevice::GetAxisValue(int axis)
 {

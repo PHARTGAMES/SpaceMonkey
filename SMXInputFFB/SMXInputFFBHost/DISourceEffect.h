@@ -124,10 +124,18 @@ public:
         DICONSTANTFORCE cf{};
         cf.lMagnitude = Clamp10000(magnitude);
 
+        //DIENVELOPE env{};
+        //env.dwSize = sizeof(env);
+        //env.dwAttackLevel = 0;
+        //env.dwAttackTime = 64;
+        //env.dwFadeLevel = 0;
+        //env.dwFadeTime = 0;
+
         DIEFFECT e{};
         e.dwSize = sizeof(e);
         e.cbTypeSpecificParams = sizeof(DICONSTANTFORCE);
         e.lpvTypeSpecificParams = &cf;
+//        e.lpEnvelope = &env;
 
         return SUCCEEDED(fx->SetParameters(&e, DIEP_TYPESPECIFICPARAMS | DIEP_START));
     }
@@ -141,6 +149,56 @@ protected:
         bytes = sizeof(DICONSTANTFORCE);
     }
 };
+
+// ---------------- Spring Force ----------------
+class DISpringEffect : public DISourceEffectBase
+{
+public:
+    GUID EffectGuid() const override { return GUID_Spring; }
+
+    bool Set(
+        IDirectInputDevice8* dev,
+        DIAxis axis,
+        LONG coefficient,
+        LONG offset = 0,
+        LONG deadband = 0,
+        DWORD saturation = 10000)
+    {
+        IDirectInputEffect* fx = Get(dev, axis);
+        if (!fx) return false;
+
+        DICONDITION cond{};
+        cond.lOffset = offset;
+        cond.lPositiveCoefficient = Clamp10000(coefficient);
+        cond.lNegativeCoefficient = Clamp10000(coefficient);
+        cond.dwPositiveSaturation = Clamp10000(saturation);
+        cond.dwNegativeSaturation = Clamp10000(saturation);
+        cond.lDeadBand = deadband;
+
+
+        DIEFFECT e{};
+        e.dwSize = sizeof(e);
+        e.cbTypeSpecificParams = sizeof(DICONDITION);
+        e.lpvTypeSpecificParams = &cond;
+
+        return SUCCEEDED(fx->SetParameters(&e, DIEP_TYPESPECIFICPARAMS | DIEP_START));
+    }
+
+protected:
+    void BuildTypeParamsDefaults(void* out, DWORD& bytes) override
+    {
+        DICONDITION* cond = reinterpret_cast<DICONDITION*>(out);
+        *cond = {};
+        cond->lOffset = 0;
+        cond->lPositiveCoefficient = 0;
+        cond->lNegativeCoefficient = 0;
+        cond->dwPositiveSaturation = 10000;
+        cond->dwNegativeSaturation = 10000;
+        cond->lDeadBand = 0;
+        bytes = sizeof(DICONDITION);
+    }
+};
+
 
 // ---------------- Periodic Vibration (Sine) ----------------
 class DIVibrationEffect : public DISourceEffectBase

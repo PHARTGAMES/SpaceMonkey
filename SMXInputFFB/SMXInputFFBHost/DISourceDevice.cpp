@@ -23,6 +23,7 @@ static inline void SafeReleaseIUnknown(IUnknown*& p)
 {
     if (p) { p->Release(); p = nullptr; }
 }
+
 DISourceDevice::DISourceDevice(IDirectInput8* di, const DIDEVICEINSTANCE& inst)
     : m_di(di)
 {
@@ -166,7 +167,8 @@ bool DISourceDevice::CreateAllAxisEffects()
         ok = (m_constant.Get(m_dev, (DIAxis)i) != nullptr) && ok;
         ok = (m_damper.Get(m_dev, (DIAxis)i) != nullptr) && ok;
         ok = (m_vibration.Get(m_dev, (DIAxis)i) != nullptr) && ok;
-        ok = (m_friction.Get(m_dev, (DIAxis)i) != nullptr) && ok; // NEW
+        ok = (m_friction.Get(m_dev, (DIAxis)i) != nullptr) && ok; 
+        ok = (m_spring.Get(m_dev, (DIAxis)i) != nullptr) && ok;
     }
     return ok;
 }
@@ -176,6 +178,12 @@ bool DISourceDevice::SetConstantForce(DIAxis axis, LONG magnitude)
 {
     if (!m_ffbSupported || !m_dev) return false;
     return m_constant.Set(m_dev, axis, magnitude);
+}
+
+bool DISourceDevice::SetSpring(DIAxis axis, LONG magnitude)
+{
+    if (!m_ffbSupported || !m_dev) return false;
+    return m_spring.Set(m_dev, axis, magnitude);
 }
 
 bool DISourceDevice::SetDamper(DIAxis axis, LONG coeff, LONG saturation)
@@ -253,6 +261,7 @@ void DISourceDevice::HandleFocusGain()
     m_damper.DestroyAll();
     m_vibration.DestroyAll();
     m_friction.DestroyAll();
+    m_spring.DestroyAll();
 
     // Fully unacquire before re-acquiring
     m_dev->Unacquire();
@@ -267,7 +276,4 @@ void DISourceDevice::HandleFocusGain()
     DIPROPDWORD gain = { { sizeof(DIPROPDWORD), sizeof(DIPROPHEADER), 0, DIPH_DEVICE }, 10000 /* 0..10000 */ };
     m_dev->SetProperty(DIPROP_FFGAIN, &gain.diph);
 
-    // Do NOT eagerly recreate effects here; they are created lazily in the Set* calls
-    // via the effect managers' Get(...). If you want eager creation, uncomment:
-    // if (m_ffbSupported) { CreateAllAxisEffects(); }
 }
