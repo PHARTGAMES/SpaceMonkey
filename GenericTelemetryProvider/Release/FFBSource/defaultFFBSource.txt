@@ -18,8 +18,8 @@
         "minVibrationGain": 50.0,
         "maxVibrationGain": 150.0,
         "vibrationSpeedCurve": 3.0,
-        "verticalAccelScale": 2.0,
-        "verticalAccelMax": 2.5,
+        "verticalAccelScale": 50.0,
+        "verticalAccelMax": 6.0,
         "id": "SMFFBSource.SMFFBWheelSteerEffect",
         "enabled": true
       }
