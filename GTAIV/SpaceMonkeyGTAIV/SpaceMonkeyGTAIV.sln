@@ -15,6 +15,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CMCustomUDPNative", "..\..\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SMXInputFFBClient", "..\..\SMXInputFFB\SMXInputFFBClient\SMXInputFFBClient.vcxproj", "{AAD0042C-29F1-4023-ACCC-FD20212DDAA6}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GTAIVSDKLib", "..\..\GTAIVSDK\GTAIVSDKLib\GTAIVSDKLib.vcxproj", "{46C677BA-1164-43BA-93B5-4911B5C2CB49}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -71,6 +73,14 @@ Global
 		{AAD0042C-29F1-4023-ACCC-FD20212DDAA6}.Release|x64.Build.0 = Release|x64
 		{AAD0042C-29F1-4023-ACCC-FD20212DDAA6}.Release|x86.ActiveCfg = Release|Win32
 		{AAD0042C-29F1-4023-ACCC-FD20212DDAA6}.Release|x86.Build.0 = Release|Win32
+		{46C677BA-1164-43BA-93B5-4911B5C2CB49}.Debug|x64.ActiveCfg = Debug|x64
+		{46C677BA-1164-43BA-93B5-4911B5C2CB49}.Debug|x64.Build.0 = Debug|x64
+		{46C677BA-1164-43BA-93B5-4911B5C2CB49}.Debug|x86.ActiveCfg = Debug|Win32
+		{46C677BA-1164-43BA-93B5-4911B5C2CB49}.Debug|x86.Build.0 = Debug|Win32
+		{46C677BA-1164-43BA-93B5-4911B5C2CB49}.Release|x64.ActiveCfg = Release|x64
+		{46C677BA-1164-43BA-93B5-4911B5C2CB49}.Release|x64.Build.0 = Release|x64
+		{46C677BA-1164-43BA-93B5-4911B5C2CB49}.Release|x86.ActiveCfg = Release|Win32
+		{46C677BA-1164-43BA-93B5-4911B5C2CB49}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

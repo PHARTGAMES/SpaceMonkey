@@ -178,6 +178,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\GTAIVSDK\GTAIVSDKLib\GTAIVSDKLib.vcxproj">
+      <Project>{46c677ba-1164-43ba-93b5-4911b5c2cb49}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\SMXInputFFB\SMXInputFFBHost\SMXInputFFBHost.vcxproj">
       <Project>{8a26172d-7fea-4b75-8a9d-c0b19eff374a}</Project>
     </ProjectReference>

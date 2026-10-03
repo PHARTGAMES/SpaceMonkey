@@ -5,7 +5,26 @@
 #include "XInputFFBConfig.h"
 #include "XInputFFBHost.h"
 #include "XInputFFBConfigUI.h"
-#include "IVSDK.cpp"
+#include "IVSDK.h"
+#include "Scripting/Scripting.h"
+#include "Hooks.h"
+
+BOOL APIENTRY DllMain(HMODULE, DWORD reason, LPVOID reserved)
+{
+	if (reason == DLL_PROCESS_ATTACH)
+	{
+		if (plugin::Init())
+			plugin::gameStartupEvent();
+	}
+	else if (reason == DLL_PROCESS_DETACH && reserved == nullptr)
+	{
+		// Requires all hook callbacks to have stopped. Dynamic unload while
+		// another plugin chains our hooks is unsupported (see README).
+		plugin::gameShutdownEvent();
+		plugin::Deinit();
+	}
+	return TRUE;
+}
 
 SpaceMonkeyTelemetryAPI* m_telemetryAPI = nullptr;
 CMCustomUDPData* m_frameData = nullptr;
