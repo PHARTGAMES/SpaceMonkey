@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "SpaceMonkeyTelemetryAPI.h"
+#include "SMMatrixReader.h"
 #include "systemtime.h"
 #include "XInput.h"
 #include "XInputFFBConfig.h"
