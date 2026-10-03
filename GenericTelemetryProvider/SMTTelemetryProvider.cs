@@ -89,6 +89,8 @@ namespace GenericTelemetryProvider
                         lastFrameTime = (float)frameData.total_time;
 
                         ProcessFrameData((float)calcDT);
+
+//                        Debug.WriteLine($"calcDT = {calcDT}");
                     }
                 }
                 catch (Exception e)
@@ -172,6 +174,7 @@ namespace GenericTelemetryProvider
         public override void CalcVelocity()
         {
             worldVelocity = (worldPosition - lastPosition) / dt;
+//            worldVelocity = (worldPosition - lastPosition) / (1.0f/60.0f);
 
             lastPosition = transform.Translation = worldPosition;
 
@@ -210,11 +213,13 @@ namespace GenericTelemetryProvider
 
 
             //assign filtered local velocity
-            //Vector3 localVelocity = new Vector3((float)filteredData.local_velocity_x, (float)filteredData.local_velocity_y, (float)filteredData.local_velocity_z);
-            Vector3 localVelocity = new Vector3((float)rawData.local_velocity_x, (float)rawData.local_velocity_y, (float)rawData.local_velocity_z);
+            Vector3 localVelocity = new Vector3((float)filteredData.local_velocity_x, (float)filteredData.local_velocity_y, (float)filteredData.local_velocity_z);
+            //Vector3 localVelocity = new Vector3((float)rawData.local_velocity_x, (float)rawData.local_velocity_y, (float)rawData.local_velocity_z);
 
             //calculate local acceleration
-            Vector3 localAcceleration = ((localVelocity - lastVelocity) / dt) * 0.10197162129779283f; //convert to g accel
+            //Vector3 localAcceleration = ((localVelocity - lastVelocity) / dt) * 0.10197162129779283f; //convert to g accel
+            Vector3 localAcceleration = ((localVelocity - lastVelocity) / systemDT) * 0.10197162129779283f; //convert to g accel
+//            Vector3 localAcceleration = ((localVelocity - lastVelocity) / (1.0f/60.0f)) * 0.10197162129779283f; //convert to g accel
 
             lastVelocity = localVelocity;
 

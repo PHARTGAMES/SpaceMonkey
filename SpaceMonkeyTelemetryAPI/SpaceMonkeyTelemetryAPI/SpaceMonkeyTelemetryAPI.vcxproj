@@ -181,6 +181,7 @@
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="SharedMemory.h" />
+    <ClInclude Include="SMMatrixReader.h" />
     <ClInclude Include="SpaceMonkeyTelemetryAPI.h" />
     <ClInclude Include="SpaceMonkeyTelemetryAPIImpl.h" />
     <ClInclude Include="systemtime.h" />
@@ -195,6 +196,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="SharedMemory.cpp" />
+    <ClCompile Include="SMMatrixReader.cpp" />
     <ClCompile Include="SpaceMonkeyTelemetryAPI.cpp" />
     <ClCompile Include="SpaceMonkeyTelemetryAPIImpl.cpp" />
     <ClCompile Include="systemtime.cpp" />

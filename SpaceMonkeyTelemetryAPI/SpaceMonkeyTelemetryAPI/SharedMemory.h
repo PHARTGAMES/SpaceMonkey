@@ -186,7 +186,7 @@ public:
 		if (m_mutex)
 		{
 			DWORD result = WaitForSingleObject(m_mutex, INFINITE);
-			if (result == WAIT_OBJECT_0)
+			if (result == WAIT_OBJECT_0 || result == WAIT_ABANDONED)
 			{
 				//					memcpy(m_memoryCopy, m_mappedView, m_memorySize);
 				CopyMemory(m_memoryCopy, m_mappedView, m_memorySize);
@@ -200,7 +200,7 @@ public:
 		if (m_mutex)
 		{
 			DWORD result = WaitForSingleObject(m_mutex, INFINITE);
-			if (result == WAIT_OBJECT_0)
+			if (result == WAIT_OBJECT_0 || result == WAIT_ABANDONED)
 			{
 				//					memcpy(m_mappedView, m_memoryCopy, m_memorySize);
 				CopyMemory(m_mappedView, m_memoryCopy, m_memorySize);

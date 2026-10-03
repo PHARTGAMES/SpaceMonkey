@@ -34,11 +34,13 @@ public:
     bool SetAxisConstantForce(XInputFFBEffectType effectType, long magnitude);
     bool SetAxisDamperForce(XInputFFBEffectType effectType, long magnitude);
     bool SetAxisVibration(XInputFFBEffectType effectType, long frequencyHz, long gain);
+    bool SetAxisSpring(XInputFFBEffectType effectType, long magnitude);
+    bool SetAxisFriction(XInputFFBEffectType effectType, long magnitude);
 
     const XINPUT_STATE& GetCachedState() const { return m_state; }
 
-    float GetAxisValue(XInputAxis axis);
-    float GetDIAxisValue(DISourceDevice* dev, int diAxis);
+    float GetAxisValue(int axis);
+    float GetDIInputValue(DISourceDevice* dev, int diInput);
 
 private:
     // Helpers
@@ -54,5 +56,6 @@ private:
     XInputFFBConfig* m_cfg = nullptr;
     unsigned        m_user = 0; // which virtual controller (0..XUSER_MAX_COUNT-1)
     XINPUT_STATE    m_state;
-    float m_axisState[6];
+    float m_axisState[XINPUT_INPUT_COUNT];
+    WORD m_buttonState = 0;
 };

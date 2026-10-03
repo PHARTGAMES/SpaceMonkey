@@ -4,4 +4,6 @@
   <float scale="1.0" channel="ffb_wheel_steer_damper" />
   <float scale="1.0" channel="ffb_wheel_steer_vibration_gain" />
   <float scale="1.0" channel="ffb_wheel_steer_vibration_freq" />
+  <float scale="1.0" channel="ffb_wheel_steer_spring" />
+  <float scale="1.0" channel="ffb_wheel_steer_friction" />
 </custom_udp>

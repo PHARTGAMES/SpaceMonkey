@@ -56,6 +56,10 @@
             this.minConstantForce = new System.Windows.Forms.TextBox();
             this.constantForceAngleCurveLbl = new System.Windows.Forms.Label();
             this.constantForceAngleCurve = new System.Windows.Forms.TextBox();
+            this.verticalAccelScaleLbl = new System.Windows.Forms.Label();
+            this.verticalAccelScale = new System.Windows.Forms.TextBox();
+            this.verticalAccelMaxLbl = new System.Windows.Forms.Label();
+            this.verticalAccelMax = new System.Windows.Forms.TextBox();
             this.effectGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -91,6 +95,10 @@
             // 
             // effectGroupBox
             // 
+            this.effectGroupBox.Controls.Add(this.verticalAccelMaxLbl);
+            this.effectGroupBox.Controls.Add(this.verticalAccelMax);
+            this.effectGroupBox.Controls.Add(this.verticalAccelScaleLbl);
+            this.effectGroupBox.Controls.Add(this.verticalAccelScale);
             this.effectGroupBox.Controls.Add(this.vibrationSpeedCurveLbl);
             this.effectGroupBox.Controls.Add(this.vibrationSpeedCurve);
             this.effectGroupBox.Controls.Add(this.maxVibrationGainLbl);
@@ -353,6 +361,44 @@
             this.constantForceAngleCurve.Text = "0";
             this.constantForceAngleCurve.TextChanged += new System.EventHandler(this.constantForceAngleCurve_TextChanged);
             // 
+            // verticalAccelScaleLbl
+            // 
+            this.verticalAccelScaleLbl.AutoSize = true;
+            this.verticalAccelScaleLbl.Location = new System.Drawing.Point(782, 50);
+            this.verticalAccelScaleLbl.Name = "verticalAccelScaleLbl";
+            this.verticalAccelScaleLbl.Size = new System.Drawing.Size(149, 20);
+            this.verticalAccelScaleLbl.TabIndex = 34;
+            this.verticalAccelScaleLbl.Text = "Vertical Accel Scale";
+            // 
+            // VerticalAccelAmount
+            // 
+            this.verticalAccelScale.Location = new System.Drawing.Point(785, 74);
+            this.verticalAccelScale.Margin = new System.Windows.Forms.Padding(4);
+            this.verticalAccelScale.Name = "VerticalAccelScale";
+            this.verticalAccelScale.Size = new System.Drawing.Size(115, 25);
+            this.verticalAccelScale.TabIndex = 33;
+            this.verticalAccelScale.Text = "0";
+            this.verticalAccelScale.TextChanged += new System.EventHandler(this.verticalAccelScale_TextChanged);
+            // 
+            // VecticalAccelMaxLbl
+            // 
+            this.verticalAccelMaxLbl.AutoSize = true;
+            this.verticalAccelMaxLbl.Location = new System.Drawing.Point(781, 123);
+            this.verticalAccelMaxLbl.Name = "verticalAccelMaxLbl";
+            this.verticalAccelMaxLbl.Size = new System.Drawing.Size(138, 20);
+            this.verticalAccelMaxLbl.TabIndex = 36;
+            this.verticalAccelMaxLbl.Text = "Vertical Accel Max";
+            // 
+            // VerticalAccelMax
+            // 
+            this.verticalAccelMax.Location = new System.Drawing.Point(784, 147);
+            this.verticalAccelMax.Margin = new System.Windows.Forms.Padding(4);
+            this.verticalAccelMax.Name = "verticalAccelMax";
+            this.verticalAccelMax.Size = new System.Drawing.Size(115, 25);
+            this.verticalAccelMax.TabIndex = 35;
+            this.verticalAccelMax.Text = "0";
+            this.verticalAccelMax.TextChanged += new System.EventHandler(this.verticalAccelMax_TextChanged);
+            // 
             // SMFFBWheelSteerEffectControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -397,5 +443,9 @@
         private System.Windows.Forms.TextBox minVibrationGain;
         private System.Windows.Forms.Label maxVibrationFrequencyLbl;
         private System.Windows.Forms.TextBox maxVibrationFrequency;
+        private System.Windows.Forms.Label verticalAccelScaleLbl;
+        private System.Windows.Forms.TextBox verticalAccelScale;
+        private System.Windows.Forms.Label verticalAccelMaxLbl;
+        private System.Windows.Forms.TextBox verticalAccelMax;
     }
 }

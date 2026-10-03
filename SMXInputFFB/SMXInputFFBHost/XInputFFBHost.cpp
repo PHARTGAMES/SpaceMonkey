@@ -26,6 +26,8 @@ void XInputFFBHost::ProcessFFBTelemetry(CMCustomUDPData* frameData)
         device->SetAxisConstantForce(XInputFFBEffectType::Steering, (long)m_ffbFrameData.ffb_wheel_steer_constant);
         device->SetAxisDamperForce(XInputFFBEffectType::Steering, (long)m_ffbFrameData.ffb_wheel_steer_damper);
         device->SetAxisVibration(XInputFFBEffectType::Steering, (long)m_ffbFrameData.ffb_wheel_steer_vibration_freq, (long)m_ffbFrameData.ffb_wheel_steer_vibration_gain);
+        device->SetAxisSpring(XInputFFBEffectType::Steering, (long)m_ffbFrameData.ffb_wheel_steer_spring);
+        device->SetAxisFriction(XInputFFBEffectType::Steering, (long)m_ffbFrameData.ffb_wheel_steer_friction);
     }
 }
 
@@ -408,7 +410,7 @@ float XInputFFBHost::GetXInputAxisValueForEffectType(const XInputFFBEffectType& 
         XInputFFBDeviceConfig& deviceConfig = m_config->GetDeviceConfig((unsigned)deviceIndex);
 
         // For each XInput axis bucket (LX, LY, RX, RY, LT, RT)
-        for (int axis = 0; axis < XInputFFBDeviceConfig::XInputAxisCount; ++axis)
+        for (int axis = 0; axis < XINPUT_AXIS_COUNT; ++axis)
         {
             auto axisMappings = deviceConfig.GetAxisBucket(axis);
             if (!axisMappings)
@@ -421,7 +423,7 @@ float XInputFFBHost::GetXInputAxisValueForEffectType(const XInputFFBEffectType& 
                     continue;
 
                 // Retrieve cached axis value
-                float val = device->GetAxisValue((XInputAxis)axis);
+                float val = device->GetAxisValue(axis);
 
                 float absVal = std::fabsf(val);
 
@@ -447,7 +449,7 @@ float XInputFFBHost::GetXInputAxisValue(int xiDeviceIndex, int xiAxisIndex)
     if (device == nullptr)
         return 0;
 
-    return device->GetAxisValue((XInputAxis)xiAxisIndex);
+    return device->GetAxisValue(xiAxisIndex);
 }
 
 

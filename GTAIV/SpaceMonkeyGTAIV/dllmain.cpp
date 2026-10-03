@@ -29,13 +29,18 @@ BOOL APIENTRY DllMain(HMODULE, DWORD reason, LPVOID reserved)
 SpaceMonkeyTelemetryAPI* m_telemetryAPI = nullptr;
 CMCustomUDPData* m_frameData = nullptr;
 double m_lastSampleTime = 0.0;
-double m_sampleRate = 1.0 / 30.0;
+double m_sampleRate = 1.0 / 60.0;
 double m_realTime = 0.0;
 double m_gtaTime = 0.0;
 double m_fixedTime = 0.0;
+double m_realTimeQuant = 0.0;
 
 static XInputFFBHost *s_xInputFFBHost = nullptr;
 static XInputFFBConfigUI* s_xInputFFBConfigUI = nullptr;
+
+static SMMatrixReader* s_matrixReader = nullptr;
+
+//#define MATRIX_READER
 
 void __stdcall OnUIChange(const char* msg) {
 	printf("UI changed: %s\n", msg);
@@ -62,76 +67,342 @@ void UpdateInput()
 	}
 }
 
-// every frame while in-game
-void SpaceMonkeyLoop()
+
+
+
+
+void PrepareFrame()
 {
-	
-	if (s_xInputFFBHost == nullptr)
+
+	if (m_telemetryAPI && s_xInputFFBHost)
 	{
-		s_xInputFFBHost = new XInputFFBHost();
-		s_xInputFFBHost->Initialize();
-		s_xInputFFBHost->LoadConfig();
-		s_xInputFFBHost->CreateXInputFFBDevices();
-		s_xInputFFBHost->ResolveHostWindow();
-		s_xInputFFBHost->SetInputFocus(XInputFFBHost::InputFocus::Host);
-		s_xInputFFBHost->EnumerateSourceDevices();
-		s_xInputFFBHost->EnableFocusMonitor(true);
+		CMatrix* telemetryMatrix = nullptr;
+		CPed* playerPed = FindPlayerPed();
+		CVehicle* vehicle = playerPed != nullptr && playerPed->m_pVehicle && playerPed->m_pVehicle->IsDriver(playerPed) ? playerPed->m_pVehicle : nullptr;
+
+
+		//if (playerPed != nullptr && vehicle != nullptr && vehicle->IsDriver(playerPed))
+		//{
+		//	telemetryMatrix = vehicle->m_pMatrix;
+		//}
+		//else
+		{
+			if (playerPed != nullptr)
+			{
+				telemetryMatrix = playerPed->m_pMatrix;
+			}
+		}
+
+//		playerPed->GetVelocity();
+
+		float worldScale = 1.0f;
+
+		if (s_matrixReader != nullptr)
+		{
+			s_matrixReader->SetSourceAddress(telemetryMatrix);
+		}
+
+		m_frameData->steering_input = s_xInputFFBHost->GetXInputAxisValueForEffectType(XInputFFBEffectType::Steering);
+
+		if (telemetryMatrix != nullptr)
+		{
+
+			//m_frameData->position_x = telemetryMatrix->pos.x * worldScale;
+			//m_frameData->position_y = telemetryMatrix->pos.z * worldScale;
+			//m_frameData->position_z = telemetryMatrix->pos.y * worldScale;
+
+
+			//m_frameData->position_x = 0.0f;
+			//m_frameData->position_y = 0.0f;
+			//m_frameData->position_z = sin(activeTime * 3.14f) * 10.0f;
+
+			//m_frameData->world_dir_fwd_x = 0;
+			//m_frameData->world_dir_fwd_y = 0;
+			//m_frameData->world_dir_fwd_z = 1;
+
+			//m_frameData->world_dir_rht_x = 1;
+			//m_frameData->world_dir_rht_y = 0;
+			//m_frameData->world_dir_rht_z = 0;
+
+
+			if (vehicle != nullptr && vehicle->IsDriver(playerPed))
+			{
+				m_frameData->vehicle_type = (float)CMCustomUDPData::VehicleType::Car;
+
+				switch (vehicle->m_nWheelCount)
+				{
+				case 4:
+				{
+					m_frameData->vehicle_type = (float)CMCustomUDPData::VehicleType::Car;
+					m_frameData->suspension_position_fl = vehicle->m_pWheels[0].m_suspensionPos;
+					m_frameData->suspension_position_bl = vehicle->m_pWheels[1].m_suspensionPos;
+					m_frameData->suspension_position_fr = vehicle->m_pWheels[2].m_suspensionPos;
+					m_frameData->suspension_position_br = vehicle->m_pWheels[3].m_suspensionPos;
+
+					break;
+				}
+				case 2:
+				{
+					m_frameData->vehicle_type = (float)CMCustomUDPData::VehicleType::Bike;
+					m_frameData->suspension_position_fl = vehicle->m_pWheels[0].m_suspensionPos;
+					m_frameData->suspension_position_bl = vehicle->m_pWheels[1].m_suspensionPos;
+
+					break;
+				}
+				}
+
+				////m_frameData->suspension_velocity_fl = vehicle->m_pWheels[0]._f108;
+				//m_frameData->suspension_velocity_fr = vehicle->m_pWheels[0]._f10c;
+				//m_frameData->suspension_velocity_bl = vehicle->m_pWheels[0]._f110;
+				//m_frameData->suspension_velocity_br = vehicle->m_pWheels[0]._f114;
+
+				//m_frameData->suspension_acceleration_fl = vehicle->m_pWheels[0]._f118;
+				//m_frameData->suspension_acceleration_fr = vehicle->m_pWheels[0]._f120;
+				//m_frameData->suspension_acceleration_bl = vehicle->m_pWheels[0]._f124;
+				//m_frameData->suspension_acceleration_br = vehicle->m_pWheels[0].m_fRotationZ;
+
+
+			}
+			else
+			{
+				m_frameData->vehicle_type = (float)CMCustomUDPData::VehicleType::Pedestrian;
+			}
+
+			//---------------debug--------------				 				 
+			//m_frameData.m_posX = 0.0;
+			//m_frameData.m_posY = 0.0;
+			//m_frameData.m_posZ = sin(frameDataTime*2.0) * 5.0f;
+
+			//m_frameData.m_fwdX = 0.0f;
+			//m_frameData.m_fwdY = 0.0f;
+			//m_frameData.m_fwdZ = 1.0f;
+
+			//m_frameData.m_upX = 1.0f;
+			//m_frameData.m_upY = 0.0f;
+			//m_frameData.m_upZ = 0.0f;
+			//------------debug------------------
+
+		}
 
 	}
-	else
-	{
-		s_xInputFFBHost->Update(CTimer::ms_fTimeStep, (uint32_t)VehicleIndexToFlag(m_frameData->vehicle_type));
-	}
 
-	UpdateInput();
+}
+
+inline double QuantizeTimeToStep(double absoluteSeconds, double stepSeconds)
+{
+	// Compute which step index we're closest to
+//	double stepIndex = std::round(absoluteSeconds / stepSeconds);
+	//	double stepIndex = std::ceil(absoluteSeconds / stepSeconds);
+	double stepIndex = std::floor(absoluteSeconds / stepSeconds);
+
+		// Convert that index back to seconds
+	return stepIndex * stepSeconds;
+}
+
+
+float s_fixedTimer = 0.0f;
+float s_lastGTATime = 0.0f;
+float s_lastRealTime = 0.0f;
+
+void SMMatrixReaderCallback(SMMatrixReader::Matrix m, double tSeconds)
+{
+
+	s_fixedTimer += 1.0f / 60.0f;
+	float nowGTATime = CTimer::m_snTimeInMilliseconds / 1000.0f;
+
+//	float timerValue = (float)tSeconds;
+//	float timerValue = nowGTATime;
+//	float timerValue = s_fixedTimer;
+//	float timerValue = QuantizeTimeToStep(tSeconds, m_sampleRate);
+	float timerValue = QuantizeTimeToStep(SystemTime::GetInSeconds(), m_sampleRate);
+
+	//float timeDelta = timerValue - m_frameData->total_time;
+	//Debug::Log("TimeDelta: %f\n", timeDelta);
+	//float gtaTimeDelta = nowGTATime - s_lastGTATime;
+	//Debug::Log("GTATimeDelta: %f\n", gtaTimeDelta);
+	//float realTimeDelta = (float)tSeconds - s_lastRealTime;
+	//s_lastRealTime = (float)tSeconds;
+	//Debug::Log("RealTimeDelta: %f\n", realTimeDelta);
+
+	//if (timeDelta > ((1.0f / 60.0f)*1.5f))
+	//{
+	//	Debug::Log("--SPIKE--\n");
+	//}
+	//Debug::Log("GTATime: %f\n", nowGTATime);
+	//Debug::Log("RealTime: %f\n", tSeconds);
+	//Debug::Log("FixedTime: %f\n", s_fixedTimer);
+
+	s_lastGTATime = nowGTATime;
+
+
+	m_frameData->total_time = timerValue;
+
+	float worldScale = 1.0f;
+
+	//m[0] m[1] m[2] m[3] right
+	//m[4] m[5] m[6] m[7] at
+	//m[8] m[9] m[10] m[11] up
+	//m[12] m[13] m[14] m[15] pos
+
+	//float xPosDelta = (m[12] * worldScale) - m_frameData->position_x;
+	//Debug::Log("XPosDelta: %f\n", xPosDelta);
+	//Debug::Log("XVel: %f\n", xPosDelta / timeDelta);
+
+	m_frameData->position_x = m[12] * worldScale;
+	m_frameData->position_y = m[14] * worldScale;
+	m_frameData->position_z = m[13] * worldScale;
+
+	m_frameData->world_dir_fwd_x = m[4];
+	m_frameData->world_dir_fwd_y = m[6];
+	m_frameData->world_dir_fwd_z = m[5];
+
+	m_frameData->world_dir_rht_x = m[0];
+	m_frameData->world_dir_rht_y = m[2];
+	m_frameData->world_dir_rht_z = m[1];
+
+	m_telemetryAPI->SendFrame();
+
+}
+
+
+
+
+float s_gtaTimeDuplicate = 0.0f;
+int s_frameCounter = 0;
+CVector s_lastPos;
+
+void SendFrame()
+{
 
 	if (m_telemetryAPI && s_xInputFFBHost)
 	{
 		unsigned int gameTimeMS = 0;
 		Scripting::GET_GAME_TIMER(&gameTimeMS);
-		m_gtaTime = (float)gameTimeMS / 1000.0f;
-//		m_gtaTime = CTimer::m_snTimeInMilliseconds / 1000.0f;
+//		m_gtaTime = (float)gameTimeMS / 1000.0f;
+		m_gtaTime = CTimer::m_snTimeInMilliseconds / 1000.0f;
 //		m_gtaTime += CTimer::ms_fTimeStep; //out of sync with camera event
 		m_realTime = SystemTime::GetInSeconds(); //use SystemTime for camera event.
+		m_fixedTime += CTimer::ms_fTimeStep;// m_sampleRate;
+		m_realTimeQuant = QuantizeTimeToStep(m_realTime, 1.0 / 60.0);
+
+
+
+		//Debug::Log("s_frameCounter: %d\n", s_frameCounter++);
+		//Debug::Log("m_gtaTime: %f\n", m_gtaTime);
+		//Debug::Log("m_realTime: %f\n", m_realTime);
+
+		CMatrix* telemetryMatrix = nullptr;
+		CPed* playerPed = FindPlayerPed();
+		CVehicle* vehicle = playerPed != nullptr && playerPed->m_pVehicle && playerPed->m_pVehicle->IsDriver(playerPed) ? playerPed->m_pVehicle : nullptr;
+
+		//if (playerPed != nullptr && vehicle != nullptr && vehicle->IsDriver(playerPed))
+		//{
+		//	telemetryMatrix = vehicle->m_pMatrix;
+		//}
+		//else
+		{
+			if (playerPed != nullptr)
+			{
+				telemetryMatrix = playerPed->m_pMatrix;
+			}
+		}
+
+
+		if(telemetryMatrix != nullptr)
+		{
+			CVector posNow = CVector(telemetryMatrix->pos.x, telemetryMatrix->pos.z, telemetryMatrix->pos.y);
+
+			//Debug::Log("posNow: %f, %f, %f\n", posNow.x, posNow.y, posNow.z);
+			//Debug::Log("posPrev: %f, %f, %f\n", s_lastPos.x, s_lastPos.y, s_lastPos.z);
+
+			s_lastPos = posNow;
+		}
+
+
+
+		//detect duplicate frame timing
+		//if (s_lastGTATime == m_gtaTime)
+		//{
+		//	//Debug::Log("GTATime duplicate delta: %f\n", m_gtaTime-s_gtaTimeDuplicate);
+		//	//Debug::Log("GTATime duplicate time: %f\n", m_gtaTime);
+		//	//Debug::Log("GTATime duplicate realtime: %f\n", m_realTime);
+		//	s_gtaTimeDuplicate = m_gtaTime;
+		//	return;
+		//}
+
+		float activeTime = m_gtaTime;
+//		float activeTime = m_realTimeQuant;
+//		float activeTime = s_lastGTATime == 0 ? m_gtaTime : s_lastGTATime;
+		//		float activeTime = m_realTime;
+//		float activeTime = m_fixedTime;
+
 
 		if (m_lastSampleTime == 0.0f)
 		{
-			m_lastSampleTime = m_realTime;
+			m_lastSampleTime = activeTime;
+			s_lastGTATime = m_gtaTime;
+
 			return;
 		}
 
-		double timeDelta = m_realTime - m_lastSampleTime;
-
-		if(timeDelta >= m_sampleRate)
+		float worldScale = 1.0f;
+		bool positionChanged = false;
+		if (telemetryMatrix != nullptr)
 		{
-			m_fixedTime += m_sampleRate;
-			m_lastSampleTime = m_realTime;
+			CVector framePos = CVector(m_frameData->position_x, m_frameData->position_y, m_frameData->position_z);
+			CVector newPos = CVector(telemetryMatrix->pos.x * worldScale, telemetryMatrix->pos.z * worldScale, telemetryMatrix->pos.y * worldScale);
 
-			CMatrix* telemetryMatrix = nullptr;
-			CPed* playerPed = FindPlayerPed();
-			CVehicle* vehicle = playerPed != nullptr && playerPed->m_pVehicle && playerPed->m_pVehicle->IsDriver(playerPed) ? playerPed->m_pVehicle : nullptr;
+			float diff = (newPos - framePos).Magnitude();
+			positionChanged = diff != 0.0f;
+		}
+
+		if (!positionChanged)
+		{
+			//Debug::Log("!positionChanged gtatime: %f\n", m_gtaTime);
+			//Debug::Log("!positionChanged realtime: %f\n", m_realTime);
+		}
+
+		double timeDelta = activeTime - m_lastSampleTime;
+		double realTimeDelta = m_realTime - m_lastSampleTime;
+
+//		if(timeDelta >= m_sampleRate)
+//		if(m_lastSampleTime != activeTime && positionChanged)		
+//		if(m_lastSampleTime != activeTime || positionChanged)
+//		if(positionChanged)
+		if(m_lastSampleTime != activeTime)	
+//		if(realTimeDelta >= m_sampleRate)
+		{
+//			activeTime = m_fixedTime;
+			m_lastSampleTime = activeTime;
+//			m_lastSampleTime = m_realTime;
 
 			m_frameData->steering_input = s_xInputFFBHost->GetXInputAxisValueForEffectType(XInputFFBEffectType::Steering);
-
-			//if (playerPed != nullptr && vehicle != nullptr && vehicle->IsDriver(playerPed))
-			//{
-			//	telemetryMatrix = vehicle->m_pMatrix;
-			//}
-			//else
-			{
-				if (playerPed != nullptr)
-				{
-					telemetryMatrix = playerPed->m_pMatrix;
-				}
-			}
 
 			if (telemetryMatrix != nullptr)
 			{
 
 //				m_frameData->total_time = m_gtaTime;
-				m_frameData->total_time = m_realTime;
+				m_frameData->total_time = activeTime;
 //				m_frameData->total_time = m_fixedTime;
-				float worldScale = 1.0f;
+				//m_frameData->position_x = telemetryMatrix->pos.x * worldScale;
+				//m_frameData->position_y = telemetryMatrix->pos.z * worldScale;
+				//m_frameData->position_z = telemetryMatrix->pos.y * worldScale;
+
+
+				//m_frameData->position_x = 0.0f;
+				//m_frameData->position_y = 0.0f;
+				//m_frameData->position_z = sin(activeTime * 3.14f) * 10.0f;
+
+				//m_frameData->world_dir_fwd_x = 0;
+				//m_frameData->world_dir_fwd_y = 0;
+				//m_frameData->world_dir_fwd_z = 1;
+
+				//m_frameData->world_dir_rht_x = 1;
+				//m_frameData->world_dir_rht_y = 0;
+				//m_frameData->world_dir_rht_z = 0;
+
+
+
 				m_frameData->position_x = telemetryMatrix->pos.x * worldScale;
 				m_frameData->position_y = telemetryMatrix->pos.z * worldScale;
 				m_frameData->position_z = telemetryMatrix->pos.y * worldScale;
@@ -207,7 +478,11 @@ void SpaceMonkeyLoop()
 			}
 
 		}
+		//else
+		//{
+		//}
 
+		s_lastGTATime = m_gtaTime;
 
 	}
 
@@ -223,6 +498,42 @@ void SpaceMonkeyLoop()
 	//	CVehicle* veh = VehicleFactory->CreateVehicle(index, RANDOM_VEHICLE, &mat, 1);
 	//	CWorld::Add(veh, 0);
 	//}
+}
+
+// every frame while in-game
+void SpaceMonkeyLoop()
+//void SpaceMonkeyLoop(CVehicle *procVeh)
+{
+
+	if (s_xInputFFBHost == nullptr)
+	{
+		s_xInputFFBHost = new XInputFFBHost();
+		s_xInputFFBHost->Initialize();
+		s_xInputFFBHost->LoadConfig();
+		s_xInputFFBHost->CreateXInputFFBDevices();
+		s_xInputFFBHost->ResolveHostWindow();
+		s_xInputFFBHost->SetInputFocus(XInputFFBHost::InputFocus::Host);
+		s_xInputFFBHost->EnumerateSourceDevices();
+		s_xInputFFBHost->EnableFocusMonitor(true);
+#ifdef MATRIX_READER
+		s_matrixReader = new SMMatrixReader();
+		s_matrixReader->SetPollIntervalMs(1);
+		s_matrixReader->SetStableDurationMs(5);
+		s_matrixReader->Start(&SMMatrixReaderCallback);
+#endif
+	}
+	else
+	{
+		s_xInputFFBHost->Update(CTimer::ms_fTimeStep, (uint32_t)VehicleIndexToFlag(m_frameData->vehicle_type));
+	}
+
+	UpdateInput();
+
+#ifdef MATRIX_READER
+	PrepareFrame();
+#else
+	SendFrame();
+#endif
 }
 
 // ran after the sdk initializes, add all your hooks/events/etc here
@@ -250,14 +561,22 @@ void plugin::gameStartupEvent()
 	}
 	m_lastSampleTime = 0.0;
 
-//	plugin::processScriptsEvent::Add(SpaceMonkeyLoop);
+	plugin::processScriptsEvent::Add(SpaceMonkeyLoop);
 //	plugin::drawingEvent::Add(SpaceMonkeyLoop);
-	plugin::processCameraEvent::Add(SpaceMonkeyLoop);
+//	plugin::processAutomobileEvent::Add(SpaceMonkeyLoop);
+//	plugin::processCameraEvent::Add(SpaceMonkeyLoop);
 
 }
 
 void plugin::gameShutdownEvent()
 {
+	if (s_matrixReader != nullptr)
+	{
+		s_matrixReader->Stop();
+		delete s_matrixReader;
+		s_matrixReader = nullptr;
+	}
+
     if (m_telemetryAPI != nullptr)
     {
         m_telemetryAPI->Deinit();

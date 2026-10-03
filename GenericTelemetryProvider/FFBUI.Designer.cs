@@ -36,33 +36,33 @@
             // 
             this.flowLayoutEffects.AutoScroll = true;
             this.flowLayoutEffects.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutEffects.Location = new System.Drawing.Point(13, 47);
-            this.flowLayoutEffects.Margin = new System.Windows.Forms.Padding(4);
+            this.flowLayoutEffects.Location = new System.Drawing.Point(15, 59);
+            this.flowLayoutEffects.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.flowLayoutEffects.Name = "flowLayoutEffects";
-            this.flowLayoutEffects.Size = new System.Drawing.Size(1102, 895);
+            this.flowLayoutEffects.Size = new System.Drawing.Size(2169, 1119);
             this.flowLayoutEffects.TabIndex = 2;
             this.flowLayoutEffects.WrapContents = false;
             // 
             // saveButton
             // 
-            this.saveButton.Location = new System.Drawing.Point(13, 13);
-            this.saveButton.Margin = new System.Windows.Forms.Padding(4);
+            this.saveButton.Location = new System.Drawing.Point(15, 16);
+            this.saveButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.saveButton.Name = "saveButton";
-            this.saveButton.Size = new System.Drawing.Size(320, 26);
+            this.saveButton.Size = new System.Drawing.Size(360, 32);
             this.saveButton.TabIndex = 3;
             this.saveButton.Text = "SAVE";
             this.saveButton.UseVisualStyleBackColor = true;
             this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
             // 
-            // HapticsUI
+            // FFBUI
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1128, 955);
+            this.ClientSize = new System.Drawing.Size(2197, 1194);
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.flowLayoutEffects);
             this.Icon = global::GenericTelemetryProvider.Properties.Resources.GTPIcon;
-            this.Margin = new System.Windows.Forms.Padding(4);
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "FFBUI";
             this.Text = "FFBUI";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OnFormClosing);

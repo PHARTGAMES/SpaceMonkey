@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Perlin2D.cs" />
     <Compile Include="SMMath.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

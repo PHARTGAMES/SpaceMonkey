@@ -41,6 +41,8 @@ namespace GenericTelemetryProvider
             minVibrationGain.Text = "" + config.MinVibrationGain;
             maxVibrationGain.Text = "" + config.MaxVibrationGain;
             vibrationSpeedCurve.Text = "" + config.vibrationSpeedCurve;
+            verticalAccelMax.Text = "" + config.verticalAccelMax;
+            verticalAccelScale.Text = "" + config.verticalAccelScale;
 
             ignoreChanges = false;
         }
@@ -121,6 +123,18 @@ namespace GenericTelemetryProvider
         private void vibrationSpeedCurve_TextChanged(object sender, EventArgs e)
         {
             config.VibrationSpeedCurve = Utils.TextBoxSafeParseFloat(vibrationSpeedCurve, (int)config.VibrationSpeedCurve);
+        }
+
+        private void verticalAccelScale_TextChanged(object sender, EventArgs e)
+        {
+            config.VerticalAccelScale = Utils.TextBoxSafeParseFloat(verticalAccelScale, (int)config.VerticalAccelScale);
+
+        }
+
+        private void verticalAccelMax_TextChanged(object sender, EventArgs e)
+        {
+            config.VerticalAccelMax = Utils.TextBoxSafeParseFloat(verticalAccelMax, (int)config.VerticalAccelMax);
+
         }
     }
 }
