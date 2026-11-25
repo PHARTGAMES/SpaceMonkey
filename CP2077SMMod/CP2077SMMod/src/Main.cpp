@@ -67,9 +67,9 @@ RED4EXT_C_EXPORT void RED4EXT_CALL Query(RED4ext::PluginInfo* aInfo)
 
     aInfo->name = L"CP2077SMMod";
     aInfo->author = L"PEZZALUCIFER";
-    aInfo->version = RED4EXT_SEMVER(1, 0, 0);
-    aInfo->runtime = RED4EXT_RUNTIME_LATEST;
-    aInfo->sdk = RED4EXT_SDK_LATEST;
+    aInfo->version = RED4EXT_V1_SEMVER(1, 0, 0);
+    aInfo->runtime = RED4EXT_V1_RUNTIME_VERSION_LATEST; // patch 2.50
+    aInfo->sdk = RED4EXT_V1_SDK_VERSION_1_0_0_COMPAT_0_5_0;
 }
 
 RED4EXT_C_EXPORT uint32_t RED4EXT_CALL Supports()
@@ -80,5 +80,5 @@ RED4EXT_C_EXPORT uint32_t RED4EXT_CALL Supports()
      *
      * For more information about this function see https://docs.red4ext.com/mod-developers/creating-a-plugin#supports.
      */
-    return RED4EXT_API_VERSION_LATEST;
+    return RED4EXT_API_VERSION_1_COMPAT_0;
 }
